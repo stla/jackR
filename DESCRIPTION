@@ -2,12 +2,12 @@ Package: jack
 Type: Package
 Title: Jack, Zonal, and Schur Polynomials
 Version: 0.1.0
-Date: 2019-07-27
+Date: 2019-07-28
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@yahoo.fr>
 Description: Evaluation of the Jack polynomials, zonal polynomials, and Schur polynomials.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: partitions
+Imports: partitions, DescTools, gmp, mvp
 RoxygenNote: 6.1.1
