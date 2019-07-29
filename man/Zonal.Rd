@@ -2,23 +2,34 @@
 % Please edit documentation in R/Zonal.R
 \name{Zonal}
 \alias{Zonal}
-\title{Zonal polynomial}
+\title{Evaluation of zonal polynomials}
 \usage{
-Zonal(x, lambda)
+Zonal(x, lambda, algorithm = "DK")
 }
 \arguments{
-\item{x}{numeric vector}
+\item{x}{numeric vector or \link[gmp]{bigq} vector}
 
-\item{lambda}{integer partition}
+\item{lambda}{an integer partition, given as a vector of decreasing
+integers}
+
+\item{algorithm}{the algorithm used, either \code{"DK"} (Demmel-Koev)
+or \code{"naive"}}
 }
 \value{
-A number.
+A number or a \code{bigq} rational number.
 }
 \description{
 Evaluates the zonal polynomials.
 }
 \examples{
+lambda <- c(2,2)
+Zonal(c(1,1), lambda)
+Zonal(c(gmp::as.bigq(1),gmp::as.bigq(1)), lambda)
+##
 x <- c(3,1)
 Zonal(x, c(1,1)) + Zonal(x, 2) # sum(x)^2
 Zonal(x, 3) + Zonal(x, c(2,1)) + Zonal(x, c(1,1,1)) # sum(x)^3
+}
+\seealso{
+\code{\link{ZonalPol}}
 }

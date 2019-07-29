@@ -2,17 +2,21 @@
 % Please edit documentation in R/Schur.R
 \name{Schur}
 \alias{Schur}
-\title{Schur polynomial}
+\title{Evaluation of Schur polynomials}
 \usage{
-Schur(x, lambda)
+Schur(x, lambda, method = "DK")
 }
 \arguments{
-\item{x}{numeric vector}
+\item{x}{numeric vector or \link[gmp]{bigq} vector}
 
-\item{lambda}{integer partition}
+\item{lambda}{an integer partition, given as a vector of decreasing
+integers}
+
+\item{algorithm}{the algorithm used, either \code{"DK"} (Demmel-Koev)
+or \code{"naive"}}
 }
 \value{
-A number.
+A number or a \code{bigq} rational number.
 }
 \description{
 Evaluates the Schur polynomials.
@@ -21,4 +25,7 @@ Evaluates the Schur polynomials.
 x <- c(2,3,4)
 Schur(x, c(2,1,1))
 prod(x) * sum(x)
+}
+\seealso{
+\code{\link{SchurPol}}
 }

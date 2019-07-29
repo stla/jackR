@@ -1,29 +1,27 @@
-#' Schur polynomial
+#' Evaluation of Schur polynomials
 #'
 #' Evaluates the Schur polynomials.
 #'
-#' @param x numeric vector
-#' @param lambda integer partition
+#' @param x numeric vector or \link[gmp]{bigq} vector
+#' @param lambda an integer partition, given as a vector of decreasing
+#' integers
+#' @param algorithm the algorithm used, either \code{"DK"} (Demmel-Koev)
+#' or \code{"naive"}
 #'
-#' @return A number.
+#' @return A number or a \code{bigq} rational number.
 #' @export
+#'
+#' @seealso \code{\link{SchurPol}}
 #'
 #' @examples x <- c(2,3,4)
 #' Schur(x, c(2,1,1))
 #' prod(x) * sum(x)
-Schur <- function(x, lambda){
-  i <- rep(seq_along(lambda), times = lambda)
-  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-  lambdaPrime <- dualPartition(lambda)
-  hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
-  Jack(x, lambda, alpha = 1) / prod(hookslengths)
+Schur <- function(x, lambda, method = "DK"){
+  algorithm <- match.arg(algorithm, c("DK", "naive"))
+  if(algorithm == "DK"){
+    SchurEval(x, lambda)
+  }else{
+    SchurEvalNaive(x, lambda)
+  }
 }
 
-SchurQ <- function(x, lambda){
-  i <- rep(seq_along(lambda), times = lambda)
-  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-  lambdaPrime <- as.bigq(dualPartition(lambda))
-  lambda <- as.bigq(lambda)
-  hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1L
-  JackQ(x, lambda, alpha = as.bigq(1L)) / prod(hookslengths)
-}

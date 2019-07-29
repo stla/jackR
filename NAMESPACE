@@ -2,7 +2,6 @@
 
 export(Jack)
 export(JackPol)
-export(JackQ)
 export(KostkaNumbers)
 export(MSF)
 export(MSFpoly)

@@ -2,20 +2,38 @@
 % Please edit documentation in R/Jack.R
 \name{Jack}
 \alias{Jack}
-\title{Jack polynomial}
+\title{Evaluation of Jack polynomials}
 \usage{
-Jack(x, lambda, alpha)
+Jack(x, lambda, alpha, algorithm = "DK")
 }
 \arguments{
-\item{x}{numeric vector}
+\item{x}{numeric vector or \link[gmp]{bigq} vector}
 
-\item{lambda}{integer partition, a vector of decreasing integers}
+\item{lambda}{an integer partition, given as a vector of decreasing
+integers}
 
-\item{alpha}{positive number}
+\item{alpha}{positive number or \code{bigq} rational number}
+
+\item{algorithm}{the algorithm used, either \code{"DK"} (Demmel-Koev)
+or \code{"naive"}}
 }
 \value{
-A number.
+A numeric scalar or a \code{bigq} rational number.
 }
 \description{
 Evaluates the Jack polynomials.
+}
+\examples{
+lambda <- c(2,1,1)
+Jack(c(1/2, 2/3, 1), lambda, alpha = 3)
+Jack(c(gmp::as.bigq(1,2), gmp::as.bigq(2,3), gmp::as.bigq(1)), lambda,
+     alpha = gmp::as.bigq(3))
+}
+\references{
+J. Demmel & P. Koev.
+\emph{Accurate and efficient evaluation of Schur and Jack functions}.
+Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
+}
+\seealso{
+\code{\link{JackPol}}
 }
