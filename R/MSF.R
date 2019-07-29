@@ -19,16 +19,17 @@
 #' x <- c(as.bigq(1), as.bigq(2), as.bigq(5,2))
 #' MSF(x, lambda)
 MSF <- function(x, lambda){
+  gmp <- is.bigq(x)
   m <- length(x)
   lambda <- lambda[lambda>0]
-  if(length(lambda) > m) return(ifelse(gmp, as.bigq(0L), 0))
+  if(length(lambda) > m) return(if(gmp) as.bigq(0L) else 0)
   kappa <- numeric(m)
   kappa[seq_along(lambda)] <- lambda
   perms <- DescTools::Permn(kappa)
-  if(is.bigq(x)){
+  if(gmp){
     out <- as.bigq(0L)
     for(i in 1L:nrow(perms)){
-      pows <- rep(as.bigq(0L), m)
+      pows <- as.bigq(rep(0L, m))
       for(j in 1L:m){
         pows[j] <- x[j]^perms[i,j]
       }

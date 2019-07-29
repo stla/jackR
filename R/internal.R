@@ -2,6 +2,10 @@
 #' @importFrom gmp as.bigq is.bigq
 NULL
 
+isPartition <- function(lambda){
+  all(floor(lambda) == lambda) && all(diff(lambda) <= 0)
+}
+
 dualPartition <- function(lambda){
   if(all(lambda == 0)) 0 else conjugate(lambda)
 }
@@ -119,7 +123,7 @@ betweenPartitions <- function(mu, lambda){
 
 .e <- function(lambda, alpha){
   if(is.bigq(alpha)){
-    alpha * as.bigq(.n(dualPartition(lambda)) - .n(lambda))
+    alpha * as.bigq(.n(dualPartition(lambda))) - .n(lambda)
   }else{
     alpha * .n(dualPartition(lambda)) - .n(lambda)
   }
