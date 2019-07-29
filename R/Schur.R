@@ -18,3 +18,12 @@ Schur <- function(x, lambda){
   hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
   Jack(x, lambda, alpha = 1) / prod(hookslengths)
 }
+
+SchurQ <- function(x, lambda){
+  i <- rep(seq_along(lambda), times = lambda)
+  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  lambdaPrime <- as.bigq(dualPartition(lambda))
+  lambda <- as.bigq(lambda)
+  hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1L
+  JackQ(x, lambda, alpha = as.bigq(1L)) / prod(hookslengths)
+}

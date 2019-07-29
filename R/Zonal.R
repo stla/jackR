@@ -14,5 +14,12 @@
 Zonal <- function(x, lambda){
   jack <- Jack(x, lambda, alpha= 2)
   jlambda <- sum(logHookLengths(lambda, alpha = 2))
-  exp(sum(lambda)*log(2) + lfactorial(sum(lambda)) - jlambda) * jack
+  n <- sum(lambda)
+  exp(n*log(2) + lfactorial(n) - jlambda) * jack
+}
+
+ZonalQ <- function(x, lambda){
+  jack <- JackQ(x, lambda, alpha= as.bigq(2))
+  jlambda <- prod(hookLengths_gmp(lambda, alpha = as.bigq(2)))
+  as.bigq(2L)^n * as.bigq(factorialZ(n)) / jlambda * jack
 }

@@ -12,9 +12,18 @@ logHookLengths <- function(lambda, alpha){
   lambdaPrime <- dualPartition(lambda)
   upperHL <- lambdaPrime[j] - i + alpha*(lambda[i] - j + 1)
   lowerHL <- lambdaPrime[j] - i + 1 + alpha*(lambda[i] - j)
-  log(c(upperHL,lowerHL))
+  log(c(upperHL, lowerHL))
 }
 
+hookLengths_gmp <- function(lambda, alpha){
+  i <- rep(seq_along(lambda), times = lambda)
+  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  lambdaPrime <- as.bigq(dualPartition(lambda))
+  lambda <- as.bigq(lambda)
+  upperHL <- lambdaPrime[j] - i + alpha*(lambda[i] - j + 1L)
+  lowerHL <- lambdaPrime[j] - i + 1L + alpha*(lambda[i] - j)
+  c(upperHL, lowerHL)
+}
 .Blog <- function(nu, lambda, mu, alpha){
   if(all(nu == 0)) return(0)
   i <- rep(seq_along(nu), times = nu)
