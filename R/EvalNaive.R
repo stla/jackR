@@ -31,7 +31,7 @@ ZonalEvalNaive <- function(x, lambda){
   gmp <- is.bigq(x)
   mus <- dominatedPartitions(lambda)
   lambda <- mus[,1L] # to add trailing zeros
-  coefs <- ZonalCoefficients(sum(lambda), until = lambda, exact = gmp)
+  coefs <- zonalCoefficients(sum(lambda), until = lambda, exact = gmp)
   if(gmp){
     out <- as.bigq(0L)
     for(i in 1L:ncol(mus)){
