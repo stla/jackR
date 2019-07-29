@@ -1,4 +1,5 @@
 #' @importFrom partitions conjugate parts
+#' @importFrom gmp as.bigq
 NULL
 
 dualPartition <- function(lambda){
@@ -14,7 +15,7 @@ logHookLengths <- function(lambda, alpha){
   log(c(upperHL,lowerHL))
 }
 
-.B <- function(nu, lambda, mu, alpha){
+.Blog <- function(nu, lambda, mu, alpha){
   if(all(nu == 0)) return(0)
   i <- rep(seq_along(nu), times = nu)
   j <- unlist(sapply(nu, seq_len, simplify = FALSE))
@@ -37,8 +38,35 @@ logHookLengths <- function(lambda, alpha){
 }
 
 .beta <- function(lambda, mu, alpha){
-  exp(.B(lambda, lambda, mu, alpha) - .B(mu, lambda, mu, alpha))
+  exp(.Blog(lambda, lambda, mu, alpha) - .Blog(mu, lambda, mu, alpha))
 }
+
+.B_gmp <- function(nu, lambda, mu, alpha){
+  if(all(nu == 0)) return(as.bigq(1L))
+  i <- rep(seq_along(nu), times = nu)
+  j <- unlist(sapply(nu, seq_len, simplify = FALSE))
+  nuPrime <- as.bigq(dualPartition(nu))
+  lambdaPrime <- dualPartition(lambda); l1 <- length(lambdaPrime)
+  muPrime <- dualPartition(mu); l2 <- length(muPrime)
+  n <- length(i)
+  out <- as.bigq(integer(n))
+  for(k in 1L:n){
+    ii <- i[k]; jj <- j[k]
+    lambdaPj <- if(jj <= l1) lambdaPrime[jj] else 0
+    muPj <- if(jj <= l2) muPrime[jj] else 0
+    out[k] <- if(lambdaPj == muPj){
+      nuPrime[jj] - ii + alpha*(nu[ii] - jj + 1L)
+    }else{
+      nuPrime[jj] - ii + 1L + alpha*(nu[ii] - jj)
+    }
+  }
+  sum(prod(out))
+}
+
+.beta_gmp <- function(lambda, mu, alpha){
+  .B_gmp(lambda, lambda, mu, alpha) / .B_gmp(mu, lambda, mu, alpha)
+}
+
 
 .N <- function(lambda, mu){
   n <- length(lambda)

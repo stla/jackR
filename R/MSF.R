@@ -12,8 +12,7 @@
 #' @importFrom DescTools Permn
 #' @export
 #'
-#' @examples
-#' x <- c(1, 2, 5/2)
+#' @examples x <- c(1, 2, 5/2)
 #' lambda <- c(3, 1)
 #' MSF(x, lambda)
 #' library(gmp)
