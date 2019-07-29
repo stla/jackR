@@ -1,4 +1,4 @@
-#' @importFrom partitions conjugate
+#' @importFrom partitions conjugate parts
 NULL
 
 dualPartition <- function(lambda){
@@ -45,3 +45,32 @@ logHookLengths <- function(lambda, alpha){
   M <- sapply(1L:n, function(i) prod(tail(lambda+1,n-i)))
   sum(mu * M)
 }
+
+#####
+isDominated <- function(mu, lambda){
+  n <- sum(lambda)
+  lambda <- c(lambda, rep(0,n-length(lambda)))
+  mu <- mu[seq_len(match(0, mu, nomatch = n+1)-1L)]
+  for(i in 1:length(mu)){
+    if(sum(mu[1:i]) > sum(lambda[1:i])){
+      return(FALSE)
+    }
+  }
+  TRUE
+}
+
+dominatedPartitions <- function(lambda){
+  allParts <- parts(sum(lambda))
+  allParts[, apply(allParts, 2L, isDominated, lambda = lambda),
+           drop = FALSE]
+}
+
+betweenPartitions <- function(mu, lambda){
+  doms <- dominatedPartitions(lambda)
+  n <- sum(mu)
+  doms[,apply(doms, 2L, function(p){
+    isDominated(mu,p) && !all(c(mu, rep(0,n-length(mu)))==p)
+  }), drop = FALSE]
+}
+
+.rho <- function(lambda) sum(lambda*(lambda-seq_along(lambda)))

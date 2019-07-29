@@ -9,5 +9,5 @@ Description: Evaluation of the Jack polynomials, zonal polynomials, and Schur po
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: partitions, DescTools, gmp, mvp
+Imports: partitions, DescTools, gmp, mvp, multicool
 RoxygenNote: 6.1.1
