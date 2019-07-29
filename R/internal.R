@@ -1,5 +1,5 @@
 #' @importFrom partitions conjugate parts
-#' @importFrom gmp as.bigq
+#' @importFrom gmp as.bigq is.bigq
 NULL
 
 dualPartition <- function(lambda){
@@ -111,3 +111,16 @@ betweenPartitions <- function(mu, lambda){
 }
 
 .rho <- function(lambda) sum(lambda*(lambda-seq_along(lambda)))
+
+#####
+.n <- function(lambda){
+  sum((seq_len(length(lambda))-1)*lambda)
+}
+
+.e <- function(lambda, alpha){
+  if(is.bigq(alpha)){
+    alpha * as.bigq(.n(dualPartition(lambda)) - .n(lambda))
+  }else{
+    alpha * .n(dualPartition(lambda)) - .n(lambda)
+  }
+}
