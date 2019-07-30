@@ -11,3 +11,5 @@ Encoding: UTF-8
 LazyData: true
 Imports: partitions, DescTools, gmp, mvp, multicool
 RoxygenNote: 6.1.1
+Suggests: 
+    testthat
