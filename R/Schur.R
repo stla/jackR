@@ -16,7 +16,7 @@
 #' @examples x <- c(2,3,4)
 #' Schur(x, c(2,1,1))
 #' prod(x) * sum(x)
-Schur <- function(x, lambda, method = "DK"){
+Schur <- function(x, lambda, algorithm = "DK"){
   algorithm <- match.arg(algorithm, c("DK", "naive"))
   if(algorithm == "DK"){
     SchurEval(x, lambda)

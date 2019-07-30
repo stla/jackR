@@ -11,6 +11,8 @@
 #'
 #' @return A numeric scalar or a \code{bigq} rational number.
 #' @export
+#' @importFrom partitions conjugate
+#' @importFrom gmp factorialZ is.bigq
 #'
 #' @seealso \code{\link{JackPol}}
 #'
@@ -20,9 +22,19 @@
 #'
 #' @examples lambda <- c(2,1,1)
 #' Jack(c(1/2, 2/3, 1), lambda, alpha = 3)
+#' # exact value:
 #' Jack(c(gmp::as.bigq(1,2), gmp::as.bigq(2,3), gmp::as.bigq(1)), lambda,
 #'      alpha = gmp::as.bigq(3))
 Jack <- function(x, lambda, alpha, algorithm = "DK"){
+  if(alpha == 0){
+    lambdaPrime <- conjugate(lambda)
+    if(is.bigq(x)){
+      f <- as.bigq(prod(factorialZ(lambdaPrime[lambdaPrime>0])))
+    }else{
+      f <- prod(factorial(lambdaPrime[lambdaPrime>0]))
+    }
+    return(f * ESF(x, lambdaPrime))
+  }
   algorithm <- match.arg(algorithm, c("DK", "naive"))
   if(algorithm == "DK"){
     JackEval(x, lambda, alpha)

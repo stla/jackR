@@ -38,6 +38,7 @@ JackEvalQ <- function(x, lambda, alpha){
     if(m == 1) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1)+1L))
     if(k == 0 && !is.na(s <- S[.N(lambda,nu),m])) return(s)
     i <- max(1L,k)
+    print(mu); print(nu); print("---")
     s <- jac(m-1L, 0, nu, nu) * .beta_gmp(mu,nu,alpha) *
       x[m]^(sum(mu)-sum(nu))
     while(length(nu) >= i && nu[i] > 0){
@@ -60,7 +61,7 @@ JackEvalQ <- function(x, lambda, alpha){
 }
 
 JackEval <- function(x, lambda, alpha){
-  stopifnot(isPartition(lambda), alpha > 0)
+  stopifnot(isPartition(lambda), alpha >= 0)
   gmp <- is.bigq(x) || is.bigq(alpha)
   if(gmp){
     stopifnot(is.bigq(x), is.bigq(alpha))

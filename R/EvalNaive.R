@@ -2,7 +2,7 @@
 NULL
 
 JackEvalNaive <- function(x, lambda, alpha){
-  stopifnot(isPartition(lambda), alpha > 0)
+  stopifnot(isPartition(lambda), alpha >= 0)
   gmp <- is.bigq(x) || is.bigq(alpha)
   if(gmp){
     stopifnot(is.bigq(x), is.bigq(alpha))

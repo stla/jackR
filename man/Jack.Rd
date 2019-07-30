@@ -26,6 +26,7 @@ Evaluates the Jack polynomials.
 \examples{
 lambda <- c(2,1,1)
 Jack(c(1/2, 2/3, 1), lambda, alpha = 3)
+# exact value:
 Jack(c(gmp::as.bigq(1,2), gmp::as.bigq(2,3), gmp::as.bigq(1)), lambda,
      alpha = gmp::as.bigq(3))
 }

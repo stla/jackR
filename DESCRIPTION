@@ -5,7 +5,7 @@ Version: 0.1.0
 Date: 2019-07-28
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@yahoo.fr>
-Description: Evaluation of the Jack polynomials, zonal polynomials, and Schur polynomials.
+Description: Symbolic calculation and evaluation of the Jack polynomials, zonal polynomials, and Schur polynomials.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

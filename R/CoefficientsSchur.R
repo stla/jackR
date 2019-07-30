@@ -1,5 +1,5 @@
 #' @importFrom multicool multinom
-#' @importFrom gmp as.bigq asNumeric factorialZ
+#' @importFrom gmp as.bigq asNumeric
 NULL
 
 SchurCoefficientsQ <- function(n, until = NULL){
@@ -45,26 +45,29 @@ SchurCoefficientsQ <- function(n, until = NULL){
       coefs[indices[m+1L,m+1L]] <- as.bigq(1L)
     }
   }
-  .coefs <- as.bigq(matrix(0L, nrow = lastRow, ncol = nParts))
-  for(i in 1L:lastRow){
-    for(j in i:nParts){
-      .coefs[i,j] <- coefs[indices[i,j]]
-    }
-  }
-  lastColumn <- .coefs[, nParts]
-  facto <- as.bigq(factorialZ(n))
-  for(k in 1L:lastRow){
-    lambda <- allParts[,k]
-    i <- rep(seq_along(lambda), times = lambda)
-    j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-    lambdaPrime <- dualPartition(lambda)
-    hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
-    f <- facto / lastColumn[k]
-    coefs[k,] <- f * .coefs[k,] / prod(as.bigq(hookslengths))
-  }
-  out <- as.character(.coefs)
+  out <- matrix(as.character(coefs), nrow = lastRow, ncol = nParts)
   dimnames(out) <- dimnames(indices)
   out
+  # .coefs <- as.bigq(matrix(0L, nrow = lastRow, ncol = nParts))
+  # for(i in 1L:lastRow){
+  #   for(j in i:nParts){
+  #     .coefs[i,j] <- coefs[indices[i,j]]
+  #   }
+  # }
+  # lastColumn <- .coefs[, nParts]
+  # facto <- as.bigq(factorialZ(n))
+  # for(k in 1L:lastRow){
+  #   lambda <- allParts[,k]
+  #   i <- rep(seq_along(lambda), times = lambda)
+  #   j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  #   lambdaPrime <- dualPartition(lambda)
+  #   hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
+  #   f <- facto / lastColumn[k]
+  #   coefs[k,] <- f * .coefs[k,] / prod(as.bigq(hookslengths))
+  # }
+  # out <- as.character(.coefs)
+  # dimnames(out) <- dimnames(indices)
+  # out
 }
 
 SchurCoefficientsNum <- function(n, until = NULL){
@@ -108,17 +111,17 @@ SchurCoefficientsNum <- function(n, until = NULL){
       coefs[m+1L,m+1L] <- 1
     }
   }
-  lastColumn <- coefs[, nParts]
-  facto <- factorial(n)
-  for(k in 1L:lastRow){
-    lambda <- allParts[,k]
-    i <- rep(seq_along(lambda), times = lambda)
-    j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-    lambdaPrime <- dualPartition(lambda)
-    hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
-    f <- facto / lastColumn[k]
-    coefs[k,] <- f * coefs[k,] / prod(hookslengths)
-  }
+  # lastColumn <- coefs[, nParts]
+  # facto <- factorial(n)
+  # for(k in 1L:lastRow){
+  #   lambda <- allParts[,k]
+  #   i <- rep(seq_along(lambda), times = lambda)
+  #   j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  #   lambdaPrime <- dualPartition(lambda)
+  #   hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
+  #   f <- facto / lastColumn[k]
+  #   coefs[k,] <- f * coefs[k,] / prod(hookslengths)
+  # }
   coefs
 }
 

@@ -51,6 +51,7 @@ hookLengths_gmp <- function(lambda, alpha){
 }
 
 .beta <- function(lambda, mu, alpha){
+  if(all(lambda == mu)) return(1)
   exp(.Blog(lambda, lambda, mu, alpha) - .Blog(mu, lambda, mu, alpha))
 }
 
@@ -77,6 +78,7 @@ hookLengths_gmp <- function(lambda, alpha){
 }
 
 .beta_gmp <- function(lambda, mu, alpha){
+  if(all(lambda == mu)) return(as.bigq(1L))
   .B_gmp(lambda, lambda, mu, alpha) / .B_gmp(mu, lambda, mu, alpha)
 }
 

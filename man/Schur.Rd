@@ -4,7 +4,7 @@
 \alias{Schur}
 \title{Evaluation of Schur polynomials}
 \usage{
-Schur(x, lambda, method = "DK")
+Schur(x, lambda, algorithm = "DK")
 }
 \arguments{
 \item{x}{numeric vector or \link[gmp]{bigq} vector}

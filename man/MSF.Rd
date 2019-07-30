@@ -7,14 +7,14 @@
 MSF(x, lambda)
 }
 \arguments{
-\item{x}{a numeric vector or a \link[gmp]{bigq} vector}
+\item{x}{a numeric vector or a \code{\link[gmp]{bigq}} vector}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 }
 \value{
 A number if \code{x} is numeric, a \code{bigq} rational number
-if \code{x} is a \code{bigq} vector
+if \code{x} is a \code{bigq} vector.
 }
 \description{
 Evaluates a monomial symmetric function.
