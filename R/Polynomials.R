@@ -17,7 +17,7 @@
 #' @examples JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3))
 #' JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3), basis = "MSF")
 JackPol <- function(m, lambda, alpha, basis = "canonical"){
-  stopifnot(floor(m) == m, alpha > 0, isPartition(lambda))
+  stopifnot(floor(m) == m, alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   lambda <- lambda[lambda>0]
   if(length(lambda) > m) return(constant(0))
