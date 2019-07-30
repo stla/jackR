@@ -13,6 +13,20 @@
 #'
 #' @seealso \code{\link{ZonalPol}}
 #'
+#' @references \itemize{
+#' \item Robb Muirhead. \emph{Aspects of multivariate statistical theory}.
+#' Wiley series in probability and mathematical statistics.
+#' Probability and mathematical statistics.
+#' John Wiley & Sons, New York, 1982.
+#' \item Akimichi Takemura. \emph{Zonal Polynomials},
+#' volume 4 of Institute of Mathematical Statistics Lecture Notes –
+#' Monograph Series.
+#' Institute of Mathematical Statistics, Hayward, CA, 1984.
+#' \item Lin Jiu & Christoph Koutschan.
+#' \emph{Calculation and Properties of Zonal Polynomials}.
+#' \url{http://koutschan.de/data/zonal/zonal.pdf}
+#' }
+#'
 #' @examples lambda <- c(2,2)
 #' Zonal(c(1,1), lambda)
 #' Zonal(c(gmp::as.bigq(1),gmp::as.bigq(1)), lambda)

@@ -31,9 +31,18 @@ Jack(c(gmp::as.bigq(1,2), gmp::as.bigq(2,3), gmp::as.bigq(1)), lambda,
      alpha = gmp::as.bigq(3))
 }
 \references{
-J. Demmel & P. Koev.
+\itemize{
+\item I.G. Macdonald.
+\emph{Symmetric Functions and Hall Polynomials}.
+Oxford Mathematical Monographs.
+The Clarendon Press Oxford University Press,
+New York, second edition, 1995.
+\item J. Demmel & P. Koev.
 \emph{Accurate and efficient evaluation of Schur and Jack functions}.
 Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
+\item \emph{Jack polynomials}.
+\url{https://www.math.upenn.edu/~peal/polynomials/jack.htm}
+}
 }
 \seealso{
 \code{\link{JackPol}}

@@ -30,6 +30,21 @@ x <- c(3,1)
 Zonal(x, c(1,1)) + Zonal(x, 2) # sum(x)^2
 Zonal(x, 3) + Zonal(x, c(2,1)) + Zonal(x, c(1,1,1)) # sum(x)^3
 }
+\references{
+\itemize{
+\item Robb Muirhead. \emph{Aspects of multivariate statistical theory}.
+Wiley series in probability and mathematical statistics.
+Probability and mathematical statistics.
+John Wiley & Sons, New York, 1982.
+\item Akimichi Takemura. \emph{Zonal Polynomials},
+volume 4 of Institute of Mathematical Statistics Lecture Notes –
+Monograph Series.
+Institute of Mathematical Statistics, Hayward, CA, 1984.
+\item Lin Jiu & Christoph Koutschan.
+\emph{Calculation and Properties of Zonal Polynomials}.
+\url{http://koutschan.de/data/zonal/zonal.pdf}
+}
+}
 \seealso{
 \code{\link{ZonalPol}}
 }

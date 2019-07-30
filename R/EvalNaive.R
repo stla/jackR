@@ -69,3 +69,25 @@ SchurEvalNaive <- function(x, lambda){
   }
   out
 }
+
+ZonalQEvalNaive <- function(x, lambda){
+  stopifnot(isPartition(lambda))
+  gmp <- is.bigq(x)
+  mus <- dominatedPartitions(lambda)
+  lambda <- mus[,1L] # to add trailing zeros
+  coefs <- zonalQCoefficients(sum(lambda), until = lambda, exact = gmp)
+  if(gmp){
+    out <- as.bigq(0L)
+    for(i in 1L:ncol(mus)){
+      out <- out + MSF(x, mus[,i]) *
+        as.bigq(coefs[toString(lambda), toString(mus[,i])])
+    }
+  }else{
+    out <- 0
+    for(i in 1L:ncol(mus)){
+      out <- out + MSF(x, mus[,i]) *
+        coefs[toString(lambda), toString(mus[,i])]
+    }
+  }
+  out
+}

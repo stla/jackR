@@ -38,7 +38,6 @@ JackEvalQ <- function(x, lambda, alpha){
     if(m == 1) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1)+1L))
     if(k == 0 && !is.na(s <- S[.N(lambda,nu),m])) return(s)
     i <- max(1L,k)
-    print(mu); print(nu); print("---")
     s <- jac(m-1L, 0, nu, nu) * .beta_gmp(mu,nu,alpha) *
       x[m]^(sum(mu)-sum(nu))
     while(length(nu) >= i && nu[i] > 0){
@@ -80,7 +79,7 @@ ZonalEvalNum <- function(x, lambda){
 
 ZonalEvalQ <- function(x, lambda){
   jack <- JackEvalQ(x, lambda, alpha= as.bigq(2))
-  jlambda <- prod(hookLengths_gmp(lambda, alpha = as.bigq(2)))
+  jlambda <- prod(hookLengths_gmp(lambda, alpha = as.bigq(2L)))
   n <- sum(lambda)
   as.bigq(2L)^n * as.bigq(factorialZ(n)) / jlambda * jack
 }
@@ -120,5 +119,29 @@ SchurEval <- function(x, lambda){
     SchurEvalQ(x, lambda)
   }else{
     SchurEvalNum(x, lambda)
+  }
+}
+
+ZonalQEvalNum <- function(x, lambda){
+  jack <- JackEvalNum(x, lambda, alpha= 1/2)
+  jlambda <- sum(logHookLengths(lambda, alpha = 1/2))
+  n <- sum(lambda)
+  exp(-n*log(2) + lfactorial(n) - jlambda) * jack
+}
+
+ZonalQEvalQ <- function(x, lambda){
+  jack <- JackEvalQ(x, lambda, alpha= as.bigq(1L,2L))
+  jlambda <- prod(hookLengths_gmp(lambda, alpha = as.bigq(1L,2L)))
+  n <- sum(lambda)
+  as.bigq(1L,2L)^n * as.bigq(factorialZ(n)) / jlambda * jack
+}
+
+ZonalQEval <- function(x, lambda){
+  stopifnot(isPartition(lambda))
+  gmp <- is.bigq(x)
+  if(gmp){
+    ZonalQEvalQ(x, lambda)
+  }else{
+    ZonalQEvalNum(x, lambda)
   }
 }

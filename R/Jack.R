@@ -16,9 +16,18 @@
 #'
 #' @seealso \code{\link{JackPol}}
 #'
-#' @references J. Demmel & P. Koev.
+#' @references \itemize{
+#' \item I.G. Macdonald.
+#' \emph{Symmetric Functions and Hall Polynomials}.
+#' Oxford Mathematical Monographs.
+#' The Clarendon Press Oxford University Press,
+#' New York, second edition, 1995.
+#' \item J. Demmel & P. Koev.
 #' \emph{Accurate and efficient evaluation of Schur and Jack functions}.
 #' Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
+#' \item \emph{Jack polynomials}.
+#' \url{https://www.math.upenn.edu/~peal/polynomials/jack.htm}
+#' }
 #'
 #' @examples lambda <- c(2,1,1)
 #' Jack(c(1/2, 2/3, 1), lambda, alpha = 3)

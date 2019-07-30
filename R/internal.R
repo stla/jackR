@@ -118,6 +118,8 @@ betweenPartitions <- function(mu, lambda){
 
 .rho <- function(lambda) sum(lambda*(lambda-seq_along(lambda)))
 
+.rhoQ <- function(lambda) sum(lambda*(lambda-4*seq_along(lambda)))
+
 #####
 .n <- function(lambda){
   sum((seq_len(length(lambda))-1)*lambda)

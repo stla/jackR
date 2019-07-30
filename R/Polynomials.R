@@ -42,7 +42,8 @@ JackPol <- function(m, lambda, alpha, basis = "canonical"){
     vars <- apply(mus, 2L, function(mu){
       paste0("M_(", paste0(mu[mu>0], collapse = ","), ")")
     })
-    coefs <- coefs[coefs != "0"]
+    rowIdx <- match(toString(lambda00), names(coefs))
+    coefs <- coefs[-seq_len(rowIdx-1L)]
     coefs <- ifelse(coefs == "1", "", paste0(coefs, " "))
     paste0(coefs, vars, collapse = " + ")
   }
@@ -50,7 +51,7 @@ JackPol <- function(m, lambda, alpha, basis = "canonical"){
 
 #' Zonal polynomial
 #'
-#' Returns the Zonal polynomial.
+#' Returns the zonal polynomial.
 #'
 #' @param m number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -144,3 +145,50 @@ SchurPol <- function(m, lambda, basis = "canonical"){
   }
 }
 
+#' Quaternionic zonal polynomial
+#'
+#' Returns the quaternionic zonal polynomial.
+#'
+#' @param m number of variables, a positive integer
+#' @param lambda an integer partition, given as a vector of decreasing
+#' integers
+#' @param basis the polynomial basis, either \code{"canonical"} or
+#' \code{"MSF"} (monomial symmetric functions)
+#'
+#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+#' @importFrom mvp constant mvp
+#' @export
+#'
+#' @examples ZonalQPol(3, lambda = c(3,1))
+#' ZonalQPol(3, lambda = c(3,1), basis = "MSF")
+ZonalQPol <- function(m, lambda, basis = "canonical"){
+  stopifnot(floor(m) == m, isPartition(lambda))
+  basis <- match.arg(basis, c("canonical", "MSF"))
+  lambda <- lambda[lambda>0]
+  if(length(lambda) > m) return(constant(0))
+  lambda00 <- numeric(sum(lambda))
+  lambda00[seq_along(lambda)] <- lambda
+  mus <- dominatedPartitions(lambda)
+  coefs <- zonalQCoefficientsQ(sum(lambda), until = lambda)
+  coefs <- coefs[toString(lambda00),]
+  if(basis == "canonical"){
+    out <- constant(0)
+    for(i in 1:ncol(mus)){
+      l <- sum(mus[,i] > 0)
+      if(l <= m){
+        toAdd <- MSFpoly(m, mus[,i])
+        if(coefs[toString(mus[,i])] != "1")
+          toAdd <- toAdd * mvp(coefs[toString(mus[,i])], 1, 1)
+        out <- out + toAdd
+      }
+    }
+    out
+  }else{
+    vars <- apply(mus, 2L, function(mu){
+      paste0("M_(", paste0(mu[mu>0], collapse = ","), ")")
+    })
+    coefs <- coefs[coefs != "0"]
+    coefs <- ifelse(coefs == "1", "", paste0(coefs, " "))
+    paste0(coefs, vars, collapse = " + ")
+  }
+}
