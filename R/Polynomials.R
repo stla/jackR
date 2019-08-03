@@ -49,6 +49,38 @@ JackPol <- function(m, lambda, alpha, basis = "canonical"){
   }
 }
 
+
+JackPolDK <- function(n, lambda, alpha){
+  jac <- function(m, k, mu, nu, beta){
+    if(length(nu) == 0L || nu[1L]==0 || m == 0L) return(constant(1))
+    if(length(nu) > m && nu[m+1L] > 0) return(constant(0))
+    if(m == 1L) return(mvp("x_1", nu[1L], prod(alpha*seq_len(nu[1L]-1)+1)))
+    if(k == 0L && !is.na(s <- S[[.N(lambda,nu),m]])) return(s)
+    i <- max(1L,k)
+    s <- jac(m-1L, 0L, nu, nu, 1) * beta *
+      mvp(x[m], sum(mu)-sum(nu), 1)
+    while(length(nu) >= i && nu[i] > 0){
+      if(length(nu) == i && nu[i] > 0 || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1
+        gamma <- beta * .betaratio(mu, nu, i, alpha)
+        if(nu[i] > 1){
+          s <- s + jac(m, i, mu, .nu, gamma)
+        }else{
+          s <- s + jac(m-1L, 0L, .nu, .nu, 1) * gamma *
+            mvp(x[m], sum(mu)-sum(.nu), 1)
+        }
+      }
+      i <- i + 1L
+    }
+    if(k == 0L) S[[.N(lambda,nu),m]] <- s
+    return(s)
+  }
+  S <- as.list(rep(NA, .N(lambda,lambda) * n))
+  dim(S) <- c(.N(lambda,lambda), n)
+  x <- paste0("x_", 1L:n)
+  jac(n, 0L, lambda, lambda, 1)
+}
+
 #' Zonal polynomial
 #'
 #' Returns the zonal polynomial.
@@ -95,6 +127,13 @@ ZonalPol <- function(m, lambda, basis = "canonical"){
     coefs <- ifelse(coefs == "1", "", paste0(coefs, " "))
     paste0(coefs, vars, collapse = " + ")
   }
+}
+
+ZonalPolDK <- function(n, lambda){
+  jack <- JackPolDK(n, lambda, alpha= 2)
+  jlambda <- sum(logHookLengths(lambda, alpha = 2))
+  n <- sum(lambda)
+  exp(n*log(2) + lfactorial(n) - jlambda) * jack
 }
 
 #' Schur polynomial
@@ -145,6 +184,36 @@ SchurPol <- function(m, lambda, basis = "canonical"){
   }
 }
 
+SchurPolDK <- function(n, lambda){
+  sch <- function(m, k, nu){
+    if(length(nu) == 0L || nu[1L]==0 || m == 0L){
+      return(constant(1))
+    }
+    if(length(nu) > m && nu[m+1L] > 0) return(constant(0))
+    if(m == 1L) return(mvp(x[1L], nu[1L], 1))
+    if(!is.na(s <- S[[.N(lambda,nu),m]])) return(s)
+    s <- sch(m-1L, 1L, nu)
+    i <- k
+    while(length(nu) >= i && nu[i] > 0){
+      if(length(nu) == i || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1
+        if(nu[i] > 1){
+          s <- s + mvp(x[m], 1, 1) * sch(m, i, .nu)
+        }else{
+          s <- s + mvp(x[m], 1, 1) * sch(m-1L, 1L, .nu)
+        }
+      }
+      i <- i + 1L
+    }
+    if(k == 1L) S[[.N(lambda,nu),m]] <- s
+    return(s)
+  }
+  x <- paste0("x_", 1L:n)
+  S <- as.list(rep(NA, .N(lambda,lambda)*n))
+  dim(S) <- c(.N(lambda,lambda), n)
+  sch(n, 1L, lambda)
+}
+
 #' Quaternionic zonal polynomial
 #'
 #' Returns the quaternionic zonal polynomial.
@@ -191,4 +260,11 @@ ZonalQPol <- function(m, lambda, basis = "canonical"){
     coefs <- ifelse(coefs == "1", "", paste0(coefs, " "))
     paste0(coefs, vars, collapse = " + ")
   }
+}
+
+ZonalQPolDK <- function(n, lambda){
+  jack <- JackPolDK(n, lambda, alpha= 1/2)
+  jlambda <- sum(logHookLengths(lambda, alpha = 1/2))
+  n <- sum(lambda)
+  exp(-n*log(2) + lfactorial(n) - jlambda) * jack
 }

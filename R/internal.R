@@ -55,6 +55,17 @@ hookLengths_gmp <- function(lambda, alpha){
   exp(.Blog(lambda, lambda, mu, alpha) - .Blog(mu, lambda, mu, alpha))
 }
 
+.betaratio <- function(kappa, mu, k, alpha){
+  t <- k - alpha*mu[k]
+  s <- seq_len(k)
+  u <- t + 1 - s + alpha*kappa[s]
+  s <- seq_len(k-1)
+  v <- t - s + alpha*mu[s]
+  s <- seq_len(mu[k]-1)
+  w <- vapply(s, function(i) sum(mu >= i), integer(1L)) - t - alpha*s #conjugate(mu)[s] - t - alpha*s
+  alpha * prod(u/(u+alpha-1)) * prod((v+alpha)/v) * prod((w+alpha)/w)
+}
+
 .B_gmp <- function(nu, lambda, mu, alpha){
   if(all(nu == 0)) return(as.bigq(1L))
   i <- rep(seq_along(nu), times = nu)
