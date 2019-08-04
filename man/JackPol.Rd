@@ -4,19 +4,24 @@
 \alias{JackPol}
 \title{Jack polynomial}
 \usage{
-JackPol(m, lambda, alpha, basis = "canonical")
+JackPol(n, lambda, alpha, algorithm = "DK", basis = "canonical")
 }
 \arguments{
-\item{m}{number of variables, a positive integer}
-
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{alpha}{parameter of the Jack polynomial,
-a positive \code{bigq} rational number}
+\item{alpha}{parameter of the Jack polynomial, always a positive number
+for \code{algorithm = "DK"}, a positive number or a positive \code{bigq}
+rational number for \code{algorithm = "naive"}}
 
-\item{basis}{the polynomial basis, either \code{"canonical"} or
-\code{"MSF"} (monomial symmetric functions)}
+\item{algorithm}{the algorithm used, either \code{"DK"} or \code{"naive"}}
+
+\item{basis}{the polynomial basis for \code{algorithm = "naive"},
+either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
+for \code{algorithm = "DK"} the canonical basis is always used and
+this parameter is ignored}
+
+\item{m}{number of variables, a positive integer}
 }
 \value{
 A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).

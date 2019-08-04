@@ -79,7 +79,7 @@ test_that(
     #
     lambda <- c(3,2)
     alpha <- as.bigq(11L,3L)
-    pol <- JackPol(4, lambda, alpha)
+    pol <- JackPol(4, lambda, alpha, algorithm = "naive")
     x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
     polEval <- evalPol(pol, x)
     expect_identical(polEval, Jack(as.bigq(x), lambda, alpha))

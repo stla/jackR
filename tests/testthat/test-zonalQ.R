@@ -44,7 +44,7 @@ test_that(
     }
     #
     lambda <- c(3,2)
-    pol <- ZonalQPol(4, lambda)
+    pol <- ZonalQPol(4, lambda, algorithm = "naive")
     x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
     polEval <- evalPol(pol, x)
     expect_identical(polEval, ZonalQ(as.bigq(x), lambda))

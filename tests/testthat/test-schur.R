@@ -46,7 +46,7 @@ test_that(
     }
     #
     lambda <- c(3,2)
-    pol <- SchurPol(4, lambda)
+    pol <- SchurPol(4, lambda, algorithm = "naive")
     x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
     polEval <- evalPol(pol, x)
     expect_identical(polEval, Schur(as.bigq(x), lambda))

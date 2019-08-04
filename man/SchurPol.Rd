@@ -4,7 +4,7 @@
 \alias{SchurPol}
 \title{Schur polynomial}
 \usage{
-SchurPol(m, lambda, basis = "canonical")
+SchurPol(m, lambda, basis = "canonical", exact = TRUE)
 }
 \arguments{
 \item{m}{number of variables, a positive integer}
@@ -14,6 +14,9 @@ integers}
 
 \item{basis}{the polynomial basis, either \code{"canonical"} or
 \code{"MSF"} (monomial symmetric functions)}
+
+\item{exact}{logical, whether to use exact arithmetic to calculate the
+coefficients}
 }
 \value{
 A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).

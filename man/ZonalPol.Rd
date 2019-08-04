@@ -4,16 +4,24 @@
 \alias{ZonalPol}
 \title{Zonal polynomial}
 \usage{
-ZonalPol(m, lambda, basis = "canonical")
+ZonalPol(n, lambda, algorithm = "DK", basis = "canonical",
+  exact = TRUE)
 }
 \arguments{
-\item{m}{number of variables, a positive integer}
-
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{basis}{the polynomial basis, either \code{"canonical"} or
-\code{"MSF"} (monomial symmetric functions)}
+\item{algorithm}{the algorithm used, either \code{"DK"} or \code{"naive"}}
+
+\item{basis}{the polynomial basis for \code{algorithm = "naive"},
+either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
+for \code{algorithm = "DK"} the canonical basis is always used and
+this parameter is ignored}
+
+\item{exact}{logical, whether to get rational coefficients when using
+\code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}}
+
+\item{m}{number of variables, a positive integer}
 }
 \value{
 A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
@@ -22,6 +30,6 @@ A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
 Returns the zonal polynomial.
 }
 \examples{
-ZonalPol(3, lambda = c(3,1))
-ZonalPol(3, lambda = c(3,1), basis = "MSF")
+ZonalPol(3, lambda = c(3,1), algorithm = "naive")
+ZonalPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 }

@@ -1,40 +1,38 @@
-#' Jack polynomial
-#'
-#' Returns the Jack polynomial.
-#'
-#' @param m number of variables, a positive integer
-#' @param lambda an integer partition, given as a vector of decreasing
-#' integers
-#' @param alpha parameter of the Jack polynomial,
-#' a positive \code{bigq} rational number
-#' @param basis the polynomial basis, either \code{"canonical"} or
-#' \code{"MSF"} (monomial symmetric functions)
-#'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
-#' @importFrom mvp constant mvp
-#' @export
-#'
-#' @examples JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3))
-#' JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3), basis = "MSF")
-JackPol <- function(m, lambda, alpha, basis = "canonical"){
-  stopifnot(floor(m) == m, alpha >= 0, isPartition(lambda))
+JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
+  stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  gmp <- is.bigq(alpha)
   lambda <- lambda[lambda>0]
-  if(length(lambda) > m) return(constant(0))
+  if(length(lambda) > n) return(constant(0))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
-  coefs <- JackCoefficientsQ(sum(lambda), alpha, until = lambda)
+  if(gmp){
+    coefs <- JackCoefficientsQ(sum(lambda), alpha, until = lambda)
+  }else{
+    coefs <- JackCoefficientsNum(sum(lambda), alpha, until = lambda)
+  }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
     out <- constant(0)
-    for(i in 1:ncol(mus)){
-      l <- sum(mus[,i] > 0)
-      if(l <= m){
-        toAdd <- MSFpoly(m, mus[,i])
-        if(coefs[toString(mus[,i])] != "1")
-          toAdd <- toAdd * mvp(coefs[toString(mus[,i])], 1, 1)
-        out <- out + toAdd
+    if(gmp){
+      for(i in 1L:ncol(mus)){
+        l <- sum(mus[,i] > 0L)
+        if(l <= n){
+          toAdd <- MSFpoly(n, mus[,i])
+          if(coefs[toString(mus[,i])] != "1")
+            toAdd <- toAdd * mvp(coefs[toString(mus[,i])], 1, 1)
+          out <- out + toAdd
+        }
+      }
+    }else{
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0L)
+        if(l <= n){
+          toAdd <- MSFpoly(n, mu) * coefs[toString(mu)]
+          out <- out + toAdd
+        }
       }
     }
     out
@@ -49,8 +47,8 @@ JackPol <- function(m, lambda, alpha, basis = "canonical"){
   }
 }
 
-
 JackPolDK <- function(n, lambda, alpha){
+  stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
   jac <- function(m, k, mu, nu, beta){
     if(length(nu) == 0L || nu[1L]==0 || m == 0L) return(constant(1))
     if(length(nu) > m && nu[m+1L] > 0) return(constant(0))
@@ -81,23 +79,43 @@ JackPolDK <- function(n, lambda, alpha){
   jac(n, 0L, lambda, lambda, 1)
 }
 
-#' Zonal polynomial
+#' Jack polynomial
 #'
-#' Returns the zonal polynomial.
+#' Returns the Jack polynomial.
 #'
 #' @param m number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
-#' @param basis the polynomial basis, either \code{"canonical"} or
-#' \code{"MSF"} (monomial symmetric functions)
+#' @param alpha parameter of the Jack polynomial, always a positive number
+#' for \code{algorithm = "DK"}, a positive number or a positive \code{bigq}
+#' rational number for \code{algorithm = "naive"}
+#' @param algorithm the algorithm used, either \code{"DK"} or \code{"naive"}
+#' @param basis the polynomial basis for \code{algorithm = "naive"},
+#' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
+#' for \code{algorithm = "DK"} the canonical basis is always used and
+#' this parameter is ignored
 #'
 #' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
 #' @importFrom mvp constant mvp
+#' @importFrom gmp is.bigq
 #' @export
 #'
-#' @examples ZonalPol(3, lambda = c(3,1))
-#' ZonalPol(3, lambda = c(3,1), basis = "MSF")
-ZonalPol <- function(m, lambda, basis = "canonical"){
+#' @examples JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3))
+#' JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3), basis = "MSF")
+JackPol <- function(n, lambda, alpha, algorithm = "DK", basis = "canonical"){
+  algo <- match.arg(algorithm, c("DK", "naive"))
+  if(algo == "DK"){
+    if(is.bigq(alpha)){
+      stop("Algorithm `DK` is not implemented for rational `alpha`")
+    }
+    JackPolDK(n, lambda, alpha)
+  }else{
+    JackPolNaive(n, lambda, alpha, basis)
+  }
+}
+
+
+ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(floor(m) == m, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   lambda <- lambda[lambda>0]
@@ -105,17 +123,33 @@ ZonalPol <- function(m, lambda, basis = "canonical"){
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
-  coefs <- zonalCoefficientsQ(sum(lambda), until = lambda)
+  if(exact){
+    coefs <- zonalCoefficientsQ(sum(lambda), until = lambda)
+  }else{
+    coefs <- zonalCoefficientsNum(sum(lambda), until = lambda)
+  }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
     out <- constant(0)
-    for(i in 1:ncol(mus)){
-      l <- sum(mus[,i] > 0)
-      if(l <= m){
-        toAdd <- MSFpoly(m, mus[,i])
-        if(coefs[toString(mus[,i])] != "1")
-          toAdd <- toAdd * mvp(coefs[toString(mus[,i])], 1, 1)
-        out <- out + toAdd
+    if(exact){
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0)
+        if(l <= m){
+          toAdd <- MSFpoly(m, mu)
+          if(coefs[toString(mu)] != "1")
+            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+          out <- out + toAdd
+        }
+      }
+    }else{
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0)
+        if(l <= m){
+          toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
+          out <- out + toAdd
+        }
       }
     }
     out
@@ -136,6 +170,38 @@ ZonalPolDK <- function(n, lambda){
   exp(n*log(2) + lfactorial(n) - jlambda) * jack
 }
 
+
+#' Zonal polynomial
+#'
+#' Returns the zonal polynomial.
+#'
+#' @param m number of variables, a positive integer
+#' @param lambda an integer partition, given as a vector of decreasing
+#' integers
+#' @param algorithm the algorithm used, either \code{"DK"} or \code{"naive"}
+#' @param basis the polynomial basis for \code{algorithm = "naive"},
+#' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
+#' for \code{algorithm = "DK"} the canonical basis is always used and
+#' this parameter is ignored
+#' @param exact logical, whether to get rational coefficients when using
+#' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
+#'
+#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+#' @importFrom mvp constant mvp
+#' @export
+#'
+#' @examples ZonalPol(3, lambda = c(3,1), algorithm = "naive")
+#' ZonalPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
+ZonalPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
+                     exact = TRUE){
+  algo <- match.arg(algorithm, c("DK", "naive"))
+  if(algo == "DK"){
+    ZonalPolDK(n, lambda, alpha)
+  }else{
+    ZonalPolNaive(n, lambda, basis, exact)
+  }
+}
+
 #' Schur polynomial
 #'
 #' Returns the Schur polynomial.
@@ -145,6 +211,8 @@ ZonalPolDK <- function(n, lambda){
 #' integers
 #' @param basis the polynomial basis, either \code{"canonical"} or
 #' \code{"MSF"} (monomial symmetric functions)
+#' @param exact logical, whether to use exact arithmetic to calculate the
+#' coefficients
 #'
 #' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
 #' @importFrom mvp constant mvp
@@ -152,7 +220,7 @@ ZonalPolDK <- function(n, lambda){
 #'
 #' @examples SchurPol(3, lambda = c(3,1))
 #' SchurPol(3, lambda = c(3,1), basis = "MSF")
-SchurPol <- function(m, lambda, basis = "canonical"){
+SchurPol <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(floor(m) == m, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   lambda <- lambda[lambda>0]
@@ -160,17 +228,33 @@ SchurPol <- function(m, lambda, basis = "canonical"){
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
-  coefs <- SchurCoefficientsQ(sum(lambda), until = lambda)
+  if(exact){
+    coefs <- SchurCoefficientsQ(sum(lambda), until = lambda)
+  }else{
+    coefs <- SchurCoefficientsNum(sum(lambda), until = lambda)
+  }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
     out <- constant(0)
-    for(i in 1:ncol(mus)){
-      l <- sum(mus[,i] > 0)
-      if(l <= m){
-        toAdd <- MSFpoly(m, mus[,i])
-        if(coefs[toString(mus[,i])] != "1")
-          toAdd <- toAdd * mvp(coefs[toString(mus[,i])], 1, 1)
-        out <- out + toAdd
+    if(exact){
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0L)
+        if(l <= m){
+          toAdd <- MSFpoly(m, mu)
+          if(coefs[toString(mu)] != "1")
+            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+          out <- out + toAdd
+        }
+      }
+    }else{
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0L)
+        if(l <= m){
+          toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
+          out <- out + toAdd
+        }
       }
     }
     out
@@ -223,14 +307,16 @@ SchurPolDK <- function(n, lambda){
 #' integers
 #' @param basis the polynomial basis, either \code{"canonical"} or
 #' \code{"MSF"} (monomial symmetric functions)
-#'
+#' @param exact logical, whether to use exact arithmetic to calculate the
+#' coefficients
+
 #' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
 #' @importFrom mvp constant mvp
 #' @export
 #'
 #' @examples ZonalQPol(3, lambda = c(3,1))
 #' ZonalQPol(3, lambda = c(3,1), basis = "MSF")
-ZonalQPol <- function(m, lambda, basis = "canonical"){
+ZonalQPol <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(floor(m) == m, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   lambda <- lambda[lambda>0]
@@ -238,17 +324,33 @@ ZonalQPol <- function(m, lambda, basis = "canonical"){
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
-  coefs <- zonalQCoefficientsQ(sum(lambda), until = lambda)
+  if(exact){
+    coefs <- zonalQCoefficientsQ(sum(lambda), until = lambda)
+  }else{
+    coefs <- zonalQCoefficientsNum(sum(lambda), until = lambda)
+  }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
     out <- constant(0)
-    for(i in 1:ncol(mus)){
-      l <- sum(mus[,i] > 0)
-      if(l <= m){
-        toAdd <- MSFpoly(m, mus[,i])
-        if(coefs[toString(mus[,i])] != "1")
-          toAdd <- toAdd * mvp(coefs[toString(mus[,i])], 1, 1)
-        out <- out + toAdd
+    if(exact){
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0)
+        if(l <= m){
+          toAdd <- MSFpoly(m, mu)
+          if(coefs[toString(mu)] != "1")
+            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+          out <- out + toAdd
+        }
+      }
+    }else{
+      for(i in 1L:ncol(mus)){
+        mu <- mus[,i]
+        l <- sum(mu > 0)
+        if(l <= m){
+          toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
+          out <- out + toAdd
+        }
       }
     }
     out
