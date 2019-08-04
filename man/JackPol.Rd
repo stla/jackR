@@ -7,6 +7,8 @@
 JackPol(n, lambda, alpha, algorithm = "DK", basis = "canonical")
 }
 \arguments{
+\item{n}{number of variables, a positive integer}
+
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
@@ -20,8 +22,6 @@ rational number for \code{algorithm = "naive"}}
 either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 for \code{algorithm = "DK"} the canonical basis is always used and
 this parameter is ignored}
-
-\item{m}{number of variables, a positive integer}
 }
 \value{
 A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
@@ -30,6 +30,9 @@ A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
 Returns the Jack polynomial.
 }
 \examples{
-JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3))
-JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3), basis = "MSF")
+JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3),
+                  algorithm = "naive")
+JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
+JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
+        algorithm = "naive", basis = "MSF")
 }

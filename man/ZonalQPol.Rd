@@ -4,19 +4,24 @@
 \alias{ZonalQPol}
 \title{Quaternionic zonal polynomial}
 \usage{
-ZonalQPol(m, lambda, basis = "canonical", exact = TRUE)
+ZonalQPol(n, lambda, algorithm = "DK", basis = "canonical",
+  exact = TRUE)
 }
 \arguments{
-\item{m}{number of variables, a positive integer}
+\item{n}{number of variables, a positive integer}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{basis}{the polynomial basis, either \code{"canonical"} or
-\code{"MSF"} (monomial symmetric functions)}
+\item{algorithm}{the algorithm used, either \code{"DK"} or \code{"naive"}}
 
-\item{exact}{logical, whether to use exact arithmetic to calculate the
-coefficients}
+\item{basis}{the polynomial basis for \code{algorithm = "naive"},
+either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
+for \code{algorithm = "DK"} the canonical basis is always used and
+this parameter is ignored}
+
+\item{exact}{logical, whether to get rational coefficients when using
+\code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}}
 }
 \value{
 A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
@@ -25,6 +30,7 @@ A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
 Returns the quaternionic zonal polynomial.
 }
 \examples{
-ZonalQPol(3, lambda = c(3,1))
+ZonalQPol(3, lambda = c(3,1), algorithm = "naive")
+ZonalQPol(3, lambda = c(3,1), algorithm = "DK")
 ZonalQPol(3, lambda = c(3,1), basis = "MSF")
 }

@@ -8,6 +8,8 @@ ZonalPol(n, lambda, algorithm = "DK", basis = "canonical",
   exact = TRUE)
 }
 \arguments{
+\item{n}{number of variables, a positive integer}
+
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
@@ -20,8 +22,6 @@ this parameter is ignored}
 
 \item{exact}{logical, whether to get rational coefficients when using
 \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}}
-
-\item{m}{number of variables, a positive integer}
 }
 \value{
 A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
@@ -31,5 +31,6 @@ Returns the zonal polynomial.
 }
 \examples{
 ZonalPol(3, lambda = c(3,1), algorithm = "naive")
+ZonalPol(3, lambda = c(3,1), algorithm = "DK")
 ZonalPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 }
