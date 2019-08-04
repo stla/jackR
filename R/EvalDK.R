@@ -31,7 +31,7 @@ NULL
 
 JackEvalNum <- function(x, lambda, alpha){
   jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0 || nu[1L]==0 || m == 0L) return(1)
+    if(length(nu) == 0L || nu[1L]==0 || m == 0L) return(1)
     if(length(nu) > m && nu[m+1L] > 0) return(0)
     if(m == 1L) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1)+1))
     if(k == 0L && !is.na(s <- S[.N(lambda,nu),m])) return(s)
@@ -59,7 +59,7 @@ JackEvalNum <- function(x, lambda, alpha){
 
 JackEvalQ <- function(x, lambda, alpha){
   jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0 || nu[1L]==0 || m == 0){
+    if(length(nu) == 0L || nu[1L]==0 || m == 0L){
       return(as.bigq(1L))
     }
     if(length(nu) > m && nu[m+1L] > 0) return(as.bigq(0L))
@@ -128,6 +128,7 @@ JackEval <- function(x, lambda, alpha){
   }
 }
 
+
 ZonalEvalNum <- function(x, lambda){
   jack <- JackEvalNum(x, lambda, alpha= 2)
   jlambda <- sum(logHookLengths(lambda, alpha = 2))
@@ -190,14 +191,39 @@ SchurEvalNum <- function(x, lambda){
   sch(length(x), 1L, lambda)
 }
 
-SchurEvalQ <- function(x, lambda){ # TODO: implement as SchurEvalNum
-  jack <- JackEvalQ(x, lambda, alpha = as.bigq(1L))
-  i <- rep(seq_along(lambda), times = lambda)
-  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-  lambdaPrime <- as.bigq(dualPartition(lambda))
-  lambda <- as.bigq(lambda)
-  hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1L
-  jack / prod(hookslengths)
+SchurEvalQ <- function(x, lambda){
+  # jack <- JackEvalQ(x, lambda, alpha = as.bigq(1L))
+  # i <- rep(seq_along(lambda), times = lambda)
+  # j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  # lambdaPrime <- as.bigq(dualPartition(lambda))
+  # lambda <- as.bigq(lambda)
+  # hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1L
+  # jack / prod(hookslengths)
+  sch <- function(m, k, nu){
+    if(length(nu) == 0L || nu[1L]==0 || m == 0L){
+      return(as.bigq(1L))
+    }
+    if(length(nu) > m && nu[m+1L] > 0) return(as.bigq(0L))
+    if(m == 1L) return(x[1L]^nu[1L])
+    if(!is.na(s <- S[.N(lambda,nu),m])) return(s)
+    s <- sch(m-1L, 1L, nu)
+    i <- k
+    while(length(nu) >= i && nu[i] > 0){
+      if(length(nu) == i || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1
+        if(nu[i] > 1){
+          s <- s + x[m] * sch(m, i, .nu)
+        }else{
+          s <- s + x[m] * sch(m-1L, 1L, .nu)
+        }
+      }
+      i <- i + 1L
+    }
+    if(k == 1L) S[.N(lambda,nu),m] <- s
+    return(s)
+  }
+  S <- as.bigq(matrix(NA_integer_, nrow = .N(lambda,lambda), ncol = length(x)))
+  sch(length(x), 1L, lambda)
 }
 
 SchurEval <- function(x, lambda){
@@ -209,6 +235,7 @@ SchurEval <- function(x, lambda){
     SchurEvalNum(x, lambda)
   }
 }
+
 
 ZonalQEvalNum <- function(x, lambda){
   jack <- JackEvalNum(x, lambda, alpha = 1/2)
