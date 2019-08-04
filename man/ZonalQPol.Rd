@@ -32,5 +32,5 @@ Returns the quaternionic zonal polynomial.
 \examples{
 ZonalQPol(3, lambda = c(3,1), algorithm = "naive")
 ZonalQPol(3, lambda = c(3,1), algorithm = "DK")
-ZonalQPol(3, lambda = c(3,1), basis = "MSF")
+ZonalQPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 }
