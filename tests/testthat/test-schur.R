@@ -52,3 +52,13 @@ test_that(
     expect_identical(polEval, Schur(as.bigq(x), lambda))
   }
 )
+
+test_that(
+  "Pieri rule", {
+    n <- 3
+    P1 <- SchurPol(n,c(3,2)) + 2*SchurPol(n,c(2,2,1)) + SchurPol(n,c(3,1,1)) +
+      2*SchurPol(n,c(2,1,1,1)) + SchurPol(n,c(1,1,1,1,1))
+    P2 <- ESFpoly(n, c(2,2,1))
+    expect_true(P1 == P2)
+  }
+)
