@@ -24,7 +24,7 @@ SchurCoefficientsQ <- function(n, until = NULL){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
       x <- as.bigq(0L)
-      for(i in 1L:(n-1)){
+      for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
           for(t in seq_len(lambda[j])){
             mu <- as.bigq(lambda)
@@ -90,7 +90,7 @@ SchurCoefficientsNum <- function(n, until = NULL){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
       x <- 0
-      for(i in 1L:(n-1)){
+      for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
           for(t in seq_len(lambda[j])){
             mu <- lambda

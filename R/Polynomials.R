@@ -2,7 +2,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   gmp <- is.bigq(alpha)
-  lambda <- lambda[lambda>0]
+  lambda <- lambda[lambda > 0]
   if(length(lambda) > n) return(constant(0))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -50,19 +50,20 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
 
 JackPolDK <- function(n, lambda, alpha){
   stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
+  lambda <- as.integer(lambda)
   jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0L || nu[1L]==0 || m == 0L) return(constant(1))
-    if(length(nu) > m && nu[m+1L] > 0) return(constant(0))
-    if(m == 1L) return(mvp("x_1", nu[1L], prod(alpha*seq_len(nu[1L]-1)+1)))
+    if(length(nu) == 0L || nu[1L] == 0L || m == 0L) return(constant(1))
+    if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
+    if(m == 1L) return(mvp("x_1", nu[1L], prod(alpha*seq_len(nu[1L]-1L)+1)))
     if(k == 0L && !is.na(s <- S[[.N(lambda,nu),m]])) return(s)
     i <- max(1L,k)
     s <- jac(m-1L, 0L, nu, nu, 1) * beta *
       mvp(x[m], sum(mu)-sum(nu), 1)
-    while(length(nu) >= i && nu[i] > 0){
-      if(length(nu) == i && nu[i] > 0 || nu[i] > nu[i+1L]){
-        .nu <- nu; .nu[i] <- nu[i]-1
+    while(length(nu) >= i && nu[i] > 0L){
+      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1L
         gamma <- beta * .betaratio(mu, nu, i, alpha)
-        if(nu[i] > 1){
+        if(nu[i] > 1L){
           s <- s + jac(m, i, mu, .nu, gamma)
         }else{
           s <- s + jac(m-1L, 0L, .nu, .nu, 1) * gamma *
@@ -123,7 +124,7 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
 ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(floor(m) == m, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
-  lambda <- lambda[lambda>0]
+  lambda <- lambda[lambda > 0]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -139,7 +140,7 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
     if(exact){
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
-        l <- sum(mu > 0)
+        l <- sum(mu > 0L)
         if(l <= m){
           toAdd <- MSFpoly(m, mu)
           if(coefs[toString(mu)] != "1")
@@ -150,7 +151,7 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
     }else{
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
-        l <- sum(mu > 0)
+        l <- sum(mu > 0L)
         if(l <= m){
           toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
           out <- out + toAdd
@@ -249,7 +250,7 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
     out
   }else{
     vars <- apply(mus, 2L, function(mu){
-      paste0("M_(", paste0(mu[mu>0], collapse = ","), ")")
+      paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
     })
     coefs <- coefs[coefs != "0"]
     coefs <- ifelse(coefs == "1", "", paste0(coefs, " "))
@@ -260,18 +261,18 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
 SchurPolDK <- function(n, lambda){
   stopifnot(floor(n) == n, isPartition(lambda))
   sch <- function(m, k, nu){
-    if(length(nu) == 0L || nu[1L]==0 || m == 0L){
+    if(length(nu) == 0L || nu[1L]==0L || m == 0L){
       return(constant(1))
     }
-    if(length(nu) > m && nu[m+1L] > 0) return(constant(0))
+    if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
     if(m == 1L) return(mvp(x[1L], nu[1L], 1))
     if(!is.na(s <- S[[.N(lambda,nu),m]])) return(s)
     s <- sch(m-1L, 1L, nu)
     i <- k
-    while(length(nu) >= i && nu[i] > 0){
+    while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i || nu[i] > nu[i+1L]){
-        .nu <- nu; .nu[i] <- nu[i]-1
-        if(nu[i] > 1){
+        .nu <- nu; .nu[i] <- nu[i]-1L
+        if(nu[i] > 1L){
           s <- s + mvp(x[m], 1, 1) * sch(m, i, .nu)
         }else{
           s <- s + mvp(x[m], 1, 1) * sch(m-1L, 1L, .nu)
@@ -285,7 +286,7 @@ SchurPolDK <- function(n, lambda){
   x <- paste0("x_", 1L:n)
   S <- as.list(rep(NA, .N(lambda,lambda)*n))
   dim(S) <- c(.N(lambda,lambda), n)
-  sch(n, 1L, lambda)
+  sch(n, 1L, as.integer(lambda))
 }
 
 #' Schur polynomial
