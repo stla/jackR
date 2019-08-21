@@ -36,11 +36,12 @@
 #'      alpha = gmp::as.bigq(3))
 Jack <- function(x, lambda, alpha, algorithm = "DK"){
   if(alpha == 0){
+    stopifnot(isPartition(lambda))
     lambdaPrime <- conjugate(lambda)
     if(is.bigq(x)){
-      f <- as.bigq(prod(factorialZ(lambdaPrime[lambdaPrime>0])))
+      f <- as.bigq(prod(factorialZ(lambdaPrime[lambdaPrime>0L])))
     }else{
-      f <- prod(factorial(lambdaPrime[lambdaPrime>0]))
+      f <- prod(factorial(lambdaPrime[lambdaPrime>0L]))
     }
     return(f * ESF(x, lambdaPrime))
   }

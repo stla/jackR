@@ -31,17 +31,17 @@ NULL
 
 JackEvalNum <- function(x, lambda, alpha){
   jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0L || nu[1L]==0 || m == 0L) return(1)
-    if(length(nu) > m && nu[m+1L] > 0) return(0)
-    if(m == 1L) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1)+1))
+    if(length(nu) == 0L || nu[1L]==0L || m == 0L) return(1)
+    if(length(nu) > m && nu[m+1L] > 0L) return(0)
+    if(m == 1L) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1L)+1))
     if(k == 0L && !is.na(s <- S[.N(lambda,nu),m])) return(s)
     i <- max(1L,k)
     s <- jac(m-1L, 0L, nu, nu, 1) * beta * x[m]^(sum(mu)-sum(nu))
-    while(length(nu) >= i && nu[i] > 0){
-      if(length(nu) == i && nu[i] > 0 || nu[i] > nu[i+1L]){
-        .nu <- nu; .nu[i] <- nu[i]-1
+    while(length(nu) >= i && nu[i] > 0L){
+      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1L
         gamma <- beta * .betaratio(mu, nu, i, alpha)
-        if(nu[i] > 1){
+        if(nu[i] > 1L){
           s <- s + jac(m, i, mu, .nu, gamma)
         }else{
           s <- s + jac(m-1L, 0L, .nu, .nu, 1) * gamma *
@@ -59,19 +59,19 @@ JackEvalNum <- function(x, lambda, alpha){
 
 JackEvalQ <- function(x, lambda, alpha){
   jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0L || nu[1L]==0 || m == 0L){
+    if(length(nu) == 0L || nu[1L]==0L || m == 0L){
       return(as.bigq(1L))
     }
-    if(length(nu) > m && nu[m+1L] > 0) return(as.bigq(0L))
-    if(m == 1L) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1)+1L))
+    if(length(nu) > m && nu[m+1L] > 0L) return(as.bigq(0L))
+    if(m == 1L) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1L)+1))
     if(k == 0L && !is.na(s <- S[.N(lambda,nu),m])) return(s)
     i <- max(1L,k)
     s <- jac(m-1L, 0L, nu, nu, as.bigq(1L)) * beta * x[m]^(sum(mu)-sum(nu))
-    while(length(nu) >= i && nu[i] > 0){
+    while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i|| nu[i] > nu[i+1L]){
-        .nu <- nu; .nu[i] <- nu[i]-1
+        .nu <- nu; .nu[i] <- nu[i]-1L
         gamma <- beta * .betaratio(mu, nu, i, alpha)
-        if(nu[i] > 1){
+        if(nu[i] > 1L){
           s <- s + jac(m, i, mu, .nu, gamma)
         }else{
           s <- s + jac(m-1L, 0L, .nu, .nu, as.bigq(1L)) * gamma *
@@ -119,6 +119,7 @@ JackEvalQ <- function(x, lambda, alpha){
 
 JackEval <- function(x, lambda, alpha){
   stopifnot(isPartition(lambda), alpha >= 0)
+  lambda <- as.integer(lambda)
   gmp <- is.bigq(x) || is.bigq(alpha)
   if(gmp){
     stopifnot(is.bigq(x), is.bigq(alpha))
@@ -145,6 +146,7 @@ ZonalEvalQ <- function(x, lambda){
 
 ZonalEval <- function(x, lambda){
   stopifnot(isPartition(lambda))
+  lambda <- as.integer(lambda)
   gmp <- is.bigq(x)
   if(gmp){
     ZonalEvalQ(x, lambda)
@@ -160,10 +162,10 @@ SchurEvalNum <- function(x, lambda){
   # hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
   # JackEvalNum(x, lambda, alpha = 1) / prod(hookslengths)
   sch <- function(m, k, nu){
-    if(length(nu) == 0L || nu[1L]==0 || m == 0L){
+    if(length(nu) == 0L || nu[1L]==0L || m == 0L){
       return(1)
     }
-    if(length(nu) > m && nu[m+1L] > 0) return(0)
+    if(length(nu) > m && nu[m+1L] > 0L) return(0)
     if(m == 1L) return(x[1L]^nu[1L])
     if(!is.na(s <- S[.N(lambda,nu),m])) return(s)
     s <- sch(m-1L, 1L, nu)
@@ -173,10 +175,10 @@ SchurEvalNum <- function(x, lambda){
     #   s <- s + 1 * sch(m, 1L, .nu)
     #   i <- 2L
     # }
-    while(length(nu) >= i && nu[i] > 0){
+    while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i || nu[i] > nu[i+1L]){
-        .nu <- nu; .nu[i] <- nu[i]-1
-        if(nu[i] > 1){
+        .nu <- nu; .nu[i] <- nu[i]-1L
+        if(nu[i] > 1L){
           s <- s + x[m] * sch(m, i, .nu)
         }else{
           s <- s + x[m] * sch(m-1L, 1L, .nu)
@@ -203,15 +205,15 @@ SchurEvalQ <- function(x, lambda){
     if(length(nu) == 0L || nu[1L]==0 || m == 0L){
       return(as.bigq(1L))
     }
-    if(length(nu) > m && nu[m+1L] > 0) return(as.bigq(0L))
+    if(length(nu) > m && nu[m+1L] > 0L) return(as.bigq(0L))
     if(m == 1L) return(x[1L]^nu[1L])
     if(!is.na(s <- S[.N(lambda,nu),m])) return(s)
     s <- sch(m-1L, 1L, nu)
     i <- k
-    while(length(nu) >= i && nu[i] > 0){
+    while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i || nu[i] > nu[i+1L]){
-        .nu <- nu; .nu[i] <- nu[i]-1
-        if(nu[i] > 1){
+        .nu <- nu; .nu[i] <- nu[i]-1L
+        if(nu[i] > 1L){
           s <- s + x[m] * sch(m, i, .nu)
         }else{
           s <- s + x[m] * sch(m-1L, 1L, .nu)
@@ -228,6 +230,7 @@ SchurEvalQ <- function(x, lambda){
 
 SchurEval <- function(x, lambda){
   stopifnot(isPartition(lambda))
+  lambda <- as.integer(lambda)
   gmp <- is.bigq(x)
   if(gmp){
     SchurEvalQ(x, lambda)
@@ -253,6 +256,7 @@ ZonalQEvalQ <- function(x, lambda){
 
 ZonalQEval <- function(x, lambda){
   stopifnot(isPartition(lambda))
+  lambda <- as.integer(lambda)
   gmp <- is.bigq(x)
   if(gmp){
     ZonalQEvalQ(x, lambda)

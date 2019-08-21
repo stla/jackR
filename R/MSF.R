@@ -22,7 +22,7 @@ MSF <- function(x, lambda){
   stopifnot(isPartition(lambda))
   gmp <- is.bigq(x)
   m <- length(x)
-  lambda <- lambda[lambda > 0]
+  lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(if(gmp) as.bigq(0L) else 0)
   kappa <- numeric(m)
   kappa[seq_along(lambda)] <- lambda
@@ -61,8 +61,8 @@ MSF <- function(x, lambda){
 #' @examples
 #' MSFpoly(3, c(3,1))
 MSFpoly <- function(m, lambda){
-  stopifnot(m > 0, floor(m) == m, isPartition(lambda))
-  lambda <- lambda[lambda > 0]
+  stopifnot(m > 0L, floor(m) == m, isPartition(lambda))
+  lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(mvp::constant(0))
   kappa <- numeric(m)
   kappa[seq_along(lambda)] <- lambda

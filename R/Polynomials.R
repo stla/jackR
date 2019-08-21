@@ -2,9 +2,9 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   gmp <- is.bigq(alpha)
-  lambda <- lambda[lambda > 0]
+  lambda <- lambda[lambda > 0L]
   if(length(lambda) > n) return(constant(0))
-  lambda00 <- numeric(sum(lambda))
+  lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
   if(gmp){
@@ -110,6 +110,7 @@ JackPolDK <- function(n, lambda, alpha){
 JackPol <- function(n, lambda, alpha, algorithm = "DK",
                     basis = "canonical"){
   algo <- match.arg(algorithm, c("DK", "naive"))
+  lambda <- as.integer(lambda)
   if(algo == "DK"){
     if(is.bigq(alpha)){
       stop("Algorithm `DK` is not implemented for rational `alpha`")
@@ -124,7 +125,7 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
 ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(floor(m) == m, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
-  lambda <- lambda[lambda > 0]
+  lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -161,7 +162,7 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
     out
   }else{
     vars <- apply(mus, 2L, function(mu){
-      paste0("M_(", paste0(mu[mu>0], collapse = ","), ")")
+      paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
     })
     coefs <- coefs[coefs != "0"]
     coefs <- ifelse(coefs == "1", "", paste0(coefs, " "))
@@ -201,6 +202,7 @@ ZonalPolDK <- function(n, lambda){
 ZonalPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
+  lambda <- as.integer(lambda)
   if(algo == "DK"){
     ZonalPolDK(n, lambda)
   }else{
@@ -215,7 +217,7 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
   basis <- match.arg(basis, c("canonical", "MSF"))
   lambda <- lambda[lambda>0]
   if(length(lambda) > m) return(constant(0))
-  lambda00 <- numeric(sum(lambda))
+  lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
   if(exact){
@@ -314,6 +316,7 @@ SchurPolDK <- function(n, lambda){
 SchurPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
+  lambda <- as.integer(lambda)
   if(algo == "DK"){
     SchurPolDK(n, lambda)
   }else{
@@ -325,7 +328,7 @@ SchurPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
 ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(floor(m) == m, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
-  lambda <- lambda[lambda>0]
+  lambda <- lambda[lambda>0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -341,7 +344,7 @@ ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
     if(exact){
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
-        l <- sum(mu > 0)
+        l <- sum(mu > 0L)
         if(l <= m){
           toAdd <- MSFpoly(m, mu)
           if(coefs[toString(mu)] != "1")
@@ -402,6 +405,7 @@ ZonalQPolDK <- function(n, lambda){
 ZonalQPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
+  lambda <- as.integer(lambda)
   if(algo == "DK"){
     ZonalQPolDK(n, lambda)
   }else{
