@@ -1,5 +1,5 @@
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
-  stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
+  stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   gmp <- is.bigq(alpha)
   lambda <- lambda[lambda > 0L]
@@ -49,8 +49,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
 }
 
 JackPolDK <- function(n, lambda, alpha){
-  stopifnot(floor(n) == n, alpha >= 0, isPartition(lambda))
-  lambda <- as.integer(lambda)
+  stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   jac <- function(m, k, mu, nu, beta){
     if(length(nu) == 0L || nu[1L] == 0L || m == 0L) return(constant(1))
     if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
@@ -123,7 +122,7 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
 
 
 ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
-  stopifnot(floor(m) == m, isPartition(lambda))
+  stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
@@ -170,8 +169,8 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   }
 }
 
-ZonalPolDK <- function(n, lambda){
-  jack <- JackPolDK(n, lambda, alpha= 2)
+ZonalPolDK <- function(m, lambda){
+  jack <- JackPolDK(m, lambda, alpha= 2)
   jlambda <- sum(logHookLengths(lambda, alpha = 2))
   n <- sum(lambda)
   exp(n*log(2) + lfactorial(n) - jlambda) * jack
@@ -213,9 +212,9 @@ ZonalPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
 
 SchurPolNaive <- function(m, lambda, basis = "canonical",
                           exact = TRUE){
-  stopifnot(floor(m) == m, isPartition(lambda))
+  stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
-  lambda <- lambda[lambda>0]
+  lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -261,7 +260,7 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
 }
 
 SchurPolDK <- function(n, lambda){
-  stopifnot(floor(n) == n, isPartition(lambda))
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){
     if(length(nu) == 0L || nu[1L]==0L || m == 0L){
       return(constant(1))
@@ -326,9 +325,9 @@ SchurPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
 
 
 ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
-  stopifnot(floor(m) == m, isPartition(lambda))
+  stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
-  lambda <- lambda[lambda>0L]
+  lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -373,8 +372,8 @@ ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   }
 }
 
-ZonalQPolDK <- function(n, lambda){
-  jack <- JackPolDK(n, lambda, alpha= 1/2)
+ZonalQPolDK <- function(m, lambda){
+  jack <- JackPolDK(m, lambda, alpha= 1/2)
   jlambda <- sum(logHookLengths(lambda, alpha = 1/2))
   n <- sum(lambda)
   exp(-n*log(2) + lfactorial(n) - jlambda) * jack

@@ -3,6 +3,7 @@
 NULL
 
 JackCoefficientsQ <- function(n, alpha, until = NULL){
+  stopifnot(n > 0L, isPositiveInteger(n))
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
@@ -24,7 +25,7 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
       x <- as.bigq(0L)
-      for(i in 1L:(n-1)){
+      for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
           for(t in seq_len(lambda[j])){
             mu <- as.bigq(lambda)
@@ -66,6 +67,7 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
 }
 
 JackCoefficientsNum <- function(n, alpha, until = NULL){
+  stopifnot(n > 0L, isPositiveInteger(n))
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
@@ -85,7 +87,7 @@ JackCoefficientsNum <- function(n, alpha, until = NULL){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
       x <- 0
-      for(i in 1L:(n-1)){
+      for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
           for(t in seq_len(lambda[j])){
             mu <- lambda

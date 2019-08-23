@@ -3,7 +3,7 @@
 NULL
 
 zonalQCoefficientsQ <- function(n, until = NULL){
-  stopifnot(n > 0, floor(n) == n)
+  stopifnot(n > 0L, isPositiveInteger(n))
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
@@ -25,7 +25,7 @@ zonalQCoefficientsQ <- function(n, until = NULL){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
       x <- as.bigq(0L)
-      for(i in 1L:(n-1)){
+      for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
           for(t in seq_len(lambda[j])){
             mu <- as.bigq(lambda)
@@ -54,7 +54,7 @@ zonalQCoefficientsQ <- function(n, until = NULL){
 }
 
 zonalQCoefficientsNum <- function(n, until = NULL){
-  stopifnot(n > 0, floor(n) == n)
+  stopifnot(n > 0L, isPositiveInteger(n))
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
@@ -74,7 +74,7 @@ zonalQCoefficientsNum <- function(n, until = NULL){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
       x <- 0
-      for(i in 1L:(n-1)){
+      for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
           for(t in seq_len(lambda[j])){
             mu <- lambda

@@ -2,6 +2,10 @@
 #' @importFrom gmp as.bigq is.bigq
 NULL
 
+isPositiveInteger <- function(n){
+  floor(n) == n
+}
+
 isPartition <- function(lambda){
   all(floor(lambda) == lambda) && all(diff(lambda) <= 0)
 }

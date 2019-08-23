@@ -61,7 +61,7 @@ MSF <- function(x, lambda){
 #' @examples
 #' MSFpoly(3, c(3,1))
 MSFpoly <- function(m, lambda){
-  stopifnot(m > 0L, floor(m) == m, isPartition(lambda))
+  stopifnot(m > 0L, isPositiveInteger(m), isPartition(lambda))
   lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(mvp::constant(0))
   kappa <- numeric(m)

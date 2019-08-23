@@ -14,7 +14,7 @@
 #' @examples
 #' ESFpoly(3, c(3,1))
 ESFpoly <- function(m, lambda){
-  stopifnot(m > 0, floor(m) == m, isPartition(lambda))
+  stopifnot(m > 0, isPositiveInteger(m), isPartition(lambda))
   lambda <- lambda[lambda>0]
   if(any(lambda > m)) return(mvp::constant(0))
   vars <- paste0("x_", 1L:m)

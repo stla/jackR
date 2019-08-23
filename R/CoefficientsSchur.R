@@ -3,6 +3,7 @@
 NULL
 
 SchurCoefficientsQ <- function(n, until = NULL){
+  stopifnot(n > 0L, isPositiveInteger(n))
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
@@ -71,6 +72,7 @@ SchurCoefficientsQ <- function(n, until = NULL){
 }
 
 SchurCoefficientsNum <- function(n, until = NULL){
+  stopifnot(n > 0L, isPositiveInteger(n))
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
