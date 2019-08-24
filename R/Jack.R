@@ -1,6 +1,6 @@
 #' Evaluation of Jack polynomials
 #'
-#' Evaluates the Jack polynomials.
+#' Evaluates a Jack polynomial.
 #'
 #' @param x numeric vector or \link[gmp]{bigq} vector
 #' @param lambda an integer partition, given as a vector of decreasing

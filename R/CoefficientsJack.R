@@ -46,13 +46,6 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
       coefs[indices[m+1L,m+1L]] <- as.bigq(1L)
     }
   }
-  # coefs <- matrix(coefs, nrow = lastRow, ncol = nParts)
-  # lastColumn <- coefs[, nParts]
-  # facto <- as.bigq(factorialZ(n))
-  # for(i in 1L:lastRow){
-  #   f <- facto / lastColumn[i]
-  #   coefs[i,-nParts] <- f * coefs[i,-nParts]
-  # }
   lastColumn <- coefs[indices[, nParts]]
   facto <- as.bigq(factorialZ(n))
   for(i in 1L:lastRow){

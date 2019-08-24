@@ -1,6 +1,6 @@
 #' Evaluation of Schur polynomials
 #'
-#' Evaluates the Schur polynomials.
+#' Evaluates a Schur polynomial.
 #'
 #' @param x numeric vector or \link[gmp]{bigq} vector
 #' @param lambda an integer partition, given as a vector of decreasing

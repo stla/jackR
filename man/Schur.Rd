@@ -19,7 +19,7 @@ or \code{"naive"}}
 A number or a \code{bigq} rational number.
 }
 \description{
-Evaluates the Schur polynomials.
+Evaluates a Schur polynomial.
 }
 \examples{
 x <- c(2,3,4)

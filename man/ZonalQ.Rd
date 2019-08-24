@@ -19,7 +19,7 @@ or \code{"naive"}}
 A number or a \code{bigq} rational number.
 }
 \description{
-Evaluates the quaternionic zonal polynomials.
+Evaluates a quaternionic zonal polynomial.
 }
 \examples{
 lambda <- c(2,2)

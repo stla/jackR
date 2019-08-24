@@ -1,5 +1,6 @@
 #' @importFrom partitions conjugate parts
 #' @importFrom gmp as.bigq is.bigq
+#' @importFrom utils tail
 NULL
 
 isPositiveInteger <- function(n){
@@ -32,6 +33,7 @@ hookLengths_gmp <- function(lambda, alpha){
   lowerHL <- lambdaPrime[j] - i + 1L + alpha*(lambda[i] - j)
   c(upperHL, lowerHL)
 }
+
 .Blog <- function(nu, lambda, mu, alpha){
   if(all(nu == 0L)) return(0)
   i <- rep(seq_along(nu), times = nu)
@@ -96,7 +98,6 @@ hookLengths_gmp <- function(lambda, alpha){
   if(all(lambda == mu)) return(as.bigq(1L))
   .B_gmp(lambda, lambda, mu, alpha) / .B_gmp(mu, lambda, mu, alpha)
 }
-
 
 .N <- function(lambda, mu){
   n <- length(lambda)

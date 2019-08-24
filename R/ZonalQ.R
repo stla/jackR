@@ -1,6 +1,6 @@
 #' Evaluation of quaternionic zonal polynomials
 #'
-#' Evaluates the quaternionic zonal polynomials.
+#' Evaluates a quaternionic zonal polynomial.
 #'
 #' @param x numeric vector or \link[gmp]{bigq} vector
 #' @param lambda an integer partition, given as a vector of decreasing

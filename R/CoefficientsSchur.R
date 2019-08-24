@@ -113,17 +113,6 @@ SchurCoefficientsNum <- function(n, until = NULL){
       coefs[m+1L,m+1L] <- 1
     }
   }
-  # lastColumn <- coefs[, nParts]
-  # facto <- factorial(n)
-  # for(k in 1L:lastRow){
-  #   lambda <- allParts[,k]
-  #   i <- rep(seq_along(lambda), times = lambda)
-  #   j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-  #   lambdaPrime <- dualPartition(lambda)
-  #   hookslengths <- lambdaPrime[j] - i + lambda[i] - j + 1
-  #   f <- facto / lastColumn[k]
-  #   coefs[k,] <- f * coefs[k,] / prod(hookslengths)
-  # }
   coefs
 }
 

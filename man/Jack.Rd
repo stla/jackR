@@ -21,7 +21,7 @@ or \code{"naive"}}
 A numeric scalar or a \code{bigq} rational number.
 }
 \description{
-Evaluates the Jack polynomials.
+Evaluates a Jack polynomial.
 }
 \examples{
 lambda <- c(2,1,1)
