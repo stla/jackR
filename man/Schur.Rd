@@ -26,6 +26,11 @@ x <- c(2,3,4)
 Schur(x, c(2,1,1))
 prod(x) * sum(x)
 }
+\references{
+J. Demmel & P. Koev.
+\emph{Accurate and efficient evaluation of Schur and Jack functions}.
+Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
+}
 \seealso{
 \code{\link{SchurPol}}
 }
