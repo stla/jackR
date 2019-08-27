@@ -1,6 +1,13 @@
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  if(length(lambda) == 0L){
+    if(basis == "canonical"){
+      return(constant(1))
+    }else{
+      return("M_()")
+    }
+  }
   gmp <- is.bigq(alpha)
   lambda <- lambda[lambda > 0L]
   if(length(lambda) > n) return(constant(0))
@@ -124,6 +131,13 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
 ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  if(length(lambda) == 0L){
+    if(basis == "canonical"){
+      return(constant(1))
+    }else{
+      return("M_()")
+    }
+  }
   lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- numeric(sum(lambda))
@@ -214,6 +228,13 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
                           exact = TRUE){
   stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  if(length(lambda) == 0L){
+    if(basis == "canonical"){
+      return(constant(1))
+    }else{
+      return("M_()")
+    }
+  }
   lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- integer(sum(lambda))
@@ -327,6 +348,13 @@ SchurPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
 ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  if(length(lambda) == 0L){
+    if(basis == "canonical"){
+      return(constant(1))
+    }else{
+      return("M_()")
+    }
+  }
   lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(constant(0))
   lambda00 <- numeric(sum(lambda))
