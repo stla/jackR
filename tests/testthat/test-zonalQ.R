@@ -1,4 +1,11 @@
 test_that(
+  "An example of the quaternionic zonal polynomial", {
+    poly <- ZonalQPol(3, c(2,1), algo = "naive", basis = "MSF")
+    expect_identical(poly, "3/2 M_(2,1) + 18/5 M_(1,1,1)")
+  }
+)
+
+test_that(
   "Quaternionic zonal polynomials sum to the trace - gmp", {
     x <- as.bigq(c(1L,2L,4L,7L), c(2L,3L,1L,2L))
     expected <- sum(x)^3
