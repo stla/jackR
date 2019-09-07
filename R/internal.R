@@ -108,9 +108,8 @@ hookLengths_gmp <- function(lambda, alpha){
 #####
 isDominated <- function(mu, lambda){
   n <- sum(lambda)
-  l <- length(lambda)
-  lambda <- lambda[seq_len(match(0L, lambda, nomatch = l+1L)-1L)]
-  lambda <- c(lambda, rep(0L, n-l))
+  lambda <- lambda[seq_len(match(0L, lambda, nomatch = length(lambda)+1L)-1L)]
+  lambda <- c(lambda, rep(0L, n-length(lambda)))
   mu <- mu[seq_len(match(0L, mu, nomatch = length(mu)+1L)-1L)]
   for(i in seq_along(mu)){
     if(sum(mu[1L:i]) > sum(lambda[1L:i])){
