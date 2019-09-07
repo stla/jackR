@@ -7,7 +7,7 @@
 Schur(x, lambda, algorithm = "DK")
 }
 \arguments{
-\item{x}{numeric vector or \link[gmp]{bigq} vector}
+\item{x}{numeric or complex vector or \link[gmp]{bigq} vector}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
@@ -16,7 +16,7 @@ integers}
 or \code{"naive"}}
 }
 \value{
-A number or a \code{bigq} rational number.
+A numeric or complex scalar or a \code{bigq} rational number.
 }
 \description{
 Evaluates a Schur polynomial.

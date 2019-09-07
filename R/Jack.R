@@ -2,17 +2,17 @@
 #'
 #' Evaluates a Jack polynomial.
 #'
-#' @param x numeric vector or \link[gmp]{bigq} vector
+#' @param x numeric or complex vector or \link[gmp]{bigq} vector
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
 #' @param alpha positive number or \code{bigq} rational number
 #' @param algorithm the algorithm used, either \code{"DK"} (Demmel-Koev)
 #' or \code{"naive"}
 #'
-#' @return A numeric scalar or a \code{bigq} rational number.
+#' @return A numeric or complex scalar or a \code{bigq} rational number.
 #' @export
 #' @importFrom partitions conjugate
-#' @importFrom gmp factorialZ is.bigq
+#' @importFrom gmp factorialZ is.bigq as.bigq
 #'
 #' @seealso \code{\link{JackPol}}
 #'
@@ -37,8 +37,16 @@
 Jack <- function(x, lambda, alpha, algorithm = "DK"){
   if(alpha == 0){
     stopifnot(isPartition(lambda))
+    gmp <- is.bigq(x)
+    if(length(lambda) == 0L){
+      if(gmp){
+        return(as.bigq(1L))
+      }else{
+        return(1)
+      }
+    }
     lambdaPrime <- conjugate(lambda)
-    if(is.bigq(x)){
+    if(gmp){
       f <- as.bigq(prod(factorialZ(lambdaPrime[lambdaPrime>0L])))
     }else{
       f <- prod(factorial(lambdaPrime[lambdaPrime>0L]))

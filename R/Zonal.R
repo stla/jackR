@@ -2,13 +2,13 @@
 #'
 #' Evaluates a zonal polynomial.
 #'
-#' @param x numeric vector or \link[gmp]{bigq} vector
+#' @param x numeric or complex vector or \link[gmp]{bigq} vector
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
 #' @param algorithm the algorithm used, either \code{"DK"} (Demmel-Koev)
 #' or \code{"naive"}
 #'
-#' @return A number or a \code{bigq} rational number.
+#' @return A numeric or complex scalar or a \code{bigq} rational number.
 #' @export
 #'
 #' @seealso \code{\link{ZonalPol}}

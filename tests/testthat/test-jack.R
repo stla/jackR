@@ -1,4 +1,32 @@
 test_that(
+  "Jack - empty partition", {
+    # numeric
+    expect_equal(Jack(c(1,2), NULL, 2), 1)
+    expect_equal(Jack(c(1,2), c(), 2), 1)
+    expect_equal(Jack(c(1,2), c(0,0), 2), 1)
+    expect_equal(Jack(c(1,2), NULL, 2, algorithm = "naive"), 1)
+    expect_equal(Jack(c(1,2), c(), 2, algorithm = "naive"), 1)
+    expect_equal(Jack(c(1,2), c(0,0), 2, algorithm = "naive"), 1)
+    # gmp
+    x <- as.bigq(1L, 2L)
+    alpha <- as.bigq(3)
+    expect_identical(Jack(x, NULL, alpha), as.bigq(1L))
+    expect_identical(Jack(x, c(), alpha), as.bigq(1L))
+    expect_identical(Jack(x, c(0,0), alpha), as.bigq(1L))
+    expect_identical(Jack(x, NULL, alpha, algorithm = "naive"), as.bigq(1L))
+    expect_identical(Jack(x, c(), alpha, algorithm = "naive"), as.bigq(1L))
+    expect_identical(Jack(x, c(0,0), alpha, algorithm = "naive"), as.bigq(1L))
+    # polynomial
+    P <- JackPol(3, lambda = NULL, alpha = 4)
+    expect_identical(P, mvp::constant(1))
+    P <- JackPol(3, lambda = c(), alpha = 4)
+    expect_identical(P, mvp::constant(1))
+    P <- JackPol(3, lambda = c(0,0), alpha = 4)
+    expect_identical(P, mvp::constant(1))
+  }
+)
+
+test_that(
   "Jack (3,1) - gmp", {
     alpha <- as.bigq(5L,2L)
     x <- as.bigq(2L:5L)

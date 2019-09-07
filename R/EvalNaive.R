@@ -4,8 +4,10 @@ NULL
 JackEvalNaive <- function(x, lambda, alpha){
   stopifnot(isPartition(lambda), alpha >= 0)
   gmp <- is.bigq(x)
-  if(length(lambda) == 0L) return(if(gmp) as.bigq(1L) else 1)
   lambda <- as.integer(lambda)
+  if(length(lambda) == 0L || all(lambda == 0L)){
+    return(if(gmp) as.bigq(1L) else 1)
+  }
   if(gmp){
     stopifnot(is.bigq(x), is.bigq(alpha))
   }
@@ -31,8 +33,10 @@ JackEvalNaive <- function(x, lambda, alpha){
 ZonalEvalNaive <- function(x, lambda){
   stopifnot(isPartition(lambda))
   gmp <- is.bigq(x)
-  if(length(lambda) == 0L) return(if(gmp) as.bigq(1L) else 1)
   lambda <- as.integer(lambda)
+  if(length(lambda) == 0L || all(lambda == 0L)){
+    return(if(gmp) as.bigq(1L) else 1)
+  }
   mus <- dominatedPartitions(lambda)
   lambda <- mus[,1L] # to add trailing zeros
   coefs <- zonalCoefficients(sum(lambda), until = lambda, exact = gmp)
@@ -55,8 +59,10 @@ ZonalEvalNaive <- function(x, lambda){
 SchurEvalNaive <- function(x, lambda){
   stopifnot(isPartition(lambda))
   gmp <- is.bigq(x)
-  if(length(lambda) == 0L) return(if(gmp) as.bigq(1L) else 1)
   lambda <- as.integer(lambda)
+  if(length(lambda) == 0L || all(lambda == 0L)){
+    return(if(gmp) as.bigq(1L) else 1)
+  }
   mus <- dominatedPartitions(lambda)
   lambda <- mus[,1L] # to add trailing zeros
   coefs <- SchurCoefficients(sum(lambda), until = lambda, exact = gmp)
@@ -79,8 +85,10 @@ SchurEvalNaive <- function(x, lambda){
 ZonalQEvalNaive <- function(x, lambda){
   stopifnot(isPartition(lambda))
   gmp <- is.bigq(x)
-  if(length(lambda) == 0L) return(if(gmp) as.bigq(1L) else 1)
   lambda <- as.integer(lambda)
+  if(length(lambda) == 0L || all(lambda == 0L)){
+    return(if(gmp) as.bigq(1L) else 1)
+  }
   mus <- dominatedPartitions(lambda)
   lambda <- mus[,1L] # to add trailing zeros
   coefs <- zonalQCoefficients(sum(lambda), until = lambda, exact = gmp)
