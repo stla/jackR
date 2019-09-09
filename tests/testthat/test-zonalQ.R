@@ -1,4 +1,17 @@
 test_that(
+  "ZonalQ with lambda = (4)", {
+    # gmp
+    obtained <- ZonalQPol(4, c(4), algo="naive", basis="MSF")
+    expected <- "M_(4) + 8/5 M_(3,1) + 9/5 M_(2,2) + 12/5 M_(2,1,1) + 16/5 M_(1,1,1,1)"
+    expect_identical(obtained, expected)
+    # numeric
+    obtained <- ZonalQPol(4, c(4), algo="naive", basis="MSF", exact = FALSE)
+    expected <- "M_(4) + 1.6 M_(3,1) + 1.8 M_(2,2) + 2.4 M_(2,1,1) + 3.2 M_(1,1,1,1)"
+    expect_identical(obtained, expected)
+  }
+)
+
+test_that(
   "An example of the quaternionic zonal polynomial", {
     poly <- ZonalQPol(3, c(2,1), algo = "naive", basis = "MSF")
     expect_identical(poly, "3/2 M_(2,1) + 18/5 M_(1,1,1)")

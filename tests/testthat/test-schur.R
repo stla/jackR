@@ -3,7 +3,6 @@ test_that(
     # numeric
     expect_equal(Schur(c(1,2), c(3,2,1)), 0)
     expect_equal(Schur(c(1,2), c(3,2,1), algorithm = "naive"), 0)
-    expect_equal(Schur(c(1,2), c(3,2,1), algorithm = "naive"), 0)
     # gmp
     x <- as.bigq(c(1L,2L))
     lambda <- c(3,2,1)
@@ -23,8 +22,8 @@ test_that(
     expect_identical(SchurPol(n, lambda, exact = FALSE, algorithm = "naive",
                              basis = "MSF"),
                      mvp::constant(0))
-
-  })
+  }
+)
 
 
 test_that(

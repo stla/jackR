@@ -1,4 +1,31 @@
 test_that(
+  "Zonal = 0 if l(lambda)>l(x)", {
+    # numeric
+    expect_equal(Zonal(c(1,2), c(3,2,1)), 0)
+    expect_equal(Zonal(c(1,2), c(3,2,1), algorithm = "naive"), 0)
+    # gmp
+    x <- as.bigq(c(1L,2L))
+    lambda <- c(3,2,1)
+    expect_identical(Zonal(x, lambda), as.bigq(0L))
+    expect_identical(Zonal(x, lambda, algorithm = "naive"), as.bigq(0L))
+    # polynomial
+    n <- 2
+    lambda <- c(3,2,1)
+    expect_identical(ZonalPol(n, lambda), mvp::constant(0))
+    expect_identical(ZonalPol(n, lambda, algorithm = "naive"),
+                     mvp::constant(0))
+    expect_identical(ZonalPol(n, lambda, exact = FALSE, algorithm = "naive"),
+                     mvp::constant(0))
+    expect_identical(ZonalPol(n, lambda, algorithm = "naive", basis = "MSF"),
+                     mvp::constant(0))
+    expect_identical(ZonalPol(n, lambda, exact = FALSE, algorithm = "naive",
+                              basis = "MSF"),
+                     mvp::constant(0))
+  }
+)
+
+
+test_that(
   "Zonal polynomials sum to the trace - gmp", {
     x <- as.bigq(c(1L,2L,4L,7L), c(2L,3L,1L,2L))
     expected <- sum(x)^3

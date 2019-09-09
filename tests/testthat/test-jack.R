@@ -28,8 +28,8 @@ test_that(
   expect_identical(JackPol(n, lambda, alpha = as.bigq(4L), algorithm = "naive",
                            basis = "MSF"),
                    mvp::constant(0))
-
-})
+  }
+)
 
 test_that(
   "Jack - empty partition", {
