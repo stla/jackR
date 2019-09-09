@@ -38,7 +38,7 @@ Jack <- function(x, lambda, alpha, algorithm = "DK"){
   if(alpha == 0){
     stopifnot(isPartition(lambda))
     gmp <- is.bigq(x)
-    if(length(lambda) == 0L){
+    if(length(lambda) == 0L || all(lambda == 0L)){
       if(gmp){
         return(as.bigq(1L))
       }else{
