@@ -24,10 +24,11 @@ this parameter is ignored}
 \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}}
 }
 \value{
-A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+character string if \code{basis = "MSF"}.
 }
 \description{
-Returns the quaternionic zonal polynomial.
+Returns the quaternionic (or symplectic) zonal polynomial.
 }
 \examples{
 ZonalQPol(3, lambda = c(3,1), algorithm = "naive")

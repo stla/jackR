@@ -1,4 +1,37 @@
 test_that(
+  "Jack = 0 if l(lambda)>l(x)", {
+  # numeric
+  expect_equal(Jack(c(1,2), c(3,2,1), 2), 0)
+  expect_equal(Jack(c(1,2), c(3,2,1), 0), 0)
+  expect_equal(Jack(c(1,2), c(3,2,1), 2, algorithm = "naive"), 0)
+  expect_equal(Jack(c(1,2), c(3,2,1), 0, algorithm = "naive"), 0)
+  # gmp
+  x <- as.bigq(c(1L,2L))
+  lambda <- c(3,2,1)
+  alpha <- as.bigq(4L)
+  expect_identical(Jack(x, lambda, alpha), as.bigq(0L))
+  expect_identical(Jack(x, lambda, as.bigq(0L)), as.bigq(0L))
+  expect_identical(Jack(x, lambda, alpha, algorithm = "naive"), as.bigq(0L))
+  expect_identical(Jack(x, lambda, as.bigq(0L), algorithm = "naive"), as.bigq(0L))
+  # polynomial
+  n <- 2
+  lambda <- c(3,2,1)
+  expect_identical(JackPol(n, lambda, alpha = 4), mvp::constant(0))
+  expect_identical(JackPol(n, lambda, alpha = 0), mvp::constant(0))
+  expect_identical(JackPol(n, lambda, alpha = 4, algorithm = "naive"),
+                   mvp::constant(0))
+  expect_identical(JackPol(n, lambda, alpha = as.bigq(4L), algorithm = "naive"),
+                   mvp::constant(0))
+  expect_identical(JackPol(n, lambda, alpha = 4, algorithm = "naive",
+                           basis = "MSF"),
+                   mvp::constant(0))
+  expect_identical(JackPol(n, lambda, alpha = as.bigq(4L), algorithm = "naive",
+                           basis = "MSF"),
+                   mvp::constant(0))
+
+})
+
+test_that(
   "Jack - empty partition", {
     # numeric
     expect_equal(Jack(c(1,2), NULL, 2), 1)

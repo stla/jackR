@@ -103,7 +103,8 @@ JackPolDK <- function(n, lambda, alpha){
 #' for \code{algorithm = "DK"} the canonical basis is always used and
 #' this parameter is ignored
 #'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+#' character string if \code{basis = "MSF"}.
 #' @importFrom mvp constant mvp
 #' @importFrom gmp is.bigq
 #' @export
@@ -205,7 +206,8 @@ ZonalPolDK <- function(m, lambda){
 #' @param exact logical, whether to get rational coefficients when using
 #' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
 #'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+#' character string if \code{basis = "MSF"}.
 #' @importFrom mvp constant mvp
 #' @export
 #'
@@ -326,7 +328,8 @@ SchurPolDK <- function(n, lambda){
 #' @param exact logical, whether to get rational coefficients when using
 #' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
 #'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+#' character string if \code{basis = "MSF"}.
 #' @importFrom mvp constant mvp
 #' @export
 #'
@@ -409,7 +412,7 @@ ZonalQPolDK <- function(m, lambda){
 
 #' Quaternionic zonal polynomial
 #'
-#' Returns the quaternionic zonal polynomial.
+#' Returns the quaternionic (or symplectic) zonal polynomial.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -422,7 +425,8 @@ ZonalQPolDK <- function(m, lambda){
 #' @param exact logical, whether to get rational coefficients when using
 #' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
 
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+#' character string if \code{basis = "MSF"}.
 #' @importFrom mvp constant mvp
 #' @export
 #'

@@ -24,7 +24,8 @@ this parameter is ignored}
 \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}}
 }
 \value{
-A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+character string if \code{basis = "MSF"}.
 }
 \description{
 Returns the Schur polynomial.

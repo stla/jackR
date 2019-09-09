@@ -1,4 +1,33 @@
 test_that(
+  "Schur = 0 if l(lambda)>l(x)", {
+    # numeric
+    expect_equal(Schur(c(1,2), c(3,2,1)), 0)
+    expect_equal(Schur(c(1,2), c(3,2,1), algorithm = "naive"), 0)
+    expect_equal(Schur(c(1,2), c(3,2,1), algorithm = "naive"), 0)
+    # gmp
+    x <- as.bigq(c(1L,2L))
+    lambda <- c(3,2,1)
+    expect_identical(Schur(x, lambda), as.bigq(0L))
+    expect_identical(Schur(x, lambda, algorithm = "naive"), as.bigq(0L))
+    # polynomial
+    n <- 2
+    lambda <- c(3,2,1)
+    expect_identical(SchurPol(n, lambda), mvp::constant(0))
+    expect_identical(SchurPol(n, lambda, algorithm = "naive"),
+                     mvp::constant(0))
+    expect_identical(SchurPol(n, lambda, exact = FALSE, algorithm = "naive"),
+                     mvp::constant(0))
+    expect_identical(SchurPol(n, lambda, algorithm = "naive",
+                             basis = "MSF"),
+                     mvp::constant(0))
+    expect_identical(SchurPol(n, lambda, exact = FALSE, algorithm = "naive",
+                             basis = "MSF"),
+                     mvp::constant(0))
+
+  })
+
+
+test_that(
   "Schur (3,2) - gmp", {
     x <- as.bigq(3L:5L, c(10L,2L,1L))
     expected <- x[1]^3*x[2]^2 + x[1]^3*x[3]^2 + x[1]^3*x[2]*x[3] +

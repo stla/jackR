@@ -24,7 +24,8 @@ for \code{algorithm = "DK"} the canonical basis is always used and
 this parameter is ignored}
 }
 \value{
-A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
+A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
+character string if \code{basis = "MSF"}.
 }
 \description{
 Returns the Jack polynomial.
