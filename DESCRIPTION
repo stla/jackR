@@ -1,7 +1,7 @@
 Package: jack
 Type: Package
 Title: Jack, Zonal, and Schur Polynomials
-Version: 1.1.0
+Version: 1.1.0.9000
 Date: 2019-09-09
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
