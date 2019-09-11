@@ -1,4 +1,27 @@
 test_that(
+  # https://math.stackexchange.com/questions/3335885/expansion-of-sum-x-in-in-schur-polynomials
+  "Schur expansion of (sum x_i)^n", {
+    # numeric
+    x <- c(3,4,5,6)
+    e <- Schur(x, c(4)) + 3*Schur(x, c(3,1)) + 2*Schur(x, c(2,2)) +
+      3*Schur(x, c(2,1,1)) + Schur(x, c(1,1,1,1))
+    expect_equal(e, sum(x)^4)
+    # gmp
+    x <- as.bigq(c(3L,4L,5L,6L), c(4L,5L,6L,7L))
+    e <- Schur(x, c(4)) + 3L*Schur(x, c(3,1)) + 2L*Schur(x, c(2,2)) +
+      3L*Schur(x, c(2,1,1)) + Schur(x, c(1,1,1,1))
+    expect_identical(e, sum(x)^4)
+    # polynomial
+    n <- 4
+    P <- SchurPol(n, c(4)) + 3*SchurPol(n, c(3,1)) + 2*SchurPol(n, c(2,2)) +
+      3*SchurPol(n, c(2,1,1)) + SchurPol(n, c(1,1,1,1))
+    Q <- (mvp("x_1", 1, 1) + mvp("x_2", 1, 1) + mvp("x_3", 1, 1) +
+            mvp("x_4", 1, 1)) ^ 4
+    expect_identical(P,Q)
+  }
+)
+
+test_that(
   "Schur = 0 if l(lambda)>l(x)", {
     # numeric
     expect_equal(Schur(c(1,2), c(3,2,1)), 0)
