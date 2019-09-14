@@ -4,7 +4,7 @@
 NULL
 
 isPositiveInteger <- function(n){
-  floor(n) == n
+  is.vector(n) && is.numeric(n) && length(n) == 1L && floor(n) == n
 }
 
 isPartition <- function(lambda){
