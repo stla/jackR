@@ -2,7 +2,7 @@ Package: jack
 Type: Package
 Title: Jack, Zonal, and Schur Polynomials
 Version: 1.1.0.9000
-Date: 2019-09-09
+Date: 2019-09-14
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials, zonal polynomials, and Schur polynomials. Mainly based on Demmel & Koev's paper (2006) <doi:10.1090/S0025-5718-05-01780-1>. Zonal polynomials and Schur polynomials are particular cases of Jack polynomials. Zonal polynomials appear in random matrix theory. Schur polynomials appear in the field of combinatorics.

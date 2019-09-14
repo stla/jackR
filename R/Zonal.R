@@ -36,6 +36,10 @@
 #' Zonal(x, 3) + Zonal(x, c(2,1)) + Zonal(x, c(1,1,1)) # sum(x)^3
 Zonal <- function(x, lambda, algorithm = "DK"){
   algorithm <- match.arg(algorithm, c("DK", "naive"))
+  stopifnot(
+    is.vector(x) || is.bigq(x),
+    is.numeric(x) || is.complex(x) || is.bigq(x)
+  )
   if(algorithm == "DK"){
     ZonalEval(x, lambda)
   }else{

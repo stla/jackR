@@ -117,6 +117,10 @@ JackPolDK <- function(n, lambda, alpha){
 JackPol <- function(n, lambda, alpha, algorithm = "DK",
                     basis = "canonical"){
   algo <- match.arg(algorithm, c("DK", "naive"))
+  stopifnot(
+    is.numeric(alpha) || is.bigq(alpha),
+    length(alpha) == 1L
+  )
   lambda <- as.integer(lambda)
   if(algo == "DK"){
     if(is.bigq(alpha)){

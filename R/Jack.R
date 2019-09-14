@@ -35,10 +35,16 @@
 #' Jack(c(gmp::as.bigq(1,2), gmp::as.bigq(2,3), gmp::as.bigq(1)), lambda,
 #'      alpha = gmp::as.bigq(3))
 Jack <- function(x, lambda, alpha, algorithm = "DK"){
+  stopifnot(
+    is.vector(x) || is.bigq(x),
+    is.numeric(x) || is.complex(x) || is.bigq(x),
+    is.numeric(alpha) || is.bigq(alpha),
+    length(alpha) == 1L
+  )
   if(alpha == 0){
     stopifnot(isPartition(lambda))
     gmp <- is.bigq(x)
-    if(length(lambda) == 0L || all(lambda == 0L)){
+    if(length(lambda) == 0L || lambda[1L] == 0L){
       if(gmp){
         return(as.bigq(1L))
       }else{
