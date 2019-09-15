@@ -52,6 +52,19 @@ test_that(
 )
 
 test_that(
+  "Zonal polynomials sum to the trace - complex", {
+    x <- c(1i, 2+1i, 4-3i, 7-3i) / c(2,3,1,2)
+    expected <- sum(x)^3
+    obtained_DK <- Zonal(x, 3) + Zonal(x, c(2,1)) + Zonal(x, c(1,1,1))
+    obtained_naive <- Zonal(x, 3, algorithm = "naive") +
+      Zonal(x, c(2,1), algorithm = "naive") +
+      Zonal(x, c(1,1,1), algorithm = "naive")
+    expect_equal(obtained_DK, expected)
+    expect_equal(obtained_naive, expected)
+  }
+)
+
+test_that(
   "ZonalPol is correct", {
     bigqMonomial <- function(vars, powers){
       do.call(prod, mapply(gmp::pow.bigq, vars, powers, SIMPLIFY = FALSE))
@@ -75,5 +88,16 @@ test_that(
     x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
     polEval <- evalPol(pol, x)
     expect_identical(polEval, Zonal(as.bigq(x), lambda))
+  }
+)
+
+test_that(
+  "Zonal polynomials sum to the trace - polynomial", {
+    n <- 4
+    expected <- (mvp("x_1",1,1)+mvp("x_2",1,1)+mvp("x_3",1,1)+mvp("x_4",1,1))^3
+    obtained <- ZonalPol(n, 3) + ZonalPol(n, c(2,1)) + ZonalPol(n, c(1,1,1))
+    expect_identical(expected$names, obtained$names)
+    expect_identical(expected$power, obtained$power)
+    expect_equal(expected$coeffs, obtained$coeffs)
   }
 )

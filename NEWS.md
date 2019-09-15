@@ -4,6 +4,8 @@
 
 - Added more checks of parameters validity
 
+- Added more unit tests
+
 
 # Version 1.1.0 (2019-09-09)
 

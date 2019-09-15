@@ -70,3 +70,14 @@ test_that(
     expect_identical(polEval, ZonalQ(as.bigq(x), lambda))
   }
 )
+
+test_that(
+  "ZonalQ polynomials sum to the trace - polynomial", {
+    n <- 4
+    expected <- (mvp("x_1",1,1)+mvp("x_2",1,1)+mvp("x_3",1,1)+mvp("x_4",1,1))^3
+    obtained <- ZonalQPol(n, 3) + ZonalQPol(n, c(2,1)) + ZonalQPol(n, c(1,1,1))
+    expect_identical(expected$names, obtained$names)
+    expect_identical(expected$power, obtained$power)
+    expect_equal(expected$coeffs, obtained$coeffs)
+  }
+)
