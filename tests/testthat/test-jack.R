@@ -88,6 +88,20 @@ test_that(
 )
 
 test_that(
+  "Jack (3,1) - polynomial", {
+    alpha <- 5/2
+    m <- 4
+    expected <- (2*alpha^2+4*alpha+2)*MSFpoly(m,c(3,1)) +
+      (6*alpha+10)*MSFpoly(m,c(2,1,1)) + (4*alpha+4)*MSFpoly(m,c(2,2)) +
+      24*MSFpoly(m,c(1,1,1,1))
+    obtained <- JackPol(m, c(3,1), alpha)
+    expect_identical(expected$names, obtained$names)
+    expect_identical(expected$power, obtained$power)
+    expect_equal(expected$coeffs, obtained$coeffs)
+  }
+)
+
+test_that(
   "Jack (4) - gmp", {
     alpha <- as.bigq(5L,2L)
     x <- as.bigq(2L:5L)
