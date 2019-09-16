@@ -20,3 +20,4 @@ This is a minor release:
 
 ## R CMD check results
 
+Status: OK
