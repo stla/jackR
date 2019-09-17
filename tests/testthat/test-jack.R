@@ -1,3 +1,10 @@
+context("Jack")
+
+test_that("Jack at x = 0", {
+  expect_equal(Jack(c(0,0), NULL, 2), 1)
+  expect_equal(Jack(c(0,0,0), c(3,2), 2), 0)
+})
+
 test_that(
   "Jack = 0 if l(lambda)>l(x)", {
   # numeric
