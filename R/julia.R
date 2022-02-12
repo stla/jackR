@@ -61,23 +61,31 @@ print.exactmvp <- function(x, ...){
 #'   \code{\link{Jack_julia}} can return such objects
 #' @param ... ignored
 #'
-#' @return A function xxx
+#' @return A function having the same variables as the polynomial.
 #' @export
 #'
 #' @importFrom Ryacas yac_str
 #'
-#' @examples #
+#' @examples # library(jack)
+#' \donttest{if(JuliaConnectoR::juliaSetupOk()){
+#'   julia <- Jack_julia()
+#'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
+#'   f <- as.function(pol)
+#'   f(2, "3/7")
+#'   JuliaConnectoR::stopJulia()
+#' }}
 as.function.exactmvp <- function(x, ...){
   expr <- attr(x, "exact")
   nvars <- attr(x, "nvars")
   vars <- paste0("x", seq_len(nvars))
   values <- paste0(paste0(vars, "==%s"), collapse = " And ")
   yacas <- paste0(expr, " Where ", values)
-  #g <- function(...) list(...)
   f <- function(){
-    yac_str(do.call(function(...) sprintf(yacas, ...), lapply(vars, function(xi){
-      eval(parse(text = xi))
-    })))
+    yac_str(
+      do.call(function(...) sprintf(yacas, ...), lapply(vars, function(xi){
+        eval(parse(text = xi))
+      }))
+    )
   }
   formals(f) <- sapply(vars, function(xi){
     `names<-`(alist(y=), xi)
@@ -95,6 +103,8 @@ as.function.exactmvp <- function(x, ...){
 #' @import mvp mvp
 #' @export
 #'
+#' @seealso \code{\link{as.function.exactmvp}}
+#'
 #' @note See \code{\link[JuliaConnectoR]{JuliaConnectoR-package}} for
 #'   information about setting up Julia. If you want to directly use Julia,
 #'   you can use \href{https://github.com/stla/JackPolynomials.jl}{my package}.
@@ -104,7 +114,7 @@ as.function.exactmvp <- function(x, ...){
 #'   julia <- Jack_julia()
 #'   # for `JackPol`, you can pass a rational `alpha` as a string:
 #'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
-#'   # you can evaluate the exact expression with the 'Ryacas' package
+#'   class(pol)
 #'   JuliaConnectoR::stopJulia()
 #' }}
 Jack_julia <- function(){
@@ -183,6 +193,7 @@ Jack_julia <- function(){
       }
     }, character(1L))
     attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
   }
@@ -198,7 +209,14 @@ Jack_julia <- function(){
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
     vars <- rep(list(vars), length(coefficients))
-    mvp(vars, J[["powers"]], coefficients)
+    poly <- mvp(vars, J[["powers"]], coefficients)
+    variables <- poly[["names"]]
+    powers <- poly[["power"]]
+    coeffs <- as.character(coefficients)
+    attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    attr(poly, "nvars") <- m
+    class(poly) <- c("exactmvp", class(poly))
+    poly
   }
   list(
     Jack = Jack,
