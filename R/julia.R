@@ -1,16 +1,38 @@
 rationalMonomial <- function(variables, powers){
-  paste0(paste0(variables, "^", powers, " "), collapse = "")
+  paste0(
+    paste0(variables, "^", powers, c(rep(" ", length(powers)-1L), "")),
+    collapse = ""
+  )
 }
 
-rationalPolynomial <- function(variables, powers, coeffs){
+rationalPolynomial <- function(variables, powers, coeffs, stars = FALSE){
   monomials <- mapply(rationalMonomial, variables, powers, USE.NAMES = FALSE)
-  gsub("+ -", "- ",
-    paste0(
-      paste0(coeffs, " ", gsub("^1", "", monomials, fixed = TRUE)),
-      collapse = "+ "
-    ),
-    fixed = TRUE
-  )
+  spaces <- rep(" ", length(coeffs))
+  ones <- coeffs == "1"
+  minusones <- coeffs == "-1"
+  spaces[ones] <- ""
+  coeffs[ones] <- ""
+  spaces[minusones] <- ""
+  coeffs[minusones] <- "-"
+  if(stars){
+    gsub("(\\d) x", "\\1 * x",
+         gsub("+  -", "-  ",
+              paste0(
+                paste0(coeffs, spaces, gsub("^1", "", monomials, fixed = TRUE)),
+                collapse = "  +  "
+              ),
+              fixed = TRUE
+         )
+    )
+  }else{
+    gsub("+ -", " - ",
+         paste0(
+           paste0(coeffs, spaces, gsub("^1", "", monomials, fixed = TRUE)),
+           collapse = "+ "
+         ),
+         fixed = TRUE
+    )
+  }
 }
 
 
@@ -97,7 +119,8 @@ Jack_julia <- function(){
           paste0(f[["num"]], "/", den)
         }
       }, character(1L))
-      attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+      attr(poly, "exact") <-
+        rationalPolynomial(variables, powers, coeffs, stars = TRUE)
       class(poly) <- c("exactmvp", class(poly))
     }
     poly
