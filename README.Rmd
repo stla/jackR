@@ -1,0 +1,9 @@
+---
+title: "The 'jack' package: Jack polynomials"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
