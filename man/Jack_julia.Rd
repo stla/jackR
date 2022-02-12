@@ -7,16 +7,16 @@
 Jack_julia()
 }
 \value{
-A function with the same arguments as .
+A list of functions having the same names as the R functions of this
+  package (\code{Jack}, \code{JackPol}, \code{Schur}, etc).
 }
 \description{
-Evaluate the hypergeometric function of a matrix argument with
-  Julia. This is highly faster.
+Evaluate the Jack polynomials with Julia. This is highly faster.
 }
 \note{
 See \code{\link[JuliaConnectoR]{JuliaConnectoR-package}} for
   information about setting up Julia. If you want to directly use Julia,
-  you can use \href{https://github.com/stla/HypergeoMat.jl}{my package}.
+  you can use \href{https://github.com/stla/JackPolynomials.jl}{my package}.
 }
 \examples{
 library(jack)

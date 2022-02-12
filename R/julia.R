@@ -10,7 +10,7 @@
 #'
 #' @note See \code{\link[JuliaConnectoR]{JuliaConnectoR-package}} for
 #'   information about setting up Julia. If you want to directly use Julia,
-#'   you can use \href{https://github.com/stla/HypergeoMat.jl}{my package}.
+#'   you can use \href{https://github.com/stla/JackPolynomials.jl}{my package}.
 #'
 #' @examples library(jack)
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
@@ -37,8 +37,40 @@ Jack_julia <- function(){
     vars <- rep(list(vars), length(coefficients))
     mvp(vars, J[["powers"]], coefficients)
   }
+  Zonal <- function(x, lambda){
+    JackPolynomials$Zonal(
+      unname(as.list(x)), unname(as.list(as.integer(lambda)))
+    )
+  }
+  ZonalPol <- function(m, lambda){
+    J <- juliaGet(JackPolynomials$ZonalPolynomial(
+      unname(as.integer(m)), unname(as.list(as.integer(lambda)))
+    ))
+    coefficients <- J[["coefficients"]]
+    vars <- paste0("x", seq_len(m))
+    vars <- rep(list(vars), length(coefficients))
+    mvp(vars, J[["powers"]], coefficients)
+  }
+  Schur <- function(x, lambda){
+    JackPolynomials$Schur(
+      unname(as.list(x)), unname(as.list(as.integer(lambda)))
+    )
+  }
+  SchurPol <- function(m, lambda){
+    J <- juliaGet(JackPolynomials$SchurPolynomial(
+      unname(as.integer(m)), unname(as.list(as.integer(lambda)))
+    ))
+    coefficients <- J[["coefficients"]]
+    vars <- paste0("x", seq_len(m))
+    vars <- rep(list(vars), length(coefficients))
+    mvp(vars, J[["powers"]], coefficients)
+  }
   list(
     Jack = Jack,
-    JackPol = JackPol
+    JackPol = JackPol,
+    Zonal = Zonal,
+    ZonalPol = ZonalPol,
+    Schur = Schur,
+    SchurPol = SchurPol
   )
 }
