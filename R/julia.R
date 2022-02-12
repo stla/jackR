@@ -99,8 +99,8 @@ as.function.exactmvp <- function(x, ...){
 #' @return A list of functions having the same names as the R functions of this
 #'   package (\code{Jack}, \code{JackPol}, \code{Schur}, etc).
 #'
-#' @importFrom JuliaConnectoR juliaSetupOk juliaCall juliaImport juliaGet
-#' @import mvp mvp
+#' @importFrom JuliaConnectoR juliaSetupOk juliaCall juliaImport juliaGet juliaEval
+#' @importFrom mvp mvp print.mvp
 #' @export
 #'
 #' @seealso \code{\link{as.function.exactmvp}}
@@ -121,6 +121,12 @@ Jack_julia <- function(){
   if(!juliaSetupOk()){
     stop("Julia setup is not OK.")
   }
+  toEval <- paste0(
+    'if isnothing(Base.find_package("DynamicPolynomials")) ',
+    'using Pkg; Pkg.add("DynamicPolynomials") ',
+    'end'
+  )
+  juliaEval(toEval)
   module <- system.file("julia", "JackPolynomials.jl", package = "jack")
   . <- juliaCall("include", module)
   JackPolynomials <- juliaImport(".JackPolynomials", all = FALSE)
