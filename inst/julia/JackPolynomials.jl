@@ -172,20 +172,33 @@ same type as `alpha`.
 - `alpha`: alpha parameter
 """
 function JackPolynomial(
-  m::I, lambda::Vector{I}, alpha::T, R::Bool=false
+  m::I, lambda::Vector{I}, alpha::Union{T,Vector{I}}, R::Bool=false
 ) where {T<:Real,I<:Integer}
   if !isPartition(lambda)
     error("`lambda` must be a partition of an integer")
   end
+  rational = false
+  if typeof(alpha) == Vector{I}
+    alpha = alpha[1] // alpha[2]
+    rational = true
+  end
   if alpha <= 0
     error("`alpha` must be positive")
   end
+  alphaType = typeof(alpha)
   jack = JackPolynomial0(m, lambda, alpha)
-  if(typeof(jack) == T)
+  if(typeof(jack) == alphaType)
     DynamicPolynomials.@polyvar x[1:m]
-    jack = sum(T(0) * x) + jack
+    jack = sum(alphaType(0) * x) + jack
   end
   if R
+    if rational
+      return (
+        qcoefficients = jack.a,
+        coefficients = convert(Vector{Float64}, jack.a),
+        powers = jack.x.Z
+      )
+    end
     return (
       coefficients = jack.a,
       powers = jack.x.Z

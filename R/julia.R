@@ -62,7 +62,18 @@ Jack_julia <- function(){
       unname(as.list(x)), unname(as.list(as.integer(lambda))), unname(alpha)
     )
   }
-  JackPol <- function(m, lambda, alpha = 2){
+  JackPol <- function(m, lambda, alpha){
+    rational <- FALSE
+    if(is.character(alpha)){
+      if(!grepl("^\\d+/\\d+$", alpha)){
+        stop(
+          "If you want to supply a rational `alpha`, ",
+          "it must be a character string of the form `p/q`."
+        )
+      }
+      alpha <- as.integer(strsplit(alpha, "/")[[1L]])
+      rational <- TRUE
+    }
     J <- juliaGet(JackPolynomials$JackPolynomial(
       unname(as.integer(m)), unname(as.list(as.integer(lambda))), unname(alpha),
       TRUE
@@ -70,7 +81,23 @@ Jack_julia <- function(){
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
     vars <- rep(list(vars), length(coefficients))
-    mvp(vars, J[["powers"]], coefficients)
+    poly <- mvp(vars, J[["powers"]], coefficients)
+    if(rational){
+      variables <- poly[["names"]]
+      powers <- poly[["power"]]
+      qcoefficients <- J[["qcoefficients"]]
+      coeffs <- vapply(qcoefficients, function(f){
+        den <- f[["den"]]
+        if(den == 1L){
+          as.character(f[["num"]])
+        }else{
+          paste0(f[["num"]], "/", den)
+        }
+      }, character(1L))
+      attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+      class(poly) <- c("exactmvp", class(poly))
+    }
+    poly
   }
   Zonal <- function(x, lambda){
     JackPolynomials$Zonal(
