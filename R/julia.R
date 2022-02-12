@@ -1,3 +1,37 @@
+rationalMonomial <- function(variables, powers){
+  paste0(paste0(variables, "^", powers, " "), collapse = "")
+}
+
+rationalPolynomial <- function(variables, powers, coeffs){
+  monomials <- mapply(rationalMonomial, variables, powers, USE.NAMES = FALSE)
+  gsub("+ -", "- ",
+    paste0(
+      paste0(coeffs, " ", gsub("^1", "", monomials, fixed = TRUE)),
+      collapse = "+ "
+    ),
+    fixed = TRUE
+  )
+}
+
+
+#' @title Print an \code{exactmvp} object
+#' @description Print an \code{exactmvp} object.
+#'
+#' @param x object of class \code{exactmvp}; the functions returned by
+#'   \code{\link{Jack_julia}} can return such objects
+#' @param ... arguments passed to \code{\link[mvp]{print.mvp}}
+#'
+#' @return Nothing.
+#' @export
+#'
+#' @importFrom mvp print.mvp
+print.exactmvp <- function(x, ...){
+  print.mvp(x, ...)
+  cat("\nExact expression:\n")
+  cat(attr(x, "exact"))
+  cat("\n")
+}
+
 #' @title Evaluation with Julia
 #' @description Evaluate the Jack polynomials with Julia. This is highly faster.
 #'
@@ -30,7 +64,8 @@ Jack_julia <- function(){
   }
   JackPol <- function(m, lambda, alpha = 2){
     J <- juliaGet(JackPolynomials$JackPolynomial(
-      unname(as.integer(m)), unname(as.list(as.integer(lambda))), unname(alpha)
+      unname(as.integer(m)), unname(as.list(as.integer(lambda))), unname(alpha),
+      TRUE
     ))
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
@@ -49,7 +84,21 @@ Jack_julia <- function(){
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
     vars <- rep(list(vars), length(coefficients))
-    mvp(vars, J[["powers"]], coefficients)
+    poly <- mvp(vars, J[["powers"]], coefficients)
+    variables <- poly[["names"]]
+    powers <- poly[["power"]]
+    qcoefficients <- J[["qcoefficients"]]
+    coeffs <- vapply(qcoefficients, function(f){
+      den <- f[["den"]]
+      if(den == 1L){
+        as.character(f[["num"]])
+      }else{
+        paste0(f[["num"]], "/", den)
+      }
+    }, character(1L))
+    attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    class(poly) <- c("exactmvp", class(poly))
+    poly
   }
   Schur <- function(x, lambda){
     JackPolynomials$Schur(

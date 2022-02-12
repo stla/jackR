@@ -116,7 +116,7 @@ end
 function JackPolynomial0(
   m::I, lambda::Vector{I}, alpha::T
 ) where {T<:Real,I<:Integer}
-  function jac(m::I, k::I, mu::Vector{I}, nu::Vector{I}, beta::T)
+  function jac(m::I, k::I, mu::Vector{I}, nu::Vector{I}, beta::Real)
     if isempty(nu) || nu[1] == 0 || m == 0
       return T(1)
     end
@@ -172,7 +172,7 @@ same type as `alpha`.
 - `alpha`: alpha parameter
 """
 function JackPolynomial(
-  m::I, lambda::Vector{I}, alpha::T
+  m::I, lambda::Vector{I}, alpha::T, R::Bool=false
 ) where {T<:Real,I<:Integer}
   if !isPartition(lambda)
     error("`lambda` must be a partition of an integer")
@@ -185,10 +185,13 @@ function JackPolynomial(
     DynamicPolynomials.@polyvar x[1:m]
     jack = sum(T(0) * x) + jack
   end
-  return (
-    coefficients = jack.a,
-    powers = jack.x.Z
-  )
+  if R
+    return (
+      coefficients = jack.a,
+      powers = jack.x.Z
+    )
+  end
+  return jack
 end
 
 # ------------------------------------------------------------------------------
@@ -255,12 +258,17 @@ Symbolic zonal polynomial.
 function ZonalPolynomial(
   m::I,
   lambda::Vector{I},
-  type::Type = Rational
+  type::Type = Real
 ) where {I<:Integer}
-  jack = JackPolynomial(m, lambda, type(2))
-  jlambda = prod(hookLengths(lambda, type(2)))
+  jack = JackPolynomial(m, lambda, 2//1)
+  jlambda = prod(hookLengths(lambda, 2//1))
   n = sum(lambda)
-  return jack * 2^n * factorial(n) / jlambda
+  poly = jack * 2^n * factorial(n) / jlambda
+  return (
+    qcoefficients = poly.a,
+    coefficients = convert(Vector{Float64}, poly.a),
+    powers = poly.x.Z
+  )
 end
 
 
@@ -393,7 +401,10 @@ function SchurPolynomial(
     DynamicPolynomials.@polyvar x[1:m]
     schur = sum(type(0) * x) + schur
   end
-  return schur
+  return (
+    coefficients = schur.a,
+    powers = schur.x.Z
+  )
 end
 
 end # module
