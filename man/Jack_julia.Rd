@@ -21,6 +21,9 @@ See \code{\link[JuliaConnectoR]{JuliaConnectoR-package}} for
 \examples{
 library(jack)
 \donttest{if(JuliaConnectoR::juliaSetupOk()){
+  julia <- Jack_julia()
+  # for `JackPol`, you can pass a rational `alpha` as a string:
+  julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2")
   JuliaConnectoR::stopJulia()
 }}
 }

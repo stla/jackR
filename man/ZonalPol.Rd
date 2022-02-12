@@ -4,8 +4,7 @@
 \alias{ZonalPol}
 \title{Zonal polynomial}
 \usage{
-ZonalPol(n, lambda, algorithm = "DK", basis = "canonical",
-  exact = TRUE)
+ZonalPol(n, lambda, algorithm = "DK", basis = "canonical", exact = TRUE)
 }
 \arguments{
 \item{n}{number of variables, a positive integer}

@@ -4,8 +4,7 @@
 \alias{ZonalQPol}
 \title{Quaternionic zonal polynomial}
 \usage{
-ZonalQPol(n, lambda, algorithm = "DK", basis = "canonical",
-  exact = TRUE)
+ZonalQPol(n, lambda, algorithm = "DK", basis = "canonical", exact = TRUE)
 }
 \arguments{
 \item{n}{number of variables, a positive integer}

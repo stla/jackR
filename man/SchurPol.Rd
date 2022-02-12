@@ -4,8 +4,7 @@
 \alias{SchurPol}
 \title{Schur polynomial}
 \usage{
-SchurPol(n, lambda, algorithm = "DK", basis = "canonical",
-  exact = TRUE)
+SchurPol(n, lambda, algorithm = "DK", basis = "canonical", exact = TRUE)
 }
 \arguments{
 \item{n}{number of variables, a positive integer}
