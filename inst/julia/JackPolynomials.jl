@@ -3,8 +3,10 @@ module JackPolynomials
 import DynamicPolynomials
 export JackPolynomial
 export ZonalPolynomial
+export ZonalQPolynomial
 export SchurPolynomial
 export Zonal
+export ZonalQ
 export Schur
 export Jack
 
@@ -282,6 +284,53 @@ function ZonalPolynomial(
     coefficients = convert(Vector{Float64}, poly.a),
     powers = poly.x.Z
   )
+end
+
+
+# ------------------------------------------------------------------------------
+#~~ Quaternionic zonal polynomial ~~~~##
+# ------------------------------------------------------------------------------
+"""
+    ZonalQ(x, lambda)
+
+Evaluates a quaternionic zonal polynomial.
+
+# Arguments
+- `x`: vector of real or complex numbers
+- `lambda`: partition of an integer
+"""
+function ZonalQ(
+  x::Vector{<:Union{R,Complex{R}}},
+  lambda::Vector{<:Integer},
+) where {R<:Real}
+  jack = Jack(x, lambda, R(0.5))
+  jlambda = prod(hookLengths(lambda, R(0.5)))
+  n = sum(lambda)
+  return jack * factorial(n) / 2^n / jlambda
+end
+
+# ------------------------------------------------------------------------------
+#~~ Symbolic quaternionic zonal polynomial ~~~~##
+# ------------------------------------------------------------------------------
+"""
+    ZonalQPolynomial(m, lambda[, type])
+
+Symbolic quaternionic zonal polynomial.
+
+# Arguments
+- `m`: integer, the number of variables
+- `lambda`: partition of an integer
+- `type`: the type of the coefficients of the polynomial; default `Rational`
+"""
+function ZonalQPolynomial(
+  m::I,
+  lambda::Vector{I},
+  type::Type = Rational
+) where {I<:Integer}
+  jack = JackPolynomial(m, lambda, type(0.5))
+  jlambda = prod(hookLengths(lambda, type(0.5)))
+  n = sum(lambda)
+  return jack * factorial(n) / 2^n / jlambda
 end
 
 

@@ -197,6 +197,35 @@ Jack_julia <- function(){
     class(poly) <- c("exactmvp", class(poly))
     poly
   }
+  ZonalQ <- function(x, lambda){
+    JackPolynomials$ZonalQ(
+      unname(as.list(x)), unname(as.list(as.integer(lambda)))
+    )
+  }
+  ZonalQPol <- function(m, lambda){
+    J <- juliaGet(JackPolynomials$ZonalQPolynomial(
+      unname(as.integer(m)), unname(as.list(as.integer(lambda)))
+    ))
+    coefficients <- J[["coefficients"]]
+    vars <- paste0("x", seq_len(m))
+    vars <- rep(list(vars), length(coefficients))
+    poly <- mvp(vars, J[["powers"]], coefficients)
+    variables <- poly[["names"]]
+    powers <- poly[["power"]]
+    qcoefficients <- J[["qcoefficients"]]
+    coeffs <- vapply(qcoefficients, function(f){
+      den <- f[["den"]]
+      if(den == 1L){
+        as.character(f[["num"]])
+      }else{
+        paste0(f[["num"]], "/", den)
+      }
+    }, character(1L))
+    attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    attr(poly, "nvars") <- m
+    class(poly) <- c("exactmvp", class(poly))
+    poly
+  }
   Schur <- function(x, lambda){
     JackPolynomials$Schur(
       unname(as.list(x)), unname(as.list(as.integer(lambda)))
@@ -223,6 +252,8 @@ Jack_julia <- function(){
     JackPol = JackPol,
     Zonal = Zonal,
     ZonalPol = ZonalPol,
+    ZonalQ = ZonalQ,
+    ZonalQPol = ZonalQPol,
     Schur = Schur,
     SchurPol = SchurPol
   )
