@@ -54,6 +54,37 @@ print.exactmvp <- function(x, ...){
   cat("\n")
 }
 
+#' @title Exact multivariate polynomial as function
+#' @description Coerces an exact multivariate polynomial into a function.
+#'
+#' @param x object of class \code{exactmvp}; the functions returned by
+#'   \code{\link{Jack_julia}} can return such objects
+#' @param ... ignored
+#'
+#' @return A function xxx
+#' @export
+#'
+#' @importFrom Ryacas yac_str
+#'
+#' @examples #
+as.function.exactmvp <- function(x, ...){
+  expr <- attr(x, "exact")
+  nvars <- attr(x, "nvars")
+  vars <- paste0("x", seq_len(nvars))
+  values <- paste0(paste0(vars, "==%s"), collapse = " And ")
+  yacas <- paste0(expr, " Where ", values)
+  #g <- function(...) list(...)
+  f <- function(){
+    yac_str(do.call(function(...) sprintf(yacas, ...), lapply(vars, function(xi){
+      eval(parse(text = xi))
+    })))
+  }
+  formals(f) <- sapply(vars, function(xi){
+    `names<-`(alist(y=), xi)
+  }, USE.NAMES = FALSE)
+  f
+}
+
 #' @title Evaluation with Julia
 #' @description Evaluate the Jack polynomials with Julia. This is highly faster.
 #'
@@ -72,7 +103,8 @@ print.exactmvp <- function(x, ...){
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
 #'   julia <- Jack_julia()
 #'   # for `JackPol`, you can pass a rational `alpha` as a string:
-#'   julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2")
+#'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
+#'   # you can evaluate the exact expression with the 'Ryacas' package
 #'   JuliaConnectoR::stopJulia()
 #' }}
 Jack_julia <- function(){
@@ -121,6 +153,7 @@ Jack_julia <- function(){
       }, character(1L))
       attr(poly, "exact") <-
         rationalPolynomial(variables, powers, coeffs, stars = TRUE)
+      attr(poly, "nvars") <- m
       class(poly) <- c("exactmvp", class(poly))
     }
     poly
