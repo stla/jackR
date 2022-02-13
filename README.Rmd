@@ -11,3 +11,21 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
+```{r}
+library(jack)
+library(microbenchmark)
+```
+
+```{r}
+julia <- Jack_julia()
+x <- c(1/2, 2/3, 1, 2/3, -1, -2, 1)
+lambda <- c(5, 3, 2, 2, 1)
+alpha <- 3
+microbenchmark(
+  R = Jack(x, lambda, alpha),
+  Julia = julia$Jack(x, lambda, alpha),
+  times = 5
+)
+```
+
+
