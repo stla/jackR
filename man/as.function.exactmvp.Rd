@@ -26,7 +26,7 @@ Coerces an exact multivariate polynomial into a function.
   f <- as.function(pol)
   f(2, "3/7")
   # the evaluation is performed by (R)yacas and complex numbers are
-  # allowed; the imaginary is denoted by `I`
+  # allowed; the imaginary unit is denoted by `I`
   f("2 + 2*I", "1/4")
   JuliaConnectoR::stopJulia()
 }}
