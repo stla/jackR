@@ -331,6 +331,7 @@ toLaTeX <- function(poly, asCharacter = FALSE){
     stop("The 'toLaTeX' function is not applicable to this object.")
   }
   p <- yac_str(sprintf("TexForm(%s)", attr(poly, "exact")))
+  p <- gsub(" ^", "^", p, fixed = TRUE)
   if(asCharacter){
     p
   }else{
