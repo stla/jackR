@@ -270,3 +270,37 @@ Jack_julia <- function(){
     SchurPol = SchurPol
   )
 }
+
+#' @title Pretty exact expression
+#' @description Pretty form of the exact expression of a polynomial.
+#'
+#' @param poly an \code{exactmvp} object, that is, a polynomial with an exact
+#'   expression
+#' @param asCharacter Boolean, whether to return a character string; if
+#'   \code{FALSE}, the pretty form is printed
+#'
+#' @return A character string if \code{asCharacter=TRUE}, otherwise it is also
+#'   returned but invisibly, and it is printed in the console.
+#' @export
+#'
+#' @importFrom Ryacas yac_str
+#'
+#' @examples library(jack)
+#' \donttest{if(JuliaConnectoR::juliaSetupOk()){
+#'   julia <- Jack_julia()
+#'   ( pol <- julia$ZonalPol(m = 2, lambda = c(3, 1)) )
+#'   prettyForm(pol)
+#'   JuliaConnectoR::stopJulia()
+#' }}
+prettyForm <- function(poly, asCharacter = FALSE){
+  if(!inherits(poly, "exactmvp")){
+    stop("The 'prettyForm' function is not applicable to this object.")
+  }
+  p <- yac_str(sprintf("PrettyForm(%s)", attr(poly, "exact")))
+  if(asCharacter){
+    p
+  }else{
+    cat(p)
+    invisible(p)
+  }
+}
