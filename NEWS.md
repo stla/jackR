@@ -1,4 +1,4 @@
-# Version 1.1.1.9000 (2022-02-12)
+# Version 2.0.0 (2022-02-14)
 
 - New function `Jack_julia`, to evaluate the polynomials with Julia.
 

@@ -42,7 +42,7 @@ Monograph Series.
 Institute of Mathematical Statistics, Hayward, CA, 1984.
 \item Lin Jiu & Christoph Koutschan.
 \emph{Calculation and Properties of Zonal Polynomials}.
-\url{http://koutschan.de/data/zonal/zonal.pdf}
+\url{http://koutschan.de/data/zonal}
 }
 }
 \seealso{

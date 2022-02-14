@@ -1,21 +1,9 @@
-## Release summary
-
-This is a minor release:
-
-- Fixed a test of empty partition
-
-- Added more checks of parameters validity
-
-- Added more unit tests
-
-- Improved documentation
-
-
 ## Test environments
 
-* Windows 7 64bit, R 3.6.1
-* ubuntu 16.04, R 3.4.4
-* win-builder (devel and release)
+* Windows 10 64bit, R 4.1.2
+* Ubuntu 20, via Github action
+* win-builder devel
+* mac-builder
 
 
 ## R CMD check results

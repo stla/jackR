@@ -41,7 +41,7 @@ New York, second edition, 1995.
 \emph{Accurate and efficient evaluation of Schur and Jack functions}.
 Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
 \item \emph{Jack polynomials}.
-\url{https://www.math.upenn.edu/~peal/polynomials/jack.htm}
+\url{https://www.symmetricfunctions.com/jack.htm}
 }
 }
 \seealso{
