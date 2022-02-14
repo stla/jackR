@@ -330,7 +330,12 @@ function ZonalQPolynomial(
   jack = JackPolynomial(m, lambda, type(0.5))
   jlambda = prod(hookLengths(lambda, type(0.5)))
   n = sum(lambda)
-  return jack * factorial(n) / 2^n / jlambda
+  poly = jack * factorial(n) / 2^n / jlambda
+  return (
+    qcoefficients = poly.a,
+    coefficients = convert(Vector{Float64}, poly.a),
+    powers = poly.x.Z
+  )
 end
 
 

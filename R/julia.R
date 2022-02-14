@@ -201,7 +201,8 @@ Jack_julia <- function(){
         paste0(f[["num"]], "/", den)
       }
     }, character(1L))
-    attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    attr(poly, "exact") <-
+      rationalPolynomial(variables, powers, coeffs, stars = TRUE)
     attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
@@ -230,7 +231,8 @@ Jack_julia <- function(){
         paste0(f[["num"]], "/", den)
       }
     }, character(1L))
-    attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    attr(poly, "exact") <-
+      rationalPolynomial(variables, powers, coeffs, stars = TRUE)
     attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
@@ -251,7 +253,8 @@ Jack_julia <- function(){
     variables <- poly[["names"]]
     powers <- poly[["power"]]
     coeffs <- as.character(coefficients)
-    attr(poly, "exact") <- rationalPolynomial(variables, powers, coeffs)
+    attr(poly, "exact") <-
+      rationalPolynomial(variables, powers, coeffs, stars = TRUE)
     attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
