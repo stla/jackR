@@ -24,7 +24,7 @@
 #' Institute of Mathematical Statistics, Hayward, CA, 1984.
 #' \item Lin Jiu & Christoph Koutschan.
 #' \emph{Calculation and Properties of Zonal Polynomials}.
-#' \url{http://koutschan.de/data/zonal}
+#' \url{http://koutschan.de/data/zonal/}
 #' }
 #'
 #' @examples lambda <- c(2,2)
