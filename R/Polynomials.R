@@ -87,6 +87,58 @@ JackPolDK <- function(n, lambda, alpha){
   jac(n, 0L, lambda, lambda, 1)
 }
 
+#' @importFrom gmpoly gmpoly gmpolyConstant gmpolyGrow
+#' @importFrom gmp as.bigq
+#' @noRd
+JackPolDK_gmp <- function(n, lambda, alpha){
+  stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
+  jac <- function(m, k, mu, nu, beta){
+    if(length(nu) == 0L || nu[1L] == 0L || m == 0L){
+      return(gmpolyConstant(m, 1L))
+    }
+    if(length(nu) > m && nu[m+1L] > 0L) return(gmpolyConstant(m, 0L))
+    if(m == 1L){
+      return(gmpoly(
+        coeffs = prod(alpha * seq_len(nu[1L]-1L) + 1L),
+        powers = rbind(nu[1L])
+      ))
+    }
+    if(k == 0L && inherits(s <- S[[.N(lambda, nu), m]], "gmpoly")) return(s)
+    i <- max(1L, k)
+    s <- gmpolyGrow(jac(m-1L, 0L, nu, nu, oneq)) * beta *
+      gmpoly(
+        coeffs = oneq,
+        powers = rbind(c(rep(0L, m-1L), sum(mu)-sum(nu)))
+      )
+    while(length(nu) >= i && nu[i] > 0L){
+      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1L
+        gamma <- beta * .betaratio(mu, nu, i, alpha)
+        if(nu[i] > 1L){
+          s <- s + jac(m, i, mu, .nu, gamma)
+        }else{
+          s <- s + gmpolyGrow(jac(m-1L, 0L, .nu, .nu, oneq)) * gamma *
+            gmpoly(
+              coeffs = oneq,
+              powers = rbind(c(rep(0L, m-1L), sum(mu)-sum(.nu)))
+            )
+        }
+      }
+      i <- i + 1L
+    }
+    if(k == 0L) S[[.N(lambda, nu), m]] <- s
+    return(s)
+  }
+  Nlambdalambda <- .N(lambda, lambda)
+  S <- as.list(rep(NA, Nlambdalambda * n))
+  dim(S) <- c(Nlambdalambda, n)
+  oneq <- as.bigq(1L)
+  # x <- lapply(1L:n, function(i){
+  #   gmpoly(coeffs = as.bigq(1L), powers = rbind(c(rep(0L, i-1L), 1L)))
+  # })
+  jac(n, 0L, lambda, lambda, oneq)
+}
+
 #' Jack polynomial
 #'
 #' Returns the Jack polynomial.
@@ -124,9 +176,10 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
   lambda <- as.integer(lambda)
   if(algo == "DK"){
     if(is.bigq(alpha)){
-      stop("Algorithm `DK` is not implemented for rational `alpha`")
+      JackPolDK_gmp(n, lambda, alpha)
+    }else{
+      JackPolDK(n, lambda, alpha)
     }
-    JackPolDK(n, lambda, alpha)
   }else{
     JackPolNaive(n, lambda, alpha, basis)
   }
