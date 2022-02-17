@@ -105,7 +105,7 @@ JackPolDK_gmp <- function(n, lambda, alpha){
     }
     if(k == 0L && inherits(s <- S[[.N(lambda, nu), m]], "gmpoly")) return(s)
     i <- max(1L, k)
-    s <- gmpolyGrow(jac(m-1L, 0L, nu, nu, oneq)) * beta *
+    s <- gmpolyGrow(jac(m-1L, 0L, nu, nu, oneq)) * gmpolyConstant(m, beta) *
       gmpoly(
         coeffs = oneq,
         powers = rbind(c(rep(0L, m-1L), sum(mu)-sum(nu)))
@@ -117,7 +117,8 @@ JackPolDK_gmp <- function(n, lambda, alpha){
         if(nu[i] > 1L){
           s <- s + jac(m, i, mu, .nu, gamma)
         }else{
-          s <- s + gmpolyGrow(jac(m-1L, 0L, .nu, .nu, oneq)) * gamma *
+          s <- s + gmpolyGrow(jac(m-1L, 0L, .nu, .nu, oneq)) *
+            gmpolyConstant(m, gamma) *
             gmpoly(
               coeffs = oneq,
               powers = rbind(c(rep(0L, m-1L), sum(mu)-sum(.nu)))
