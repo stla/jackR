@@ -1,3 +1,9 @@
+# Version 2.0.0.9000 (2022-02-17)
+
+- Now one can use a `bigq` number for `alpha` in `JackPol`, thanks to the 
+'gmpoly' package.
+
+
 # Version 2.0.0 (2022-02-14)
 
 - New function `Jack_julia`, to evaluate the polynomials with Julia.
