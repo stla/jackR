@@ -11,7 +11,7 @@ test_that(
     # polynomial
     n <- 2
     lambda <- c(3,2,1)
-    expect_identical(ZonalPol(n, lambda), mvp::constant(0))
+    expect_true(ZonalPol(n, lambda) == gmpoly::gmpolyConstant(n, 0L))
     expect_identical(ZonalPol(n, lambda, algorithm = "naive"),
                      mvp::constant(0))
     expect_identical(ZonalPol(n, lambda, exact = FALSE, algorithm = "naive"),

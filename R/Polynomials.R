@@ -361,6 +361,8 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
   }
 }
 
+#' @importFrom mvp constant mvp
+#' @noRd
 SchurPolDK <- function(n, lambda){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){
@@ -369,7 +371,7 @@ SchurPolDK <- function(n, lambda){
     }
     if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
     if(m == 1L) return(mvp(x[1L], nu[1L], 1))
-    if(!is.na(s <- S[[.N(lambda,nu),m]])) return(s)
+    if(!is.na(s <- S[[.N(lambda, nu), m]])) return(s)
     s <- sch(m-1L, 1L, nu)
     i <- k
     while(length(nu) >= i && nu[i] > 0L){
@@ -383,12 +385,55 @@ SchurPolDK <- function(n, lambda){
       }
       i <- i + 1L
     }
-    if(k == 1L) S[[.N(lambda,nu),m]] <- s
+    if(k == 1L) S[[.N(lambda, nu), m]] <- s
     return(s)
   }
   x <- paste0("x_", 1L:n)
-  S <- as.list(rep(NA, .N(lambda,lambda)*n))
-  dim(S) <- c(.N(lambda,lambda), n)
+  Nlambdalambda <- .N(lambda,lambda)
+  S <- as.list(rep(NA, Nlambdalambda*n))
+  dim(S) <- c(Nlambdalambda, n)
+  sch(n, 1L, as.integer(lambda))
+}
+
+#' @importFrom gmpoly gmpolyConstant gmpoly gmpolyGrow
+SchurPolDK_gmp <- function(n, lambda){
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
+  sch <- function(m, k, nu){
+    if(length(nu) == 0L || nu[1L]==0L || m == 0L){
+      return(gmpolyConstant(m, 1L))
+    }
+    if(length(nu) > m && nu[m+1L] > 0L) return(gmpolyConstant(m, 0L))
+    if(m == 1L) return(gmpoly(coeffs = oneq, powers = rbind(nu[1L])))
+    if(inherits(s <- S[[.N(lambda, nu), m]], "gmpoly")) return(s)
+    s <- gmpolyGrow(sch(m-1L, 1L, nu))
+    i <- k
+    while(length(nu) >= i && nu[i] > 0L){
+      if(length(nu) == i || nu[i] > nu[i+1L]){
+        .nu <- nu; .nu[i] <- nu[i]-1L
+        # if(s[["m"]] == m-1L){
+        #   s <- gmpolyGrow(s)
+        # }
+        if(nu[i] > 1L){
+          s <- s + x[[m]] * sch(m, i, .nu)
+        }else{
+          s <- s + x[[m]] * gmpolyGrow(sch(m-1L, 1L, .nu))
+        }
+      }
+      i <- i + 1L
+    }
+    if(k == 1L) S[[.N(lambda, nu), m]] <- s
+    return(s)
+  }
+  Nlambdalambda <- .N(lambda,lambda)
+  S <- as.list(rep(NA, Nlambdalambda*n))
+  dim(S) <- c(Nlambdalambda, n)
+  oneq <- as.bigq(1L)
+  x <- lapply(1L:n, function(m){
+    gmpoly(
+      coeffs = oneq,
+      powers = rbind(c(rep(0L, m-1L), 1L))
+    )
+  })
   sch(n, 1L, as.integer(lambda))
 }
 
@@ -404,23 +449,29 @@ SchurPolDK <- function(n, lambda){
 #' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 #' for \code{algorithm = "DK"} the canonical basis is always used and
 #' this parameter is ignored
-#' @param exact logical, whether to get rational coefficients when using
-#' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
+#' @param exact logical, whether to use exact arithmetic
 #'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
-#' character string if \code{basis = "MSF"}.
-#' @importFrom mvp constant mvp
+#' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
+#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+#'  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
+#'  character string if \code{basis = "MSF"}.
+#'
 #' @export
 #'
 #' @examples SchurPol(3, lambda = c(3,1), algorithm = "naive")
 #' SchurPol(3, lambda = c(3,1), algorithm = "DK")
+#' SchurPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
 #' SchurPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 SchurPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)
   if(algo == "DK"){
-    SchurPolDK(n, lambda)
+    if(exact){
+      SchurPolDK_gmp(n, lambda)
+    }else{
+      SchurPolDK(n, lambda)
+    }
   }else{
     SchurPolNaive(n, lambda, basis, exact)
   }

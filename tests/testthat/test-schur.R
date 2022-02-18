@@ -13,11 +13,11 @@ test_that(
     expect_identical(e, sum(x)^4)
     # polynomial
     n <- 4
-    P <- SchurPol(n, c(4)) + 3*SchurPol(n, c(3,1)) + 2*SchurPol(n, c(2,2)) +
-      3*SchurPol(n, c(2,1,1)) + SchurPol(n, c(1,1,1,1))
+    P <- SchurPol(n, c(4)) + 3*SchurPol(n, c(3, 1)) + 2*SchurPol(n, c(2, 2)) +
+      3*SchurPol(n, c(2, 1, 1)) + SchurPol(n, c(1, 1, 1, 1))
     Q <- (mvp("x_1", 1, 1) + mvp("x_2", 1, 1) + mvp("x_3", 1, 1) +
-            mvp("x_4", 1, 1)) ^ 4
-    expect_identical(P,Q)
+            mvp("x_4", 1, 1))^4
+    expect_true(gmpoly::gmpoly2mvp(P) == Q)
   }
 )
 
@@ -34,7 +34,7 @@ test_that(
     # polynomial
     n <- 2
     lambda <- c(3,2,1)
-    expect_identical(SchurPol(n, lambda), mvp::constant(0))
+    expect_true(SchurPol(n, lambda) == gmpoly::gmpolyConstant(n, 0L))
     expect_identical(SchurPol(n, lambda, algorithm = "naive"),
                      mvp::constant(0))
     expect_identical(SchurPol(n, lambda, exact = FALSE, algorithm = "naive"),
@@ -107,9 +107,10 @@ test_that(
 test_that(
   "Pieri rule", {
     n <- 3
-    P1 <- SchurPol(n,c(3,2)) + 2*SchurPol(n,c(2,2,1)) + SchurPol(n,c(3,1,1)) +
-      2*SchurPol(n,c(2,1,1,1)) + SchurPol(n,c(1,1,1,1,1))
-    P2 <- ESFpoly(n, c(2,2,1))
-    expect_true(P1 == P2)
+    P1 <- SchurPol(n, c(3, 2)) + 2 * SchurPol(n, c(2, 2, 1)) +
+      SchurPol(n, c(3, 1, 1)) + 2 * SchurPol(n, c(2, 1, 1, 1)) +
+      SchurPol(n, c(1, 1, 1, 1, 1))
+    P2 <- ESFpoly(n, c(2, 2, 1))
+    expect_true(gmpoly::gmpoly2mvp(P1) == P2)
   }
 )

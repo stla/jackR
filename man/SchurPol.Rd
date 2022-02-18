@@ -32,5 +32,6 @@ Returns the Schur polynomial.
 \examples{
 SchurPol(3, lambda = c(3,1), algorithm = "naive")
 SchurPol(3, lambda = c(3,1), algorithm = "DK")
+SchurPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
 SchurPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 }
