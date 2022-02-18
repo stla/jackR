@@ -1,6 +1,8 @@
 ---
 title: "The 'jack' package: Jack polynomials"
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- badges: start -->
@@ -38,7 +40,7 @@ expression with `JackPol`, you have to give a rational number for the argument
 `alpha`, as a character string:
 
 ```{r}
-JP <- julia$JackPol(m = 2, lambda = c(3,1), alpha = "2/5")
+JP <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5")
 JP
 ```
 
@@ -73,5 +75,41 @@ prettyForm(JP)
 toLaTeX(JP)
 ```
 
+You can also use the functions `JackPol`, `ZonalPol`, `ZonalQPol` and 
+`SchurPol` without passing by `Jack_julia()`. They are implemented in R. 
+To get an exact symbolic polynomial with `JackPol`, you have to supply a 
+`bigq` rational number for the parameter `alpha`:
 
+```{r}
+jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
+jpol
+```
 
+This is a `gmpoly` object, from the [gmpoly](https://github.com/stla/gmpoly) 
+package.
+
+```{r}
+gmpoly::gmpolyEval(jpol, c(gmp::as.bigq("2"), gmp::as.bigq("3/2")))
+```
+
+By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic 
+polynomials.
+
+```{r}
+zpol <- ZonalPol(2, lambda = c(3, 1))
+zpol
+```
+
+Again, Julia is faster:
+
+```{r}
+n <- 5
+lambda <- c(4, 3, 3)
+alpha <- "2/3"
+alphaq <- gmp::as.bigq(alpha)
+microbenchmark(
+      R = JackPol(n, lambda, alphaq),
+  Julia = julia$JackPol(n, lambda, alpha),
+  times = 5
+)
+```

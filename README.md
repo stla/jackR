@@ -26,12 +26,9 @@ microbenchmark(
   times = 5
 )
 ## Unit: milliseconds
-##   expr          min           lq       mean     median         uq       max
-##      R 15767.690900 16131.731601 16546.8662 16381.9088 17123.5399 17329.460
-##  Julia     8.395101     9.733001   458.8062    11.0415    90.6334  2174.228
-##  neval
-##      5
-##      5
+##   expr        min         lq      mean     median         uq       max neval
+##      R 14745.2849 14809.9710 15989.823 15754.5770 16420.4485 18218.836     5
+##  Julia     6.9749    11.8482   614.498    12.0545    22.5382  3019.074     5
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -41,7 +38,7 @@ an exact expression with `JackPol`, you have to give a rational number
 for the argument `alpha`, as a character string:
 
 ``` r
-JP <- julia$JackPol(m = 2, lambda = c(3,1), alpha = "2/5")
+JP <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5")
 JP
 ## mvp object algebraically equal to
 ## 3.92 x1 x2^3  +  5.6 x1^2 x2^2  +  3.92 x1^3 x2
@@ -88,4 +85,53 @@ prettyForm(JP)
 ``` r
 toLaTeX(JP)
 ## $\frac{x_{2}^{3} 98 x_{1}}{25}  + \frac{x_{2}^{2} 28 x_{1}^{2}}{5}  + \frac{x_{2} 98 x_{1}^{3}}{25} $
+```
+
+You can also use the functions `JackPol`, `ZonalPol`, `ZonalQPol` and
+`SchurPol` without passing by `Jack_julia()`. They are implemented in R.
+To get an exact symbolic polynomial with `JackPol`, you have to supply a
+`bigq` rational number for the parameter `alpha`:
+
+``` r
+jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
+jpol
+## gmpoly object algebraically equal to
+## 98/25 x^(1,3) + 28/5 x^(2,2) + 98/25 x^(3,1)
+```
+
+This is a `gmpoly` object, from the
+[gmpoly](https://github.com/stla/gmpoly) package.
+
+``` r
+gmpoly::gmpolyEval(jpol, c(gmp::as.bigq("2"), gmp::as.bigq("3/2")))
+## Big Rational ('bigq') :
+## [1] 1239/10
+```
+
+By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic
+polynomials.
+
+``` r
+zpol <- ZonalPol(2, lambda = c(3, 1))
+zpol
+## gmpoly object algebraically equal to
+## 24/7 x^(1,3) + 16/7 x^(2,2) + 24/7 x^(3,1)
+```
+
+Again, Julia is faster:
+
+``` r
+n <- 5
+lambda <- c(4, 3, 3)
+alpha <- "2/3"
+alphaq <- gmp::as.bigq(alpha)
+microbenchmark(
+      R = JackPol(n, lambda, alphaq),
+  Julia = julia$JackPol(n, lambda, alpha),
+  times = 5
+)
+## Unit: milliseconds
+##   expr       min       lq     mean    median       uq      max neval
+##      R 5530.7619 5563.072 6020.782 5689.3934 6118.215 7202.468     5
+##  Julia  924.0483  935.518 1151.251  943.9755 1034.358 1918.356     5
 ```
