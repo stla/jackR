@@ -410,9 +410,6 @@ SchurPolDK_gmp <- function(n, lambda){
     while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i || nu[i] > nu[i+1L]){
         .nu <- nu; .nu[i] <- nu[i]-1L
-        # if(s[["m"]] == m-1L){
-        #   s <- gmpolyGrow(s)
-        # }
         if(nu[i] > 1L){
           s <- s + x[[m]] * sch(m, i, .nu)
         }else{
@@ -534,10 +531,21 @@ ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
 }
 
 ZonalQPolDK <- function(m, lambda){
-  jack <- JackPolDK(m, lambda, alpha= 1/2)
+  jack <- JackPolDK(m, lambda, alpha = 1/2)
   jlambda <- sum(logHookLengths(lambda, alpha = 1/2))
   n <- sum(lambda)
   exp(-n*log(2) + lfactorial(n) - jlambda) * jack
+}
+
+#' @importFrom gmp as.bigq factorialZ
+#' @importFrom gmpoly gmpolyConstant
+#' @noRd
+ZonalQPolDK_gmp <- function(m, lambda){
+  onehalfq <- as.bigq(1L, 2L)
+  jack <- JackPolDK_gmp(m, lambda, alpha = onehalfq)
+  jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
+  n <- sum(lambda)
+  gmpolyConstant(m, onehalfq^n * factorialZ(n) / jlambda) * jack
 }
 
 #' Quaternionic zonal polynomial
@@ -546,29 +554,35 @@ ZonalQPolDK <- function(m, lambda){
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
-#' integers
+#'   integers
 #' @param algorithm the algorithm used, either \code{"DK"} or \code{"naive"}
 #' @param basis the polynomial basis for \code{algorithm = "naive"},
 #' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 #' for \code{algorithm = "DK"} the canonical basis is always used and
 #' this parameter is ignored
-#' @param exact logical, whether to get rational coefficients when using
-#' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
-
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
-#' character string if \code{basis = "MSF"}.
-#' @importFrom mvp constant mvp
+#' @param exact logical, whether to get rational coefficients
+#'
+#' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
+#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+#'  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
+#'  character string if \code{basis = "MSF"}.
+#'
 #' @export
 #'
 #' @examples ZonalQPol(3, lambda = c(3,1), algorithm = "naive")
 #' ZonalQPol(3, lambda = c(3,1), algorithm = "DK")
+#' ZonalQPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
 #' ZonalQPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 ZonalQPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)
   if(algo == "DK"){
-    ZonalQPolDK(n, lambda)
+    if(exact){
+      ZonalQPolDK_gmp(n, lambda)
+    }else{
+      ZonalQPolDK(n, lambda)
+    }
   }else{
     ZonalQPolNaive(n, lambda, basis, exact)
   }

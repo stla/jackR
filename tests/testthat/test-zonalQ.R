@@ -2,11 +2,13 @@ test_that(
   "ZonalQ with lambda = (4)", {
     # gmp
     obtained <- ZonalQPol(4, c(4), algo="naive", basis="MSF")
-    expected <- "M_(4) + 8/5 M_(3,1) + 9/5 M_(2,2) + 12/5 M_(2,1,1) + 16/5 M_(1,1,1,1)"
+    expected <-
+      "M_(4) + 8/5 M_(3,1) + 9/5 M_(2,2) + 12/5 M_(2,1,1) + 16/5 M_(1,1,1,1)"
     expect_identical(obtained, expected)
     # numeric
     obtained <- ZonalQPol(4, c(4), algo="naive", basis="MSF", exact = FALSE)
-    expected <- "M_(4) + 1.6 M_(3,1) + 1.8 M_(2,2) + 2.4 M_(2,1,1) + 3.2 M_(1,1,1,1)"
+    expected <-
+      "M_(4) + 1.6 M_(3,1) + 1.8 M_(2,2) + 2.4 M_(2,1,1) + 3.2 M_(1,1,1,1)"
     expect_identical(obtained, expected)
   }
 )
@@ -63,7 +65,7 @@ test_that(
       value
     }
     #
-    lambda <- c(3,2)
+    lambda <- c(3, 2)
     pol <- ZonalQPol(4, lambda, algorithm = "naive")
     x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
     polEval <- evalPol(pol, x)
@@ -74,8 +76,10 @@ test_that(
 test_that(
   "ZonalQ polynomials sum to the trace - polynomial", {
     n <- 4
-    expected <- (mvp("x_1",1,1)+mvp("x_2",1,1)+mvp("x_3",1,1)+mvp("x_4",1,1))^3
+    expected <- (mvp("x_1", 1, 1) + mvp("x_2", 1, 1) + mvp("x_3", 1, 1) +
+                   mvp("x_4", 1, 1))^3
     obtained <- ZonalQPol(n, 3) + ZonalQPol(n, c(2,1)) + ZonalQPol(n, c(1,1,1))
+    obtained <- gmpoly::gmpoly2mvp(obtained)
     expect_identical(expected$names, obtained$names)
     expect_identical(expected$power, obtained$power)
     expect_equal(expected$coeffs, obtained$coeffs)

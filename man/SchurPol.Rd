@@ -19,12 +19,13 @@ either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 for \code{algorithm = "DK"} the canonical basis is always used and
 this parameter is ignored}
 
-\item{exact}{logical, whether to get rational coefficients when using
-\code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}}
+\item{exact}{logical, whether to use exact arithmetic}
 }
 \value{
-A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
-character string if \code{basis = "MSF"}.
+A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
+ or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+ \code{exact = TRUE} and \code{algorithm = "DK"}, or a
+ character string if \code{basis = "MSF"}.
 }
 \description{
 Returns the Schur polynomial.
