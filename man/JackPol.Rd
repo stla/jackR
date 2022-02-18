@@ -35,6 +35,7 @@ Returns the Jack polynomial.
 JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3),
                   algorithm = "naive")
 JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
+JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
 JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
         algorithm = "naive", basis = "MSF")
 }

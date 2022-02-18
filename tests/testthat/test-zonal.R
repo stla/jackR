@@ -94,8 +94,10 @@ test_that(
 test_that(
   "Zonal polynomials sum to the trace - polynomial", {
     n <- 4
-    expected <- (mvp("x_1",1,1)+mvp("x_2",1,1)+mvp("x_3",1,1)+mvp("x_4",1,1))^3
+    expected <-
+      (mvp("x_1",1,1) + mvp("x_2",1,1) + mvp("x_3",1,1) + mvp("x_4",1,1))^3
     obtained <- ZonalPol(n, 3) + ZonalPol(n, c(2,1)) + ZonalPol(n, c(1,1,1))
+    obtained <- gmpoly::gmpoly2mvp(obtained)
     expect_identical(expected$names, obtained$names)
     expect_identical(expected$power, obtained$power)
     expect_equal(expected$coeffs, obtained$coeffs)

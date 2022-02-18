@@ -167,6 +167,7 @@ JackPolDK_gmp <- function(n, lambda, alpha){
 #' @examples JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3),
 #'                   algorithm = "naive")
 #' JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
+#' JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
 #' JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
 #'         algorithm = "naive", basis = "MSF")
 JackPol <- function(n, lambda, alpha, algorithm = "DK",
@@ -245,10 +246,21 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
 }
 
 ZonalPolDK <- function(m, lambda){
-  jack <- JackPolDK(m, lambda, alpha= 2)
+  jack <- JackPolDK(m, lambda, alpha = 2)
   jlambda <- sum(logHookLengths(lambda, alpha = 2))
   n <- sum(lambda)
   exp(n*log(2) + lfactorial(n) - jlambda) * jack
+}
+
+#' @importFrom gmp as.bigq factorialZ
+#' @importFrom gmpoly gmpolyConstant
+#' @noRd
+ZonalPolDK_gmp <- function(m, lambda){
+  twoq <- as.bigq(2)
+  jack <- JackPolDK_gmp(m, lambda, alpha = twoq)
+  jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
+  n <- sum(lambda)
+  gmpolyConstant(m, twoq^n * factorialZ(n) / jlambda) * jack
 }
 
 #' Zonal polynomial
@@ -263,23 +275,30 @@ ZonalPolDK <- function(m, lambda){
 #' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 #' for \code{algorithm = "DK"} the canonical basis is always used and
 #' this parameter is ignored
-#' @param exact logical, whether to get rational coefficients when using
-#' \code{algorithm = "naive"}; ignored if \code{algorithm = "DK"}
+#' @param exact logical, whether to get rational coefficients
 #'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
-#' character string if \code{basis = "MSF"}.
+#' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
+#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+#'  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
+#'  character string if \code{basis = "MSF"}.
+#'
 #' @importFrom mvp constant mvp
 #' @export
 #'
 #' @examples ZonalPol(3, lambda = c(3,1), algorithm = "naive")
 #' ZonalPol(3, lambda = c(3,1), algorithm = "DK")
+#' ZonalPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
 #' ZonalPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
 ZonalPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)
   if(algo == "DK"){
-    ZonalPolDK(n, lambda)
+    if(exact){
+      ZonalPolDK_gmp(n, lambda)
+    }else{
+      ZonalPolDK(n, lambda)
+    }
   }else{
     ZonalPolNaive(n, lambda, basis, exact)
   }
