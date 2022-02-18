@@ -55,6 +55,8 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   }
 }
 
+#' @importFrom mvp constant mvp
+#' @noRd
 JackPolDK <- function(n, lambda, alpha){
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   jac <- function(m, k, mu, nu, beta){
@@ -147,18 +149,18 @@ JackPolDK_gmp <- function(n, lambda, alpha){
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
-#' @param alpha parameter of the Jack polynomial, always a positive number
-#' for \code{algorithm = "DK"}, a positive number or a positive \code{bigq}
-#' rational number for \code{algorithm = "naive"}
+#' @param alpha parameter of the Jack polynomial, a positive number, possibly
+#'   a \code{\link[gmp]{bigq}} rational number
 #' @param algorithm the algorithm used, either \code{"DK"} or \code{"naive"}
 #' @param basis the polynomial basis for \code{algorithm = "naive"},
 #' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 #' for \code{algorithm = "DK"} the canonical basis is always used and
 #' this parameter is ignored
 #'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
-#' character string if \code{basis = "MSF"}.
-#' @importFrom mvp constant mvp
+#' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
+#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if \code{alpha}
+#'  is a \code{bigq} rational number and \code{algorithm = "DK"}, or a
+#'  character string if \code{basis = "MSF"}.
 #' @importFrom gmp is.bigq
 #' @export
 #'

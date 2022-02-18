@@ -12,9 +12,8 @@ JackPol(n, lambda, alpha, algorithm = "DK", basis = "canonical")
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{alpha}{parameter of the Jack polynomial, always a positive number
-for \code{algorithm = "DK"}, a positive number or a positive \code{bigq}
-rational number for \code{algorithm = "naive"}}
+\item{alpha}{parameter of the Jack polynomial, a positive number, possibly
+a \code{\link[gmp]{bigq}} rational number}
 
 \item{algorithm}{the algorithm used, either \code{"DK"} or \code{"naive"}}
 
@@ -24,8 +23,10 @@ for \code{algorithm = "DK"} the canonical basis is always used and
 this parameter is ignored}
 }
 \value{
-A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}) or a
-character string if \code{basis = "MSF"}.
+A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
+ or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if \code{alpha}
+ is a \code{bigq} rational number and \code{algorithm = "DK"}, or a
+ character string if \code{basis = "MSF"}.
 }
 \description{
 Returns the Jack polynomial.
