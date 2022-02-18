@@ -1,5 +1,3 @@
-context("Jack")
-
 test_that("Jack at x = 0", {
   expect_equal(Jack(c(0,0), NULL, 2), 1)
   expect_equal(Jack(c(0,0,0), c(3,2), 2), 0)
@@ -167,3 +165,14 @@ test_that(
     expect_identical(polEval, Jack(as.bigq(x), lambda, alpha))
   }
 )
+
+test_that("JackPol gmp", {
+  gmpol <-
+    JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
+  mvpol <-
+    JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
+  gmvpol <- gmpoly::gmpoly2mvp(gmpol)
+  expect_identical(gmvpol[["names"]], mvpol[["names"]])
+  expect_identical(gmvpol[["power"]], mvpol[["power"]])
+  expect_equal(gmvpol[["coeffs"]], mvpol[["coeffs"]])
+})
