@@ -136,9 +136,6 @@ JackPolDK_gmp <- function(n, lambda, alpha){
   S <- as.list(rep(NA, Nlambdalambda * n))
   dim(S) <- c(Nlambdalambda, n)
   oneq <- as.bigq(1L)
-  # x <- lapply(1L:n, function(i){
-  #   gmpoly(coeffs = as.bigq(1L), powers = rbind(c(rep(0L, i-1L), 1L)))
-  # })
   jac(n, 0L, lambda, lambda, oneq)
 }
 
@@ -366,7 +363,7 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
 SchurPolDK <- function(n, lambda){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){
-    if(length(nu) == 0L || nu[1L]==0L || m == 0L){
+    if(length(nu) == 0L || nu[1L] == 0L || m == 0L){
       return(constant(1))
     }
     if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
@@ -399,7 +396,7 @@ SchurPolDK <- function(n, lambda){
 SchurPolDK_gmp <- function(n, lambda){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){
-    if(length(nu) == 0L || nu[1L]==0L || m == 0L){
+    if(length(nu) == 0L || nu[1L] == 0L || m == 0L){
       return(gmpolyConstant(m, 1L))
     }
     if(length(nu) > m && nu[m+1L] > 0L) return(gmpolyConstant(m, 0L))

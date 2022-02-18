@@ -4,8 +4,12 @@
 NULL
 
 isPositiveInteger <- function(n){
-  is.vector(n) && is.numeric(n) && length(n) == 1L && floor(n) == n
+  is.vector(n) && is.numeric(n) && length(n) == 1L && !is.na(n) && floor(n) == n
 }
+
+# isStrictlyPositiveInteger <- function(n){
+#   isPositiveInteger(n) && n != 0
+# }
 
 isPartition <- function(lambda){
   length(lambda) == 0L || all(floor(lambda) == lambda) && all(diff(lambda) <= 0)
