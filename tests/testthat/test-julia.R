@@ -1,6 +1,29 @@
 test_that("Julia", {
   skip_if_not(JuliaConnectoR::juliaSetupOk(), "Julia setup is not OK")
   julia <- Jack_julia()
+  # numerical ####
+  x <- c("1/2", "2/3", "5")
+  xq <- gmp::as.bigq(x)
+  lambda <- c(2, 1, 1)
+  # jack
+  alpha <- "2/3"
+  alphaq <- gmp::as.bigq(alpha)
+  expect_equal(
+    julia$Jack(x, lambda, alpha), Jack(xq, lambda, alphaq)
+  )
+  # zonal
+  expect_equal(
+    julia$Zonal(x, lambda), Zonal(xq, lambda)
+  )
+  # zonalQ
+  expect_equal(
+    julia$ZonalQ(x, lambda), ZonalQ(xq, lambda)
+  )
+  # Schur
+  expect_equal(
+    julia$Schur(x, lambda), Schur(xq, lambda)
+  )
+  # polynomials ####
   n <- 3
   lambda <- c(3, 2)
   # jack
