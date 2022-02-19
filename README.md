@@ -20,19 +20,19 @@ julia <- Jack_julia()
 x <- c(1/2, 2/3, 1, 2/3, -1, -2, 1)
 lambda <- c(5, 3, 2, 2, 1)
 alpha <- 3
-microbenchmark(
-      R = Jack(x, lambda, alpha),
-  Julia = julia$Jack(x, lambda, alpha),
-  times = 6L,
-  unit  = "seconds"
+print(
+  microbenchmark(
+        R = Jack(x, lambda, alpha),
+    Julia = julia$Jack(x, lambda, alpha),
+    times = 6L,
+    unit  = "seconds"
+  ),
+  signif = 6L
 )
 ## Unit: seconds
-##   expr          min           lq       mean      median         uq       max
-##      R 14.329926001 14.572720201 15.3993961 15.23696395 16.4932712 16.526531
-##  Julia  0.006764501  0.007570702  0.3300896  0.01297875  0.0255175  1.914727
-##  neval
-##      6
-##      6
+##   expr       min         lq      mean     median         uq      max neval
+##      R 14.781300 14.9351000 15.464700 15.3458000 15.9794000 16.40060     6
+##  Julia  0.007928  0.0082938  0.376727  0.0134796  0.0211216  2.19606     6
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -135,9 +135,9 @@ microbenchmark(
   times = 6L
 )
 ## Unit: milliseconds
-##   expr      min        lq     mean    median       uq      max neval
-##      R 5257.458 5274.3686 5900.528 5659.4551 6192.911 7359.521     6
-##  Julia  891.467  895.8983 1035.312  938.3374  969.362 1578.473     6
+##   expr       min        lq     mean    median       uq      max neval
+##      R 5592.8929 5915.0613 6271.155 6357.0049 6669.335 6735.633     6
+##  Julia  885.3617  928.7352 1068.067  996.5101 1024.529 1576.754     6
 ```
 
 As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia,
@@ -160,7 +160,7 @@ microbenchmark(
   times = 6L
 )
 ## Unit: milliseconds
-##          expr      min       lq     mean   median       uq      max neval
-##     Julia_mvp 873.0859 877.7949 891.7720 884.6237 908.4641 922.0399     6
-##  Julia_gmpoly 875.8655 906.3820 922.4121 913.1271 949.8564 976.1147     6
+##          expr      min       lq     mean   median       uq       max neval
+##     Julia_mvp 897.0567 897.2116 939.6119 903.7371 992.6439 1043.2851     6
+##  Julia_gmpoly 873.1688 880.4055 883.2996 884.9617 887.4857  888.8141     6
 ```

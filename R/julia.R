@@ -107,7 +107,11 @@ as.function.exactmvp <- function(x, ...){
 #' @description Evaluate the Jack polynomials with Julia. This is highly faster.
 #'
 #' @return A list of functions having the same names as the R functions of this
-#'   package (\code{Jack}, \code{JackPol}, \code{Schur}, etc).
+#'   package (\code{Jack}, \code{JackPol}, \code{Schur}, etc). The
+#'   \code{XXXPol} functions have an argument \code{poly}, whose possible
+#'   values are \code{"mvp"} (default) and \code{"gmpoly"}, and this is the
+#'   class of the polynomial returned by these functions. See the examples
+#'   and the \href{https://github.com/stla/jackR#readme}{README} file.
 #'
 #' @importFrom JuliaConnectoR juliaSetupOk juliaCall juliaImport juliaGet juliaEval
 #' @importFrom mvp mvp print.mvp
@@ -128,6 +132,8 @@ as.function.exactmvp <- function(x, ...){
 #'   # for `JackPol`, you can pass a rational `alpha` as a string:
 #'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
 #'   class(pol)
+#'   # you must give `alpha` as a string if you choose `poly = "gmpoly"`
+#'   julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2", poly = "gmpoly")
 #'   JuliaConnectoR::stopJulia()
 #' }}
 Jack_julia <- function(){
