@@ -10,7 +10,7 @@ Jack_julia()
 A list of functions having the same names as the R functions of this
   package (\code{Jack}, \code{JackPol}, \code{Schur}, etc). The
   \code{XXXPol} functions have an argument \code{poly}, whose possible
-  values are \code{"mvp"} (default) and \code{"gmpoly"}, and this is the
+  value is \code{"mvp"} (default) or \code{"gmpoly"}, and this is the
   class of the polynomial returned by these functions. See the examples
   and the \href{https://github.com/stla/jackR#readme}{README} file.
 }
