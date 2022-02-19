@@ -299,9 +299,7 @@ Jack_julia <- function(){
       class(poly) <- c("exactmvp", class(poly))
     }else{ # gmpoly
       powers <- do.call(rbind, J[["powers"]])
-      coeffs <- vapply(J[["qcoefficients"]], function(f){
-        paste0(f[["num"]], "/", f[["den"]])
-      }, character(1L))
+      coeffs <- unlist(J[["coefficients"]])
       poly <- gmpoly(coeffs = as.bigq(coeffs), powers = powers)
     }
     poly
