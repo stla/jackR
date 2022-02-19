@@ -175,7 +175,7 @@ Jack_julia <- function(){
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
-      vars <- paste0("x", seq_len(m))
+      vars <- paste0("x_", seq_len(m))
       vars <- rep(list(vars), length(coefficients))
       powers <- J[["powers"]]
       poly <- mvp(vars, powers, coefficients)
@@ -214,7 +214,7 @@ Jack_julia <- function(){
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
-      vars <- paste0("x", seq_len(m))
+      vars <- paste0("x_", seq_len(m))
       vars <- rep(list(vars), length(coefficients))
       powers <- J[["powers"]]
       poly <- mvp(vars, powers, coefficients)
@@ -251,7 +251,7 @@ Jack_julia <- function(){
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
-      vars <- paste0("x", seq_len(m))
+      vars <- paste0("x_", seq_len(m))
       vars <- rep(list(vars), length(coefficients))
       powers <- J[["powers"]]
       poly <- mvp(vars, powers, coefficients)
@@ -288,7 +288,7 @@ Jack_julia <- function(){
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
-      vars <- paste0("x", seq_len(m))
+      vars <- paste0("x_", seq_len(m))
       vars <- rep(list(vars), length(coefficients))
       powers <- J[["powers"]]
       poly <- mvp(vars, powers, coefficients)
