@@ -29,7 +29,8 @@ alpha <- 3
 microbenchmark(
       R = Jack(x, lambda, alpha),
   Julia = julia$Jack(x, lambda, alpha),
-  times = 5
+  times = 6L,
+  unit  = "seconds"
 )
 ```
 
@@ -110,7 +111,7 @@ alphaq <- gmp::as.bigq(alpha)
 microbenchmark(
       R = JackPol(n, lambda, alphaq),
   Julia = julia$JackPol(n, lambda, alpha),
-  times = 5
+  times = 6L
 )
 ```
 
@@ -129,6 +130,6 @@ alpha <- "2/3"
 microbenchmark(
      Julia_mvp = julia$JackPol(n, lambda, alpha),
   Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "gmpoly"),
-  times = 5
+  times = 6L
 )
 ```

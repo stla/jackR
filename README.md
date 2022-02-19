@@ -23,15 +23,16 @@ alpha <- 3
 microbenchmark(
       R = Jack(x, lambda, alpha),
   Julia = julia$Jack(x, lambda, alpha),
-  times = 5
+  times = 6L,
+  unit  = "seconds"
 )
-## Unit: milliseconds
-##   expr          min           lq       mean     median         uq       max
-##      R 14813.461802 14891.801201 15384.7213 14916.6478 15410.1824 16891.513
-##  Julia     6.664801     8.450301   414.3328    12.7052    20.7002  2023.143
+## Unit: seconds
+##   expr          min           lq       mean      median         uq       max
+##      R 14.329926001 14.572720201 15.3993961 15.23696395 16.4932712 16.526531
+##  Julia  0.006764501  0.007570702  0.3300896  0.01297875  0.0255175  1.914727
 ##  neval
-##      5
-##      5
+##      6
+##      6
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -44,7 +45,7 @@ for the argument `alpha`, as a character string:
 JP <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5")
 JP
 ## mvp object algebraically equal to
-## 3.92 x1 x2^3  +  5.6 x1^2 x2^2  +  3.92 x1^3 x2
+## 3.92 x_1 x_2^3  +  5.6 x_1^2 x_2^2  +  3.92 x_1^3 x_2
 ## 
 ## Exact expression:
 ## 98/25 * x1^3 * x2  +  28/5 * x1^2 * x2^2  +  98/25 * x1 * x2^3
@@ -131,12 +132,12 @@ alphaq <- gmp::as.bigq(alpha)
 microbenchmark(
       R = JackPol(n, lambda, alphaq),
   Julia = julia$JackPol(n, lambda, alpha),
-  times = 5
+  times = 6L
 )
 ## Unit: milliseconds
-##   expr       min        lq     mean    median       uq      max neval
-##      R 5587.8560 5820.7297 5869.751 5853.0502 5859.987 6227.134     5
-##  Julia  961.7789  970.6802 1136.287  994.6542 1159.568 1594.755     5
+##   expr      min        lq     mean    median       uq      max neval
+##      R 5257.458 5274.3686 5900.528 5659.4551 6192.911 7359.521     6
+##  Julia  891.467  895.8983 1035.312  938.3374  969.362 1578.473     6
 ```
 
 As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia,
@@ -156,10 +157,10 @@ alpha <- "2/3"
 microbenchmark(
      Julia_mvp = julia$JackPol(n, lambda, alpha),
   Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "gmpoly"),
-  times = 5
+  times = 6L
 )
 ## Unit: milliseconds
 ##          expr      min       lq     mean   median       uq      max neval
-##     Julia_mvp 895.1235 897.2544 962.9466 906.6073 971.1806 1144.567     5
-##  Julia_gmpoly 912.2100 913.1874 942.5399 918.7743 957.8235 1010.704     5
+##     Julia_mvp 873.0859 877.7949 891.7720 884.6237 908.4641 922.0399     6
+##  Julia_gmpoly 875.8655 906.3820 922.4121 913.1271 949.8564 976.1147     6
 ```
