@@ -6,7 +6,15 @@ rationalMonomial <- function(variables, powers){
   paste0(factors, collapse = "")
 }
 
-rationalPolynomial <- function(variables, powers, coeffs, stars = FALSE){
+rationalPolynomial <- function(powers, coeffs, stars = FALSE){
+  nterms <- length(coeffs)
+  variables <- vector(mode = "list", length = nterms)
+  for(i in 1L:nterms){
+    pwrs <- powers[[i]]
+    zs <- which(pwrs != 0L)
+    powers[[i]] <- pwrs[zs]
+    variables[[i]] <- paste0("x", zs)
+  }
   monomials <- mapply(rationalMonomial, variables, powers, USE.NAMES = FALSE)
   spaces <- rep(" ", length(coeffs))
   ones <- coeffs == "1"
@@ -103,6 +111,9 @@ as.function.exactmvp <- function(x, ...){
 #'
 #' @importFrom JuliaConnectoR juliaSetupOk juliaCall juliaImport juliaGet juliaEval
 #' @importFrom mvp mvp print.mvp
+#' @importFrom gmpoly gmpoly
+#' @importFrom gmp as.bigq
+#'
 #' @export
 #'
 #' @seealso \code{\link{as.function.exactmvp}}
@@ -137,7 +148,8 @@ Jack_julia <- function(){
       unname(as.list(x)), unname(as.list(as.integer(lambda))), unname(alpha)
     )
   }
-  JackPol <- function(m, lambda, alpha){
+  JackPol <- function(m, lambda, alpha, poly = "mvp"){
+    poly <- match.arg(poly, c("mvp", "gmpoly"))
     rational <- FALSE
     if(is.character(alpha)){
       if(!grepl("^\\d+/\\d+$", alpha)){
@@ -148,31 +160,45 @@ Jack_julia <- function(){
       }
       alpha <- as.integer(strsplit(alpha, "/")[[1L]])
       rational <- TRUE
+    }else{
+      if(poly == "gmpoly"){
+        stop(
+          "If you want a `gmpoly` polynomial, you have ",
+          "to supply a rational `alpha`; ",
+          "it must be a character string of the form `p/q`."
+        )
+      }
     }
     J <- juliaGet(JackPolynomials$JackPolynomial(
       unname(as.integer(m)), unname(as.list(as.integer(lambda))), unname(alpha),
       TRUE
     ))
-    coefficients <- J[["coefficients"]]
-    vars <- paste0("x", seq_len(m))
-    vars <- rep(list(vars), length(coefficients))
-    poly <- mvp(vars, J[["powers"]], coefficients)
-    if(rational){
-      variables <- poly[["names"]]
-      powers <- poly[["power"]]
-      qcoefficients <- J[["qcoefficients"]]
-      coeffs <- vapply(qcoefficients, function(f){
-        den <- f[["den"]]
-        if(den == 1L){
-          as.character(f[["num"]])
-        }else{
-          paste0(f[["num"]], "/", den)
-        }
+    if(poly == "mvp"){
+      coefficients <- J[["coefficients"]]
+      vars <- paste0("x", seq_len(m))
+      vars <- rep(list(vars), length(coefficients))
+      powers <- J[["powers"]]
+      poly <- mvp(vars, powers, coefficients)
+      if(rational){
+        coeffs <- vapply(J[["qcoefficients"]], function(f){
+          den <- f[["den"]]
+          if(den == 1L){
+            as.character(f[["num"]])
+          }else{
+            paste0(f[["num"]], "/", den)
+          }
+        }, character(1L))
+        attr(poly, "exact") <-
+          rationalPolynomial(powers, coeffs, stars = TRUE)
+        attr(poly, "nvars") <- m
+        class(poly) <- c("exactmvp", class(poly))
+      }
+    }else{ # gmpoly
+      powers <- do.call(rbind, J[["powers"]])
+      coeffs <- vapply(J[["qcoefficients"]], function(f){
+        paste0(f[["num"]], "/", f[["den"]])
       }, character(1L))
-      attr(poly, "exact") <-
-        rationalPolynomial(variables, powers, coeffs, stars = TRUE)
-      attr(poly, "nvars") <- m
-      class(poly) <- c("exactmvp", class(poly))
+      poly <- gmpoly(coeffs = as.bigq(coeffs), powers = powers)
     }
     poly
   }
@@ -188,11 +214,9 @@ Jack_julia <- function(){
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
     vars <- rep(list(vars), length(coefficients))
-    poly <- mvp(vars, J[["powers"]], coefficients)
-    variables <- poly[["names"]]
-    powers <- poly[["power"]]
-    qcoefficients <- J[["qcoefficients"]]
-    coeffs <- vapply(qcoefficients, function(f){
+    powers <- J[["powers"]]
+    poly <- mvp(vars, powers, coefficients)
+    coeffs <- vapply(J[["qcoefficients"]], function(f){
       den <- f[["den"]]
       if(den == 1L){
         as.character(f[["num"]])
@@ -201,7 +225,7 @@ Jack_julia <- function(){
       }
     }, character(1L))
     attr(poly, "exact") <-
-      rationalPolynomial(variables, powers, coeffs, stars = TRUE)
+      rationalPolynomial(powers, coeffs, stars = TRUE)
     attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
@@ -218,11 +242,9 @@ Jack_julia <- function(){
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
     vars <- rep(list(vars), length(coefficients))
-    poly <- mvp(vars, J[["powers"]], coefficients)
-    variables <- poly[["names"]]
-    powers <- poly[["power"]]
-    qcoefficients <- J[["qcoefficients"]]
-    coeffs <- vapply(qcoefficients, function(f){
+    powers <- J[["powers"]]
+    poly <- mvp(vars, powers, coefficients)
+    coeffs <- vapply(J[["qcoefficients"]], function(f){
       den <- f[["den"]]
       if(den == 1L){
         as.character(f[["num"]])
@@ -231,7 +253,7 @@ Jack_julia <- function(){
       }
     }, character(1L))
     attr(poly, "exact") <-
-      rationalPolynomial(variables, powers, coeffs, stars = TRUE)
+      rationalPolynomial(powers, coeffs, stars = TRUE)
     attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
@@ -248,12 +270,11 @@ Jack_julia <- function(){
     coefficients <- J[["coefficients"]]
     vars <- paste0("x", seq_len(m))
     vars <- rep(list(vars), length(coefficients))
-    poly <- mvp(vars, J[["powers"]], coefficients)
-    variables <- poly[["names"]]
-    powers <- poly[["power"]]
+    powers <- J[["powers"]]
+    poly <- mvp(vars, powers, coefficients)
     coeffs <- as.character(coefficients)
     attr(poly, "exact") <-
-      rationalPolynomial(variables, powers, coeffs, stars = TRUE)
+      rationalPolynomial(powers, coeffs, stars = TRUE)
     attr(poly, "nvars") <- m
     class(poly) <- c("exactmvp", class(poly))
     poly
