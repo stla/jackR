@@ -103,6 +103,18 @@ as.function.exactmvp <- function(x, ...){
   f
 }
 
+rationalize <- function(x){
+  if(grepl("^ *\\d+ */ *\\d+ *$", x)){
+    return(as.list(as.integer(strsplit(x, "/")[[1L]])))
+  }
+  if(grepl("^ *\\d+ *$", x)){
+    return(list(as.integer(x), 1L))
+  }
+  stop(
+    sprintf("The string '%s' cannot be identified to a fraction.", x)
+  )
+}
+
 #' @title Evaluation with Julia
 #' @description Evaluate the Jack polynomials with Julia. This is highly faster.
 #'
@@ -150,6 +162,26 @@ Jack_julia <- function(){
   . <- juliaCall("include", module)
   JackPolynomials <- juliaImport(".JackPolynomials", all = FALSE)
   Jack <- function(x, lambda, alpha = 2){
+    if(is.character(alpha)){
+      if(!is.character(x)){
+        stop(
+          "If you want to use a rational `alpha`, you have to use rational ",
+          "numbers for the components of `x` as well."
+        )
+      }
+      alpha <- rationalize(alpha)
+      x <- lapply(x, rationalize)
+    }
+    if(is.character(x)){
+      if(!is.character(alpha)){
+        stop(
+          "If you want to use rational numbers in `x`, you have to use a ",
+          "rational number for `alpha` as well."
+        )
+      }
+      alpha <- rationalize(alpha)
+      x <- lapply(x, rationalize)
+    }
     JackPolynomials$Jack(
       unname(as.list(x)), unname(as.list(as.integer(lambda))), unname(alpha)
     )
