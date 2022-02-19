@@ -30,9 +30,9 @@ print(
   signif = 6L
 )
 ## Unit: seconds
-##   expr       min         lq      mean     median         uq      max neval
-##      R 14.781300 14.9351000 15.464700 15.3458000 15.9794000 16.40060     6
-##  Julia  0.007928  0.0082938  0.376727  0.0134796  0.0211216  2.19606     6
+##   expr        min         lq      mean     median         uq      max neval
+##      R 14.6556000 14.8779000 15.213200 15.1759000 15.6298000 15.76430     6
+##  Julia  0.0091368  0.0106161  0.369453  0.0114276  0.0138549  2.16026     6
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -135,9 +135,9 @@ microbenchmark(
   times = 6L
 )
 ## Unit: milliseconds
-##   expr       min        lq     mean    median       uq      max neval
-##      R 5592.8929 5915.0613 6271.155 6357.0049 6669.335 6735.633     6
-##  Julia  885.3617  928.7352 1068.067  996.5101 1024.529 1576.754     6
+##   expr       min       lq     mean    median        uq      max neval
+##      R 5944.5445 6126.592 6518.818 6473.0548 6699.5025 7396.161     6
+##  Julia  877.5917  936.721 1031.260  948.7592  993.8618 1481.870     6
 ```
 
 As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia,
@@ -160,7 +160,7 @@ microbenchmark(
   times = 6L
 )
 ## Unit: milliseconds
-##          expr      min       lq     mean   median       uq       max neval
-##     Julia_mvp 897.0567 897.2116 939.6119 903.7371 992.6439 1043.2851     6
-##  Julia_gmpoly 873.1688 880.4055 883.2996 884.9617 887.4857  888.8141     6
+##          expr      min       lq     mean   median       uq      max neval
+##     Julia_mvp 867.1429 882.4804 906.8851 886.4314 901.5080 1017.316     6
+##  Julia_gmpoly 847.6498 855.8250 925.9224 938.1641 974.2659 1001.465     6
 ```
