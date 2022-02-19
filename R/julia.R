@@ -1,8 +1,9 @@
 rationalMonomial <- function(variables, powers){
-  paste0(
-    paste0(variables, "^", powers, c(rep(" ", length(powers)-1L), "")),
-    collapse = ""
+  factors <- gsub(
+    "\\^1( ?)$", "\\1",
+    paste0(variables, "^", powers, c(rep(" ", length(powers)-1L), ""))
   )
+  paste0(factors, collapse = "")
 }
 
 rationalPolynomial <- function(variables, powers, coeffs, stars = FALSE){
@@ -18,17 +19,15 @@ rationalPolynomial <- function(variables, powers, coeffs, stars = FALSE){
     gsub("(\\d) x", "\\1 * x",
          gsub("+  -", "-  ",
               paste0(
-                paste0(coeffs, spaces, gsub("^1", "", monomials, fixed = TRUE)),
-                collapse = "  +  "
+                paste0(coeffs, spaces, monomials), collapse = "  +  "
               ),
               fixed = TRUE
          )
     )
   }else{
-    gsub("+ -", " - ",
+    gsub("+ -", "- ",
          paste0(
-           paste0(coeffs, spaces, gsub("^1", "", monomials, fixed = TRUE)),
-           collapse = "+ "
+           paste0(coeffs, spaces, monomials), collapse = " + "
          ),
          fixed = TRUE
     )
