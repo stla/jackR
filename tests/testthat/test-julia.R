@@ -3,7 +3,7 @@ test_that("Julia", {
   julia <- Jack_julia()
   n <- 3
   lambda <- c(3, 2)
-  alpha <- "2/1"
+  alpha <- "2/3"
   alphaq <- gmp::as.bigq(alpha)
   mvpol_julia <- julia$JackPol(n, lambda, alpha, poly = "mvp")
   gmpol_julia <- julia$JackPol(n, lambda, alpha, poly = "gmpoly")
