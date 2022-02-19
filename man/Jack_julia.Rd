@@ -26,10 +26,15 @@ See \code{\link[JuliaConnectoR]{JuliaConnectoR-package}} for
 library(jack)
 \donttest{if(JuliaConnectoR::juliaSetupOk()){
   julia <- Jack_julia()
+  # numerical evaluation ####
+  julia$Jack(x = c(2, 2/3), lambda = c(3, 1), alpha = 3/2)
+  # to pass rational numbers, use strings:
+  julia$Jack(x = c("2", "2/3"), lambda = c(3, 1), alpha = "3/2")
+  # symbolic polynomials ####
   # for `JackPol`, you can pass a rational `alpha` as a string:
   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
   class(pol)
-  # you must give `alpha` as a string if you choose `poly = "gmpoly"`
+  # you _must_ give `alpha` as a string if you choose `poly = "gmpoly"`
   julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2", poly = "gmpoly")
   JuliaConnectoR::stopJulia()
 }}

@@ -141,10 +141,15 @@ rationalize <- function(x){
 #' @examples library(jack)
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
 #'   julia <- Jack_julia()
+#'   # numerical evaluation ####
+#'   julia$Jack(x = c(2, 2/3), lambda = c(3, 1), alpha = 3/2)
+#'   # to pass rational numbers, use strings:
+#'   julia$Jack(x = c("2", "2/3"), lambda = c(3, 1), alpha = "3/2")
+#'   # symbolic polynomials ####
 #'   # for `JackPol`, you can pass a rational `alpha` as a string:
 #'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
 #'   class(pol)
-#'   # you must give `alpha` as a string if you choose `poly = "gmpoly"`
+#'   # you _must_ give `alpha` as a string if you choose `poly = "gmpoly"`
 #'   julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2", poly = "gmpoly")
 #'   JuliaConnectoR::stopJulia()
 #' }}
@@ -162,6 +167,7 @@ Jack_julia <- function(){
   . <- juliaCall("include", module)
   JackPolynomials <- juliaImport(".JackPolynomials", all = FALSE)
   Jack <- function(x, lambda, alpha = 2){
+    rational <- FALSE
     if(is.character(alpha)){
       if(!is.character(x)){
         stop(
@@ -171,6 +177,7 @@ Jack_julia <- function(){
       }
       alpha <- rationalize(alpha)
       x <- lapply(x, rationalize)
+      rational <- TRUE
     }
     if(is.character(x)){
       if(!is.character(alpha)){
@@ -181,10 +188,16 @@ Jack_julia <- function(){
       }
       alpha <- rationalize(alpha)
       x <- lapply(x, rationalize)
+      rational <- TRUE
     }
-    JackPolynomials$Jack(
+    result <- JackPolynomials$Jack(
       unname(as.list(x)), unname(as.list(as.integer(lambda))), unname(alpha)
     )
+    if(rational){
+      result <- juliaGet(result)
+      result <- as.bigq(result[["num"]], result[["den"]])
+    }
+    result
   }
   JackPol <- function(m, lambda, alpha, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
@@ -241,9 +254,17 @@ Jack_julia <- function(){
     poly
   }
   Zonal <- function(x, lambda){
-    JackPolynomials$Zonal(
+    if(rational <- is.character(x)){
+      x <- lapply(x, rationalize)
+    }
+    result <- JackPolynomials$Zonal(
       unname(as.list(x)), unname(as.list(as.integer(lambda)))
     )
+    if(rational){
+      result <- juliaGet(result)
+      result <- as.bigq(result[["num"]], result[["den"]])
+    }
+    result
   }
   ZonalPol <- function(m, lambda, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
@@ -278,9 +299,17 @@ Jack_julia <- function(){
     poly
   }
   ZonalQ <- function(x, lambda){
-    JackPolynomials$ZonalQ(
+    if(rational <- is.character(x)){
+      x <- lapply(x, rationalize)
+    }
+    result <- JackPolynomials$ZonalQ(
       unname(as.list(x)), unname(as.list(as.integer(lambda)))
     )
+    if(rational){
+      result <- juliaGet(result)
+      result <- as.bigq(result[["num"]], result[["den"]])
+    }
+    result
   }
   ZonalQPol <- function(m, lambda, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
@@ -315,9 +344,17 @@ Jack_julia <- function(){
     poly
   }
   Schur <- function(x, lambda){
-    JackPolynomials$Schur(
+    if(rational <- is.character(x)){
+      x <- lapply(x, rationalize)
+    }
+    result <- JackPolynomials$Schur(
       unname(as.list(x)), unname(as.list(as.integer(lambda)))
     )
+    if(rational){
+      result <- juliaGet(result)
+      result <- as.bigq(result[["num"]], result[["den"]])
+    }
+    result
   }
   SchurPol <- function(m, lambda, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
