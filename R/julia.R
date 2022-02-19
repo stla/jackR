@@ -115,6 +115,14 @@ rationalize <- function(x){
   )
 }
 
+asIntegerList <- function(lambda){
+  if(length(lambda) == 0L){
+    integer(0L)
+  }else{
+    unname(as.list(as.integer(lambda)))
+  }
+}
+
 #' @title Evaluation with Julia
 #' @description Evaluate the Jack polynomials with Julia. This is highly faster.
 #'
@@ -191,7 +199,7 @@ Jack_julia <- function(){
       rational <- TRUE
     }
     result <- JackPolynomials$Jack(
-      unname(as.list(x)), unname(as.list(as.integer(lambda))), unname(alpha)
+      unname(as.list(x)), asIntegerList(lambda), unname(alpha)
     )
     if(rational){
       result <- juliaGet(result)
@@ -221,7 +229,7 @@ Jack_julia <- function(){
       }
     }
     J <- juliaGet(JackPolynomials$JackPolynomial(
-      unname(as.integer(m)), unname(as.list(as.integer(lambda))), unname(alpha),
+      unname(as.integer(m)), asIntegerList(lambda), unname(alpha),
       TRUE
     ))
     if(poly == "mvp"){
@@ -258,7 +266,7 @@ Jack_julia <- function(){
       x <- lapply(x, rationalize)
     }
     result <- JackPolynomials$Zonal(
-      unname(as.list(x)), unname(as.list(as.integer(lambda)))
+      unname(as.list(x)), asIntegerList(lambda)
     )
     if(rational){
       result <- juliaGet(result)
@@ -269,7 +277,7 @@ Jack_julia <- function(){
   ZonalPol <- function(m, lambda, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
     J <- juliaGet(JackPolynomials$ZonalPolynomial(
-      unname(as.integer(m)), unname(as.list(as.integer(lambda)))
+      unname(as.integer(m)), asIntegerList(lambda)
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
@@ -303,7 +311,7 @@ Jack_julia <- function(){
       x <- lapply(x, rationalize)
     }
     result <- JackPolynomials$ZonalQ(
-      unname(as.list(x)), unname(as.list(as.integer(lambda)))
+      unname(as.list(x)), asIntegerList(lambda)
     )
     if(rational){
       result <- juliaGet(result)
@@ -314,7 +322,7 @@ Jack_julia <- function(){
   ZonalQPol <- function(m, lambda, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
     J <- juliaGet(JackPolynomials$ZonalQPolynomial(
-      unname(as.integer(m)), unname(as.list(as.integer(lambda)))
+      unname(as.integer(m)), asIntegerList(lambda)
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
@@ -348,7 +356,7 @@ Jack_julia <- function(){
       x <- lapply(x, rationalize)
     }
     result <- JackPolynomials$Schur(
-      unname(as.list(x)), unname(as.list(as.integer(lambda)))
+      unname(as.list(x)), asIntegerList(lambda)
     )
     if(rational){
       result <- juliaGet(result)
@@ -359,7 +367,7 @@ Jack_julia <- function(){
   SchurPol <- function(m, lambda, poly = "mvp"){
     poly <- match.arg(poly, c("mvp", "gmpoly"))
     J <- juliaGet(JackPolynomials$SchurPolynomial(
-      unname(as.integer(m)), unname(as.list(as.integer(lambda)))
+      unname(as.integer(m)), asIntegerList(lambda)
     ))
     if(poly == "mvp"){
       coefficients <- J[["coefficients"]]
