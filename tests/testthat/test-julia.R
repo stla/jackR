@@ -60,6 +60,13 @@ test_that("Julia", {
   expect_true(mvpEqual(
     gmpoly::gmpoly2mvp(gmpol_r), gmpoly::gmpoly2mvp(gmpol_julia)
   ))
+  # as.function
+  mvpol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5", poly = "mvp")
+  gmpol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5", poly = "gmpoly")
+  f <- as.function(mvpol)
+  y1 <- f("2/3", "7/5")
+  y2 <- as.character(gmpoly::gmpolyEval(gmpol, gmp::as.bigq(c("2/3", "7/5"))))
+  expect_equal(y1, y2)
   #
   JuliaConnectoR::stopJulia()
 })
