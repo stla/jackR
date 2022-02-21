@@ -30,9 +30,9 @@ print(
   signif = 6L
 )
 ## Unit: seconds
-##   expr        min        lq      mean   median         uq      max neval
-##      R 16.4845000 17.683600 25.317300 26.03790 32.0228000 33.63730     6
-##  Julia  0.0108834  0.010933  0.415645  0.01213  0.0289312  2.41886     6
+##   expr        min         lq      mean    median         uq      max neval
+##      R 15.2136000 15.4525000 15.848700 15.618300 15.9377000 17.25190     6
+##  Julia  0.0092488  0.0096234  0.448923  0.013536  0.0171231  2.63047     6
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -87,15 +87,15 @@ expression:
 ``` r
 prettyForm(JP)
 ## 
-##             3     2          2     3          
-## x2 * 98 * x1    x2  * 28 * x1    x2  * 98 * x1
+##        3               2     2               3
+## 98 * x1  * x2   28 * x1  * x2    98 * x1 * x2 
 ## ------------- + -------------- + -------------
 ##      25               5               25
 ```
 
 ``` r
 toLaTeX(JP)
-## $\frac{x_{2} 98 x_{1}^{3}}{25}  + \frac{x_{2}^{2} 28 x_{1}^{2}}{5}  + \frac{x_{2}^{3} 98 x_{1}}{25} $
+## $\frac{98 x_{1}^{3} x_{2}}{25}  + \frac{28 x_{1}^{2} x_{2}^{2}}{5}  + \frac{98 x_{1} x_{2}^{3}}{25} $
 ```
 
 You can also use the functions `JackPol`, `ZonalPol`, `ZonalQPol` and
@@ -143,8 +143,8 @@ microbenchmark(
 )
 ## Unit: seconds
 ##   expr      min       lq     mean   median       uq      max neval
-##      R 6.398825 6.542576 6.771573 6.590885 6.902432 7.603836     6
-##  Julia 1.054912 1.079292 1.236348 1.143312 1.281949 1.715308     6
+##      R 5.796784 5.969351 6.534679 6.384724 6.501181 8.171313     6
+##  Julia 2.314522 2.425651 2.521455 2.488385 2.544755 2.867033     6
 ```
 
 As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia,
@@ -166,8 +166,8 @@ microbenchmark(
   Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "gmpoly"),
   times = 6L
 )
-## Unit: seconds
-##          expr      min       lq     mean   median       uq      max neval
-##     Julia_mvp 1.096761 1.102846 1.150109 1.121230 1.218684 1.239903     6
-##  Julia_gmpoly 1.041184 1.049621 1.084787 1.078084 1.127551 1.134200     6
+## Unit: milliseconds
+##          expr       min        lq      mean    median       uq      max neval
+##     Julia_mvp 2356.3070 2374.6200 2416.4645 2385.8910 2460.117 2535.961     6
+##  Julia_gmpoly  819.8618  885.6438  927.5658  890.9213  925.444 1152.603     6
 ```

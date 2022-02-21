@@ -6,6 +6,7 @@ rationalMonomial <- function(variables, powers){
   paste0(factors, collapse = "")
 }
 
+#' @importFrom Ryacas yac_str
 rationalPolynomial <- function(powers, coeffs, stars = FALSE){
   nterms <- length(coeffs)
   variables <- vector(mode = "list", length = nterms)
@@ -16,6 +17,16 @@ rationalPolynomial <- function(powers, coeffs, stars = FALSE){
     variables[[i]] <- paste0("x", zs)
   }
   monomials <- mapply(rationalMonomial, variables, powers, USE.NAMES = FALSE)
+  # reversed
+  terms <-
+    paste0(gsub(" ", "*", monomials, fixed = TRUE), " * z Where z==", coeffs)
+  yacpol <- yac_str(
+    paste0(vapply(terms, yac_str, character(1L)), collapse = " + ")
+  )
+  # if(grepl("^\\(", yacpol)){
+  #   yacpol <- sub(")", "", sub("(", "", yacpol, fixed = TRUE), fixed = TRUE)
+  # }
+  #
   spaces <- rep(" ", length(coeffs))
   ones <- coeffs == "1"
   minusones <- coeffs == "-1"
@@ -24,7 +35,7 @@ rationalPolynomial <- function(powers, coeffs, stars = FALSE){
   spaces[minusones] <- ""
   coeffs[minusones] <- "-"
   if(stars){
-    gsub("(\\d) x", "\\1 * x",
+    out <- gsub("(\\d) x", "\\1 * x",
          gsub("+  -", "-  ",
               paste0(
                 paste0(coeffs, spaces, monomials), collapse = "  +  "
@@ -32,14 +43,16 @@ rationalPolynomial <- function(powers, coeffs, stars = FALSE){
               fixed = TRUE
          )
     )
+    attr(out, "yacas") <- yacpol
   }else{
-    gsub("+ -", "- ",
+    out <- gsub("+ -", "- ",
          paste0(
            paste0(coeffs, spaces, monomials), collapse = " + "
          ),
          fixed = TRUE
     )
   }
+  out
 }
 
 
@@ -424,7 +437,7 @@ prettyForm <- function(poly, asCharacter = FALSE){
   if(!inherits(poly, "exactmvp")){
     stop("The 'prettyForm' function is not applicable to this object.")
   }
-  p <- yac_str(sprintf("PrettyForm(%s)", attr(poly, "exact")))
+  p <- yac_str(sprintf("PrettyForm(%s)", attr(attr(poly, "exact"), "yacas")))
   if(asCharacter){
     p
   }else{
@@ -458,7 +471,7 @@ toLaTeX <- function(poly, asCharacter = FALSE){
   if(!inherits(poly, "exactmvp")){
     stop("The 'toLaTeX' function is not applicable to this object.")
   }
-  p <- yac_str(sprintf("TexForm(%s)", attr(poly, "exact")))
+  p <- yac_str(sprintf("TexForm(%s)", attr(attr(poly, "exact"), "yacas")))
   p <- gsub(" ^", "^", p, fixed = TRUE)
   if(asCharacter){
     p
