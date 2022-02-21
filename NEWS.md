@@ -1,4 +1,4 @@
-# Version 2.0.0.9000 (2022-02-19)
+# Version 3.0.0 (2022-02-21)
 
 - Now one can use a `bigq` number for `alpha` in `JackPol`, thanks to the 
 'gmpoly' package, and one can use `exact=TRUE` with `algorithm=DK` for 
