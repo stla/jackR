@@ -61,7 +61,14 @@ character strings:
 jp(2, "3/2")
 ```
 
-The evaluation is performed by the **Ryacas** package. If you want to 
+You can even pass a variable name to this function:
+
+```{r}
+jp("x", "x")
+```
+
+
+This evaluation is performed by the **Ryacas** package. If you want to 
 substitute a variable with a complex number, use a character string which 
 represents this number, with `I` denoting the imaginary unit:
 

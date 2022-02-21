@@ -30,9 +30,9 @@ print(
   signif = 6L
 )
 ## Unit: seconds
-##   expr        min         lq      mean     median         uq      max neval
-##      R 14.6556000 14.8779000 15.213200 15.1759000 15.6298000 15.76430     6
-##  Julia  0.0091368  0.0106161  0.369453  0.0114276  0.0138549  2.16026     6
+##   expr        min        lq      mean   median         uq      max neval
+##      R 16.4845000 17.683600 25.317300 26.03790 32.0228000 33.63730     6
+##  Julia  0.0108834  0.010933  0.415645  0.01213  0.0289312  2.41886     6
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -65,7 +65,14 @@ jp(2, "3/2")
 ## [1] "1239/10"
 ```
 
-The evaluation is performed by the **Ryacas** package. If you want to
+You can even pass a variable name to this function:
+
+``` r
+jp("x", "x")
+## [1] "(336*x^4)/25"
+```
+
+This evaluation is performed by the **Ryacas** package. If you want to
 substitute a variable with a complex number, use a character string
 which represents this number, with `I` denoting the imaginary unit:
 
@@ -134,10 +141,10 @@ microbenchmark(
   Julia = julia$JackPol(n, lambda, alpha),
   times = 6L
 )
-## Unit: milliseconds
-##   expr       min       lq     mean    median        uq      max neval
-##      R 5944.5445 6126.592 6518.818 6473.0548 6699.5025 7396.161     6
-##  Julia  877.5917  936.721 1031.260  948.7592  993.8618 1481.870     6
+## Unit: seconds
+##   expr      min       lq     mean   median       uq      max neval
+##      R 6.398825 6.542576 6.771573 6.590885 6.902432 7.603836     6
+##  Julia 1.054912 1.079292 1.236348 1.143312 1.281949 1.715308     6
 ```
 
 As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia,
@@ -159,8 +166,8 @@ microbenchmark(
   Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "gmpoly"),
   times = 6L
 )
-## Unit: milliseconds
+## Unit: seconds
 ##          expr      min       lq     mean   median       uq      max neval
-##     Julia_mvp 867.1429 882.4804 906.8851 886.4314 901.5080 1017.316     6
-##  Julia_gmpoly 847.6498 855.8250 925.9224 938.1641 974.2659 1001.465     6
+##     Julia_mvp 1.096761 1.102846 1.150109 1.121230 1.218684 1.239903     6
+##  Julia_gmpoly 1.041184 1.049621 1.084787 1.078084 1.127551 1.134200     6
 ```

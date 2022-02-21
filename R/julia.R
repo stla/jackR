@@ -85,7 +85,7 @@ print.exactmvp <- function(x, ...){
 #'   JuliaConnectoR::stopJulia()
 #' }}
 as.function.exactmvp <- function(x, ...){
-  expr <- attr(x, "exact")
+  expr <- sprintf("Simplify(%s)", attr(x, "exact"))
   nvars <- attr(x, "nvars")
   vars <- paste0("x", seq_len(nvars))
   values <- paste0(paste0(vars, "==%s"), collapse = " And ")
