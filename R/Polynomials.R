@@ -2,6 +2,16 @@
 #' @importFrom spray zero one lone
 NULL
 
+#' @importFrom mvp mvp
+as_mvp_spray <- function(s) {
+  powers <- s[["index"]]
+  m <- nrow(powers)
+  n <- ncol(powers)
+  vars <- replicate(m, paste0("x_", 1L:n), simplify = FALSE)
+  powers <- lapply(1L:m, function(i) powers[i, ])
+  mvp(vars, powers, s[["value"]])
+}
+
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
@@ -47,6 +57,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
           out <- out + toAdd
         }
       }
+      as_mvp_spray(out)
     }
     out
   } else {
@@ -87,7 +98,7 @@ JackPolDK <- function(n, lambda, alpha) {
   }
   S <- as.list(rep(NA, .N(lambda,lambda) * n))
   dim(S) <- c(.N(lambda,lambda), n)
-  jac(n, 0L, lambda, lambda, 1)
+  as_mvp_spray(jac(n, 0L, lambda, lambda, 1))
 }
 
 #' @importFrom qspray as.qspray qsprayMaker qlone
@@ -220,6 +231,7 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
           out <- out + toAdd
         }
       }
+      out
     }else{
       out <- zero(m)
       for(i in 1L:ncol(mus)){
@@ -231,7 +243,7 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
         }
       }
     }
-    out
+    as_mvp_spray(out)
   }else{
     vars <- apply(mus, 2L, function(mu){
       paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
@@ -348,7 +360,7 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
         }
       }
     }
-    out
+    as_mvp_spray(out)
   }else{
     vars <- apply(mus, 2L, function(mu){
       paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
