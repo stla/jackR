@@ -26,13 +26,13 @@ test_that(
   expect_identical(JackPol(n, lambda, alpha = 4, algorithm = "naive"),
                    mvp::constant(0))
   expect_identical(JackPol(n, lambda, alpha = as.bigq(4L), algorithm = "naive"),
-                   mvp::constant(0))
+                   as.qspray(0))
   expect_identical(JackPol(n, lambda, alpha = 4, algorithm = "naive",
                            basis = "MSF"),
                    mvp::constant(0))
   expect_identical(JackPol(n, lambda, alpha = as.bigq(4L), algorithm = "naive",
                            basis = "MSF"),
-                   mvp::constant(0))
+                   as.qspray(0))
   }
 )
 
@@ -96,9 +96,9 @@ test_that(
   "Jack (3,1) - polynomial", {
     alpha <- 5/2
     m <- 4
-    expected <- (2*alpha^2+4*alpha+2)*MSFpoly(m,c(3,1)) +
-      (6*alpha+10)*MSFpoly(m,c(2,1,1)) + (4*alpha+4)*MSFpoly(m,c(2,2)) +
-      24*MSFpoly(m,c(1,1,1,1))
+    expected <- as_mvp_spray((2*alpha^2+4*alpha+2)*MSFspray(m,c(3,1)) +
+      (6*alpha+10)*MSFspray(m,c(2,1,1)) + (4*alpha+4)*MSFspray(m,c(2,2)) +
+      24*MSFspray(m,c(1,1,1,1)))
     obtained <- JackPol(m, c(3,1), alpha)
     expect_identical(expected$names, obtained$names)
     expect_identical(expected$power, obtained$power)
@@ -117,8 +117,8 @@ test_that(
       24*MSF(x,c(1,1,1,1))
     jack_naive <- Jack(x, c(4), alpha, algorithm = "naive")
     jack_DK <- Jack(x, c(4), alpha, algorithm = "DK")
-    expect_identical(jack_naive, expected)
-    expect_identical(jack_DK, expected)
+    expect_true(jack_naive == expected)
+    expect_true(jack_DK == expected)
   }
 )
 
@@ -140,28 +140,11 @@ test_that(
 
 test_that(
   "JackPol is correct", {
-    bigqMonomial <- function(vars, powers){
-      do.call(prod, mapply(gmp::pow.bigq, vars, powers, SIMPLIFY = FALSE))
-    }
-    evalPol <- function(pol, x){
-      vars <- paste0("x_", seq_along(x))
-      polValue <- pol
-      for(i in 1L:length(x)){
-        polValue <- mvp::subsmvp(polValue, vars[i], mvp::mvp(x[i],1,1))
-      }
-      polValue$names <- lapply(polValue$names, as.bigq)
-      terms <-
-        mapply(bigqMonomial, polValue$names, polValue$power, SIMPLIFY = FALSE)
-      value <-
-        do.call(sum, mapply("*", polValue$coeffs, terms, SIMPLIFY = FALSE))
-      value
-    }
-    #
     lambda <- c(3,2)
     alpha <- as.bigq(11L,3L)
     pol <- JackPol(4, lambda, alpha, algorithm = "naive")
-    x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
-    polEval <- evalPol(pol, x)
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    polEval <- qspray::evalQspray(pol, x)
     expect_identical(polEval, Jack(as.bigq(x), lambda, alpha))
   }
 )
@@ -171,7 +154,7 @@ test_that("JackPol gmp", {
     JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
   mvpol <-
     JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
-  gmvpol <- gmpoly::gmpoly2mvp(gmpol)
+  gmvpol <- as_mvp_qspray(gmpol)
   expect_identical(gmvpol[["names"]], mvpol[["names"]])
   expect_identical(gmvpol[["power"]], mvpol[["power"]])
   expect_equal(gmvpol[["coeffs"]], mvpol[["coeffs"]])

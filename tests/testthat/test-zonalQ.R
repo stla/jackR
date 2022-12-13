@@ -48,27 +48,10 @@ test_that(
 
 test_that(
   "ZonalQPol is correct", {
-    bigqMonomial <- function(vars, powers){
-      do.call(prod, mapply(gmp::pow.bigq, vars, powers, SIMPLIFY = FALSE))
-    }
-    evalPol <- function(pol, x){
-      vars <- paste0("x_", seq_along(x))
-      polValue <- pol
-      for(i in 1L:length(x)){
-        polValue <- mvp::subsmvp(polValue, vars[i], mvp::mvp(x[i],1,1))
-      }
-      polValue$names <- lapply(polValue$names, as.bigq)
-      terms <-
-        mapply(bigqMonomial, polValue$names, polValue$power, SIMPLIFY = FALSE)
-      value <-
-        do.call(sum, mapply("*", polValue$coeffs, terms, SIMPLIFY = FALSE))
-      value
-    }
-    #
     lambda <- c(3, 2)
     pol <- ZonalQPol(4, lambda, algorithm = "naive")
-    x <- as.character(as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L)))
-    polEval <- evalPol(pol, x)
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    polEval <- qspray::evalQspray(pol, x)
     expect_identical(polEval, ZonalQ(as.bigq(x), lambda))
   }
 )
@@ -76,12 +59,8 @@ test_that(
 test_that(
   "ZonalQ polynomials sum to the trace - polynomial", {
     n <- 4
-    expected <- (mvp("x_1", 1, 1) + mvp("x_2", 1, 1) + mvp("x_3", 1, 1) +
-                   mvp("x_4", 1, 1))^3
+    expected <- (qlone(1) + qlone(2) + qlone(3) + qlone(4))^3
     obtained <- ZonalQPol(n, 3) + ZonalQPol(n, c(2,1)) + ZonalQPol(n, c(1,1,1))
-    obtained <- gmpoly::gmpoly2mvp(obtained)
-    expect_identical(expected$names, obtained$names)
-    expect_identical(expected$power, obtained$power)
-    expect_equal(expected$coeffs, obtained$coeffs)
+    expect_true(expected == obtained)
   }
 )

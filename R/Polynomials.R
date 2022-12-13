@@ -2,8 +2,11 @@
 #' @importFrom spray zero one lone
 NULL
 
-#' @importFrom mvp mvp
+#' @importFrom mvp mvp as.mvp
+#' @importFrom gmp asNumeric as.bigq
+#' @noRd
 as_mvp_spray <- function(s) {
+  if(length(s) == 0L) return(as.mvp(0))
   powers <- s[["index"]]
   m <- nrow(powers)
   n <- ncol(powers)
@@ -12,19 +15,25 @@ as_mvp_spray <- function(s) {
   mvp(vars, powers, s[["value"]])
 }
 
+as_mvp_qspray <- function(s) {
+  vars <- lapply(s@powers, function(exponents) paste0("x_", seq_along(exponents)))
+  mvp(vars, s@powers, asNumeric(as.bigq(s@coeffs)))
+}
+
+
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   gmp <- is.bigq(alpha)
   if(length(lambda) == 0L) {
     if(basis == "canonical") {
-      return(if(gmp) as.qspray(1) else one(n))
+      return(if(gmp) as.qspray(1) else as_mvp_spray(one(n)))
     } else {
       return("M_()")
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > n) return(if(gmp) as.qspray(0) else zero(n))
+  if(length(lambda) > n) return(if(gmp) as.qspray(0) else as_mvp_spray(zero(n)))
   lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -47,6 +56,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
           out <- out + toAdd
         }
       }
+      out
     } else {
       out <- zero(n)
       for(i in 1L:ncol(mus)) {
@@ -59,7 +69,6 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
       }
       as_mvp_spray(out)
     }
-    out
   } else {
     vars <- apply(mus, 2L, function(mu) {
       paste0("M_(", paste0(mu[mu > 0L], collapse = ","), ")")
@@ -202,13 +211,13 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   basis <- match.arg(basis, c("canonical", "MSF"))
   if(length(lambda) == 0L){
     if(basis == "canonical"){
-      return(if(exact) as.qspray(1) else one(m))
+      return(if(exact) as.qspray(1) else as_mvp_spray(one(m)))
     }else{
       return("M_()")
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > m) return(if(exact) as.qspray(0) else zero(m))
+  if(length(lambda) > m) return(if(exact) as.qspray(0) else as_mvp_spray(zero(m)))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -242,8 +251,8 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
           out <- out + toAdd
         }
       }
+      as_mvp_spray(out)
     }
-    as_mvp_spray(out)
   }else{
     vars <- apply(mus, 2L, function(mu){
       paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
@@ -320,13 +329,13 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
   basis <- match.arg(basis, c("canonical", "MSF"))
   if(length(lambda) == 0L){
     if(basis == "canonical"){
-      return(if(exact) as.qspray(1) else one(m))
+      return(if(exact) as.qspray(1) else as_mvp_spray(one(m)))
     }else{
       return("M_()")
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > m) return(if(exact) as.qspray(0) else zero(m))
+  if(length(lambda) > m) return(if(exact) as.qspray(0) else as_mvp_spray(zero(m)))
   lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -349,6 +358,7 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
           out <- out + toAdd
         }
       }
+      out
     }else{
       out <- zero(m)
       for(i in 1L:ncol(mus)){
@@ -359,8 +369,8 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
           out <- out + toAdd
         }
       }
+      as_mvp_spray(out)
     }
-    as_mvp_spray(out)
   }else{
     vars <- apply(mus, 2L, function(mu){
       paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
@@ -489,13 +499,13 @@ ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   basis <- match.arg(basis, c("canonical", "MSF"))
   if(length(lambda) == 0L){
     if(basis == "canonical"){
-      return(constant(1))
+      return(if(exact) as.qspray(1) else as_mvp_spray(one(m)))
     }else{
       return("M_()")
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > m) return(constant(0))
+  if(length(lambda) > m) return(if(exact) as.qspray(0) else as_mvp_spray(zero(m)))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -506,29 +516,31 @@ ZonalQPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
-    out <- constant(0)
     if(exact){
+      out <- as.qspray(0)
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
           toAdd <- MSFpoly(m, mu)
           if(coefs[toString(mu)] != "1")
-            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+            toAdd <- toAdd * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
+      out
     }else{
+      out <- zero(m)
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
-          toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
+          toAdd <- MSFspray(m, mu) * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
+      as_mvp_spray(out)
     }
-    out
   }else{
     vars <- apply(mus, 2L, function(mu){
       paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")

@@ -1,5 +1,5 @@
 test_that("Julia", {
-  skip_if_not(JuliaConnectoR::juliaSetupOk(), "Julia setup is not OK")
+  skip_if_not(FALSE)#JuliaConnectoR::juliaSetupOk(), "Julia setup is not OK")
   julia <- Jack_julia()
   # numerical ####
   x <- c("1/2", "2/3", "5")

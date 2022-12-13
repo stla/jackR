@@ -1,37 +1,5 @@
-#' Elementary symmetric function
-#'
-#' Returns an elementary symmetric function as a polynomial.
-#'
-#' @param m integer, the number of variables
-#' @param lambda an integer partition, given as a vector of decreasing
-#' integers
-#'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
-#' @importFrom mvp constant product
-#' @importFrom DescTools Permn
-#' @export
-#'
-#' @examples
-#' ESFpoly(3, c(3,1))
-ESFpoly <- function(m, lambda){
-  stopifnot(m > 0, isPositiveInteger(m), isPartition(lambda))
-  lambda <- lambda[lambda>0]
-  if(any(lambda > m)) return(mvp::constant(0))
-  vars <- paste0("x_", 1L:m)
-  out <- 1
-  for(k in seq_along(lambda)){
-    kappa <- numeric(m)
-    kappa[seq_len(lambda[k])] <- rep(1L, lambda[k])
-    perms <- DescTools::Permn(kappa)
-    ek <- mvp::constant(0)
-    for(i in 1L:nrow(perms)){
-      ek <- ek + mvp::product(perms[i,], symbols = vars)
-    }
-    out <- out * ek
-  }
-  out
-}
-
+#' @importFrom qspray ESFpoly
+NULL
 
 #' Evaluation of elementary symmetric functions
 #'
