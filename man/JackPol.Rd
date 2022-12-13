@@ -24,7 +24,7 @@ this parameter is ignored}
 }
 \value{
 A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
- or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if \code{alpha}
+ or a \code{qspray} multivariate polynomial if \code{alpha}
  is a \code{bigq} rational number and \code{algorithm = "DK"}, or a
  character string if \code{basis = "MSF"}.
 }
@@ -38,4 +38,8 @@ JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
 JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
 JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
         algorithm = "naive", basis = "MSF")
+# when the Jack polynomial is a `qspray` object, you can
+# evaluate it with `qspray::evalQspray`:
+jack <- JackPol(3, lambda = c(3, 1), alpha = gmp::as.bigq(2))
+qspray::evalQspray(jack, c("1", "1/2", "3"))
 }

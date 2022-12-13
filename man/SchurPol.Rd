@@ -23,7 +23,7 @@ this parameter is ignored}
 }
 \value{
 A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
- or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+ or a \code{qspray} multivariate polynomial if
  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
  character string if \code{basis = "MSF"}.
 }

@@ -174,7 +174,7 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
 #' this parameter is ignored
 #'
 #' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
-#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if \code{alpha}
+#'  or a \code{qspray} multivariate polynomial if \code{alpha}
 #'  is a \code{bigq} rational number and \code{algorithm = "DK"}, or a
 #'  character string if \code{basis = "MSF"}.
 #' @importFrom gmp is.bigq
@@ -186,6 +186,10 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
 #' JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
 #' JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
 #'         algorithm = "naive", basis = "MSF")
+#' # when the Jack polynomial is a `qspray` object, you can
+#' # evaluate it with `qspray::evalQspray`:
+#' jack <- JackPol(3, lambda = c(3, 1), alpha = gmp::as.bigq(2))
+#' qspray::evalQspray(jack, c("1", "1/2", "3"))
 JackPol <- function(n, lambda, alpha, algorithm = "DK",
                     basis = "canonical"){
   algo <- match.arg(algorithm, c("DK", "naive"))
@@ -295,7 +299,7 @@ ZonalPolDK_gmp <- function(m, lambda){
 #' @param exact logical, whether to get rational coefficients
 #'
 #' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
-#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+#'  or a \code{qspray} multivariate polynomial if
 #'  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
 #'  character string if \code{basis = "MSF"}.
 #'
@@ -466,7 +470,7 @@ SchurPolDK_gmp <- function(n, lambda){
 #' @param exact logical, whether to use exact arithmetic
 #'
 #' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
-#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+#'  or a \code{qspray} multivariate polynomial if
 #'  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
 #'  character string if \code{basis = "MSF"}.
 #'
@@ -581,7 +585,7 @@ ZonalQPolDK_gmp <- function(m, lambda){
 #' @param exact logical, whether to get rational coefficients
 #'
 #' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
-#'  or a \code{\link[gmpoly]{gmpoly}} multivariate polynomial if
+#'  or a \code{qspray} multivariate polynomial if
 #'  \code{exact = TRUE} and \code{algorithm = "DK"}, or a
 #'  character string if \code{basis = "MSF"}.
 #'

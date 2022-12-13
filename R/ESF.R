@@ -1,6 +1,3 @@
-#' @importFrom qspray ESFpoly
-NULL
-
 #' Evaluation of elementary symmetric functions
 #'
 #' Evaluates an elementary symmetric function.

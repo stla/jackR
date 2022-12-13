@@ -93,7 +93,7 @@ test_that(
     P1 <- SchurPol(n, c(3, 2)) + 2 * SchurPol(n, c(2, 2, 1)) +
       SchurPol(n, c(3, 1, 1)) + 2 * SchurPol(n, c(2, 1, 1, 1)) +
       SchurPol(n, c(1, 1, 1, 1, 1))
-    P2 <- ESFpoly(n, c(2, 2, 1))
+    P2 <- qspray::ESFpoly(n, c(2, 2, 1))
     expect_true(P1 == P2)
   }
 )
