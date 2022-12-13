@@ -1,3 +1,19 @@
+#' @importFrom qspray MSFpoly
+#' @importFrom spray spray
+MSFspray <- function(m, lambda) {
+  qspray <- MSFpoly(m, lambda)
+  powers <- lapply(qspray@powers, function(exponents) {
+    n <- length(exponents)
+    if(n < m) {
+      c(exponents, rep(0L, m - n))
+    } else {
+      exponents
+    }
+  })
+  M <- do.call(rbind, powers)
+  spray(M, rep(1, nrow(M)))
+}
+
 #' Evaluation of monomial symmetric functions
 #'
 #' Evaluates a monomial symmetric function.
@@ -44,34 +60,3 @@ MSF <- function(x, lambda){
   }
   out
 }
-
-#' Monomial symmetric function
-#'
-#' Returns a monomial symmetric function as a polynomial.
-#'
-#' @param m integer, the number of variables
-#' @param lambda an integer partition, given as a vector of decreasing
-#' integers
-#'
-#' @return A polynomial (\code{mvp} object; see \link[mvp]{mvp-package}).
-#' @importFrom mvp constant product
-#' @importFrom DescTools Permn
-#' @export
-#'
-#' @examples
-#' MSFpoly(3, c(3,1))
-MSFpoly <- function(m, lambda){
-  stopifnot(m > 0L, isPositiveInteger(m), isPartition(lambda))
-  lambda <- lambda[lambda > 0L]
-  if(length(lambda) > m) return(mvp::constant(0))
-  kappa <- numeric(m)
-  kappa[seq_along(lambda)] <- lambda
-  perms <- DescTools::Permn(kappa)
-  out <- mvp::constant(0)
-  vars <- paste0("x_", 1L:m)
-  for(i in 1L:nrow(perms)){
-    out <- out + mvp::product(perms[i,], symbols = vars)
-  }
-  out
-}
-

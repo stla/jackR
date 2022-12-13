@@ -1,52 +1,57 @@
+#' @importFrom qspray as.qspray
+#' @importFrom spray zero one lone
+NULL
+
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
-  if(length(lambda) == 0L){
-    if(basis == "canonical"){
-      return(constant(1))
-    }else{
+  gmp <- is.bigq(alpha)
+  if(length(lambda) == 0L) {
+    if(basis == "canonical") {
+      return(if(gmp) as.qspray(1) else one(n))
+    } else {
       return("M_()")
     }
   }
-  gmp <- is.bigq(alpha)
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > n) return(constant(0))
+  if(length(lambda) > n) return(if(gmp) as.qspray(0) else zero(n))
   lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
-  if(gmp){
+  if(gmp) {
     coefs <- JackCoefficientsQ(sum(lambda), alpha, until = lambda)
-  }else{
+  } else {
     coefs <- JackCoefficientsNum(sum(lambda), alpha, until = lambda)
   }
-  coefs <- coefs[toString(lambda00),]
-  if(basis == "canonical"){
-    out <- constant(0)
-    if(gmp){
+  coefs <- coefs[toString(lambda00), ]
+  if(basis == "canonical") {
+    if(gmp) {
+      out <- as.qspray(0)
       for(i in 1L:ncol(mus)){
-        mu <- mus[,i]
+        mu <- mus[, i]
         l <- sum(mu > 0L)
-        if(l <= n){
+        if(l <= n) {
           toAdd <- MSFpoly(n, mu)
           if(coefs[toString(mu)] != "1")
-            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+            toAdd <- toAdd * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
-    }else{
-      for(i in 1L:ncol(mus)){
-        mu <- mus[,i]
+    } else {
+      out <- zero(n)
+      for(i in 1L:ncol(mus)) {
+        mu <- mus[, i]
         l <- sum(mu > 0L)
-        if(l <= n){
-          toAdd <- MSFpoly(n, mu) * coefs[toString(mu)]
+        if(l <= n) {
+          toAdd <- MSFspray(n, mu) * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
     }
     out
-  }else{
-    vars <- apply(mus, 2L, function(mu){
-      paste0("M_(", paste0(mu[mu>0L], collapse = ","), ")")
+  } else {
+    vars <- apply(mus, 2L, function(mu) {
+      paste0("M_(", paste0(mu[mu > 0L], collapse = ","), ")")
     })
     rowIdx <- match(toString(lambda00), names(coefs))
     coefs <- coefs[-seq_len(rowIdx-1L)]
@@ -55,18 +60,15 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   }
 }
 
-#' @importFrom mvp constant mvp
-#' @noRd
-JackPolDK <- function(n, lambda, alpha){
+JackPolDK <- function(n, lambda, alpha) {
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
-  jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0L || nu[1L] == 0L || m == 0L) return(constant(1))
-    if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
-    if(m == 1L) return(mvp("x_1", nu[1L], prod(alpha*seq_len(nu[1L]-1L)+1)))
+  jac <- function(m, k, mu, nu, beta) {
+    if(length(nu) == 0L || nu[1L] == 0L || m == 0L) return(one(n))
+    if(length(nu) > m && nu[m+1L] > 0L) return(zero(n))
+    if(m == 1L) return(prod(alpha*seq_len(nu[1L]-1L)+1) * lone(1, n)^nu[1L])
     if(k == 0L && !is.na(s <- S[[.N(lambda,nu),m]])) return(s)
     i <- max(1L,k)
-    s <- jac(m-1L, 0L, nu, nu, 1) * beta *
-      mvp(x[m], sum(mu)-sum(nu), 1)
+    s <- jac(m-1L, 0L, nu, nu, 1) * beta * lone(m, n)^(sum(mu)-sum(nu))
     while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
         .nu <- nu; .nu[i] <- nu[i]-1L
@@ -75,7 +77,7 @@ JackPolDK <- function(n, lambda, alpha){
           s <- s + jac(m, i, mu, .nu, gamma)
         }else{
           s <- s + jac(m-1L, 0L, .nu, .nu, 1) * gamma *
-            mvp(x[m], sum(mu)-sum(.nu), 1)
+            lone(m, n)^(sum(mu)-sum(.nu))
         }
       }
       i <- i + 1L
@@ -85,45 +87,42 @@ JackPolDK <- function(n, lambda, alpha){
   }
   S <- as.list(rep(NA, .N(lambda,lambda) * n))
   dim(S) <- c(.N(lambda,lambda), n)
-  x <- paste0("x_", 1L:n)
   jac(n, 0L, lambda, lambda, 1)
 }
 
-#' @importFrom gmpoly gmpoly gmpolyConstant gmpolyGrow
+#' @importFrom qspray as.qspray qsprayMaker qlone
 #' @importFrom gmp as.bigq
 #' @noRd
-JackPolDK_gmp <- function(n, lambda, alpha){
+JackPolDK_gmp <- function(n, lambda, alpha) {
   stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
-  jac <- function(m, k, mu, nu, beta){
-    if(length(nu) == 0L || nu[1L] == 0L || m == 0L){
-      return(gmpolyConstant(m, 1L))
+  jac <- function(m, k, mu, nu, beta) {
+    if(length(nu) == 0L || nu[1L] == 0L || m == 0L) {
+      return(as.qspray(1))
     }
-    if(length(nu) > m && nu[m+1L] > 0L) return(gmpolyConstant(m, 0L))
-    if(m == 1L){
-      return(gmpoly(
-        coeffs = prod(alpha * seq_len(nu[1L]-1L) + 1L),
-        powers = rbind(nu[1L])
-      ))
-    }
-    if(k == 0L && inherits(s <- S[[.N(lambda, nu), m]], "gmpoly")) return(s)
-    i <- max(1L, k)
-    s <- gmpolyGrow(jac(m-1L, 0L, nu, nu, oneq)) * gmpolyConstant(m, beta) *
-      gmpoly(
-        coeffs = oneq,
-        powers = rbind(c(rep(0L, m-1L), sum(mu)-sum(nu)))
+    if(length(nu) > m && nu[m+1L] > 0L) return(as.qspray(0))
+    if(m == 1L) {
+      return(
+        prod(alpha * seq_len(nu[1L]-1L) + 1L) * qlone(1)^nu[1L]
       )
-    while(length(nu) >= i && nu[i] > 0L){
-      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
+    }
+    if(k == 0L && inherits(s <- S[[.N(lambda, nu), m]], "qspray")) return(s)
+    i <- max(1L, k)
+    s <- jac(m-1L, 0L, nu, nu, oneq) * as.qspray(beta) *
+      qsprayMaker(
+        coeffs = "1",
+        powers = list(c(rep(0L, m-1L), sum(mu)-sum(nu)))
+      )
+    while(length(nu) >= i && nu[i] > 0L) {
+      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]) {
         .nu <- nu; .nu[i] <- nu[i]-1L
         gamma <- beta * .betaratio(mu, nu, i, alpha)
-        if(nu[i] > 1L){
+        if(nu[i] > 1L) {
           s <- s + jac(m, i, mu, .nu, gamma)
-        }else{
-          s <- s + gmpolyGrow(jac(m-1L, 0L, .nu, .nu, oneq)) *
-            gmpolyConstant(m, gamma) *
-            gmpoly(
-              coeffs = oneq,
-              powers = rbind(c(rep(0L, m-1L), sum(mu)-sum(.nu)))
+        } else {
+          s <- s + jac(m-1L, 0L, .nu, .nu, oneq) * as.qspray(gamma) *
+            qsprayMaker(
+              coeffs = "1",
+              powers = list(c(rep(0L, m-1L), sum(mu)-sum(.nu)))
             )
         }
       }
@@ -192,13 +191,13 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   basis <- match.arg(basis, c("canonical", "MSF"))
   if(length(lambda) == 0L){
     if(basis == "canonical"){
-      return(constant(1))
+      return(if(exact) as.qspray(1) else one(m))
     }else{
       return("M_()")
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > m) return(constant(0))
+  if(length(lambda) > m) return(if(exact) as.qspray(0) else zero(m))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -209,24 +208,25 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
-    out <- constant(0)
     if(exact){
+      out <- as.qspray(0)
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
           toAdd <- MSFpoly(m, mu)
           if(coefs[toString(mu)] != "1")
-            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+            toAdd <- toAdd * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
     }else{
+      out <- zero(m)
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
-          toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
+          toAdd <- MSFspray(m, mu) * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
@@ -257,7 +257,7 @@ ZonalPolDK_gmp <- function(m, lambda){
   jack <- JackPolDK_gmp(m, lambda, alpha = twoq)
   jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
   n <- sum(lambda)
-  gmpolyConstant(m, twoq^n * factorialZ(n) / jlambda) * jack
+  (twoq^n * factorialZ(n) / jlambda) * jack
 }
 
 #' Zonal polynomial
@@ -308,13 +308,13 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
   basis <- match.arg(basis, c("canonical", "MSF"))
   if(length(lambda) == 0L){
     if(basis == "canonical"){
-      return(constant(1))
+      return(if(exact) as.qspray(1) else one(m))
     }else{
       return("M_()")
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > m) return(constant(0))
+  if(length(lambda) > m) return(if(exact) as.qspray(0) else zero(m))
   lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -325,24 +325,25 @@ SchurPolNaive <- function(m, lambda, basis = "canonical",
   }
   coefs <- coefs[toString(lambda00),]
   if(basis == "canonical"){
-    out <- constant(0)
     if(exact){
+      out <- as.qspray(0)
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
           toAdd <- MSFpoly(m, mu)
           if(coefs[toString(mu)] != "1")
-            toAdd <- toAdd * mvp(coefs[toString(mu)], 1, 1)
+            toAdd <- toAdd * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
     }else{
+      out <- zero(m)
       for(i in 1L:ncol(mus)){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
-          toAdd <- MSFpoly(m, mu) * coefs[toString(mu)]
+          toAdd <- MSFspray(m, mu) * coefs[toString(mu)]
           out <- out + toAdd
         }
       }
@@ -364,10 +365,10 @@ SchurPolDK <- function(n, lambda){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){
     if(length(nu) == 0L || nu[1L] == 0L || m == 0L){
-      return(constant(1))
+      return(one(n))
     }
-    if(length(nu) > m && nu[m+1L] > 0L) return(constant(0))
-    if(m == 1L) return(mvp(x[1L], nu[1L], 1))
+    if(length(nu) > m && nu[m+1L] > 0L) return(zero(n))
+    if(m == 1L) return(lone(1, n)^nu[1L])
     if(!is.na(s <- S[[.N(lambda, nu), m]])) return(s)
     s <- sch(m-1L, 1L, nu)
     i <- k
@@ -375,9 +376,9 @@ SchurPolDK <- function(n, lambda){
       if(length(nu) == i || nu[i] > nu[i+1L]){
         .nu <- nu; .nu[i] <- nu[i]-1L
         if(nu[i] > 1L){
-          s <- s + mvp(x[m], 1, 1) * sch(m, i, .nu)
+          s <- s + lone(m, n) * sch(m, i, .nu)
         }else{
-          s <- s + mvp(x[m], 1, 1) * sch(m-1L, 1L, .nu)
+          s <- s + lone(m, n) * sch(m-1L, 1L, .nu)
         }
       }
       i <- i + 1L
@@ -385,7 +386,6 @@ SchurPolDK <- function(n, lambda){
     if(k == 1L) S[[.N(lambda, nu), m]] <- s
     return(s)
   }
-  x <- paste0("x_", 1L:n)
   Nlambdalambda <- .N(lambda,lambda)
   S <- as.list(rep(NA, Nlambdalambda*n))
   dim(S) <- c(Nlambdalambda, n)
@@ -397,12 +397,12 @@ SchurPolDK_gmp <- function(n, lambda){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){
     if(length(nu) == 0L || nu[1L] == 0L || m == 0L){
-      return(gmpolyConstant(m, 1L))
+      return(as.qspray(1))
     }
-    if(length(nu) > m && nu[m+1L] > 0L) return(gmpolyConstant(m, 0L))
-    if(m == 1L) return(gmpoly(coeffs = oneq, powers = rbind(nu[1L])))
-    if(inherits(s <- S[[.N(lambda, nu), m]], "gmpoly")) return(s)
-    s <- gmpolyGrow(sch(m-1L, 1L, nu))
+    if(length(nu) > m && nu[m+1L] > 0L) return(as.qspray(0))
+    if(m == 1L) return(qlone(1)^nu[1L])
+    if(inherits(s <- S[[.N(lambda, nu), m]], "qspray")) return(s)
+    s <- sch(m-1L, 1L, nu)
     i <- k
     while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i || nu[i] > nu[i+1L]){
@@ -410,7 +410,7 @@ SchurPolDK_gmp <- function(n, lambda){
         if(nu[i] > 1L){
           s <- s + x[[m]] * sch(m, i, .nu)
         }else{
-          s <- s + x[[m]] * gmpolyGrow(sch(m-1L, 1L, .nu))
+          s <- s + x[[m]] * sch(m-1L, 1L, .nu)
         }
       }
       i <- i + 1L
@@ -423,9 +423,9 @@ SchurPolDK_gmp <- function(n, lambda){
   dim(S) <- c(Nlambdalambda, n)
   oneq <- as.bigq(1L)
   x <- lapply(1L:n, function(m){
-    gmpoly(
-      coeffs = oneq,
-      powers = rbind(c(rep(0L, m-1L), 1L))
+    qsprayMaker(
+      coeffs = "1",
+      powers = list(c(rep(0L, m-1L), 1L))
     )
   })
   sch(n, 1L, as.integer(lambda))
@@ -535,14 +535,13 @@ ZonalQPolDK <- function(m, lambda){
 }
 
 #' @importFrom gmp as.bigq factorialZ
-#' @importFrom gmpoly gmpolyConstant
 #' @noRd
 ZonalQPolDK_gmp <- function(m, lambda){
   onehalfq <- as.bigq(1L, 2L)
   jack <- JackPolDK_gmp(m, lambda, alpha = onehalfq)
   jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
   n <- sum(lambda)
-  gmpolyConstant(m, onehalfq^n * factorialZ(n) / jlambda) * jack
+  as.qspray(onehalfq^n * factorialZ(n) / jlambda) * jack
 }
 
 #' Quaternionic zonal polynomial
