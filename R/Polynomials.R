@@ -271,7 +271,6 @@ ZonalPolDK <- function(m, lambda){
 }
 
 #' @importFrom gmp as.bigq factorialZ
-#' @importFrom gmpoly gmpolyConstant
 #' @noRd
 ZonalPolDK_gmp <- function(m, lambda){
   twoq <- as.bigq(2)
@@ -414,7 +413,6 @@ SchurPolDK <- function(n, lambda){
   sch(n, 1L, as.integer(lambda))
 }
 
-#' @importFrom gmpoly gmpolyConstant gmpoly gmpolyGrow
 SchurPolDK_gmp <- function(n, lambda){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   sch <- function(m, k, nu){

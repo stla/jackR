@@ -30,42 +30,34 @@ test_that("Julia", {
   alpha <- "2/3"
   alphaq <- gmp::as.bigq(alpha)
   mvpol_julia <- julia$JackPol(n, lambda, alpha, poly = "mvp")
-  gmpol_julia <- julia$JackPol(n, lambda, alpha, poly = "gmpoly")
+  gmpol_julia <- julia$JackPol(n, lambda, alpha, poly = "qspray")
   gmpol_r     <- JackPol(n, lambda, alphaq)
-  expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
-  expect_true(mvpEqual(
-    as_mvp_qspray(gmpol_r), gmpoly::gmpoly2mvp(gmpol_julia)
-  ))
+  #expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
+  expect_true(gmpol_r == gmpol_julia)
   # zonal
   mvpol_julia <- julia$ZonalPol(n, lambda, poly = "mvp")
-  gmpol_julia <- julia$ZonalPol(n, lambda, poly = "gmpoly")
+  gmpol_julia <- julia$ZonalPol(n, lambda, poly = "qspray")
   gmpol_r     <- ZonalPol(n, lambda)
-  expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
-  expect_true(mvpEqual(
-    as_mvp_qspray(gmpol_r), gmpoly::gmpoly2mvp(gmpol_julia)
-  ))
+  #expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
+  expect_true(gmpol_r == gmpol_julia)
   # zonalq
   mvpol_julia <- julia$ZonalQPol(n, lambda, poly = "mvp")
-  gmpol_julia <- julia$ZonalQPol(n, lambda, poly = "gmpoly")
+  gmpol_julia <- julia$ZonalQPol(n, lambda, poly = "qspray")
   gmpol_r     <- ZonalQPol(n, lambda)
-  expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
-  expect_true(mvpEqual(
-    as_mvp_qspray(gmpol_r), gmpoly::gmpoly2mvp(gmpol_julia)
-  ))
+  #expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
+  expect_true(gmpol_r == gmpol_julia)
   # schur
   mvpol_julia <- julia$SchurPol(n, lambda, poly = "mvp")
-  gmpol_julia <- julia$SchurPol(n, lambda, poly = "gmpoly")
+  gmpol_julia <- julia$SchurPol(n, lambda, poly = "qspray")
   gmpol_r     <- SchurPol(n, lambda)
-  expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
-  expect_true(mvpEqual(
-    as_mvp_qspray(gmpol_r), gmpoly::gmpoly2mvp(gmpol_julia)
-  ))
+  #expect_true(mvpEqual(mvpol_julia, gmpoly::gmpoly2mvp(gmpol_julia)))
+  expect_true(gmpol_r == gmpol_julia)
   # as.function
   mvpol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5", poly = "mvp")
-  gmpol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5", poly = "gmpoly")
+  gmpol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5", poly = "qspray")
   f <- as.function(mvpol)
   y1 <- f("2/3", "7/5")
-  y2 <- as.character(gmpoly::gmpolyEval(gmpol, gmp::as.bigq(c("2/3", "7/5"))))
+  y2 <- as.character(qspray::evalQspray(gmpol, c("2/3", "7/5")))
   expect_equal(y1, y2)
   #
   JuliaConnectoR::stopJulia()
