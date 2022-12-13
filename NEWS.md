@@ -1,3 +1,9 @@
+# Version 4.0.0 (20XX-XX-XX)
+
+- The package does not longer depend on the 'gmpoly' package. This dependency 
+has been replaced with the 'qspray' package.
+
+
 # Version 3.0.0 (2022-02-21)
 
 - Now one can use a `bigq` number for `alpha` in `JackPol`, thanks to the 
