@@ -10,9 +10,8 @@ Jack_julia()
 A list of functions having the same names as the R functions of this
   package (\code{Jack}, \code{JackPol}, \code{Schur}, etc). The
   \code{XXXPol} functions have an argument \code{poly}, whose possible
-  value is \code{"mvp"} (default) or \code{"qspray"}, and this is the
-  class of the polynomial returned by these functions. See the examples
-  and the \href{https://github.com/stla/jackR#readme}{README} file.
+  value is \code{"mvp"} or \code{"qspray"} (default), and this is the
+  class of the polynomial returned by these functions.
 }
 \description{
 Evaluate the Jack polynomials with Julia. This is highly faster.
@@ -31,11 +30,10 @@ library(jack)
   # to pass rational numbers, use strings:
   julia$Jack(x = c("2", "2/3"), lambda = c(3, 1), alpha = "3/2")
   # symbolic polynomials ####
-  # for `JackPol`, you can pass a rational `alpha` as a string:
+  # for `JackPol`, you must pass a rational `alpha` as a string if
+  # you want an exact polynomial:
   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
   class(pol)
-  # you _must_ give `alpha` as a string if you choose `poly = "qspray"`
-  julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2", poly = "qspray")
   JuliaConnectoR::stopJulia()
 }}
 }

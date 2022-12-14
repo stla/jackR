@@ -24,7 +24,7 @@ Pretty form of the exact expression of a polynomial.
 library(jack)
 \donttest{if(JuliaConnectoR::juliaSetupOk()){
   julia <- Jack_julia()
-  ( pol <- julia$ZonalPol(m = 2, lambda = c(3, 1)) )
+  ( pol <- julia$ZonalPol(m = 2, lambda = c(3, 1), poly = "mvp") )
   prettyForm(pol)
   JuliaConnectoR::stopJulia()
 }}

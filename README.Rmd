@@ -11,6 +11,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+juliaeval <- TRUE
 ```
 
 ```{r}
@@ -18,10 +19,77 @@ library(jack)
 library(microbenchmark)
 ```
 
+Schur polynomials have applications in combinatorics and zonal polynomials have
+applications in multivariate statistics. They are particular cases of
+[Jack polynomials](https://en.wikipedia.org/wiki/Jack_function). This package
+allows to evaluate these polynomials. It can also compute their symbolic form.
+
+The  functions `JackPol`, `ZonalPol`, `ZonalQPol` and `SchurPol` respectively 
+return the Jack polynomial, the zonal polynomial, the quaternionic zonal 
+polynomial, and the Schur polynomial. 
+
+Each of these polynomials corresponds is given by a positive integer, the 
+number of variables, and an integer partition, the `lambda` argument; the 
+Jack polynomial has one more parameter, the `alpha` argument, a 
+positive number.
+
+To get an exact symbolic polynomial with `JackPol`, you have to supply a 
+`bigq` rational number for the parameter `alpha`:
+
+```{r}
+jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
+jpol
+```
+
+This is a `qspray` object, from the [**qspray**](https://github.com/stla/qspray) 
+package. Here is how you can evaluate this polynomial:
+
+```{r}
+qspray::evalQspray(jpol, c("2", "3/2"))
+```
+
+By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic 
+polynomials.
+
+```{r}
+zpol <- ZonalPol(2, lambda = c(3, 1))
+zpol
+```
+
+It is also possible to convert a `qspray` polynomial to a function whose 
+evaluation is performed by the **Ryacas** package:
+
+```{r}
+zyacas <- as.function(zpol)
+```
+
+You can provide the values of the variables of this function as numbers or 
+character strings:
+
+```{r}
+zyacas(2, "3/2")
+```
+
+You can even pass a variable name to this function:
+
+```{r}
+zyacas("x", "x")
+```
+
+If you want to substitute a variable with a complex number, use a character 
+string which represents this number, with `I` denoting the imaginary unit:
+
+```{r}
+zyacas("2 + 2*I", "2/3")
+```
+
+
+## Jack polynomials with Julia
+
 As of version 2.0.0, the Jack polynomials can be calculated with Julia. The 
 speed is amazing:
 
-```{r}
+```{r, eval=juliaeval}
 julia <- Jack_julia()
 x <- c(1/2, 2/3, 1, 2/3, -1, -2, 1)
 lambda <- c(5, 3, 2, 2, 1)
@@ -43,77 +111,14 @@ rational coefficients (integers for `SchurPol`). If you want an exact
 expression with `JackPol`, you have to give a rational number for the argument 
 `alpha`, as a character string:
 
-```{r}
+```{r, eval=juliaeval}
 JP <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5")
 JP
 ```
 
-To evaluate a polynomial, use `as.function`:
-
-```{r}
-jp <- as.function(JP)
-```
-
-You can provide the values of the variables of this function as numbers or 
-character strings:
-
-```{r}
-jp(2, "3/2")
-```
-
-You can even pass a variable name to this function:
-
-```{r}
-jp("x", "x")
-```
-
-
-This evaluation is performed by the **Ryacas** package. If you want to 
-substitute a variable with a complex number, use a character string which 
-represents this number, with `I` denoting the imaginary unit:
-
-```{r}
-jp("2 + 2*I", "2/3")
-```
-
-Two functions are provided to print the polynomials with an exact expression:
-
-```{r}
-prettyForm(JP)
-```
-
-```{r}
-toLaTeX(JP)
-```
-
-You can also use the functions `JackPol`, `ZonalPol`, `ZonalQPol` and 
-`SchurPol` without passing by `Jack_julia()`. They are implemented in R. 
-To get an exact symbolic polynomial with `JackPol`, you have to supply a 
-`bigq` rational number for the parameter `alpha`:
-
-```{r}
-jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
-jpol
-```
-
-This is a `qspray` object, from the [**qspray**](https://github.com/stla/qspray) 
-package.
-
-```{r}
-qspray::evalQspray(jpol, c("2", "3/2"))
-```
-
-By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic 
-polynomials.
-
-```{r}
-zpol <- ZonalPol(2, lambda = c(3, 1))
-zpol
-```
-
 Again, Julia is faster:
 
-```{r}
+```{r, eval=juliaeval}
 n <- 5
 lambda <- c(4, 3, 3)
 alpha <- "2/3"
@@ -125,21 +130,6 @@ microbenchmark(
 )
 ```
 
-One can also get a `qspray` polynomial with Julia, by 
-setting the argument `poly` to `"qspray"` in the `XXXPol` functions in the 
-list returned by `Jack_julia`:
-
-```{r}
-julia$JackPol(2, lambda = c(3, 1), alpha = "2/5", poly = "qspray")
-```
-
-```{r}
-n <- 5
-lambda <- c(4, 3, 3)
-alpha <- "2/3"
-microbenchmark(
-     Julia_mvp = julia$JackPol(n, lambda, alpha),
-  Julia_qspray = julia$JackPol(n, lambda, alpha, poly = "qspray"),
-  times = 6L
-)
+```{r, eval=juliaeval}
+JuliaConnectoR::stopJulia()
 ```

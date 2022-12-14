@@ -24,7 +24,7 @@ LaTeX form of the exact expression of a polynomial.
 library(jack)
 \donttest{if(JuliaConnectoR::juliaSetupOk()){
   julia <- Jack_julia()
-  ( pol <- julia$ZonalQPol(m = 2, lambda = c(3, 2)) )
+  ( pol <- julia$ZonalQPol(m = 2, lambda = c(3, 2), poly = "mvp") )
   toLaTeX(pol)
   JuliaConnectoR::stopJulia()
 }}
