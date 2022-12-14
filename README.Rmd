@@ -96,11 +96,11 @@ jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
 jpol
 ```
 
-This is a `gmpoly` object, from the [gmpoly](https://github.com/stla/gmpoly) 
+This is a `qspray` object, from the [**qspray**](https://github.com/stla/qspray) 
 package.
 
 ```{r}
-gmpoly::gmpolyEval(jpol, c(gmp::as.bigq("2"), gmp::as.bigq("3/2")))
+qspray::evalQspray(jpol, c("2", "3/2"))
 ```
 
 By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic 
@@ -125,12 +125,12 @@ microbenchmark(
 )
 ```
 
-As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia, by 
-setting the argument `poly` to `"gmpoly"` in the `XXXPol` functions in the 
+One can also get a `qspray` polynomial with Julia, by 
+setting the argument `poly` to `"qspray"` in the `XXXPol` functions in the 
 list returned by `Jack_julia`:
 
 ```{r}
-julia$JackPol(2, lambda = c(3, 1), alpha = "2/5", poly = "gmpoly")
+julia$JackPol(2, lambda = c(3, 1), alpha = "2/5", poly = "qspray")
 ```
 
 ```{r}
@@ -139,7 +139,7 @@ lambda <- c(4, 3, 3)
 alpha <- "2/3"
 microbenchmark(
      Julia_mvp = julia$JackPol(n, lambda, alpha),
-  Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "gmpoly"),
+  Julia_qspray = julia$JackPol(n, lambda, alpha, poly = "qspray"),
   times = 6L
 )
 ```

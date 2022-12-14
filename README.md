@@ -30,9 +30,9 @@ print(
   signif = 6L
 )
 ## Unit: seconds
-##   expr        min         lq      mean    median         uq      max neval
-##      R 15.2136000 15.4525000 15.848700 15.618300 15.9377000 17.25190     6
-##  Julia  0.0092488  0.0096234  0.448923  0.013536  0.0171231  2.63047     6
+##   expr       min        lq     mean    median       uq      max neval cld
+##      R 6.9101300 6.9297900 6.995080 7.0125200 7.020270 7.085240     6   b
+##  Julia 0.0467379 0.0524001 0.210701 0.0719558 0.107837 0.913322     6  a
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -106,15 +106,14 @@ To get an exact symbolic polynomial with `JackPol`, you have to supply a
 ``` r
 jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
 jpol
-## gmpoly object algebraically equal to
-## 98/25 x^(1,3) + 28/5 x^(2,2) + 98/25 x^(3,1)
+## 98/25*x^(3, 1) + 98/25*x^(1, 3) + 28/5*x^(2, 2)
 ```
 
-This is a `gmpoly` object, from the
-[gmpoly](https://github.com/stla/gmpoly) package.
+This is a `qspray` object, from the
+[**qspray**](https://github.com/stla/qspray) package.
 
 ``` r
-gmpoly::gmpolyEval(jpol, c(gmp::as.bigq("2"), gmp::as.bigq("3/2")))
+qspray::evalQspray(jpol, c("2", "3/2"))
 ## Big Rational ('bigq') :
 ## [1] 1239/10
 ```
@@ -125,8 +124,7 @@ polynomials.
 ``` r
 zpol <- ZonalPol(2, lambda = c(3, 1))
 zpol
-## gmpoly object algebraically equal to
-## 24/7 x^(1,3) + 16/7 x^(2,2) + 24/7 x^(3,1)
+## 24/7*x^(3, 1) + 24/7*x^(1, 3) + 16/7*x^(2, 2)
 ```
 
 Again, Julia is faster:
@@ -141,10 +139,10 @@ microbenchmark(
   Julia = julia$JackPol(n, lambda, alpha),
   times = 6L
 )
-## Unit: seconds
-##   expr      min       lq     mean   median       uq      max neval
-##      R 5.796784 5.969351 6.534679 6.384724 6.501181 8.171313     6
-##  Julia 2.314522 2.425651 2.521455 2.488385 2.544755 2.867033     6
+## Unit: milliseconds
+##   expr       min        lq      mean    median        uq      max neval cld
+##      R 1017.5010 1028.0519 1059.4227 1043.2110 1067.5932 1156.968     6   b
+##  Julia  783.0187  799.3045  882.7926  869.3771  884.4896 1091.189     6  a
 ```
 
 As of version 3.0.0, one can also get a `gmpoly` polynomial with Julia,
@@ -152,9 +150,8 @@ by setting the argument `poly` to `"gmpoly"` in the `XXXPol` functions
 in the list returned by `Jack_julia`:
 
 ``` r
-julia$JackPol(2, lambda = c(3, 1), alpha = "2/5", poly = "gmpoly")
-## gmpoly object algebraically equal to
-## 98/25 x^(1,3) + 28/5 x^(2,2) + 98/25 x^(3,1)
+julia$JackPol(2, lambda = c(3, 1), alpha = "2/5", poly = "qspray")
+## 98/25*x^(1, 3) + 28/5*x^(2, 2) + 98/25*x^(3, 1)
 ```
 
 ``` r
@@ -163,11 +160,11 @@ lambda <- c(4, 3, 3)
 alpha <- "2/3"
 microbenchmark(
      Julia_mvp = julia$JackPol(n, lambda, alpha),
-  Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "gmpoly"),
+  Julia_gmpoly = julia$JackPol(n, lambda, alpha, poly = "qspray"),
   times = 6L
 )
 ## Unit: milliseconds
-##          expr       min        lq      mean    median       uq      max neval
-##     Julia_mvp 2356.3070 2374.6200 2416.4645 2385.8910 2460.117 2535.961     6
-##  Julia_gmpoly  819.8618  885.6438  927.5658  890.9213  925.444 1152.603     6
+##          expr      min       lq     mean   median       uq      max neval cld
+##     Julia_mvp 827.5496 855.1814 873.4309 882.5008 895.3674 897.4856     6   b
+##  Julia_gmpoly 418.1035 434.2616 491.9679 492.6028 552.8773 561.3593     6  a
 ```
