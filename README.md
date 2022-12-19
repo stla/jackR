@@ -3,7 +3,7 @@ The ‘jack’ package: Jack polynomials
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/stla/jackR/workflows/R-CMD-check/badge.svg)](https://github.com/stla/jackR/actions)
+[![R-CMD-check](https://github.com/stla/jackR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/jackR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ``` r
@@ -107,9 +107,9 @@ print(
   signif = 6L
 )
 ## Unit: seconds
-##   expr        min       lq     mean    median        uq      max neval cld
-##      R 6.75144000 6.831560 6.907260 6.9169200 6.9929700 7.033720     6   b
-##  Julia 0.00326045 0.044767 0.188341 0.0536809 0.0847008 0.889958     6  a
+##   expr        min        lq     mean    median        uq     max neval cld
+##      R 7.73008000 7.8626500 7.903070 7.9140600 7.9534400 8.04412     6   b
+##  Julia 0.00338613 0.0459389 0.216757 0.0697467 0.0948473 1.01688     6  a
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -138,8 +138,8 @@ microbenchmark(
 )
 ## Unit: milliseconds
 ##   expr       min        lq      mean    median        uq       max neval cld
-##      R 1004.7126 1029.5014 1055.9794 1046.0862 1064.9397 1144.5502     6   b
-##  Julia  464.8524  511.5357  547.2911  515.1564  538.3154  738.7303     6  a
+##      R 1170.8920 1188.7068 1225.4087 1211.0391 1236.0073 1334.7680     6   b
+##  Julia  464.3045  491.7447  549.3006  496.9847  546.5387  799.2461     6  a
 ```
 
 ``` r
