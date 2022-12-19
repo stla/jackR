@@ -1,4 +1,4 @@
-# Version 4.0.0 (20XX-XX-XX)
+# Version 4.0.0 (2022-12-19)
 
 - The package does not longer depend on the 'gmpoly' package. This dependency 
 has been replaced with the 'qspray' package.
