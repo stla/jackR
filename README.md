@@ -107,9 +107,9 @@ print(
   signif = 6L
 )
 ## Unit: seconds
-##   expr        min        lq     mean    median        uq     max neval cld
-##      R 7.73008000 7.8626500 7.903070 7.9140600 7.9534400 8.04412     6   b
-##  Julia 0.00338613 0.0459389 0.216757 0.0697467 0.0948473 1.01688     6  a
+##   expr       min        lq     mean    median       uq      max neval cld
+##      R 6.4281400 6.4819200 6.513880 6.5269900 6.553240 6.566030     6   b
+##  Julia 0.0465011 0.0482123 0.213404 0.0702411 0.104002 0.941224     6  a
 ```
 
 `Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
@@ -137,9 +137,30 @@ microbenchmark(
   times = 6L
 )
 ## Unit: milliseconds
-##   expr       min        lq      mean    median        uq       max neval cld
-##      R 1170.8920 1188.7068 1225.4087 1211.0391 1236.0073 1334.7680     6   b
-##  Julia  464.3045  491.7447  549.3006  496.9847  546.5387  799.2461     6  a
+##   expr      min       lq     mean   median       uq       max neval cld
+##      R 950.0712 965.2956 990.0872 978.1418 982.1807 1086.6921     6   b
+##  Julia 460.0946 464.8219 555.1198 545.3837 604.2341  710.8007     6  a
+```
+
+## ‘Rcpp’ implementation of the Schur polynomials
+
+As of version 4.1.0, a ‘Rcpp’ implementation of the Schur polynomials is
+provided by the package. It is faster than Julia (though I didn’t
+compare in pure Julia - the Julia execution time is slowed down by the
+‘JuliaConnectoR’ package):
+
+``` r
+n <- 5
+lambda <- c(4, 3, 3, 2)
+microbenchmark(
+   Rcpp = SchurPolCPP(n, lambda),
+  Julia = julia$SchurPol(n, lambda),
+  times = 6L
+)
+## Unit: milliseconds
+##   expr       min        lq      mean    median        uq        max neval cld
+##   Rcpp   5.92909   6.01620   6.11295   6.13169   6.21107    6.25796     6  a
+##  Julia 529.34127 532.54833 635.09685 534.60691 538.85875 1140.61894     6   b
 ```
 
 ``` r

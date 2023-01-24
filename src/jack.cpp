@@ -221,6 +221,7 @@ template Zpoly polyPow<int>(const Zpoly, int);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 typedef std::unordered_map<std::pair<int, int>, Zpoly, pairHasher> Zij;
+
 Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
   const int nusize = nu.size();
   if(nusize == 0 || nu[0] == 0 || m == 0) {
@@ -266,6 +267,9 @@ Zpoly SchurPol(int n, Partition lambda) {
   return sch(lambda, S, n, 1, lambda);
 }
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // [[Rcpp::export]]
 Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda) {
   Partition lambdaP(lambda.begin(), lambda.end());
@@ -286,4 +290,3 @@ Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda) {
     Rcpp::Named("coeffs")    = Coeffs
   );
 }
-

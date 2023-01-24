@@ -1,3 +1,9 @@
+# Version 4.1.0 (2023-??-??)
+
+- Now there is a 'Rcpp' implementation of the Schur polynomial: function 
+`SchurPolCPP`. It is faster than the Julia implementation.
+
+
 # Version 4.0.0 (2022-12-19)
 
 - The package does not longer depend on the 'gmpoly' package. This dependency 
