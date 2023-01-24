@@ -17,17 +17,12 @@ public:
 typedef std::unordered_map<Powers, int, Hasher> Zpoly;
 
 
-template <class T>
-inline void hash_combine(size_t& seed, T const& v) {
-  seed ^= hash<T>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-}
-
-struct pairHasher {
-  template <class T1, class T2>
-  size_t operator()(const std::pair<T1, T2>& p) const {
+class pairHasher {
+public:
+  size_t operator()(const std::pair<int, int>& ij) const {
     size_t seed = 0;
-    hash_combine(seed, p.first);
-    hash_combine(seed, p.second);
+    seed ^= ij.first + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= ij.second + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     return seed;
   }
 };
@@ -225,7 +220,48 @@ template Zpoly polyPow<int>(const Zpoly, int);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-Zpoly SchurPolRcpp(int n, Partition lambda) {
-  std::unordered_map<std::pair<int, int>, Zpoly, pairHasher> S;
+typedef std::unordered_map<std::pair<int, int>, Zpoly, pairHasher> Zij;
+Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
+  const int nusize = nu.size();
+  if(nusize == 0 || nu[0] == 0 || m == 0) {
+    return unitPoly<int>();
+  }
+  if(nusize > m && nu[m] > 0) {
+    return zeroPoly<int>();
+  }
+  if(m == 1){
+    return polyPow<int>(lonePoly<int>(1), nu[0]);
+  }
+  int N = _N(lambda, nu);
+  std::pair<int, int> Nm = std::make_pair(N, m);
+  if(S.contains(Nm)) {
+    return S[Nm];
+  }
+  Zpoly s = sch(lambda, S, m-1, 1, nu);
+  int i = k;
+  while(nusize >= i && nu[i] > 0) {
+    if(nusize == i || nu[i] > nu[i+1]) {
+      Partition _nu(nu);
+      _nu[i] = nu[i] - 1;
+      if(nu[i] > 1) {
+        s = polyAdd<int>(
+          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m, i, _nu))
+        );
+      } else {
+        s = polyAdd<int>(
+          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m-1, 0, _nu))
+        );
+      }
+    }
+    i++;
+  }
+  if(k == 0) {
+    S[Nm] = s;
+  }
+  return s;
+}
 
+Zpoly SchurPolRcpp(int n, Partition lambda) {
+  Zij S;
+  return sch(lambda, S, n, 0, lambda);
 }
