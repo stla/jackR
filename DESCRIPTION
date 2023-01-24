@@ -22,8 +22,11 @@ Imports:
     mvp,
     partitions,
     qspray,
+    Rcpp,
     Ryacas,
     spray
+LinkingTo:
+    Rcpp
 Suggests: 
     testthat
 Encoding: UTF-8
