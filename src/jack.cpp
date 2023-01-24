@@ -2,7 +2,7 @@
 typedef std::vector<int>        Partition;
 typedef std::vector<signed int> Powers;
 
-class Hasher {
+class vecHasher {
 public:
   size_t operator()(const Powers& exponents) const {
     // thanks to Steffan Hooper for advice
@@ -14,7 +14,10 @@ public:
   }
 };
 
-typedef std::unordered_map<Powers, int, Hasher> Zpoly;
+template <typename CoeffT>
+using Poly = std::unordered_map<Powers, CoeffT, vecHasher>;
+
+typedef Poly<int> Zpoly;
 
 
 class pairHasher {
@@ -67,10 +70,7 @@ void simplifyPowers(Powers& pows) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
-std::unordered_map<Powers, CoeffT, Hasher> polyAdd(
-    std::unordered_map<Powers, CoeffT, Hasher> P1,
-    std::unordered_map<Powers, CoeffT, Hasher> P2
-) {
+Poly<CoeffT> polyAdd(Poly<CoeffT> P1, Poly<CoeffT> P2) {
   Powers pows;
   for(auto it = P2.begin(); it != P2.end(); ++it) {
     pows = it->first;
@@ -102,12 +102,9 @@ Powers growPowers(Powers pows, int m, int n) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
-std::unordered_map<Powers, CoeffT, Hasher> polyMult(
-  const std::unordered_map<Powers, CoeffT, Hasher> P1,
-  const std::unordered_map<Powers, CoeffT, Hasher> P2
-) {
+Poly<CoeffT> polyMult(const Poly<CoeffT> P1, const Poly<CoeffT> P2) {
 
-  std::unordered_map<Powers, CoeffT, Hasher> Pout;
+  Poly<CoeffT> Pout;
   Powers powssum;
   int i;
 
@@ -155,8 +152,8 @@ template Zpoly polyMult<int>(const Zpoly, const Zpoly);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
-std::unordered_map<Powers, CoeffT, Hasher> zeroPoly() {
-  std::unordered_map<Powers, CoeffT, Hasher> out;
+Poly<CoeffT> zeroPoly() {
+  Poly<CoeffT> out;
   return out;
 }
 
@@ -166,8 +163,8 @@ template Zpoly zeroPoly<int>();
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
-std::unordered_map<Powers, CoeffT, Hasher> unitPoly() {
-  std::unordered_map<Powers, CoeffT, Hasher> out;
+Poly<CoeffT> unitPoly() {
+  Poly<CoeffT> out;
   Powers pows(0);
   CoeffT one(1);
   out[pows] = one;
@@ -180,8 +177,8 @@ template Zpoly unitPoly<int>();
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
-std::unordered_map<Powers, CoeffT, Hasher> lonePoly(const int n) {
-  std::unordered_map<Powers, CoeffT, Hasher> out;
+Poly<CoeffT> lonePoly(const int n) {
+  Poly<CoeffT> out;
   Powers pows(n, 0);
   pows[n-1] = 1;
   CoeffT one(1);
@@ -195,11 +192,8 @@ template Zpoly lonePoly<int>(const int);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
-std::unordered_map<Powers, CoeffT, Hasher> polyPow(
-  const std::unordered_map<Powers, CoeffT, Hasher> P,
-  int n
-) {
-  std::unordered_map<Powers, CoeffT, Hasher> out;
+Poly<CoeffT> polyPow(const Poly<CoeffT> P, int n) {
+  Poly<CoeffT> out;
   if(n >= 1) {
     if(n == 1) {
       out = P;
