@@ -239,23 +239,23 @@ Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
   }
   Zpoly s = sch(lambda, S, m-1, 1, nu);
   int i = k;
-  while(nusize >= i && nu[i] > 0) {
-    if(nusize == i || nu[i] > nu[i+1]) {
+  while(nusize >= i && nu[i-1] > 0) {
+    if(nusize == i || nu[i-1] > nu[i]) {
       Partition _nu(nu);
-      _nu[i] = nu[i] - 1;
-      if(nu[i] > 1) {
+      _nu[i-1] = nu[i-1] - 1;
+      if(nu[i-1] > 1) {
         s = polyAdd<int>(
           s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m, i, _nu))
         );
       } else {
         s = polyAdd<int>(
-          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m-1, 0, _nu))
+          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m-1, 1, _nu))
         );
       }
     }
     i++;
   }
-  if(k == 0) {
+  if(k == 1) {
     S[Nm] = s;
   }
   return s;
@@ -263,12 +263,13 @@ Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
 
 Zpoly SchurPol(int n, Partition lambda) {
   Zij S;
-  return sch(lambda, S, n, 0, lambda);
+  return sch(lambda, S, n, 1, lambda);
 }
 
 // [[Rcpp::export]]
-Rcpp::List SchurPolRcpp(int n, std::vector<int> lambda) {
-  Zpoly P = SchurPol(n, lambda);
+Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda) {
+  Partition lambdaP(lambda.begin(), lambda.end());
+  Zpoly P = SchurPol(n, lambdaP);
   int nterms = P.size();
   Rcpp::List Exponents(nterms);
   Rcpp::IntegerVector Coeffs(nterms);
@@ -278,6 +279,7 @@ Rcpp::List SchurPolRcpp(int n, std::vector<int> lambda) {
     Rcpp::IntegerVector expnts(pows.begin(), pows.end());
     Exponents(i) = expnts;
     Coeffs(i) = it->second;
+    i++;
   }
   return Rcpp::List::create(
     Rcpp::Named("exponents") = Exponents,

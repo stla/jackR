@@ -10,18 +10,21 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// test
-void test();
-RcppExport SEXP _jack_test() {
+// SchurPolRcpp
+Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda);
+RcppExport SEXP _jack_SchurPolRcpp(SEXP nSEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    test();
-    return R_NilValue;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(SchurPolRcpp(n, lambda));
+    return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_jack_test", (DL_FUNC) &_jack_test, 0},
+    {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
     {NULL, NULL, 0}
 };
 
