@@ -158,6 +158,21 @@ template Zpoly unitPoly<int>();
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
+std::unordered_map<Powers, CoeffT, Hasher> lonePoly(const int n) {
+  std::unordered_map<Powers, CoeffT, Hasher> out;
+  Powers pows(n, 0);
+  pows[n-1] = 1;
+  CoeffT one(1);
+  out[pows] = one;
+  return out;
+}
+
+template Zpoly lonePoly<int>(const int);
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+template <typename CoeffT>
 std::unordered_map<Powers, CoeffT, Hasher> polyPow(
   const std::unordered_map<Powers, CoeffT, Hasher> P,
   unsigned int n
