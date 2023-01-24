@@ -14,7 +14,7 @@ public:
   }
 };
 
-//typedef std::unordered_map<Powers, int, Hasher> qspray;
+typedef std::unordered_map<Powers, int, Hasher> Zpoly;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -71,6 +71,7 @@ std::unordered_map<Powers, CoeffT, Hasher> polyAdd(
   return P1;
 }
 
+template Zpoly polyAdd<int>(Zpoly, Zpoly);
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -91,8 +92,8 @@ Powers growPowers(Powers pows, int m, int n) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
 std::unordered_map<Powers, CoeffT, Hasher> polyMult(
-  std::unordered_map<Powers, CoeffT, Hasher> P1,
-  std::unordered_map<Powers, CoeffT, Hasher> P2
+  const std::unordered_map<Powers, CoeffT, Hasher> P1,
+  const std::unordered_map<Powers, CoeffT, Hasher> P2
 ) {
 
   std::unordered_map<Powers, CoeffT, Hasher> Pout;
@@ -136,3 +137,45 @@ std::unordered_map<Powers, CoeffT, Hasher> polyMult(
 
   return Pout;
 }
+
+template Zpoly polyMult<int>(const Zpoly, const Zpoly);
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+template <typename CoeffT>
+std::unordered_map<Powers, CoeffT, Hasher> unitPoly() {
+  std::unordered_map<Powers, CoeffT, Hasher> out;
+  Powers pows(0);
+  CoeffT one(1);
+  out[pows] = one;
+  return out;
+}
+
+template Zpoly unitPoly<int>();
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+template <typename CoeffT>
+std::unordered_map<Powers, CoeffT, Hasher> polyPow(
+  const std::unordered_map<Powers, CoeffT, Hasher> P,
+  unsigned int n
+) {
+  std::unordered_map<Powers, CoeffT, Hasher> out;
+  if(n >= 1) {
+    if(n == 1) {
+      out = P;
+    } else {
+      out = unitPoly<CoeffT>();
+      for(; n > 0; n--) {
+        out = polyMult(P, out);
+      }
+    }
+  } else {
+    out = unitPoly<CoeffT>();
+  }
+  return out;
+}
+
+template Zpoly polyPow<int>(const Zpoly, unsigned int);
