@@ -261,7 +261,27 @@ Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
   return s;
 }
 
-Zpoly SchurPolRcpp(int n, Partition lambda) {
+Zpoly SchurPol(int n, Partition lambda) {
   Zij S;
   return sch(lambda, S, n, 0, lambda);
 }
+
+// [[Rcpp::export]]
+Rcpp::List SchurPolRcpp(int n, std::vector<int> lambda) {
+  Zpoly P = SchurPol(n, lambda);
+  int nterms = P.size();
+  Rcpp::List Exponents(nterms);
+  Rcpp::IntegerVector Coeffs(nterms);
+  int i = 0;
+  for(auto it = P.begin(); it != P.end(); it++) {
+    Powers pows = it->first;
+    Rcpp::IntegerVector expnts(pows.begin(), pows.end());
+    Exponents(i) = expnts;
+    Coeffs(i) = it->second;
+  }
+  return Rcpp::List::create(
+    Rcpp::Named("exponents") = Exponents,
+    Rcpp::Named("coeffs")    = Coeffs
+  );
+}
+
