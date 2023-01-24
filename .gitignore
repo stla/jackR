@@ -38,3 +38,10 @@ rsconnect/
 
 # misc
 inst/trash
+
+# C files
+src/*.o
+src/*.so
+src/*.dll
+src-i386/
+src-x64/

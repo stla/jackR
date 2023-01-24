@@ -16,6 +16,22 @@ public:
 
 typedef std::unordered_map<Powers, int, Hasher> Zpoly;
 
+
+template <class T>
+inline void hash_combine(size_t& seed, T const& v) {
+  seed ^= hash<T>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+struct pairHasher {
+  template <class T1, class T2>
+  size_t operator()(const std::pair<T1, T2>& p) const {
+    size_t seed = 0;
+    hash_combine(seed, p.first);
+    hash_combine(seed, p.second);
+    return seed;
+  }
+};
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 int _N(Partition lambda, Partition mu) {
@@ -144,6 +160,17 @@ template Zpoly polyMult<int>(const Zpoly, const Zpoly);
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename CoeffT>
+std::unordered_map<Powers, CoeffT, Hasher> zeroPoly() {
+  std::unordered_map<Powers, CoeffT, Hasher> out;
+  return out;
+}
+
+template Zpoly zeroPoly<int>();
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+template <typename CoeffT>
 std::unordered_map<Powers, CoeffT, Hasher> unitPoly() {
   std::unordered_map<Powers, CoeffT, Hasher> out;
   Powers pows(0);
@@ -175,7 +202,7 @@ template Zpoly lonePoly<int>(const int);
 template <typename CoeffT>
 std::unordered_map<Powers, CoeffT, Hasher> polyPow(
   const std::unordered_map<Powers, CoeffT, Hasher> P,
-  unsigned int n
+  int n
 ) {
   std::unordered_map<Powers, CoeffT, Hasher> out;
   if(n >= 1) {
@@ -193,4 +220,12 @@ std::unordered_map<Powers, CoeffT, Hasher> polyPow(
   return out;
 }
 
-template Zpoly polyPow<int>(const Zpoly, unsigned int);
+template Zpoly polyPow<int>(const Zpoly, int);
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+Zpoly SchurPolRcpp(int n, Partition lambda) {
+  std::unordered_map<std::pair<int, int>, Zpoly, pairHasher> S;
+
+}
