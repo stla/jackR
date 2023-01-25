@@ -1,7 +1,8 @@
-# Version 4.1.0 (2023-??-??)
+# Version 5.0.0 (2023-??-??)
 
-- Now there is a 'Rcpp' implementation of the Schur polynomial: function 
-`SchurPolCPP`. It is faster than the Julia implementation.
+- Now there is a 'Rcpp' implementation of the polynomials: functions 
+`SchurPolCPP`, `JackPolCPP`, `ZonalPolCPP` and `ZonalQPolCPP`. It is faster 
+than the Julia implementation.
 
 
 # Version 4.0.0 (2022-12-19)

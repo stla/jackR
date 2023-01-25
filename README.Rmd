@@ -124,29 +124,45 @@ n <- 5
 lambda <- c(4, 3, 3)
 alpha <- "2/3"
 alphaq <- gmp::as.bigq(alpha)
-microbenchmark(
-      R = JackPol(n, lambda, alphaq),
-  Julia = julia$JackPol(n, lambda, alpha),
-  times = 6L
-)
+print(
+  microbenchmark(
+        R = JackPol(n, lambda, alphaq),
+    Julia = julia$JackPol(n, lambda, alpha),
+    times = 6L
+  ),
+signif = 2L)
 ```
 
 
-## 'Rcpp' implementation of the Schur polynomials
+## 'Rcpp' implementation of the polynomials
 
-As of version 4.1.0, a 'Rcpp' implementation of the Schur polynomials is 
-provided by the package. It is faster than Julia (though I didn't compare in 
-pure Julia - the Julia execution time is slowed down by the 'JuliaConnectoR' 
-package):
+As of version 4.1.0, a 'Rcpp' implementation of the polynomials is provided by 
+the package. It is faster than Julia (though I didn't compare in pure Julia - 
+the Julia execution time is slowed down by the 'JuliaConnectoR' package):
 
 ```{r, eval=juliaeval}
 n <- 5
 lambda <- c(4, 3, 3, 2)
-microbenchmark(
-   Rcpp = SchurPolCPP(n, lambda),
-  Julia = julia$SchurPol(n, lambda),
-  times = 6L
-)
+print(
+  microbenchmark(
+     Rcpp = SchurPolCPP(n, lambda),
+    Julia = julia$SchurPol(n, lambda),
+    times = 6L
+  ), 
+signif = 2L)
+```
+
+```{r, eval=juliaeval}
+n <- 5
+lambda <- c(4, 3, 3, 2)
+alpha <- "2/3"
+print(
+  microbenchmark(
+     Rcpp = JackPolCPP(n, lambda, alpha),
+    Julia = julia$JackPol(n, lambda, alpha),
+    times = 6L
+  ), 
+signif = 2L)
 ```
 
 ```{r, eval=juliaeval}
