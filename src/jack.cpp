@@ -406,7 +406,7 @@ Qpoly jac(
   }
   int N = _N(lambda, nu);
   std::pair<int, int> Nm = std::make_pair(N, m);
-  if(S.contains(Nm)) {
+  if(k == 0 && S.contains(Nm)) {
     return S[Nm];
   }
   Qpoly s = polyMult<gmpq>(
@@ -416,32 +416,41 @@ Qpoly jac(
       polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(nu))
     )
   );
-  int i = k;
+  int i = k > 1 ? k : 1;
   while(nusize >= i && nu[i-1] > 0) {
     if(nusize == i || nu[i-1] > nu[i]) {
       Partition _nu(nu);
       _nu[i-1] = nu[i-1] - 1;
+      gmpq gamma = beta * _betaratio(mu, nu, i, alpha);
       if(nu[i-1] > 1) {
-        s = polyAdd<int>(
-          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m, i, _nu))
+        s = polyAdd<gmpq>(
+          s, jac(lambda, S, alpha, m, i, mu, _nu, gamma)
         );
       } else {
-        s = polyAdd<int>(
-          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m-1, 1, _nu))
+        s = polyAdd<gmpq>(
+          s,
+          polyMult<gmpq>(
+            jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneq),
+            polyMult<gmpq>(
+              constantPoly<gmpq>(gamma),
+              polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(_nu))
+            )
+          )
         );
       }
     }
     i++;
   }
-  if(k == 1) {
+  if(k == 0) {
     S[Nm] = s;
   }
   return s;
 }
 
-Qpoly JackPol(int n, Partition lambda) {
+Qpoly JackPol(int n, Partition lambda, gmpq alpha) {
   Qij S;
-  return sch(lambda, S, n, 1, lambda);
+  gmpq oneq(1, 1);
+  return jac(lambda, S, alpha, n, 0, lambda, lambda, oneq);
 }
 
 
