@@ -9,7 +9,6 @@ typedef boost::multiprecision::mpz_int      gmpi;
 class vecHasher {
 public:
   size_t operator()(const Powers& exponents) const {
-    // thanks to Steffan Hooper for advice
     std::size_t seed = 0;
     for(auto& i : exponents) {
       seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -20,7 +19,6 @@ public:
 
 template <typename CoeffT>
 using Poly = std::unordered_map<Powers, CoeffT, vecHasher>;
-
 typedef Poly<int>  Zpoly;
 typedef Poly<gmpq> Qpoly;
 
@@ -78,19 +76,19 @@ void simplifyPowers(Powers& pows) {
 template <typename CoeffT>
 Poly<CoeffT> polyAdd(Poly<CoeffT> P1, Poly<CoeffT> P2) {
   Powers pows;
-  Poly<CoeffT> P1copy; // USELESS
-  for(auto it = P1.begin(); it != P1.end(); ++it) {
-    pows = it->first;
-    P1copy[pows] = P1[pows];
-  }
+  // Poly<CoeffT> P1copy; // USELESS
+  // for(auto it = P1.begin(); it != P1.end(); ++it) {
+  //   pows = it->first;
+  //   P1copy[pows] = P1[pows];
+  // }
   for(auto it = P2.begin(); it != P2.end(); ++it) {
     pows = it->first;
-    P1copy[pows] += P2[pows];
-    if(P1copy[pows] == 0) {
-      P1copy.erase(pows);
+    P1[pows] += P2[pows];
+    if(P1[pows] == 0) {
+      P1.erase(pows);
     }
   }
-  return P1copy;
+  return P1;
 }
 
 template Zpoly polyAdd<int>(Zpoly, Zpoly);
@@ -504,15 +502,4 @@ Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha) {
     Rcpp::Named("exponents") = Exponents,
     Rcpp::Named("coeffs")    = Coeffs
   );
-}
-
-
-
-// [[Rcpp::export]]
-void test() {
-  Partition kappa = {4, 2, 2, 1};
-  Partition mu    = {3, 2, 1};
-  int k = 2;
-  gmpq alpha(2, 3);
-  Rcpp::Rcout << _betaratio(kappa, mu, k, alpha);
 }
