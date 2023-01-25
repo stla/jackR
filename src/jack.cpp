@@ -316,10 +316,11 @@ gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
     v.emplace_back(t - s[i] + alpha * mu_q[i]);
   }
   int musize = mu.size();
+  int muk = mu[k];
   std::vector<gmpq> w;
-  w.reserve(mu[k]-1);
+  w.reserve(muk-1);
   gmpq al(0, 1);
-  for(int i = 1; i < mu[k]; i++) {
+  for(int i = 1; i < muk; i++) {
     int j = 0;
     while(j < musize && mu[j] >= i) {
       j++;
@@ -327,7 +328,17 @@ gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
     al += alpha;
     w.emplace_back(gmpq(j, 1) - t - al);
   }
-
-
-  return alpha;
+  gmpq prod1(1, 1);
+  gmpq prod2(1, 1);
+  gmpq prod3(1, 1);
+  for(int i = 0; i < k; i++) {
+    prod1 *= (u[i] / (u[i] + alpha - oneq));
+  }
+  for(int i = 0; i < k-1; i++) {
+    prod2 *= (oneq + alpha / v[i]);
+  }
+  for(int i = 0; i < muk-1; i++) {
+    prod3 *= (oneq + alpha / w[i]);
+  }
+  return alpha * prod1 * prod2 * prod3;
 }
