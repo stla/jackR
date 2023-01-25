@@ -303,8 +303,8 @@ gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
     kappa_q.emplace_back(gmpq(kappa[i], 1));
     s.emplace_back(gmpq(i+1, 1));
   }
-  gmpq t = s[0] - alpha * mu_q[k-1];
   gmpq oneq(1, 1);
+  gmpq t = s[k-1] - alpha * mu_q[k-1];
   std::vector<gmpq> u;
   u.reserve(k);
   for(int i = 0; i < k; i++) {
@@ -316,7 +316,7 @@ gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
     v.emplace_back(t - s[i] + alpha * mu_q[i]);
   }
   int musize = mu.size();
-  int muk = mu[k];
+  int muk = mu[k-1];
   std::vector<gmpq> w;
   w.reserve(muk-1);
   gmpq al(0, 1);
@@ -341,4 +341,13 @@ gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
     prod3 *= (oneq + alpha / w[i]);
   }
   return alpha * prod1 * prod2 * prod3;
+}
+
+// [[Rcpp::export]]
+void test() {
+  Partition kappa = {4, 2, 2};
+  Partition mu    = {3, 2, 1};
+  int k = 3;
+  gmpq alpha(2, 3);
+  Rcpp::Rcout << _betaratio(kappa, mu, k, alpha);
 }
