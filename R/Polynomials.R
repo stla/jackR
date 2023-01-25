@@ -90,7 +90,7 @@ JackPolDK <- function(n, lambda, alpha) {
     i <- max(1L,k)
     s <- jac(m-1L, 0L, nu, nu, 1) * beta * lone(m, n)^(sum(mu)-sum(nu))
     while(length(nu) >= i && nu[i] > 0L){
-      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
+      if(length(nu) == i || nu[i] > nu[i+1L]){
         .nu <- nu; .nu[i] <- nu[i]-1L
         gamma <- beta * .betaratio(mu, nu, i, alpha)
         if(nu[i] > 1L){
@@ -133,7 +133,7 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
         powers = list(c(rep(0L, m-1L), sum(mu)-sum(nu)))
       )
     while(length(nu) >= i && nu[i] > 0L) {
-      if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]) {
+      if(length(nu) == i || nu[i] > nu[i+1L]) {
         .nu <- nu; .nu[i] <- nu[i]-1L
         gamma <- beta * .betaratio(mu, nu, i, alpha)
         if(nu[i] > 1L) {

@@ -147,7 +147,7 @@ signif = 2L)
 
 ## ‘Rcpp’ implementation of the polynomials
 
-As of version 4.1.0, a ‘Rcpp’ implementation of the polynomials is
+As of version 5.0.0, a ‘Rcpp’ implementation of the polynomials is
 provided by the package. It is faster than Julia (though I didn’t
 compare in pure Julia - the Julia execution time is slowed down by the
 ‘JuliaConnectoR’ package):
