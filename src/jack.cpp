@@ -454,6 +454,52 @@ Qpoly JackPol(int n, Partition lambda, gmpq alpha) {
 }
 
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+std::string q2str(gmpq r) {
+  const gmpi numer = boost::multiprecision::numerator(r);
+  const gmpi denom = boost::multiprecision::denominator(r);
+  mpz_t p; mpz_init(p);
+  mpz_set(p, numer.backend().data());
+  mpz_t q; mpz_init(q);
+  mpz_set(q, denom.backend().data());
+  const size_t n = mpz_sizeinbase(p, 10) + 2;
+  const size_t d = mpz_sizeinbase(q, 10) + 2;
+  char* cnumer = new char[n];
+  char* cdenom = new char[d];
+  cnumer = mpz_get_str(cnumer, 10, p);
+  cdenom = mpz_get_str(cdenom, 10, q);
+  std::string snumer = cnumer;
+  std::string sdenom = cdenom;
+  delete[] cnumer; delete[] cdenom;
+  mpz_clear(p); mpz_clear(q);
+  return snumer + "/" + sdenom;
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// [[Rcpp::export]]
+Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha) {
+  Partition lambdaP(lambda.begin(), lambda.end());
+  gmpq alphaQ(alpha);
+  Qpoly P = JackPol(n, lambdaP, alphaQ);
+  int nterms = P.size();
+  Rcpp::List Exponents(nterms);
+  Rcpp::CharacterVector Coeffs(nterms);
+  int i = 0;
+  for(auto it = P.begin(); it != P.end(); it++) {
+    Powers pows = it->first;
+    Rcpp::IntegerVector expnts(pows.begin(), pows.end());
+    Exponents(i) = expnts;
+    Coeffs(i) = q2str(it->second);
+    i++;
+  }
+  return Rcpp::List::create(
+    Rcpp::Named("exponents") = Exponents,
+    Rcpp::Named("coeffs")    = Coeffs
+  );
+}
 
 
 
