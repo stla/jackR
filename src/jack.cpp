@@ -1,6 +1,10 @@
 #include <Rcpp.h>
-typedef std::vector<int>        Partition;
-typedef std::vector<signed int> Powers;
+#include <boost/multiprecision/gmp.hpp>
+typedef std::vector<int>                    Partition;
+typedef std::vector<signed int>             Powers;
+typedef boost::multiprecision::mpq_rational gmpq;
+typedef boost::multiprecision::mpz_int      gmpi;
+
 
 class vecHasher {
 public:
@@ -17,7 +21,8 @@ public:
 template <typename CoeffT>
 using Poly = std::unordered_map<Powers, CoeffT, vecHasher>;
 
-typedef Poly<int> Zpoly;
+typedef Poly<int>  Zpoly;
+typedef Poly<gmpq> Qpoly;
 
 
 class pairHasher {
@@ -283,4 +288,46 @@ Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda) {
     Rcpp::Named("exponents") = Exponents,
     Rcpp::Named("coeffs")    = Coeffs
   );
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
+  std::vector<gmpq> mu_q;
+  std::vector<gmpq> kappa_q;
+  std::vector<gmpq> s;
+  mu_q.reserve(k); kappa_q.reserve(k); s.reserve(k);
+  for(int i = 0; i < k; i++) {
+    mu_q.emplace_back(gmpq(mu[i], 1));
+    kappa_q.emplace_back(gmpq(kappa[i], 1));
+    s.emplace_back(gmpq(i+1, 1));
+  }
+  gmpq t = s[0] - alpha * mu_q[k-1];
+  gmpq oneq(1, 1);
+  std::vector<gmpq> u;
+  u.reserve(k);
+  for(int i = 0; i < k; i++) {
+    u.emplace_back(t + oneq - s[i] + alpha * kappa_q[i]);
+  }
+  std::vector<gmpq> v;
+  v.reserve(k-1);
+  for(int i = 0; i < k-1; i++) {
+    v.emplace_back(t - s[i] + alpha * mu_q[i]);
+  }
+  int musize = mu.size();
+  std::vector<gmpq> w;
+  w.reserve(mu[k]-1);
+  gmpq al(0, 1);
+  for(int i = 1; i < mu[k]; i++) {
+    int j = 0;
+    while(j < musize && mu[j] >= i) {
+      j++;
+    }
+    al += alpha;
+    w.emplace_back(gmpq(j, 1) - t - al);
+  }
+
+
+  return alpha;
 }

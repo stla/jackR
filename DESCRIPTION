@@ -27,6 +27,7 @@ Imports:
     Ryacas,
     spray
 LinkingTo:
+    BH,
     Rcpp
 Suggests: 
     testthat
