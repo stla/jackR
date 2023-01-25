@@ -5,6 +5,10 @@ SchurPolRcpp <- function(n, lambda) {
     .Call(`_jack_SchurPolRcpp`, n, lambda)
 }
 
+JackPolRcpp <- function(n, lambda, alpha) {
+    .Call(`_jack_JackPolRcpp`, n, lambda, alpha)
+}
+
 test <- function() {
     invisible(.Call(`_jack_test`))
 }

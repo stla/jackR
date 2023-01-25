@@ -78,14 +78,19 @@ void simplifyPowers(Powers& pows) {
 template <typename CoeffT>
 Poly<CoeffT> polyAdd(Poly<CoeffT> P1, Poly<CoeffT> P2) {
   Powers pows;
+  Poly<CoeffT> P1copy; // USELESS
+  for(auto it = P1.begin(); it != P1.end(); ++it) {
+    pows = it->first;
+    P1copy[pows] = P1[pows];
+  }
   for(auto it = P2.begin(); it != P2.end(); ++it) {
     pows = it->first;
-    P1[pows] += P2[pows];
-    if(P1[pows] == 0) {
-      P1.erase(pows);
+    P1copy[pows] += P2[pows];
+    if(P1copy[pows] == 0) {
+      P1copy.erase(pows);
     }
   }
-  return P1;
+  return P1copy;
 }
 
 template Zpoly polyAdd<int>(Zpoly, Zpoly);
@@ -394,9 +399,9 @@ Qpoly jac(
   }
   gmpq oneq(1, 1);
   if(m == 1){
-    gmpq al = 0;
+    gmpq al(0, 1);
     gmpq prod(1, 1);
-    for(int i = 1; i < nu[1]; i++) {
+    for(int i = 1; i < nu[0]; i++) {
       al += alpha;
       prod *= (al + oneq);
     }
@@ -505,9 +510,9 @@ Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha) {
 
 // [[Rcpp::export]]
 void test() {
-  Partition kappa = {4, 2, 2};
+  Partition kappa = {4, 2, 2, 1};
   Partition mu    = {3, 2, 1};
-  int k = 3;
+  int k = 2;
   gmpq alpha(2, 3);
   Rcpp::Rcout << _betaratio(kappa, mu, k, alpha);
 }

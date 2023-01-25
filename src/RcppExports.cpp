@@ -22,6 +22,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// JackPolRcpp
+Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha);
+RcppExport SEXP _jack_JackPolRcpp(SEXP nSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< std::string >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(JackPolRcpp(n, lambda, alpha));
+    return rcpp_result_gen;
+END_RCPP
+}
 // test
 void test();
 RcppExport SEXP _jack_test() {
@@ -34,6 +47,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
+    {"_jack_JackPolRcpp", (DL_FUNC) &_jack_JackPolRcpp, 3},
     {"_jack_test", (DL_FUNC) &_jack_test, 0},
     {NULL, NULL, 0}
 };
