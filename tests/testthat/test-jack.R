@@ -159,3 +159,14 @@ test_that("JackPol gmp", {
   expect_identical(gmvpol[["power"]], mvpol[["power"]])
   expect_equal(gmvpol[["coeffs"]], mvpol[["coeffs"]])
 })
+
+test_that(
+  "JackPolCPP is correct", {
+    lambda <- c(3, 2)
+    alpha <- as.bigq(11L, 3L)
+    pol <- JackPolCPP(4, lambda, alpha)
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    polEval <- qspray::evalQspray(pol, x)
+    expect_identical(polEval, Jack(as.bigq(x), lambda, alpha))
+  }
+)

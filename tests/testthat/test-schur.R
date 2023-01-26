@@ -97,3 +97,13 @@ test_that(
     expect_true(P1 == P2)
   }
 )
+
+test_that(
+  "SchurPolCPP is correct", {
+    lambda <- c(3, 2)
+    pol <- SchurPolCPP(4, lambda)
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    polEval <- qspray::evalQspray(pol, x)
+    expect_identical(polEval, Schur(as.bigq(x), lambda))
+  }
+)
