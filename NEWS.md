@@ -1,4 +1,4 @@
-# Version 5.0.0 (2023-??-??)
+# Version 5.0.0 (2023-01-27)
 
 - Now there is a 'Rcpp' implementation of the polynomials: functions 
 `SchurPolCPP`, `JackPolCPP`, `ZonalPolCPP` and `ZonalQPolCPP`. It is faster 
