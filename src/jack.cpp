@@ -258,7 +258,7 @@ Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
   }
   int N = _N(lambda, nu);
   std::pair<int, int> Nm = std::make_pair(N, m);
-  if(S.contains(Nm)) {
+  if(auto search = S.find(Nm); search != S.end()) {
     return S[Nm];
   }
   Zpoly s = sch(lambda, S, m-1, 1, nu);
@@ -409,8 +409,10 @@ Qpoly jac(
   }
   int N = _N(lambda, nu);
   std::pair<int, int> Nm = std::make_pair(N, m);
-  if(k == 0 && S.contains(Nm)) {
-    return S[Nm];
+  if(k == 0) {
+    if(auto search = S.find(Nm); search != S.end()) {
+      return S[Nm];
+    }
   }
   Qpoly s = polyMult<gmpq>(
     jac(lambda, S, alpha, m-1, 0, nu, nu, oneq),

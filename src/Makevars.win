@@ -1,2 +1,2 @@
-CXX_STD = CXX20
+CXX_STD = CXX17
 PKG_LIBS = -lgmp

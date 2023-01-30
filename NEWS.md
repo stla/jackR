@@ -1,3 +1,8 @@
+# Version 5.0.1 (2023-01-30)
+
+Changed C++17 to C++20.
+
+
 # Version 5.0.0 (2023-01-27)
 
 - Now there is a 'Rcpp' implementation of the polynomials: functions 
