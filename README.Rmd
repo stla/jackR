@@ -102,7 +102,7 @@ print(
     times = 6L,
     unit  = "seconds"
   ),
-  signif = 6L
+  signif = 2L
 )
 ```
 
@@ -175,11 +175,12 @@ alpha <- "3"
 print(
   microbenchmark(
         R = Jack(gmp::as.bigq(x), lambda, gmp::as.bigq(alpha)),
-     Rcpp = JackCPP(x, lambda, alpha),    
-    times = 10L,
+     Rcpp = JackCPP(x, lambda, alpha),
+    Julia = julia$Jack(x, lambda, alpha),
+    times = 6L,
     unit  = "seconds"
   ),
-  signif = 6L
+  signif = 2L
 )
 ```
 
