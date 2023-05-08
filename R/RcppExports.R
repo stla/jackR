@@ -13,6 +13,10 @@ JackEvalRcpp <- function(x, lambda, alpha) {
     .Call(`_jack_JackEvalRcpp`, x, lambda, alpha)
 }
 
+SchurEvalRcpp <- function(x, lambda) {
+    .Call(`_jack_SchurEvalRcpp`, x, lambda)
+}
+
 test <- function() {
     invisible(.Call(`_jack_test`))
 }

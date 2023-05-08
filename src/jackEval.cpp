@@ -124,6 +124,20 @@ gmpq SchurEval(std::vector<gmpq> x, Partition lambda) {
 }
 
 // [[Rcpp::export]]
+std::string SchurEvalRcpp(Rcpp::StringVector x, Rcpp::IntegerVector lambda) {
+  int n = x.size();
+  std::vector<gmpq> xQ;
+  xQ.reserve(n);
+  for(int i = 0; i < n; i++) {
+    xQ.emplace_back(gmpq(Rcpp::as<std::string>(x[i])));
+  }
+  Partition lambdaP(lambda.begin(), lambda.end());
+  gmpq result = SchurEval(xQ, lambdaP);
+  return q2str(result);
+}
+
+
+// [[Rcpp::export]]
 void test() {
   std::vector<gmpq> x = {gmpq(2), gmpq(3), gmpq(4), gmpq(5)};
   std::vector<int> lambda = {3, 1};
