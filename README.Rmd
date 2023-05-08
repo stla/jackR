@@ -165,6 +165,24 @@ print(
 signif = 2L)
 ```
 
+As of version 5.1.0, there's also a 'Rcpp' implementation of the evaluation of 
+the polynomials.
+
+```{r, eval=juliaeval}
+x <- c("1/2", "2/3", "1", "2/3", "1", "5/4")
+lambda <- c(5, 3, 2, 2, 1)
+alpha <- "3"
+print(
+  microbenchmark(
+        R = Jack(gmp::as.bigq(x), lambda, gmp::as.bigq(alpha)),
+     Rcpp = JackCPP(x, lambda, alpha),    
+    times = 10L,
+    unit  = "seconds"
+  ),
+  signif = 6L
+)
+```
+
 ```{r, eval=juliaeval}
 JuliaConnectoR::stopJulia()
 ```
