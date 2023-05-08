@@ -1,9 +1,7 @@
-Switched from C++20 to C++17.
-
 
 ## Test environments
 
-* Linux Mint 20
+* Linux Mint 20, R-4.3.0
 * Ubuntu 20, via Github action
 * win-builder devel
 * mac-builder

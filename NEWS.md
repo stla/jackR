@@ -1,6 +1,12 @@
+# Version 5.1.0 (2023-05-08)
+
+- Now there is a 'Rcpp' implementation for the evaluation of the polynomials: 
+functions `SchurCPP`, `JackCPP`, `ZonalCPP` and `ZonalQCPP`.
+
+
 # Version 5.0.1 (2023-01-30)
 
-Changed C++17 to C++20.
+Changed C++20 to C++17.
 
 
 # Version 5.0.0 (2023-01-27)
