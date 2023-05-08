@@ -82,3 +82,12 @@ test_that(
     expect_true(expected == obtained)
   }
 )
+
+test_that(
+  "ZonalCPP is correct", {
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    lambda <- c(3, 2)
+    res <- ZonalCPP(x, lambda)
+    expect_identical(res, Zonal(x, lambda))
+  }
+)

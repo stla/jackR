@@ -170,3 +170,13 @@ test_that(
     expect_identical(polEval, Jack(as.bigq(x), lambda, alpha))
   }
 )
+
+test_that(
+  "JackCPP is correct", {
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    lambda <- c(3, 2)
+    alpha <- as.bigq(11L, 3L)
+    res <- JackCPP(x, lambda, alpha)
+    expect_identical(res, Jack(x, lambda, alpha))
+  }
+)

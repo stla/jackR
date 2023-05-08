@@ -107,3 +107,12 @@ test_that(
     expect_identical(polEval, Schur(as.bigq(x), lambda))
   }
 )
+
+test_that(
+  "SchurCPP is correct", {
+    x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
+    lambda <- c(3, 2)
+    res <- SchurCPP(x, lambda)
+    expect_identical(res, Schur(x, lambda))
+  }
+)
