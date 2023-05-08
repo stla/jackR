@@ -9,6 +9,10 @@ JackPolRcpp <- function(n, lambda, alpha) {
     .Call(`_jack_JackPolRcpp`, n, lambda, alpha)
 }
 
+JackEvalRcpp <- function(x, lambda, alpha) {
+    .Call(`_jack_JackEvalRcpp`, x, lambda, alpha)
+}
+
 test <- function() {
     invisible(.Call(`_jack_test`))
 }

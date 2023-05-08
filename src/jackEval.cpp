@@ -61,6 +61,22 @@ gmpq JackEval(std::vector<gmpq> x, Partition lambda, gmpq alpha) {
   return jacEval(x, lambda, S, alpha, x.size(), 0, lambda, lambda, oneq);
 }
 
+// [[Rcpp::export]]
+std::string JackEvalRcpp(
+  Rcpp::StringVector x, Rcpp::IntegerVector lambda, std::string alpha
+) {
+  int n = x.size();
+  std::vector<gmpq> xQ;
+  xQ.reserve(n);
+  for(int i = 0; i < n; i++) {
+    xQ.emplace_back(gmpq(Rcpp::as<std::string>(x[i])));
+  }
+  Partition lambdaP(lambda.begin(), lambda.end());
+  gmpq alphaQ(alpha);
+  gmpq result = JackEval(xQ, lambdaP, alphaQ);
+  return q2str(result);
+}
+
 
 // [[Rcpp::export]]
 void test() {
