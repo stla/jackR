@@ -2,7 +2,7 @@
 % Please edit documentation in R/CPP.R
 \name{ZonalQPolCPP}
 \alias{ZonalQPolCPP}
-\title{Quaternionic Zonal polynomial - C++ implementation}
+\title{Quaternionic zonal polynomial - C++ implementation}
 \usage{
 ZonalQPolCPP(m, lambda)
 }
@@ -16,7 +16,7 @@ integers}
 A \code{qspray} multivariate polynomial.
 }
 \description{
-Returns the quaternionic Zonal polynomial.
+Returns the quaternionic zonal polynomial.
 }
 \examples{
 ZonalQPolCPP(3, lambda = c(3, 1))
