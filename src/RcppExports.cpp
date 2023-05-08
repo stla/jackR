@@ -35,10 +35,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test
+void test();
+RcppExport SEXP _jack_test() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    test();
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
     {"_jack_JackPolRcpp", (DL_FUNC) &_jack_JackPolRcpp, 3},
+    {"_jack_test", (DL_FUNC) &_jack_test, 0},
     {NULL, NULL, 0}
 };
 
