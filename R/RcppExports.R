@@ -17,8 +17,12 @@ JackEvalRcpp_double <- function(x, lambda, alpha) {
     .Call(`_jack_JackEvalRcpp_double`, x, lambda, alpha)
 }
 
-SchurEvalRcpp <- function(x, lambda) {
-    .Call(`_jack_SchurEvalRcpp`, x, lambda)
+SchurEvalRcpp_gmpq <- function(x, lambda) {
+    .Call(`_jack_SchurEvalRcpp_gmpq`, x, lambda)
+}
+
+SchurEvalRcpp_double <- function(x, lambda) {
+    .Call(`_jack_SchurEvalRcpp_double`, x, lambda)
 }
 
 test <- function() {
