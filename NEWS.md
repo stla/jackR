@@ -1,3 +1,10 @@
+# Version 5.2.0 (2023-06-XX)
+
+- Now the 'Rcpp' implementations for the evaluation of the polynomials  
+(functions `SchurCPP`, `JackCPP`, `ZonalCPP` and `ZonalQCPP`) are not 
+restricted to rational numbers: they also allow double numbers.
+
+
 # Version 5.1.0 (2023-05-08)
 
 - Now there is a 'Rcpp' implementation for the evaluation of the polynomials: 
