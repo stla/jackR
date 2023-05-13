@@ -41,12 +41,14 @@ public:
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 int _N(Partition, Partition);
 
-gmpq _betaratio(Partition, Partition, int, gmpq);
+template <typename numT>
+numT _betaratio(Partition, Partition, int, numT);
 
 int weight(Partition);
 
 
-gmpq gmpqpow(gmpq, unsigned);
+template <typename numT>
+numT ipow(numT, unsigned);
 
 std::string q2str(gmpq);
 

@@ -35,16 +35,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// JackEvalRcpp
-std::string JackEvalRcpp(Rcpp::StringVector x, Rcpp::IntegerVector lambda, std::string alpha);
-RcppExport SEXP _jack_JackEvalRcpp(SEXP xSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
+// JackEvalRcpp_gmpq
+std::string JackEvalRcpp_gmpq(Rcpp::StringVector x, Rcpp::IntegerVector lambda, std::string alpha);
+RcppExport SEXP _jack_JackEvalRcpp_gmpq(SEXP xSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::StringVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< std::string >::type alpha(alphaSEXP);
-    rcpp_result_gen = Rcpp::wrap(JackEvalRcpp(x, lambda, alpha));
+    rcpp_result_gen = Rcpp::wrap(JackEvalRcpp_gmpq(x, lambda, alpha));
+    return rcpp_result_gen;
+END_RCPP
+}
+// JackEvalRcpp_double
+double JackEvalRcpp_double(Rcpp::NumericVector x, Rcpp::IntegerVector lambda, double alpha);
+RcppExport SEXP _jack_JackEvalRcpp_double(SEXP xSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(JackEvalRcpp_double(x, lambda, alpha));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -73,7 +86,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
     {"_jack_JackPolRcpp", (DL_FUNC) &_jack_JackPolRcpp, 3},
-    {"_jack_JackEvalRcpp", (DL_FUNC) &_jack_JackEvalRcpp, 3},
+    {"_jack_JackEvalRcpp_gmpq", (DL_FUNC) &_jack_JackEvalRcpp_gmpq, 3},
+    {"_jack_JackEvalRcpp_double", (DL_FUNC) &_jack_JackEvalRcpp_double, 3},
     {"_jack_SchurEvalRcpp", (DL_FUNC) &_jack_SchurEvalRcpp, 2},
     {"_jack_test", (DL_FUNC) &_jack_test, 0},
     {NULL, NULL, 0}

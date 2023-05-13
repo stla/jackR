@@ -2,8 +2,9 @@
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-gmpq gmpqpow(gmpq base, unsigned exp){
-  gmpq result(1);
+template <typename numT>
+numT ipow(numT base, unsigned exp){
+  numT result(1);
   while(exp) {
     if(exp & 1) {
       result *= base;
@@ -13,6 +14,9 @@ gmpq gmpqpow(gmpq base, unsigned exp){
   }
   return result;
 }
+
+template gmpq ipow<gmpq>(gmpq, unsigned);
+template double ipow<double>(double, unsigned);
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //

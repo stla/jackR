@@ -120,7 +120,7 @@ Qpoly jac(
     if(nusize == i || nu[i-1] > nu[i]) {
       Partition _nu(nu);
       _nu[i-1] = nu[i-1] - 1;
-      gmpq gamma = beta * _betaratio(mu, nu, i, alpha);
+      gmpq gamma = beta * _betaratio<gmpq>(mu, nu, i, alpha);
       if(nu[i-1] > 1) {
         s = polyAdd<gmpq>(
           s, jac(lambda, S, alpha, m, i, mu, _nu, gamma)

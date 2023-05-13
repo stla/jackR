@@ -16,55 +16,59 @@ int _N(Partition lambda, Partition mu) {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-gmpq _betaratio(Partition kappa, Partition mu, int k, gmpq alpha) {
-  std::vector<gmpq> mu_q;
-  std::vector<gmpq> kappa_q;
-  std::vector<gmpq> s;
-  mu_q.reserve(k); kappa_q.reserve(k); s.reserve(k);
+template <typename numT>
+numT _betaratio(Partition kappa, Partition mu, int k, numT alpha) {
+  std::vector<numT> muT;
+  std::vector<numT> kappaT;
+  std::vector<numT> s;
+  muT.reserve(k); kappaT.reserve(k); s.reserve(k);
   for(int i = 0; i < k; i++) {
-    mu_q.emplace_back(gmpq(mu[i], 1));
-    kappa_q.emplace_back(gmpq(kappa[i], 1));
-    s.emplace_back(gmpq(i+1, 1));
+    muT.emplace_back(numT(mu[i]));
+    kappaT.emplace_back(numT(kappa[i]));
+    s.emplace_back(numT(i+1));
   }
-  gmpq oneq(1, 1);
-  gmpq t = s[k-1] - alpha * mu_q[k-1];
-  std::vector<gmpq> u;
+  numT oneT(1);
+  numT t = s[k-1] - alpha * muT[k-1];
+  std::vector<numT> u;
   u.reserve(k);
   for(int i = 0; i < k; i++) {
-    u.emplace_back(t + oneq - s[i] + alpha * kappa_q[i]);
+    u.emplace_back(t + oneT - s[i] + alpha * kappaT[i]);
   }
-  std::vector<gmpq> v;
+  std::vector<numT> v;
   v.reserve(k-1);
   for(int i = 0; i < k-1; i++) {
-    v.emplace_back(t - s[i] + alpha * mu_q[i]);
+    v.emplace_back(t - s[i] + alpha * muT[i]);
   }
   int musize = mu.size();
   int muk = mu[k-1];
-  std::vector<gmpq> w;
+  std::vector<numT> w;
   w.reserve(muk-1);
-  gmpq al(0, 1);
+  numT al(0);
   for(int i = 1; i < muk; i++) {
     int j = 0;
     while(j < musize && mu[j] >= i) {
       j++;
     }
     al += alpha;
-    w.emplace_back(gmpq(j, 1) - t - al);
+    w.emplace_back(numT(j) - t - al);
   }
-  gmpq prod1(1, 1);
-  gmpq prod2(1, 1);
-  gmpq prod3(1, 1);
+  numT prod1(1);
+  numT prod2(1);
+  numT prod3(1);
   for(int i = 0; i < k; i++) {
-    prod1 *= (u[i] / (u[i] + alpha - oneq));
+    prod1 *= (u[i] / (u[i] + alpha - oneT));
   }
   for(int i = 0; i < k-1; i++) {
-    prod2 *= (oneq + alpha / v[i]);
+    prod2 *= (oneT + alpha / v[i]);
   }
   for(int i = 0; i < muk-1; i++) {
-    prod3 *= (oneq + alpha / w[i]);
+    prod3 *= (oneT + alpha / w[i]);
   }
   return alpha * prod1 * prod2 * prod3;
 }
+
+template gmpq _betaratio<gmpq>(Partition, Partition, int, gmpq);
+template double _betaratio<double>(Partition, Partition, int, double);
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
