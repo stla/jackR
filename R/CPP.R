@@ -37,12 +37,19 @@ SchurPolCPP <- function(n, lambda) {
 #' SchurCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 SchurCPP <- function(x, lambda) {
   stopifnot(isPartition(lambda))
-  x <- as.character(as.bigq(x))
-  if(anyNA(x)) {
-    stop("Found missing values in `x`.")
+  if(is.numeric(x)) {
+    if(anyNA(x)) {
+      stop("Found missing values in `x`.")
+    }
+    SchurEvalRcpp_double(as.double(x), as.integer(lambda))
+  } else {
+    x <- as.character(as.bigq(x))
+    if(anyNA(x)) {
+      stop("Found missing values in `x`.")
+    }
+    res <- SchurEvalRcpp_gmpq(x, as.integer(lambda))
+    as.bigq(res)
   }
-  res <- SchurEvalRcpp(x, as.integer(lambda))
-  as.bigq(res)
 }
 
 #' Jack polynomial - C++ implementation
@@ -92,15 +99,24 @@ JackPolCPP <- function(n, lambda, alpha) {
 #' JackCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")
 JackCPP <- function(x, lambda, alpha) {
   stopifnot(isPartition(lambda))
-  alpha <- as.bigq(alpha)
-  stopifnot(alpha >= 0)
-  alpha <- as.character(alpha)
-  x <- as.character(as.bigq(x))
-  if(anyNA(x)) {
-    stop("Found missing values in `x`.")
+  if(is.numeric(x) && is.numeric(alpha)) {
+    stopifnot(alpha >= 0)
+    x <- as.double(x)
+    if(anyNA(x)) {
+      stop("Found missing values in `x`.")
+    }
+    JackEvalRcpp_double(x, as.integer(lambda), alpha)
+  } else {
+    alpha <- as.bigq(alpha)
+    stopifnot(alpha >= 0)
+    alpha <- as.character(alpha)
+    x <- as.character(as.bigq(x))
+    if(anyNA(x)) {
+      stop("Found missing values in `x`.")
+    }
+    res <- JackEvalRcpp_gmpq(x, as.integer(lambda), alpha)
+    as.bigq(res)
   }
-  res <- JackEvalRcpp(x, as.integer(lambda), alpha)
-  as.bigq(res)
 }
 
 #' Zonal polynomial - C++ implementation
@@ -137,17 +153,25 @@ ZonalPolCPP <- function(m, lambda){
 #' @return A \code{bigq} number.
 #'
 #' @export
-#' @importFrom gmp as.bigq factorialZ
+#' @importFrom gmp as.bigq factorialZ asNumeric
 #'
 #' @examples
 #' ZonalCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 ZonalCPP <- function(x, lambda){
-  twoq <- as.bigq("2")
-  jack <- JackCPP(x, lambda, alpha = "2")
-  jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
-  n <- sum(lambda)
-  (twoq^n * factorialZ(n) / jlambda) * jack
+  if(is.numeric(x)) {
+    jack <- JackCPP(x, lambda, alpha = 2)
+    jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("2"))))
+    n <- sum(lambda)
+    (factorial(n) * 2^n / jlambda) * jack
+  } else {
+    twoq <- as.bigq("2")
+    jack <- JackCPP(x, lambda, alpha = "2")
+    jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
+    n <- sum(lambda)
+    (twoq^n * factorialZ(n) / jlambda) * jack
+  }
 }
+
 
 #' Quaternionic zonal polynomial - C++ implementation
 #'
@@ -183,14 +207,21 @@ ZonalQPolCPP <- function(m, lambda){
 #' @return A \code{bigq} number.
 #'
 #' @export
-#' @importFrom gmp as.bigq factorialZ
+#' @importFrom gmp as.bigq factorialZ asNumeric
 #'
 #' @examples
 #' ZonalQCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 ZonalQCPP <- function(x, lambda){
-  onehalfq <- as.bigq("1/2")
-  jack <- JackCPP(x, lambda, alpha = "1/2")
-  jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
-  n <- sum(lambda)
-  (onehalfq^n * factorialZ(n) / jlambda) * jack
+  if(is.numeric(x)) {
+    jack <- JackCPP(x, lambda, alpha = 0.5)
+    jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("1/2"))))
+    n <- sum(lambda)
+    (factorial(n) / 2^n / jlambda) * jack
+  } else {
+    onehalfq <- as.bigq("1/2")
+    jack <- JackCPP(x, lambda, alpha = "1/2")
+    jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
+    n <- sum(lambda)
+    (onehalfq^n * factorialZ(n) / jlambda) * jack
+  }
 }
