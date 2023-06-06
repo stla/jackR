@@ -1,4 +1,4 @@
-# Version 5.2.0 (2023-06-XX)
+# Version 5.2.0 (2023-06-07)
 
 - Now the 'Rcpp' implementations for the evaluation of the polynomials  
 (functions `SchurCPP`, `JackCPP`, `ZonalCPP` and `ZonalQCPP`) are not 
