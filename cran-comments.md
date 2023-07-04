@@ -1,10 +1,11 @@
+I removed everything related to Julia.
+
 
 ## Test environments
 
-* Linux Mint 20, R-4.3.0
-* Ubuntu 20, via Github action
+* Windows 10, R-4.3.1
+* Ubuntu, via Github action
 * win-builder devel
-* mac-builder
 
 
 ## R CMD check results

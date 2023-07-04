@@ -1,3 +1,8 @@
+# Version 5.3.0 (2023-07-04)
+
+The Julia stuff has been removed.
+
+
 # Version 5.2.0 (2023-06-07)
 
 - Now the 'Rcpp' implementations for the evaluation of the polynomials  

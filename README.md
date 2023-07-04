@@ -89,101 +89,14 @@ zyacas("2 + 2*I", "2/3")
 
 ## Jack polynomials with Julia
 
-As of version 2.0.0, the Jack polynomials can be calculated with Julia.
-The speed is amazing:
-
-``` r
-julia <- Jack_julia()
-## Starting Julia ...
-x <- c(1/2, 2/3, 1, 2/3, -1, -2, 1)
-lambda <- c(5, 3, 2, 2, 1)
-alpha <- 3
-print(
-  microbenchmark(
-        R = Jack(x, lambda, alpha),
-    Julia = julia$Jack(x, lambda, alpha),
-    times = 6L,
-    unit  = "seconds"
-  ),
-  signif = 2L
-)
-## Unit: seconds
-##   expr   min   lq mean median    uq  max neval
-##      R 6.800 6.90 6.90  6.900 6.900 7.00     6
-##  Julia 0.046 0.05 0.21  0.076 0.096 0.93     6
-```
-
-`Jack_julia()` returns a list of functions. `ZonalPol`, `ZonalQPol` and
-`SchurPol` always return an exact expression of the polynomial,
-i.e. with rational coefficients (integers for `SchurPol`). If you want
-an exact expression with `JackPol`, you have to give a rational number
-for the argument `alpha`, as a character string:
-
-``` r
-JP <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "2/5")
-JP
-## 98/25*x^(1, 3) + 28/5*x^(2, 2) + 98/25*x^(3, 1)
-```
-
-Again, Julia is faster:
-
-``` r
-n <- 5
-lambda <- c(4, 3, 3)
-alpha <- "2/3"
-alphaq <- gmp::as.bigq(alpha)
-print(
-  microbenchmark(
-        R = JackPol(n, lambda, alphaq),
-    Julia = julia$JackPol(n, lambda, alpha),
-    times = 6L
-  ),
-signif = 2L)
-## Unit: milliseconds
-##   expr min  lq mean median   uq  max neval
-##      R 980 980 1000    990 1000 1100     6
-##  Julia 470 500  540    510  510  720     6
-```
+As of version 2.0.0, it was possible to calculate the Jack polynomials
+with Julia. This feature has been removed in version 5.3.0. Use the
+Julia package **JackPolynomials.jl** instead.
 
 ## ‘Rcpp’ implementation of the polynomials
 
 As of version 5.0.0, a ‘Rcpp’ implementation of the polynomials is
-provided by the package. It is faster than Julia (though I didn’t
-compare in pure Julia - the Julia execution time is slowed down by the
-‘JuliaConnectoR’ package):
-
-``` r
-n <- 5
-lambda <- c(4, 3, 3, 2)
-print(
-  microbenchmark(
-     Rcpp = SchurPolCPP(n, lambda),
-    Julia = julia$SchurPol(n, lambda),
-    times = 6L
-  ), 
-signif = 2L)
-## Unit: milliseconds
-##   expr   min    lq  mean median    uq    max neval
-##   Rcpp   6.2   6.4   6.6    6.5   6.6    7.3     6
-##  Julia 530.0 530.0 640.0  540.0 540.0 1200.0     6
-```
-
-``` r
-n <- 5
-lambda <- c(4, 3, 3, 2)
-alpha <- "2/3"
-print(
-  microbenchmark(
-     Rcpp = JackPolCPP(n, lambda, alpha),
-    Julia = julia$JackPol(n, lambda, alpha),
-    times = 6L
-  ), 
-signif = 2L)
-## Unit: milliseconds
-##   expr min  lq mean median  uq max neval
-##   Rcpp  24  24   25     25  25  25     6
-##  Julia 370 410  430    420 470 500     6
-```
+provided by the package.
 
 As of version 5.1.0, there’s also a ‘Rcpp’ implementation of the
 evaluation of the polynomials.
@@ -196,19 +109,13 @@ print(
   microbenchmark(
         R = Jack(gmp::as.bigq(x), lambda, gmp::as.bigq(alpha)),
      Rcpp = JackCPP(x, lambda, alpha),
-    Julia = julia$Jack(x, lambda, alpha),
     times = 6L,
     unit  = "seconds"
   ),
   signif = 2L
 )
 ## Unit: seconds
-##   expr   min    lq  mean median    uq   max neval
-##      R 16.00 16.00 16.00  16.00 16.00 17.00     6
-##   Rcpp  0.15  0.16  0.16   0.16  0.17  0.17     6
-##  Julia  0.31  0.33  0.42   0.39  0.42  0.66     6
-```
-
-``` r
-JuliaConnectoR::stopJulia()
+##  expr    min    lq  mean median    uq   max neval
+##     R 110.00 130.0 140.0  130.0 160.0 160.0     6
+##  Rcpp   0.98   1.2   1.3    1.2   1.5   1.6     6
 ```
