@@ -1,8 +1,8 @@
 Type: Package
 Package: jack
 Title: Jack, Zonal, and Schur Polynomials
-Version: 5.3.0
-Date: 2023-07-04
+Version: 5.4.0
+Date: 2024-02-28
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials,
@@ -23,7 +23,8 @@ Imports:
     partitions,
     qspray,
     Rcpp,
-    spray
+    spray,
+    utils
 LinkingTo:
     BH,
     Rcpp

@@ -1,3 +1,10 @@
+# Version 5.4.0 (2024-02-28)
+
+New function `LRmult` for computing the expression of the product of two Schur 
+polynomials as a linear combination of Schur polynomials, using the 
+Littlewood-Richardson rule.
+
+
 # Version 5.3.0 (2023-07-04)
 
 The Julia stuff has been removed.

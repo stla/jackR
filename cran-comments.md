@@ -1,9 +1,6 @@
-I removed everything related to Julia.
-
-
 ## Test environments
 
-* Windows 10, R-4.3.1
+* Windows 10, R-4.3.2
 * Ubuntu, via Github action
 * win-builder devel
 
