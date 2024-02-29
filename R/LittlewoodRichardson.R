@@ -187,7 +187,7 @@ diffSeq <- function(x) {
 #' library(jack)
 #' LRskew(lambda = c(4, 2, 1), mu = c(3, 1))
 LRskew <- function(lambda, mu, output = "dataframe") {
-  stopifnot(isPartition(lamda), isPartition(mu))
+  stopifnot(isPartition(lambda), isPartition(mu))
   output <- match.arg(output, c("list", "dataframe"))
   l <- length(lambda)
   mu <- c(mu, rep(0L, l - length(mu)))
