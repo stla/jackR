@@ -2,7 +2,7 @@
 % Please edit documentation in R/LittlewoodRichardson.R
 \name{LRmult}
 \alias{LRmult}
-\title{Littlewood-Richardson rule}
+\title{Littlewood-Richardson rule for multiplication}
 \usage{
 LRmult(mu, nu, output = "dataframe")
 }

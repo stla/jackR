@@ -7,12 +7,7 @@ insertWith <- function(f, mp, key, value) {
   mp
 }
 
-#' @importFrom utils tail
-drop <- function(n, x) {
-  tail(x, max(length(x) - n, 0L))
-}
-
-#' @title Littlewood-Richardson rule
+#' @title Littlewood-Richardson rule for multiplication
 #' @description Expression of the product of two Schur polynomials as a linear
 #'   combination of Schur polynomials.
 #'
@@ -58,6 +53,11 @@ LRmult <- function(mu, nu, output = "dataframe") {
     partitions <- lapply(strsplit(names(v), ","), as.integer)
     list("coeff" = unname(v), "lambda" = partitions)
   }
+}
+
+#' @importFrom utils tail
+drop <- function(n, x) {
+  tail(x, max(length(x) - n, 0L))
 }
 
 addMu <- function(mu, part) {
@@ -155,4 +155,165 @@ headOrZero <- function(xs) {
 
 diffSeq <- function(x) {
   diff(-c(x, 0L))
+}
+
+
+#~~ Littlewood-Richardson for skew Schur polynomial ~~####
+
+#' @title Littlewood-Richardson rule for skew Schur polynomial
+#' @description Expression of a skew Schur polynomial as a linear
+#'   combination of Schur polynomials.
+#'
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#' @param output the type of the output, \code{"dataframe"} or \code{"list"}
+#'
+#' @return This computes the expression of the skew Schur polynomial
+#'   associated to the skew partition defined by \code{lambda} and \code{mu}
+#'   as a linear combination of Schur polynomials. If \code{output="dataframe"},
+#'   the output is a dataframe with two columns: the column \code{coeff} gives
+#'   the coefficients of this linear combination, and the column \code{nu}
+#'   gives the partitions defining the Schur polynomials of this linear
+#'   combination as character strings, e.g. the partition \code{c(4, 3, 1)} is
+#'   given by \code{"4, 3, 1"}. If \code{output="list"}, the output is a list
+#'   with two fields: the field \code{coeff} is the vector made of the
+#'   coefficients of the linear combination, and the field \code{nu} is the
+#'   list of partitions defining the Schur polynomials of the linear combination
+#'   given as integer vectors.
+#' @export
+#'
+#' @examples
+#' library(jack)
+#' LRskew(lambda = c(4, 2, 1), mu = c(3, 1))
+LRskew <- function(lambda, mu, output = "dataframe") {
+  stopifnot(isPartition(lamda), isPartition(mu))
+  output <- match.arg(output, c("list", "dataframe"))
+  l <- length(lambda)
+  mu <- c(mu, rep(0L, l - length(mu)))
+  if(any(lambda - mu) < 0L) {
+    srop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  f <- function(old, nu) {
+    insertWith(`+`, old, toString(nu), 1L)
+  }
+  Liab <- rev(zip3(seq_len(l), lambda, mu))
+  diagram <- do.call(rbind, do.call(c, lapply(Liab, function(iab) {
+    i <- iab[1L]
+    a <- iab[2L]
+    b <- iab[3L]
+    jvec <- if(b < a) (b + 1L):a else integer(0L)
+    lapply(jvec, function(j) {
+      c(i, j)
+    })
+  })))
+  n <- sum(lambda - mu)
+  Lnu <- lapply(fillings(n, diagram), `[[`, 1L)
+  v <- Reduce(f, Lnu, init = integer(0L))
+  if(output == "dataframe") {
+    data.frame("coeff" = v, "nu" = names(v))
+  } else {
+    partitions <- lapply(strsplit(names(v), ","), as.integer)
+    list("coeff" = unname(v), "nu" = partitions)
+  }
+}
+
+zip3 <- function(v1, v2, v3) {
+  lapply(1L:length(v1), function(i) {
+    c(v1[i], v2[i], v3[i])
+  })
+}
+
+fillings <- function(n, diagram) {
+  if(nrow(diagram) == 0L) {
+    list(list(integer(0L), integer(0L)))
+  } else {
+    xy <- diagram[1L, ]
+    x <- xy[1L]
+    y <- xy[2L]
+    rest <- diagram[-1L, , drop = FALSE]
+    diagram <- apply(diagram, 1L, toString)
+    upper <- n + 1L - match(toString(c(x, y + 1L)), diagram, nomatch = n + 1L)
+    lower <- n + 1L - match(toString(c(x - 1L, y)), diagram, nomatch = n + 1L)
+    L <- lapply(fillings(n - 1L, rest), function(filling) {
+      nextLetter(lower, upper, filling)
+    })
+    do.call(c, L)
+  }
+}
+
+nextLetter <- function(lower, upper, filling) {
+  nu <- filling[[1L]]
+  lpart <- filling[[2L]]
+  shape <- c(nu, 0L)
+  lb <- if(lower > 0L) lpart[lower] else 0L
+  ub <- if(upper > 0L) min(length(shape), lpart[upper]) else length(shape)
+  f <- function(j) {
+    if(j == 1L || shape[j-1L] > shape[j]) j else 0L
+  }
+  v <- vapply((lb+1L):ub, f, integer(1L))
+  nlist <- v[v > 0L]
+  lapply(nlist, function(i) {
+    list(incr(i, shape), c(lpart, i))
+  })
+}
+
+incr <- function(i, xxs) {
+  if(length(xxs) == 0L) {
+    integer(0L)
+  } else {
+    if(i == 0L) {
+      finish(xxs)
+    } else if(i == 1L) {
+      c(xxs[1L] + 1L, finish(xxs[-1L]))
+    } else {
+      c(xxs[1L], incr(i - 1L, xxs[-1L]))
+    }
+  }
+}
+
+finish <- function(xxs) {
+  if(length(xxs) == 0L) {
+    integer(0L)
+  } else {
+    x <- xxs[1L]
+    if(x > 0L) {
+      c(x, finish(xxs[-1L]))
+    } else {
+      integer(0L)
+    }
+  }
+}
+
+
+
+
+#' @title Skew Schur polynomial
+#'
+#' @description Returns the skew Schur polynomial.
+#'
+#' @param n number of variables, a positive integer
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#'
+#' @return A \code{qspray} multivariate polynomial, the skew Schur polynomial
+#'   associated to the skew partition defined by \code{lambda} and \code{mu}.
+#'
+#' @details The computation is performed with the help of the
+#'   Littlewood-Richardson rule (see \code{\link{LRskew}}).
+#'
+#' @export
+#'
+#' @examples
+#' SkewSchurPol(3, lambda = c(3, 2, 1), mu = c(1, 1))
+SkewSchurPol <- function(n, lambda, mu) {
+  stopifnot(isPositiveInteger(n))
+  LR <- LRskew(lambda, mu, output = "list")
+  LRcoeffs <- LR[["coeff"]]
+  LRparts <- LR[["nu"]]
+  LRterms <- lapply(1:length(LRcoeffs), function(i) {
+    LRcoeffs[i] * SchurPolCPP(n, LRparts[[i]])
+  })
+  Reduce(`+`, LRterms)
 }
