@@ -1,8 +1,15 @@
-# Version 5.4.0 (2024-02-28)
+# Version 5.4.0 (2024-02-29)
 
-New function `LRmult` for computing the expression of the product of two Schur 
+- New function `LRmult` for computing the expression of the product of two Schur 
 polynomials as a linear combination of Schur polynomials, using the 
 Littlewood-Richardson rule.
+
+- New function `LRskew` for computing the expression of a skew Schur 
+polynomial as a linear combination of Schur polynomials, using the 
+Littlewood-Richardson rule.
+
+- Based on `LRskew`, the new function `SkewSchurPol` computes the skew Schur 
+polynomial associated to a given skew partition.
 
 
 # Version 5.3.0 (2023-07-04)

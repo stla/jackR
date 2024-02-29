@@ -2,7 +2,7 @@ Type: Package
 Package: jack
 Title: Jack, Zonal, and Schur Polynomials
 Version: 5.4.0
-Date: 2024-02-28
+Date: 2024-02-29
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials,
@@ -10,7 +10,8 @@ Description: Symbolic calculation and evaluation of the Jack polynomials,
     Koev's paper (2006) <doi:10.1090/S0025-5718-05-01780-1>. Zonal
     polynomials and Schur polynomials are particular cases of Jack
     polynomials. Zonal polynomials appear in random matrix theory. Schur
-    polynomials appear in the field of combinatorics.
+    polynomials appear in the field of combinatorics. The package can also 
+    computes the skew Schur polynomials.
 License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
