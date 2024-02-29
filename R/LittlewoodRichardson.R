@@ -192,7 +192,7 @@ LRskew <- function(lambda, mu, output = "dataframe") {
   l <- length(lambda)
   mu <- c(mu, rep(0L, l - length(mu)))
   if(any(lambda - mu) < 0L) {
-    srop("The partition `mu` is not a subpartition of the partition `lambda`.")
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   f <- function(old, nu) {
     insertWith(`+`, old, toString(nu), 1L)
