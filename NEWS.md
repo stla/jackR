@@ -1,4 +1,4 @@
-# Version 5.4.0 (2024-02-29)
+# Version 5.4.0 (2024-03-07)
 
 - New function `LRmult` for computing the expression of the product of two Schur 
 polynomials as a linear combination of Schur polynomials, using the 
