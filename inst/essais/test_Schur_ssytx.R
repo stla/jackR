@@ -2,8 +2,10 @@ library(jack)
 library(syt)
 library(qspray)
 
-lambda <- c(2, 2, 1)
+lambda <- c(3, 1)
 ssytx <- all_ssytx(lambda, 4)
+
+# ! quand |lambda| > n, length(all_ssytx(lambda, n)) > count_ssytx(lambda, n)
 
 x <- ssytx[[19]]
 

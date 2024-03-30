@@ -121,3 +121,24 @@ test_that(
     expect_equal(res, Schur(x, lambda))
   }
 )
+
+test_that("Schur polynomial and semistandard Young tableaux", {
+  skip_if_not_installed("syt")
+  lambda <- c(3, 1)
+  ssytx <- syt::all_ssytx(lambda, 4)
+  wt <- function(ssyt) {
+    ssyt <- unlist(ssyt)
+    vapply(1:4, function(k) {
+      length(which(ssyt == k))
+    }, integer(1L))
+  }
+  qlones <- lapply(1:4, qspray::qlone)
+  monomial <- function(ssyt) {
+    powers <- wt(ssyt)
+    Reduce(`*`, lapply(1:4, function(k) qlones[[k]]^powers[k]))
+  }
+  monomials <- lapply(ssytx, monomial)
+  obtained <- Reduce(`+`, monomials)
+  expected <- SchurPol(4, lambda)
+  expect_true(obtained == expected)
+})
