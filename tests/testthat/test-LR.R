@@ -17,8 +17,8 @@ test_that("LR-rule and Standard Young Tableaux counting", {
   mu <- c(3, 2, 2, 1)
   nu <- c(4, 3, 2, 1)
   LR <- LRmult(mu, nu, output = "list")
-  h <- syt::count_sytx
-  counts <- vapply(LR$lambda, h, numeric(1L))
+  h <- function(p) as.integer(syt::count_sytx(p))
+  counts <- vapply(LR$lambda, h, integer(1L))
   rhs <- sum(LR$coeff * counts)
   lhs <- h(mu) * h(nu) * choose(sum(mu) + sum(nu), sum(mu))
   expect_true(lhs == rhs)
