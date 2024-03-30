@@ -30,3 +30,27 @@ test_that("Skew Schur polynomial", {
     SchurPolCPP(3, c(3, 1))
   expect_true(sspol == expected)
 })
+
+
+test_that("Skew Schur polynomial and skew semistandard tableaux", {
+  skip_if_not_installed("syt")
+  lambda <- c(4, 3, 2, 1)
+  mu <- c(2, 1)
+  n <- 4
+  sssktx <- syt::all_ssSkewTableaux(lambda, mu, n)
+  wt <- function(ssyt) {
+    ssyt <- unlist(ssyt)
+    vapply(1:n, function(k) {
+      length(which(ssyt == k))
+    }, integer(1L))
+  }
+  qlones <- lapply(1:n, qspray::qlone)
+  monomial <- function(ssyt) {
+    powers <- wt(ssyt)
+    Reduce(`*`, lapply(1:n, function(k) qlones[[k]]^powers[k]))
+  }
+  monomials <- lapply(sssktx, monomial)
+  obtained <- Reduce(`+`, monomials)
+  expected <- SkewSchurPol(n, lambda, mu)
+  expect_true(obtained == expected)
+})

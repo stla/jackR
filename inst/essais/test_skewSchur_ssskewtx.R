@@ -2,8 +2,9 @@ library(jack)
 library(syt)
 library(qspray)
 
-lambda <- c(3, 1)
-ssytx <- all_ssytx(lambda, 4)
+lambda <- c(4, 3, 2, 1)
+mu <- c(2, 1)
+ssytx <- all_ssSkewTableaux(lambda, mu, 4)
 
 # ! quand |lambda| > n, length(all_ssytx(lambda, n)) > count_ssytx(lambda, n)
 # -> FIXED
@@ -27,6 +28,6 @@ monomial <- function(ssyt) {
 monomials <- lapply(ssytx, monomial)
 Reduce(`+`, monomials)
 
-SchurPol(4, lambda)
+SkewSchurPol(4, lambda, mu)
 
 
