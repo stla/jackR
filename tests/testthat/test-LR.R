@@ -33,7 +33,7 @@ test_that("Skew Schur polynomial", {
 
 
 test_that("Skew Schur polynomial and skew semistandard tableaux", {
-  skip_if_not_installed("syt")
+  skip_if_not_installed("syt", minimum_version = "0.4.0")
   lambda <- c(4, 3, 2, 1)
   mu <- c(2, 1)
   n <- 4
