@@ -4,7 +4,7 @@
 \alias{JackPolCPP}
 \title{Jack polynomial - C++ implementation}
 \usage{
-JackPolCPP(n, lambda, alpha)
+JackPolCPP(n, lambda, alpha, which = "J")
 }
 \arguments{
 \item{n}{number of variables, a positive integer}
@@ -14,6 +14,8 @@ integers}
 
 \item{alpha}{positive rational number, given as a string such as
 \code{"2/3"} or as a \code{bigq} number}
+
+\item{which}{which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}}
 }
 \value{
 A \code{qspray} multivariate polynomial.

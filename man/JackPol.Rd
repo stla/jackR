@@ -4,7 +4,7 @@
 \alias{JackPol}
 \title{Jack polynomial}
 \usage{
-JackPol(n, lambda, alpha, algorithm = "DK", basis = "canonical")
+JackPol(n, lambda, alpha, algorithm = "DK", basis = "canonical", which = "J")
 }
 \arguments{
 \item{n}{number of variables, a positive integer}
@@ -21,6 +21,10 @@ a \code{\link[gmp]{bigq}} rational number}
 either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 for \code{algorithm = "DK"} the canonical basis is always used and
 this parameter is ignored}
+
+\item{which}{which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"};
+this argument is taken into account \strong{only} if \code{alpha} is a
+\code{bigq} number and \code{algorithm = "DK"}}
 }
 \value{
 A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),

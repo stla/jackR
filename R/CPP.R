@@ -61,6 +61,7 @@ SchurCPP <- function(x, lambda) {
 #'   integers
 #' @param alpha positive rational number, given as a string such as
 #'   \code{"2/3"} or as a \code{bigq} number
+#' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}
 #'
 #' @return A \code{qspray} multivariate polynomial.
 #'
@@ -70,13 +71,20 @@ SchurCPP <- function(x, lambda) {
 #'
 #' @examples
 #' JackPolCPP(3, lambda = c(3, 1), alpha = "2/5")
-JackPolCPP <- function(n, lambda, alpha) {
+JackPolCPP <- function(n, lambda, alpha, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   alpha <- as.bigq(alpha)
   stopifnot(alpha >= 0)
+  which <- match.arg(which, c("J", "P", "Q"))
   alpha <- as.character(alpha)
   x <- JackPolRcpp(as.integer(n), as.integer(lambda), alpha)
-  qsprayMaker(x[["exponents"]], x[["coeffs"]])
+  K <- switch(
+    which,
+    "J" = as.bigq(1L),
+    "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
+    "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+  )
+  K * qsprayMaker(x[["exponents"]], x[["coeffs"]])
 }
 
 #' Evaluation of Jack polynomial - C++ implementation

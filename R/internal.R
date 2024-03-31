@@ -35,7 +35,7 @@ hookLengths_gmp <- function(lambda, alpha){
   lambda <- as.bigq(lambda)
   upperHL <- lambdaPrime[j] - i + alpha*(lambda[i] - j + 1L)
   lowerHL <- lambdaPrime[j] - i + 1L + alpha*(lambda[i] - j)
-  c(upperHL, lowerHL)
+  rbind(lowerHL, upperHL)
 }
 
 .Blog <- function(nu, lambda, mu, alpha){

@@ -172,6 +172,9 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
 #' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
 #' for \code{algorithm = "DK"} the canonical basis is always used and
 #' this parameter is ignored
+#' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"};
+#'   this argument is taken into account \strong{only} if \code{alpha} is a
+#'   \code{bigq} number and \code{algorithm = "DK"}
 #'
 #' @return A \code{mvp} multivariate polynomial (see \link[mvp]{mvp-package}),
 #'  or a \code{qspray} multivariate polynomial if \code{alpha}
@@ -191,16 +194,23 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
 #' jack <- JackPol(3, lambda = c(3, 1), alpha = gmp::as.bigq(2))
 #' qspray::evalQspray(jack, c("1", "1/2", "3"))
 JackPol <- function(n, lambda, alpha, algorithm = "DK",
-                    basis = "canonical"){
-  algo <- match.arg(algorithm, c("DK", "naive"))
+                    basis = "canonical", which = "J"){
   stopifnot(
     is.numeric(alpha) || is.bigq(alpha),
     length(alpha) == 1L
   )
+  algo <- match.arg(algorithm, c("DK", "naive"))
+  which <- match.arg(which, c("J", "P", "Q"))
   lambda <- as.integer(lambda)
   if(algo == "DK"){
     if(is.bigq(alpha)){
-      JackPolDK_gmp(n, lambda, alpha)
+      K <- switch(
+        which,
+        "J" = as.bigq(1L),
+        "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
+        "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+      )
+      K * JackPolDK_gmp(n, lambda, alpha)
     }else{
       JackPolDK(n, lambda, alpha)
     }
