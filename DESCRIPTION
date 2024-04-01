@@ -22,10 +22,11 @@ Imports:
     multicool,
     mvp,
     partitions,
-    qspray,
+    qspray (>= 2.2.0),
     Rcpp,
     spray,
     utils
+Remotes: stla/qspray
 LinkingTo:
     BH,
     Rcpp
