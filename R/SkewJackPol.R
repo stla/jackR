@@ -15,7 +15,7 @@
 #' @importFrom qspray PSPexpression HallInnerProduct
 #'
 #' @details
-#' Gröbner bases are used in the algorithm, and this is slow.
+#' Gröbner bases are used in the algorithm, and this is very slow.
 #'
 #' @examples
 #' SkewJackPol(3, c(3,1), c(2), 2)
