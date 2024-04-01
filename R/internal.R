@@ -153,3 +153,26 @@ betweenPartitions <- function(mu, lambda){
     alpha * .n(dualPartition(lambda)) - .n(lambda)
   }
 }
+
+####
+#' @importFrom mvp mvp as.mvp
+#' @importFrom gmp asNumeric as.bigq
+#' @noRd
+as_mvp_spray <- function(s) {
+  if(length(s) == 0L) return(as.mvp(0))
+  powers <- s[["index"]]
+  m <- nrow(powers)
+  n <- ncol(powers)
+  vars <- replicate(m, paste0("x_", 1L:n), simplify = FALSE)
+  powers <- lapply(1L:m, function(i) powers[i, ])
+  mvp(vars, powers, s[["value"]])
+}
+
+as_mvp_qspray <- function(s) {
+  vars <- lapply(s@powers, function(exponents) paste0("x_", seq_along(exponents)))
+  mvp(vars, s@powers, asNumeric(as.bigq(s@coeffs)))
+}
+
+#' @importFrom qspray as.qspray
+#' @importFrom spray zero one lone
+NULL
