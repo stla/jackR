@@ -3,6 +3,11 @@
 #' @importFrom utils tail
 NULL
 
+isInteger <- function(n){
+  is.vector(n) && is.numeric(n) &&
+    length(n) == 1L && !is.na(n) && as.integer(n) == n
+}
+
 isPositiveInteger <- function(n){
   is.vector(n) && is.numeric(n) && length(n) == 1L && !is.na(n) && floor(n) == n
 }

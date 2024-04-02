@@ -14,7 +14,7 @@ SkewJackPol(n, lambda, mu, alpha, which = "J")
 \item{mu}{inner integer partition of the skew partition; it must be a
 subpartition of \code{lambda}}
 
-\item{alpha}{the Jack parameter, an integer or a \code{bigq} number, positive}
+\item{alpha}{the Jack parameter, an integer or a \code{bigq} number}
 
 \item{which}{which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}}
 }
@@ -25,7 +25,7 @@ A \code{qspray} polynomial.
 Computes a skew Jack polynomial.
 }
 \details{
-Gröbner bases are used in the algorithm, and this is slow.
+Gröbner bases are used in the algorithm, and this is very slow.
 }
 \examples{
 SkewJackPol(3, c(3,1), c(2), 2)

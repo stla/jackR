@@ -5,7 +5,7 @@
 #' @param lambda outer integer partition of the skew partition
 #' @param mu inner integer partition of the skew partition; it must be a
 #'   subpartition of \code{lambda}
-#' @param alpha the Jack parameter, an integer or a \code{bigq} number, positive
+#' @param alpha the Jack parameter, an integer or a \code{bigq} number
 #' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}
 #'
 #' @return A \code{qspray} polynomial.
@@ -26,9 +26,8 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   if(any(lambda - mu < 0L)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
-  stopifnot(isPositiveInteger(alpha) || is.bigq(alpha))
+  stopifnot(isInteger(alpha) || is.bigq(alpha))
   alpha <- as.bigq(alpha)
-  stopifnot(alpha >= 0L)
   Jlambda <- PSPexpression(JackPolCPP(n, lambda, alpha, which))
   Jmu     <- JackPolCPP(n, mu, alpha, which)
   nus <- parts(sum(lambda) - sum(mu))

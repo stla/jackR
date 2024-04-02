@@ -5,7 +5,7 @@
 #' @param x numeric or complex vector or \link[gmp]{bigq} vector
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
-#' @param alpha positive number or \code{bigq} rational number
+#' @param alpha ordinary number or \code{bigq} rational number
 #' @param algorithm the algorithm used, either \code{"DK"} (Demmel-Koev)
 #' or \code{"naive"}
 #'

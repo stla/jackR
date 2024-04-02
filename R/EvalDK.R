@@ -7,7 +7,7 @@ JackEvalNum <- function(x, lambda, alpha){
     if(length(nu) > m && nu[m+1L] > 0L) return(0)
     if(m == 1L) return(x[1L]^nu[1L] * prod(alpha*seq_len(nu[1L]-1L)+1))
     if(k == 0L && !is.na(s <- S[.N(lambda,nu),m])) return(s)
-    i <- max(1L,k)
+    i <- max(1L, k)
     s <- jac(m-1L, 0L, nu, nu, 1) * beta * x[m]^(sum(mu)-sum(nu))
     while(length(nu) >= i && nu[i] > 0L){
       if(length(nu) == i && nu[i] > 0L || nu[i] > nu[i+1L]){
@@ -60,7 +60,7 @@ JackEvalQ <- function(x, lambda, alpha){
 }
 
 JackEval <- function(x, lambda, alpha){
-  stopifnot(isPartition(lambda), alpha >= 0)
+  stopifnot(isPartition(lambda))
   lambda <- as.integer(lambda)
   gmp <- is.bigq(x) || is.bigq(alpha)
   if(gmp){
@@ -73,7 +73,7 @@ JackEval <- function(x, lambda, alpha){
 
 
 ZonalEvalNum <- function(x, lambda){
-  jack <- JackEvalNum(x, lambda, alpha= 2)
+  jack <- JackEvalNum(x, lambda, alpha = 2)
   jlambda <- sum(logHookLengths(lambda, alpha = 2))
   n <- sum(lambda)
   exp(n*log(2) + lfactorial(n) - jlambda) * jack

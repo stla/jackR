@@ -1,5 +1,5 @@
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
-  stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
   gmp <- is.bigq(alpha)
   if(length(lambda) == 0L) {
@@ -10,7 +10,8 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
     }
   }
   lambda <- lambda[lambda > 0L]
-  if(length(lambda) > n) return(if(gmp) as.qspray(0) else as_mvp_spray(zero(n)))
+  if(length(lambda) > n)
+    return(if(gmp) as.qspray(0L) else as_mvp_spray(zero(n)))
   lambda00 <- integer(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
   mus <- dominatedPartitions(lambda)
@@ -58,7 +59,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
 }
 
 JackPolDK <- function(n, lambda, alpha) {
-  stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
   jac <- function(m, k, mu, nu, beta) {
     if(length(nu) == 0L || nu[1L] == 0L || m == 0L) return(one(n))
     if(length(nu) > m && nu[m+1L] > 0L) return(zero(n))
@@ -91,15 +92,15 @@ JackPolDK <- function(n, lambda, alpha) {
 #' @importFrom gmp as.bigq
 #' @noRd
 JackPolDK_gmp <- function(n, lambda, alpha) {
-  stopifnot(isPositiveInteger(n), alpha >= 0, isPartition(lambda))
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
   jac <- function(m, k, mu, nu, beta) {
     if(length(nu) == 0L || nu[1L] == 0L || m == 0L) {
-      return(as.qspray(1))
+      return(as.qspray(1L))
     }
-    if(length(nu) > m && nu[m+1L] > 0L) return(as.qspray(0))
+    if(length(nu) > m && nu[m+1L] > 0L) return(as.qspray(0L))
     if(m == 1L) {
       return(
-        prod(alpha * seq_len(nu[1L]-1L) + 1L) * qlone(1)^nu[1L]
+        prod(alpha * seq_len(nu[1L]-1L) + 1L) * qlone(1L)^nu[1L]
       )
     }
     if(k == 0L && inherits(s <- S[[.N(lambda, nu), m]], "qspray")) return(s)
@@ -142,8 +143,8 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
-#' @param alpha parameter of the Jack polynomial, a positive number, possibly
-#'   a \code{\link[gmp]{bigq}} rational number
+#' @param alpha parameter of the Jack polynomial, a number, possibly (and
+#'   preferably) a \code{\link[gmp]{bigq}} rational number
 #' @param algorithm the algorithm used, either \code{"DK"} or \code{"naive"}
 #' @param basis the polynomial basis for \code{algorithm = "naive"},
 #' either \code{"canonical"} or \code{"MSF"} (monomial symmetric functions);
@@ -176,11 +177,19 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
     is.numeric(alpha) || is.bigq(alpha),
     length(alpha) == 1L
   )
-  algo <- match.arg(algorithm, c("DK", "naive"))
+  algo  <- match.arg(algorithm, c("DK", "naive"))
   which <- match.arg(which, c("J", "P", "Q"))
+  if(which != "J" && !(algo == "DK" && is.bigq(alpha))) {
+    warning(
+      "You selected a Jack polynomial other than \"J\" and your choice ",
+      "will be ignored. ",
+      "Use `algorithm=\"DK\"` and a `bigq` number for `alpha` if you want ",
+      "this Jack polynomial."
+    )
+  }
   lambda <- as.integer(lambda)
   if(algo == "DK"){
-    if(is.bigq(alpha)){
+    if(is.bigq(alpha)) {
       K <- switch(
         which,
         "J" = as.bigq(1L),
@@ -188,10 +197,10 @@ JackPol <- function(n, lambda, alpha, algorithm = "DK",
         "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
       )
       K * JackPolDK_gmp(n, lambda, alpha)
-    }else{
+    } else {
       JackPolDK(n, lambda, alpha)
     }
-  }else{
+  } else {
     JackPolNaive(n, lambda, alpha, basis)
   }
 }

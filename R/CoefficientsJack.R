@@ -34,7 +34,7 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
             muOrd <- sort(asNumeric(mu), decreasing = TRUE)
             if(isDominated(muOrd, kappa)){
               x <- x + (mu[i]-mu[j]) /
-                (.e(kappa, alpha)-.e(lambda, alpha)) *
+                (.e(kappa, alpha) - .e(lambda, alpha)) *
                 coefs[indices[m, toString(muOrd)]]
             }
           }

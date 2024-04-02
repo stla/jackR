@@ -12,8 +12,8 @@ JackPol(n, lambda, alpha, algorithm = "DK", basis = "canonical", which = "J")
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{alpha}{parameter of the Jack polynomial, a positive number, possibly
-a \code{\link[gmp]{bigq}} rational number}
+\item{alpha}{parameter of the Jack polynomial, a number, possibly (and
+preferably) a \code{\link[gmp]{bigq}} rational number}
 
 \item{algorithm}{the algorithm used, either \code{"DK"} or \code{"naive"}}
 

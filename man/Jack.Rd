@@ -12,7 +12,7 @@ Jack(x, lambda, alpha, algorithm = "DK")
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{alpha}{positive number or \code{bigq} rational number}
+\item{alpha}{ordinary number or \code{bigq} rational number}
 
 \item{algorithm}{the algorithm used, either \code{"DK"} (Demmel-Koev)
 or \code{"naive"}}

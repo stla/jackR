@@ -74,7 +74,6 @@ SchurCPP <- function(x, lambda) {
 JackPolCPP <- function(n, lambda, alpha, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   alpha <- as.bigq(alpha)
-  stopifnot(alpha >= 0)
   which <- match.arg(which, c("J", "P", "Q"))
   alpha <- as.character(alpha)
   x <- JackPolRcpp(as.integer(n), as.integer(lambda), alpha)
