@@ -1,5 +1,5 @@
 test_that("JackSymPol", {
-  n <- 2
+  n <- 3
   lambda <- c(3, 1, 1)
   alpha <- gmp::as.bigq("2/3")
   symbolicJackPolynomial <- JackSymPol(n, lambda)
