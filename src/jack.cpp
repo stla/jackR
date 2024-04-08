@@ -1,4 +1,7 @@
 #include "jack.h"
+#include "symbolicQspray.h"
+
+using namespace SYMBOLICQSPRAY;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -88,9 +91,6 @@ Qspray<T> jac(
       prod *= (al + oneT);
     }
     return Qspray<T>(T(prod)) * (Qlone<T>(1).power(nu[0]));
-    // return polyMult<gmpq>(
-    //   constantPoly<gmpq>(prod), polyPow<gmpq>(lonePoly<gmpq>(1), nu[0])
-    // );
   }
   int N = _N(lambda, nu);
   std::pair<int, int> Nm = std::make_pair(N, m);
@@ -102,13 +102,6 @@ Qspray<T> jac(
   Qspray<T> s = 
     jac(lambda, S, alpha, m-1, 0, nu, nu, oneT) * Qspray<T>(beta) *
       (Qlone<T>(m).power(weight(mu) - weight(nu)));
-  // polyMult<gmpq>(
-  //   jac(lambda, S, alpha, m-1, 0, nu, nu, oneq),
-  //   polyMult<gmpq>(
-  //     constantPoly<gmpq>(beta),
-  //     polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(nu))
-  //   )
-  // );
   int i = k > 1 ? k : 1;
   while(nusize >= i && nu[i-1] > 0) {
     if(nusize == i || nu[i-1] > nu[i]) {
@@ -117,22 +110,9 @@ Qspray<T> jac(
       T gamma = beta * _betaratio<T>(mu, nu, i, alpha);
       if(nu[i-1] > 1) {
         s += jac(lambda, S, alpha, m, i, mu, _nu, gamma);
-        // s = polyAdd<gmpq>(
-        //   s, jac(lambda, S, alpha, m, i, mu, _nu, gamma)
-        // );
       } else {
         s += jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneT) * 
               Qspray<T>(gamma) * (Qlone<T>(m).power(weight(mu) - weight(_nu)));
-        // s = polyAdd<gmpq>(
-        //   s,
-        //   polyMult<gmpq>(
-        //     jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneq),
-        //     polyMult<gmpq>(
-        //       constantPoly<gmpq>(gamma),
-        //       polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(_nu))
-        //     )
-        //   )
-        // );
       }
     }
     i++;
@@ -149,6 +129,12 @@ Qspray<T> JackPol(int n, Partition lambda, T alpha) {
   return jac(lambda, S, alpha, n, 0, lambda, lambda, T(1));
 }
 
+SymbolicQspray JackSymPol(int n, Partition lambda) {
+  Qij<RatioOfQsprays<gmpq>> S;
+  RatioOfQsprays<gmpq> alpha(Qlone<gmpq>(1), Qspray<gmpq>(gmpq(1)));
+  return jac(lambda, S, alpha, n, 0, lambda, lambda, RatioOfQsprays<gmpq>(1));
+}
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -159,3 +145,11 @@ Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha) {
   Qspray<gmpq> P = JackPol<gmpq>(n, lambdaP, alphaQ);
   return returnQspray(P);
 }
+
+// [[Rcpp::export]]
+Rcpp::List JackSymPolRcpp(int n, Rcpp::IntegerVector lambda) {
+  Partition lambdaP(lambda.begin(), lambda.end());
+  SymbolicQspray P = JackSymPol(n, lambdaP);
+  return returnSymbolicQspray(P);
+}
+

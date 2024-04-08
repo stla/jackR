@@ -34,7 +34,8 @@ LinkingTo:
     qspray,
     RcppArmadillo,
     ratioOfQsprays,
-    RcppCGAL
+    RcppCGAL,
+    symbolicQspray
 Suggests: 
     testthat,
     syt

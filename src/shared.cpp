@@ -16,7 +16,7 @@ int _N(Partition lambda, Partition mu) {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-template <typename T> // alpha = number or Qlone(1)
+template <typename T> // alpha = number or Qlone(1)/1
 std::pair<T,T> _betaPQ(Partition kappa, Partition mu, int k, T alpha) {
   T t = T(k) - T(mu[k-1]) * alpha;
   std::vector<T> u;
@@ -73,16 +73,16 @@ template gmpq   _betaratio<gmpq>(Partition, Partition, int, gmpq);
 template double _betaratio<double>(Partition, Partition, int, double);
 
 template <typename T>
-RatioOfQsprays<T> _betaratio(Partition kappa, Partition mu, int k) {
-  Qspray<T> alpha = Qlone<T>(1); 
-  std::pair<Qspray<T>,Qspray<T>> PQ = _betaPQ<Qspray<T>>(kappa, mu, k, alpha);
+RatioOfQsprays<T> _betaratio(Partition kappa, Partition mu, int k, RatioOfQsprays<T> alpha) {
+  Qspray<T> alphaNumerator = alpha.getNumerator(); // assuming denominator=1
+  std::pair<Qspray<T>,Qspray<T>> PQ = _betaPQ<Qspray<T>>(kappa, mu, k, alphaNumerator);
   Qspray<T> P = PQ.first;
   Qspray<T> Q = PQ.second;
   RATIOOFQSPRAYS::utils::simplifyFraction(P, Q);
   return RatioOfQsprays<T>(P, Q);
 }
 
-template RatioOfQsprays<gmpq> _betaratio<gmpq>(Partition, Partition, int);
+template RatioOfQsprays<gmpq> _betaratio<RatioOfQsprays<gmpq>>(Partition, Partition, int, RatioOfQsprays<gmpq>);
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
