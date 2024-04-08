@@ -16,13 +16,14 @@ License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
 SystemRequirements: C++17, gmp
+Depends:
+    qspray (>= 2.2.0)    
 Imports: 
     DescTools,
     gmp,
     multicool,
     mvp,
     partitions,
-    qspray (>= 2.2.0),
     Rcpp,
     spray,
     utils

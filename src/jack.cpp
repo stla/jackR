@@ -2,38 +2,35 @@
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-typedef std::unordered_map<std::pair<int, int>, Zpoly, pairHasher> Zij;
+typedef Qspray<int> Zspray;
+typedef std::unordered_map<std::pair<int, int>, Zspray, pairHasher> Zij;
 
-Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
+Zspray sch(Partition lambda, Zij S, int m, int k, Partition nu) {
   const int nusize = nu.size();
   if(nusize == 0 || nu[0] == 0 || m == 0) {
-    return unitPoly<int>();
+    return Zspray(1);
   }
   if(nusize > m && nu[m] > 0) {
-    return zeroPoly<int>();
+    return Zspray(0);
   }
   if(m == 1){
-    return polyPow<int>(lonePoly<int>(1), nu[0]);
+    return Qlone<int>(1).power(nu[0]);
   }
   int N = _N(lambda, nu);
   std::pair<int, int> Nm = std::make_pair(N, m);
   if(auto search = S.find(Nm); search != S.end()) {
     return S[Nm];
   }
-  Zpoly s = sch(lambda, S, m-1, 1, nu);
+  Zspray s = sch(lambda, S, m-1, 1, nu);
   int i = k;
   while(nusize >= i && nu[i-1] > 0) {
     if(nusize == i || nu[i-1] > nu[i]) {
       Partition _nu(nu);
       _nu[i-1] = nu[i-1] - 1;
       if(nu[i-1] > 1) {
-        s = polyAdd<int>(
-          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m, i, _nu))
-        );
+        s += Qlone<int>(m) * sch(lambda, S, m, i, _nu);
       } else {
-        s = polyAdd<int>(
-          s, polyMult<int>(lonePoly<int>(m), sch(lambda, S, m-1, 1, _nu))
-        );
+        s += Qlone<int>(m) * sch(lambda, S, m-1, 1, _nu);
       }
     }
     i++;
@@ -44,7 +41,7 @@ Zpoly sch(Partition lambda, Zij S, int m, int k, Partition nu) {
   return s;
 }
 
-Zpoly SchurPol(int n, Partition lambda) {
+Zspray SchurPol(int n, Partition lambda) {
   Zij S;
   return sch(lambda, S, n, 1, lambda);
 }
@@ -55,51 +52,45 @@ Zpoly SchurPol(int n, Partition lambda) {
 // [[Rcpp::export]]
 Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda) {
   Partition lambdaP(lambda.begin(), lambda.end());
-  Zpoly P = SchurPol(n, lambdaP);
-  int nterms = P.size();
-  Rcpp::List Exponents(nterms);
-  Rcpp::IntegerVector Coeffs(nterms);
-  int i = 0;
+  Zspray S = SchurPol(n, lambdaP);
+  Polynomial<int> P = S.get();
+  Polynomial<gmpq> Q;
   for(auto it = P.begin(); it != P.end(); it++) {
-    Powers pows = it->first;
-    Rcpp::IntegerVector expnts(pows.begin(), pows.end());
-    Exponents(i) = expnts;
-    Coeffs(i) = it->second;
-    i++;
+    Q[it->first] = gmpq(it->second);
   }
-  return Rcpp::List::create(
-    Rcpp::Named("exponents") = Exponents,
-    Rcpp::Named("coeffs")    = Coeffs
-  );
+  return returnQspray(Qspray<gmpq>(Q));
 }
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-typedef std::unordered_map<std::pair<int, int>, Qpoly, pairHasher> Qij;
+template <typename T>
+using Qij = std::unordered_map<std::pair<int, int>, Qspray<T>, pairHasher>;
 
-Qpoly jac(
-  Partition lambda, Qij S, gmpq alpha,
-  int m, int k, Partition mu, Partition nu, gmpq beta
+template <typename T>
+Qspray<T> jac(
+  Partition lambda, Qij<T> S, T alpha,
+  int m, int k, Partition mu, Partition nu, T beta
 ) {
   const int nusize = nu.size();
   if(nusize == 0 || nu[0] == 0 || m == 0) {
-    return unitPoly<gmpq>();
+    return Qspray<T>(T(1));
   }
   if(nusize > m && nu[m] > 0) {
-    return zeroPoly<gmpq>();
+    return Qspray<T>(T(0));
   }
-  gmpq oneq(1, 1);
+  T oneT(1);
   if(m == 1) {
-    gmpq al(0, 1);
-    gmpq prod(1, 1);
+    T al(0);
+    T prod(1);
     for(int i = 1; i < nu[0]; i++) {
       al += alpha;
-      prod *= (al + oneq);
+      prod *= (al + oneT);
     }
-    return polyMult<gmpq>(
-      constantPoly<gmpq>(prod), polyPow<gmpq>(lonePoly<gmpq>(1), nu[0])
-    );
+    return Qspray<T>(T(prod)) * (Qlone<T>(1).power(nu[0]));
+    // return polyMult<gmpq>(
+    //   constantPoly<gmpq>(prod), polyPow<gmpq>(lonePoly<gmpq>(1), nu[0])
+    // );
   }
   int N = _N(lambda, nu);
   std::pair<int, int> Nm = std::make_pair(N, m);
@@ -108,34 +99,40 @@ Qpoly jac(
       return S[Nm];
     }
   }
-  Qpoly s = polyMult<gmpq>(
-    jac(lambda, S, alpha, m-1, 0, nu, nu, oneq),
-    polyMult<gmpq>(
-      constantPoly<gmpq>(beta),
-      polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(nu))
-    )
-  );
+  Qspray<T> s = 
+    jac(lambda, S, alpha, m-1, 0, nu, nu, oneT) * Qspray<T>(beta) *
+      (Qlone<T>(m).power(weight(mu) - weight(nu)));
+  // polyMult<gmpq>(
+  //   jac(lambda, S, alpha, m-1, 0, nu, nu, oneq),
+  //   polyMult<gmpq>(
+  //     constantPoly<gmpq>(beta),
+  //     polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(nu))
+  //   )
+  // );
   int i = k > 1 ? k : 1;
   while(nusize >= i && nu[i-1] > 0) {
     if(nusize == i || nu[i-1] > nu[i]) {
       Partition _nu(nu);
       _nu[i-1] = nu[i-1] - 1;
-      gmpq gamma = beta * _betaratio<gmpq>(mu, nu, i, alpha);
+      T gamma = beta * _betaratio<T>(mu, nu, i, alpha);
       if(nu[i-1] > 1) {
-        s = polyAdd<gmpq>(
-          s, jac(lambda, S, alpha, m, i, mu, _nu, gamma)
-        );
+        s += jac(lambda, S, alpha, m, i, mu, _nu, gamma);
+        // s = polyAdd<gmpq>(
+        //   s, jac(lambda, S, alpha, m, i, mu, _nu, gamma)
+        // );
       } else {
-        s = polyAdd<gmpq>(
-          s,
-          polyMult<gmpq>(
-            jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneq),
-            polyMult<gmpq>(
-              constantPoly<gmpq>(gamma),
-              polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(_nu))
-            )
-          )
-        );
+        s += jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneT) * 
+              Qspray<T>(gamma) * (Qlone<T>(m).power(weight(mu) - weight(_nu)));
+        // s = polyAdd<gmpq>(
+        //   s,
+        //   polyMult<gmpq>(
+        //     jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneq),
+        //     polyMult<gmpq>(
+        //       constantPoly<gmpq>(gamma),
+        //       polyPow<gmpq>(lonePoly<gmpq>(m), weight(mu) - weight(_nu))
+        //     )
+        //   )
+        // );
       }
     }
     i++;
@@ -146,10 +143,10 @@ Qpoly jac(
   return s;
 }
 
-Qpoly JackPol(int n, Partition lambda, gmpq alpha) {
-  Qij S;
-  gmpq oneq(1, 1);
-  return jac(lambda, S, alpha, n, 0, lambda, lambda, oneq);
+template <typename T>
+Qspray<T> JackPol(int n, Partition lambda, T alpha) {
+  Qij<T> S;
+  return jac(lambda, S, alpha, n, 0, lambda, lambda, T(1));
 }
 
 
@@ -159,20 +156,6 @@ Qpoly JackPol(int n, Partition lambda, gmpq alpha) {
 Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha) {
   Partition lambdaP(lambda.begin(), lambda.end());
   gmpq alphaQ(alpha);
-  Qpoly P = JackPol(n, lambdaP, alphaQ);
-  int nterms = P.size();
-  Rcpp::List Exponents(nterms);
-  Rcpp::CharacterVector Coeffs(nterms);
-  int i = 0;
-  for(auto it = P.begin(); it != P.end(); it++) {
-    Powers pows = it->first;
-    Rcpp::IntegerVector expnts(pows.begin(), pows.end());
-    Exponents(i) = expnts;
-    Coeffs(i) = QSPRAY::utils::q2str(it->second);
-    i++;
-  }
-  return Rcpp::List::create(
-    Rcpp::Named("exponents") = Exponents,
-    Rcpp::Named("coeffs")    = Coeffs
-  );
+  Qspray<gmpq> P = JackPol<gmpq>(n, lambdaP, alphaQ);
+  return returnQspray(P);
 }
