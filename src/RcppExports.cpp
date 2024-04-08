@@ -2,7 +2,6 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include <RcppArmadillo.h>
-#include <Rcpp.h>
 
 using namespace Rcpp;
 
@@ -33,6 +32,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< std::string >::type alpha(alphaSEXP);
     rcpp_result_gen = Rcpp::wrap(JackPolRcpp(n, lambda, alpha));
+    return rcpp_result_gen;
+END_RCPP
+}
+// JackSymPolRcpp
+Rcpp::List JackSymPolRcpp(int n, Rcpp::IntegerVector lambda);
+RcppExport SEXP _jack_JackSymPolRcpp(SEXP nSEXP, SEXP lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(JackSymPolRcpp(n, lambda));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -99,6 +110,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
     {"_jack_JackPolRcpp", (DL_FUNC) &_jack_JackPolRcpp, 3},
+    {"_jack_JackSymPolRcpp", (DL_FUNC) &_jack_JackSymPolRcpp, 2},
     {"_jack_JackEvalRcpp_gmpq", (DL_FUNC) &_jack_JackEvalRcpp_gmpq, 3},
     {"_jack_JackEvalRcpp_double", (DL_FUNC) &_jack_JackEvalRcpp_double, 3},
     {"_jack_SchurEvalRcpp_gmpq", (DL_FUNC) &_jack_SchurEvalRcpp_gmpq, 2},

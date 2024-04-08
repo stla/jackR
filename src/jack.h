@@ -39,15 +39,15 @@ public:
   }
 };
 
+template <typename T>
+using IntIntMap = std::unordered_map<std::pair<int, int>, T, pairHasher>;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 int _N(Partition, Partition);
 
-template <typename numT>
-numT _betaratio(Partition, Partition, int, numT);
 template <typename T>
-RatioOfQsprays<T> _betaratio(Partition, Partition, int);
+T _betaratio(Partition, Partition, int, T);
 
 int weight(Partition);
 
