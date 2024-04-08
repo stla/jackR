@@ -5,6 +5,6 @@ test_that(
     mu     <- c(1, 1)
     skjp <- SkewJackPol(n, lambda, mu, alpha = 1L)
     sksp <- SkewSchurPol(n, lambda, mu)
-    expect_true(qspray::collinearQsprays(skjp, sksp))
+    expect_true(collinearQsprays(skjp, sksp))
   }
 )

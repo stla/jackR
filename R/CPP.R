@@ -1,18 +1,3 @@
-qsprayFromList <- function(x) {
-  powers <- x[["powers"]]
-  if(is.null(powers)) {
-    new(
-      "qspray",
-      powers = list(), coeffs = character(0L)
-    )
-  } else {
-    new(
-      "qspray",
-      powers = powers, coeffs = x[["coeffs"]]
-    )
-  }
-}
-
 #' Schur polynomial - C++ implementation
 #'
 #' Returns the Schur polynomial.
@@ -24,12 +9,13 @@ qsprayFromList <- function(x) {
 #' @return A \code{qspray} multivariate polynomial.
 #'
 #' @export
+#' @importFrom qspray qspray_from_list
 #'
 #' @examples
 #' SchurPolCPP(3, lambda = c(3, 1))
 SchurPolCPP <- function(n, lambda) {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
-  qsprayFromList(SchurPolRcpp(as.integer(n), as.integer(lambda)))
+  qspray_from_list(SchurPolRcpp(as.integer(n), as.integer(lambda)))
 }
 
 #' Evaluation of Schur polynomial - C++ implementation
@@ -79,8 +65,8 @@ SchurCPP <- function(x, lambda) {
 #' @return A \code{qspray} multivariate polynomial.
 #'
 #' @export
-#' @importFrom qspray qsprayMaker
 #' @importFrom gmp as.bigq
+#' @importFrom qspray qspray_from_list
 #'
 #' @examples
 #' JackPolCPP(3, lambda = c(3, 1), alpha = "2/5")
@@ -89,13 +75,17 @@ JackPolCPP <- function(n, lambda, alpha, which = "J") {
   alpha <- as.bigq(alpha)
   which <- match.arg(which, c("J", "P", "Q"))
   alpha <- as.character(alpha)
-  K <- switch(
-    which,
-    "J" = as.bigq(1L),
-    "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
-    "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
-  )
-  K * qsprayFromList(JackPolRcpp(as.integer(n), as.integer(lambda), alpha))
+  JackPolynomial <-
+    qspray_from_list(JackPolRcpp(as.integer(n), as.integer(lambda), alpha))
+  if(which != "J") {
+    K <- switch(
+      which,
+      "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
+      "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+    )
+    JackPolynomial <- K * JackPolynomial
+  }
+  JackPolynomial
 }
 
 #' Evaluation of Jack polynomial - C++ implementation
