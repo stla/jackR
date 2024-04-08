@@ -77,7 +77,7 @@ std::string JackEvalRcpp_gmpq(
   Partition lambdaP(lambda.begin(), lambda.end());
   gmpq alphaQ(alpha);
   gmpq result = JackEval<gmpq, Gij>(xQ, lambdaP, alphaQ);
-  return q2str(result);
+  return QSPRAY::utils::q2str(result);
 }
 
 // [[Rcpp::export]]
@@ -146,7 +146,7 @@ std::string SchurEvalRcpp_gmpq(Rcpp::StringVector x, Rcpp::IntegerVector lambda)
   }
   Partition lambdaP(lambda.begin(), lambda.end());
   gmpq result = SchurEval<gmpq, Gij>(xQ, lambdaP);
-  return q2str(result);
+  return QSPRAY::utils::q2str(result);
 }
 
 // [[Rcpp::export]]
@@ -164,3 +164,5 @@ void test() {
   Rcpp::NumericVector y = {2, 3, 4, 5};
   Rcpp::Rcout << JackEvalRcpp_double(y, lambda, 2.5) << "\n";
 }
+
+

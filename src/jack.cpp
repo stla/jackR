@@ -168,7 +168,7 @@ Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha) {
     Powers pows = it->first;
     Rcpp::IntegerVector expnts(pows.begin(), pows.end());
     Exponents(i) = expnts;
-    Coeffs(i) = q2str(it->second);
+    Coeffs(i) = QSPRAY::utils::q2str(it->second);
     i++;
   }
   return Rcpp::List::create(
