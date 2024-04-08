@@ -2,6 +2,7 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include <RcppArmadillo.h>
+#include <Rcpp.h>
 
 using namespace Rcpp;
 
@@ -10,18 +11,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// SchurPolRcpp
-Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda);
-RcppExport SEXP _jack_SchurPolRcpp(SEXP nSEXP, SEXP lambdaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
-    rcpp_result_gen = Rcpp::wrap(SchurPolRcpp(n, lambda));
-    return rcpp_result_gen;
-END_RCPP
-}
 // JackPolRcpp
 Rcpp::List JackPolRcpp(int n, Rcpp::IntegerVector lambda, std::string alpha);
 RcppExport SEXP _jack_JackPolRcpp(SEXP nSEXP, SEXP lambdaSEXP, SEXP alphaSEXP) {
@@ -73,6 +62,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test
+void test();
+RcppExport SEXP _jack_test() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    test();
+    return R_NilValue;
+END_RCPP
+}
+// SchurPolRcpp
+Rcpp::List SchurPolRcpp(int n, Rcpp::IntegerVector lambda);
+RcppExport SEXP _jack_SchurPolRcpp(SEXP nSEXP, SEXP lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type lambda(lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(SchurPolRcpp(n, lambda));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SchurEvalRcpp_gmpq
 std::string SchurEvalRcpp_gmpq(Rcpp::StringVector x, Rcpp::IntegerVector lambda);
 RcppExport SEXP _jack_SchurEvalRcpp_gmpq(SEXP xSEXP, SEXP lambdaSEXP) {
@@ -97,25 +107,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// test
-void test();
-RcppExport SEXP _jack_test() {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    test();
-    return R_NilValue;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
     {"_jack_JackPolRcpp", (DL_FUNC) &_jack_JackPolRcpp, 3},
     {"_jack_JackSymPolRcpp", (DL_FUNC) &_jack_JackSymPolRcpp, 2},
     {"_jack_JackEvalRcpp_gmpq", (DL_FUNC) &_jack_JackEvalRcpp_gmpq, 3},
     {"_jack_JackEvalRcpp_double", (DL_FUNC) &_jack_JackEvalRcpp_double, 3},
+    {"_jack_test", (DL_FUNC) &_jack_test, 0},
+    {"_jack_SchurPolRcpp", (DL_FUNC) &_jack_SchurPolRcpp, 2},
     {"_jack_SchurEvalRcpp_gmpq", (DL_FUNC) &_jack_SchurEvalRcpp_gmpq, 2},
     {"_jack_SchurEvalRcpp_double", (DL_FUNC) &_jack_SchurEvalRcpp_double, 2},
-    {"_jack_test", (DL_FUNC) &_jack_test, 0},
     {NULL, NULL, 0}
 };
 
