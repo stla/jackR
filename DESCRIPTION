@@ -15,7 +15,7 @@ Description: Symbolic calculation and evaluation of the Jack polynomials,
 License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
-SystemRequirements: C++ 17, gmp
+SystemRequirements: C++17, gmp
 Imports: 
     DescTools,
     gmp,
@@ -29,7 +29,11 @@ Imports:
 Remotes: stla/qspray
 LinkingTo:
     BH,
-    Rcpp
+    Rcpp,
+    qspray,
+    RcppArmadillo,
+    ratioOfQsprays,
+    RcppCGAL
 Suggests: 
     testthat,
     syt
