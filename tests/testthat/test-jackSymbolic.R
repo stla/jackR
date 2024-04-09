@@ -27,3 +27,11 @@ test_that("JackSymPol Q", {
   x <- evalSymbolicQspray(symbolicJackPolynomial, a = alpha)
   expect_true(x == JackPolynomial)
 })
+
+test_that("JackSymPol is symmetric", {
+  n <- 3
+  lambda <- c(4, 2, 2)
+  alpha <- gmp::as.bigq("2/3")
+  symbolicJackPolynomial <- JackSymPol(n, lambda)
+  expect_silent(MSPcombination(symbolicJackPolynomial, check = TRUE))
+})
