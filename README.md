@@ -23,18 +23,18 @@ The functions `JackPol`, `ZonalPol`, `ZonalQPol` and `SchurPol`
 respectively return the Jack polynomial, the zonal polynomial, the
 quaternionic zonal polynomial, and the Schur polynomial.
 
-Each of these polynomials corresponds is given by a positive integer,
-the number of variables, and an integer partition, the `lambda`
-argument; the Jack polynomial has one more parameter, the `alpha`
-argument, a positive number.
+Each of these polynomials is given by a positive integer, the number of
+variables, and an integer partition, the `lambda` argument; the Jack
+polynomial has one more parameter, the `alpha` argument, a number called
+the *Jack parameter*.
 
 To get an exact symbolic polynomial with `JackPol`, you have to supply a
-`bigq` rational number for the parameter `alpha`:
+`bigq` rational number for the Jack parameter `alpha`:
 
 ``` r
 jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
 jpol
-## 98/25*x^(3, 1) + 98/25*x^(1, 3) + 28/5*x^(2, 2)
+## 98/25*x1^3.x2 + 28/5*x1^2.x2^2 + 98/25*x1.x2^3
 ```
 
 This is a `qspray` object, from the
@@ -42,7 +42,7 @@ This is a `qspray` object, from the
 can evaluate this polynomial:
 
 ``` r
-qspray::evalQspray(jpol, c("2", "3/2"))
+evalQspray(jpol, c("2", "3/2"))
 ## Big Rational ('bigq') :
 ## [1] 1239/10
 ```
@@ -53,7 +53,7 @@ polynomials.
 ``` r
 zpol <- ZonalPol(2, lambda = c(3, 1))
 zpol
-## 24/7*x^(3, 1) + 24/7*x^(1, 3) + 16/7*x^(2, 2)
+## 24/7*x1^3.x2 + 16/7*x1^2.x2^2 + 24/7*x1.x2^3
 ```
 
 It is also possible to convert a `qspray` polynomial to a function whose
@@ -109,13 +109,36 @@ print(
   microbenchmark(
         R = Jack(gmp::as.bigq(x), lambda, gmp::as.bigq(alpha)),
      Rcpp = JackCPP(x, lambda, alpha),
-    times = 6L,
+    times = 5L,
     unit  = "seconds"
   ),
   signif = 2L
 )
 ## Unit: seconds
-##  expr    min    lq  mean median    uq   max neval
-##     R 110.00 130.0 140.0  130.0 160.0 160.0     6
-##  Rcpp   0.98   1.2   1.3    1.2   1.5   1.6     6
+##  expr   min    lq  mean median    uq   max neval cld
+##     R 57.00 59.00 59.00  60.00 60.00 61.00     5  a 
+##  Rcpp  0.61  0.64  0.72   0.65  0.73  0.95     5   b
 ```
+
+## Symbolic Jack parameter
+
+As of version 6.0.0, it is possible to get a Jack polynomial with a
+symbolic Jack parameter in its coefficients, with the `JackSymPol`
+function:
+
+``` r
+JackSymPol(2, lambda = c(3, 1))
+## { [2*a1^2 + 4*a1 + 2] } * X1^3.X2  +  { [4*a1 + 4] } * X1^2.X2^2  +  { [2*a1^2 + 4*a1 + 2] } * X1.X2^3
+```
+
+This is a `symbolicQspray` object, from the
+[**symbolicQspray**](https://github.com/stla/symbolicQspray) package.
+
+A `symbolicQspray` object corresponds to a multivariate polynomial whose
+coefficients are fractions of polynomials with rational coefficients.
+The Jack polynomials fit into this category: from their definition,
+their coefficients are fractions of polynomials in the Jack parameter.
+However you can see in the above output that for this example, the
+coefficients are *polynomials* in the Jack parameter (`a`): there’s no
+fraction. Actually this is always true for any Jack polynomial. This
+fact is established and it is not obvious.

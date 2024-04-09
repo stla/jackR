@@ -14,7 +14,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 ```
 
-```{r}
+```{r, message=FALSE}
 library(jack)
 library(microbenchmark)
 ```
@@ -28,13 +28,13 @@ The  functions `JackPol`, `ZonalPol`, `ZonalQPol` and `SchurPol` respectively
 return the Jack polynomial, the zonal polynomial, the quaternionic zonal 
 polynomial, and the Schur polynomial. 
 
-Each of these polynomials corresponds is given by a positive integer, the 
+Each of these polynomials is given by a positive integer, the 
 number of variables, and an integer partition, the `lambda` argument; the 
-Jack polynomial has one more parameter, the `alpha` argument, a 
-positive number.
+Jack polynomial has one more parameter, the `alpha` argument, a number called 
+the *Jack parameter*.
 
 To get an exact symbolic polynomial with `JackPol`, you have to supply a 
-`bigq` rational number for the parameter `alpha`:
+`bigq` rational number for the Jack parameter `alpha`:
 
 ```{r}
 jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
@@ -45,7 +45,7 @@ This is a `qspray` object, from the [**qspray**](https://github.com/stla/qspray)
 package. Here is how you can evaluate this polynomial:
 
 ```{r}
-qspray::evalQspray(jpol, c("2", "3/2"))
+evalQspray(jpol, c("2", "3/2"))
 ```
 
 By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic 
@@ -89,6 +89,7 @@ zyacas("2 + 2*I", "2/3")
 As of version 2.0.0, it was possible to calculate the Jack polynomials with  Julia. This feature has been removed in version 5.3.0. 
 Use the Julia package **JackPolynomials.jl** instead.
 
+
 ## 'Rcpp' implementation of the polynomials
 
 As of version 5.0.0, a 'Rcpp' implementation of the polynomials is provided by 
@@ -105,11 +106,32 @@ print(
   microbenchmark(
         R = Jack(gmp::as.bigq(x), lambda, gmp::as.bigq(alpha)),
      Rcpp = JackCPP(x, lambda, alpha),
-    times = 6L,
+    times = 5L,
     unit  = "seconds"
   ),
   signif = 2L
 )
 ```
 
+
+## Symbolic Jack parameter
+
+As of version 6.0.0, it is possible to get a Jack polynomial with a symbolic 
+Jack parameter in its coefficients, with the `JackSymPol` function:
+
+```{r}
+JackSymPol(2, lambda = c(3, 1))
+```
+
+This is a `symbolicQspray` object, from the
+[**symbolicQspray**](https://github.com/stla/symbolicQspray) package.
+
+A `symbolicQspray` object corresponds to a multivariate polynomial whose 
+coefficients are fractions of polynomials with rational coefficients. 
+The Jack polynomials fit into this category: from their definition, their 
+coefficients are fractions of polynomials in the Jack parameter. However you 
+can see in the above output that for this example, the coefficients are 
+*polynomials* in the Jack parameter (`a`): there's no fraction. Actually this is 
+always true for any Jack polynomial. This fact is established and it is not 
+obvious.
 
