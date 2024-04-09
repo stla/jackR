@@ -115,10 +115,15 @@ print(
   signif = 2L
 )
 ## Unit: seconds
-##  expr   min    lq  mean median    uq   max neval cld
-##     R 57.00 59.00 59.00  60.00 60.00 61.00     5  a 
-##  Rcpp  0.61  0.64  0.72   0.65  0.73  0.95     5   b
+##  expr  min    lq mean median    uq max neval cld
+##     R 80.0 84.00 91.0  87.00 96.00 110     5  a 
+##  Rcpp  0.7  0.83  1.1   0.88  0.97   2     5   b
 ```
+
+## Skew Schur polynomials
+
+As of version 6.0.0, the package is able to compute the skew Schur
+polynomials, with the function `SkewSchurPol`.
 
 ## Symbolic Jack parameter
 
@@ -127,8 +132,8 @@ symbolic Jack parameter in its coefficients, with the `JackSymPol`
 function:
 
 ``` r
-JackSymPol(2, lambda = c(3, 1))
-## { [2*a1^2 + 4*a1 + 2] } * X1^3.X2  +  { [4*a1 + 4] } * X1^2.X2^2  +  { [2*a1^2 + 4*a1 + 2] } * X1.X2^3
+( J <- JackSymPol(2, lambda = c(3, 1)) )
+## { [2*a^2 + 4*a + 2] } * X1^3.X2  +  { [4*a + 4] } * X1^2.X2^2  +  { [2*a^2 + 4*a + 2] } * X1.X2^3
 ```
 
 This is a `symbolicQspray` object, from the
@@ -142,3 +147,33 @@ However you can see in the above output that for this example, the
 coefficients are *polynomials* in the Jack parameter (`a`): there’s no
 fraction. Actually this is always true for any Jack polynomial. This
 fact is established and it is not obvious.
+
+Note that you can change the letters used to denote the variables. By
+default, the Jack parameter is denoted by `a` and the variables are
+denoted by `X1`, `X2`, … Here is how to change these symbols:
+
+``` r
+showSymbolicQsprayOption(J, "a") <- "alpha"
+showSymbolicQsprayOption(J, "X") <- "x"
+J
+## { [2*alpha^2 + 4*alpha + 2] } * x1^3.x2  +  { [4*alpha + 4] } * x1^2.x2^2  +  { [2*alpha^2 + 4*alpha + 2] } * x1.x2^3
+```
+
+## Compact expression of Jack polynomials
+
+The expression of a Jack polynomial in the canonical basis can be long.
+Since these polynomials are symmetric, one can get a considerably
+shorter expression by writing the polynomial as a linear combination of
+the monomial symmetric polynomials. This is what the function
+`compactSymmetricQspray` does:
+
+``` r
+( J <- JackPolCPP(3, lambda = c(4, 3, 1), alpha = "2") )
+## 3888*x1^4.x2^3.x3 + 2592*x1^4.x2^2.x3^2 + 3888*x1^4.x2.x3^3 + 3888*x1^3.x2^4.x3 + 4752*x1^3.x2^3.x3^2 + 4752*x1^3.x2^2.x3^3 + 3888*x1^3.x2.x3^4 + 2592*x1^2.x2^4.x3^2 + 4752*x1^2.x2^3.x3^3 + 2592*x1^2.x2^2.x3^4 + 3888*x1.x2^4.x3^3 + 3888*x1.x2^3.x3^4
+cat(compactSymmetricQspray(J))
+## (3888) * M[4, 3, 1] + (2592) * M[4, 2, 2] + (4752) * M[3, 3, 2]
+```
+
+The function `compactSymmetricQspray` is from the **qspray** package but
+it is also possible to apply it to a `symbolicQspray` object, like a
+Jack polynomial with symbolic Jack parameter.
