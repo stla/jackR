@@ -1,4 +1,9 @@
-# Version 5.4.0 (2024-04-01)
+# Version 6.0.0 (2024-04-09)
+
+- It is now possible to get a Jack polynomial with a symbolic Jack parameter 
+in its coefficients. Such polynomials are returned by the function `JackSymPol`. 
+This big progress is the reason for which I increased the major version of the 
+package.
 
 - New function `LRmult` for computing the expression of the product of two Schur 
 polynomials as a linear combination of Schur polynomials, using the 
@@ -11,7 +16,9 @@ Littlewood-Richardson rule.
 - Based on `LRskew`, the new function `SkewSchurPol` computes the skew Schur 
 polynomial associated to a given skew partition.
 
-- Actually there are three possible Jack polynomials for a given partition and a given `alpha`, denoted by `J`, `Q` or `P`. It is now possible to get any of them (the previous versions only allowed to get the `J` polynomial).
+- Actually there are three possible Jack polynomials for a given partition and a
+given `alpha`, denoted by `J`, `Q` or `P`. It is now possible to get any of them 
+(the previous versions only allowed to get the `J` polynomial).
 
 
 # Version 5.3.0 (2023-07-04)

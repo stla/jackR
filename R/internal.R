@@ -43,6 +43,35 @@ hookLengths_gmp <- function(lambda, alpha){
   rbind(lowerHL, upperHL)
 }
 
+#' @importFrom qspray qlone
+#' @noRd
+symbolicJackPcoefficientInverse <- function(lambda){
+  i <- rep(seq_along(lambda), times = lambda)
+  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  lambdaPrime <- as.bigq(dualPartition(lambda))
+  lambda <- as.bigq(lambda)
+  alpha <- qlone(1)
+  out <- 1L
+  for(k in seq_along(i)) {
+    out <- out *
+      (lambdaPrime[j[k]] - i[k] + 1L + (lambda[i[k]] - j[k])*alpha)
+  }
+  out
+}
+symbolicJackQcoefficientInverse <- function(lambda){
+  i <- rep(seq_along(lambda), times = lambda)
+  j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
+  lambdaPrime <- as.bigq(dualPartition(lambda))
+  lambda <- as.bigq(lambda)
+  alpha <- qlone(1)
+  out <- 1L
+  for(k in seq_along(i)) {
+    out <- out *
+      (lambdaPrime[j[k]] - i[k] + alpha*(lambda[i[k]] - j[k] + 1L))
+  }
+  out
+}
+
 .Blog <- function(nu, lambda, mu, alpha){
   if(all(nu == 0L)) return(0)
   i <- rep(seq_along(nu), times = nu)

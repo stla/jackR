@@ -21,12 +21,17 @@ JackSymPol <- function(n, lambda, which = "J") {
     JackSymPolRcpp(as.integer(n), as.integer(lambda))
   )
   if(which != "J") {
-    K <- switch(
+    invK <- switch(
       which,
-      "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
-      "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+      "P" = symbolicJackPcoefficientInverse(lambda),
+      "Q" = symbolicJackQcoefficientInverse(lambda)
     )
-    JackPolynomial <- K * JackPolynomial
+    # K <- new(
+    #   "ratioOfQsprays",
+    #   numerator   = as.qspray(1L),
+    #   denominator = invK
+    # )
+    JackPolynomial <- JackPolynomial / invK
   }
   JackPolynomial
 }

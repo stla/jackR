@@ -1,8 +1,8 @@
 Type: Package
 Package: jack
 Title: Jack, Zonal, and Schur Polynomials
-Version: 5.4.0
-Date: 2024-03-07
+Version: 6.0.0
+Date: 2024-04-09
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials,
