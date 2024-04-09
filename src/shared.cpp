@@ -16,6 +16,18 @@ int _N(Partition lambda, Partition mu) {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+int weight(Partition mu) {
+  int w = 0;
+  int musize = mu.size();
+  for(int i = 0; i < musize; i++) {
+    w += mu[i];
+  }
+  return w;
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 template <typename T> // alpha = number or Qlone(1)/1
 std::pair<T,T> _betaPQ(Partition kappa, Partition mu, int k, T alpha) {
   T t = T(k) - T(mu[k-1]) * alpha;
@@ -83,19 +95,3 @@ RatioOfQsprays<T> _betaratio(Partition kappa, Partition mu, int k, RatioOfQspray
 }
 
 template RatioOfQsprays<gmpq> _betaratio<RatioOfQsprays<gmpq>>(Partition, Partition, int, RatioOfQsprays<gmpq>);
-
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-int weight(Partition mu) {
-  int w = 0;
-  int musize = mu.size();
-  for(int i = 0; i < musize; i++) {
-    w += mu[i];
-  }
-  return w;
-}
-
-
-
-

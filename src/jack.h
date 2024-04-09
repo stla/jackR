@@ -1,8 +1,6 @@
 #ifndef ___JACKHEADER___
 #define ___JACKHEADER___
 
-//#include "qspray.h"
-//#include "ratioOfQsprays.h"
 #include "symbolicQspray.h"
 
 using namespace QSPRAY;

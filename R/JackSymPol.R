@@ -26,11 +26,6 @@ JackSymPol <- function(n, lambda, which = "J") {
       "P" = symbolicJackPcoefficientInverse(lambda),
       "Q" = symbolicJackQcoefficientInverse(lambda)
     )
-    # K <- new(
-    #   "ratioOfQsprays",
-    #   numerator   = as.qspray(1L),
-    #   denominator = invK
-    # )
     JackPolynomial <- JackPolynomial / invK
   }
   JackPolynomial

@@ -86,8 +86,9 @@ zyacas("2 + 2*I", "2/3")
 
 ## Jack polynomials with Julia
 
-As of version 2.0.0, it was possible to calculate the Jack polynomials with  Julia. This feature has been removed in version 5.3.0. 
-Use the Julia package **JackPolynomials.jl** instead.
+As of version 2.0.0, it was possible to calculate the Jack polynomials with 
+Julia. This feature has been removed in version 5.3.0. Use the Julia package
+**JackPolynomials.jl** instead.
 
 
 ## 'Rcpp' implementation of the polynomials
@@ -98,7 +99,7 @@ the package.
 As of version 5.1.0, there's also a 'Rcpp' implementation of the evaluation of 
 the polynomials.
 
-```{r}
+```{r, eval=FALSE}
 x <- c("1/2", "2/3", "1", "2/3", "1", "5/4")
 lambda <- c(5, 3, 2, 2, 1)
 alpha <- "3"
@@ -114,13 +115,19 @@ print(
 ```
 
 
+## Skew Schur polynomials
+
+As of version 6.0.0, the package is able to compute the skew Schur polynomials, 
+with the function `SkewSchurPol`.
+
+
 ## Symbolic Jack parameter
 
 As of version 6.0.0, it is possible to get a Jack polynomial with a symbolic 
 Jack parameter in its coefficients, with the `JackSymPol` function:
 
 ```{r}
-JackSymPol(2, lambda = c(3, 1))
+( J <- JackSymPol(2, lambda = c(3, 1)) )
 ```
 
 This is a `symbolicQspray` object, from the
@@ -134,4 +141,32 @@ can see in the above output that for this example, the coefficients are
 *polynomials* in the Jack parameter (`a`): there's no fraction. Actually this is 
 always true for any Jack polynomial. This fact is established and it is not 
 obvious.
+
+Note that you can change the letters used to denote the variables. By default, 
+the Jack parameter is denoted by `a` and the variables are denoted by `X1`, 
+`X2`, ... Here is how to change these symbols:
+
+```{r}
+showSymbolicQsprayOption(J, "a") <- "alpha"
+showSymbolicQsprayOption(J, "X") <- "x"
+J
+```
+
+
+## Compact expression of Jack polynomials
+
+The expression of a Jack polynomial in the canonical basis can be long. Since 
+these polynomials are symmetric, one can get a considerably shorter expression 
+by writing the polynomial as a linear combination of the monomial symmetric 
+polynomials. This is what the function `compactSymmetricQspray` does:
+
+```{r}
+( J <- JackPolCPP(3, lambda = c(4, 3, 1), alpha = "2") )
+cat(compactSymmetricQspray(J))
+```
+
+The function `compactSymmetricQspray` is from the **qspray** package but it is 
+also possible to apply it to a `symbolicQspray` object, like a Jack polynomial 
+with symbolic Jack parameter.
+
 
