@@ -34,7 +34,7 @@ To get an exact symbolic polynomial with `JackPol`, you have to supply a
 ``` r
 jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
 jpol
-## 98/25*x1^3.x2 + 28/5*x1^2.x2^2 + 98/25*x1.x2^3
+## 98/25*x^3y + 28/5*x^2y^2 + 98/25*xy^3
 ```
 
 This is a `qspray` object, from the
@@ -53,7 +53,7 @@ polynomials.
 ``` r
 zpol <- ZonalPol(2, lambda = c(3, 1))
 zpol
-## 24/7*x1^3.x2 + 16/7*x1^2.x2^2 + 24/7*x1.x2^3
+## 24/7*x^3y + 16/7*x^2y^2 + 24/7*xy^3
 ```
 
 It is also possible to convert a `qspray` polynomial to a function whose
@@ -115,9 +115,9 @@ print(
   signif = 2L
 )
 ## Unit: seconds
-##  expr  min    lq mean median    uq max neval cld
-##     R 80.0 84.00 91.0  87.00 96.00 110     5  a 
-##  Rcpp  0.7  0.83  1.1   0.88  0.97   2     5   b
+##  expr   min    lq mean median   uq   max neval cld
+##     R 60.00 61.00 78.0  62.00 90.0 120.0     5  a 
+##  Rcpp  0.56  0.57  0.9   0.87  1.1   1.4     5   b
 ```
 
 ## Skew Schur polynomials
@@ -133,7 +133,7 @@ function:
 
 ``` r
 ( J <- JackSymPol(2, lambda = c(3, 1)) )
-## { [2*a^2 + 4*a + 2] } * X1^3.X2  +  { [4*a + 4] } * X1^2.X2^2  +  { [2*a^2 + 4*a + 2] } * X1.X2^3
+## { [2*a^2 + 4*a + 2] } * X^3Y  +  { [4*a + 4] } * X^2Y^2  +  { [2*a^2 + 4*a + 2] } * XY^3
 ```
 
 This is a `symbolicQspray` object, from the
@@ -150,13 +150,22 @@ fact is established and it is not obvious.
 
 Note that you can change the letters used to denote the variables. By
 default, the Jack parameter is denoted by `a` and the variables are
-denoted by `X1`, `X2`, … Here is how to change these symbols:
+denoted by `X`, `Y`, `Z` if there are at most three variables, otherwise
+they are denoted by `X1`, `X2`, … Here is how to change these symbols:
 
 ``` r
 showSymbolicQsprayOption(J, "a") <- "alpha"
 showSymbolicQsprayOption(J, "X") <- "x"
 J
 ## { [2*alpha^2 + 4*alpha + 2] } * x1^3.x2  +  { [4*alpha + 4] } * x1^2.x2^2  +  { [2*alpha^2 + 4*alpha + 2] } * x1.x2^3
+```
+
+If you want to have the variables denoted by `x` and `y`, do:
+
+``` r
+showSymbolicQsprayOption(J, "showMonomial") <- showMonomialXYZ(c("x", "y"))
+J
+## { [2*alpha^2 + 4*alpha + 2] } * x^3y  +  { [4*alpha + 4] } * x^2y^2  +  { [2*alpha^2 + 4*alpha + 2] } * xy^3
 ```
 
 ## Compact expression of Jack polynomials
@@ -169,7 +178,7 @@ the monomial symmetric polynomials. This is what the function
 
 ``` r
 ( J <- JackPolCPP(3, lambda = c(4, 3, 1), alpha = "2") )
-## 3888*x1^4.x2^3.x3 + 2592*x1^4.x2^2.x3^2 + 3888*x1^4.x2.x3^3 + 3888*x1^3.x2^4.x3 + 4752*x1^3.x2^3.x3^2 + 4752*x1^3.x2^2.x3^3 + 3888*x1^3.x2.x3^4 + 2592*x1^2.x2^4.x3^2 + 4752*x1^2.x2^3.x3^3 + 2592*x1^2.x2^2.x3^4 + 3888*x1.x2^4.x3^3 + 3888*x1.x2^3.x3^4
+## 3888*x^4y^3z + 2592*x^4y^2z^2 + 3888*x^4yz^3 + 3888*x^3y^4z + 4752*x^3y^3z^2 + 4752*x^3y^2z^3 + 3888*x^3yz^4 + 2592*x^2y^4z^2 + 4752*x^2y^3z^3 + 2592*x^2y^2z^4 + 3888*xy^4z^3 + 3888*xy^3z^4
 cat(compactSymmetricQspray(J))
 ## (3888) * M[4, 3, 1] + (2592) * M[4, 2, 2] + (4752) * M[3, 3, 2]
 ```

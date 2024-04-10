@@ -143,12 +143,19 @@ always true for any Jack polynomial. This fact is established and it is not
 obvious.
 
 Note that you can change the letters used to denote the variables. By default, 
-the Jack parameter is denoted by `a` and the variables are denoted by `X1`, 
+the Jack parameter is denoted by `a` and the variables are denoted by `X`, `Y`, `Z` if there are at most three variables, otherwise they are denoted by `X1`, 
 `X2`, ... Here is how to change these symbols:
 
 ```{r}
 showSymbolicQsprayOption(J, "a") <- "alpha"
 showSymbolicQsprayOption(J, "X") <- "x"
+J
+```
+
+If you want to have the variables denoted by `x` and `y`, do:
+
+```{r}
+showSymbolicQsprayOption(J, "showMonomial") <- showMonomialXYZ(c("x", "y"))
 J
 ```
 
