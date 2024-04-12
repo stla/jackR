@@ -147,7 +147,8 @@ the Jack parameter is denoted by `a` and the variables are denoted by `X`, `Y`, 
 `X2`, ... Here is how to change these symbols:
 
 ```{r}
-showSymbolicQsprayOption(J, "a") <- "alpha"
+showSymbolicQsprayOption(J, "showRatioOfQsprays") <- 
+  showRatioOfQspraysXYZ("alpha")
 showSymbolicQsprayOption(J, "X") <- "x"
 J
 ```

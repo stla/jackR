@@ -154,7 +154,8 @@ denoted by `X`, `Y`, `Z` if there are at most three variables, otherwise
 they are denoted by `X1`, `X2`, … Here is how to change these symbols:
 
 ``` r
-showSymbolicQsprayOption(J, "a") <- "alpha"
+showSymbolicQsprayOption(J, "showRatioOfQsprays") <- 
+  showRatioOfQspraysXYZ("alpha")
 showSymbolicQsprayOption(J, "X") <- "x"
 J
 ## { [ 2*alpha^2 + 4*alpha + 2 ] } * x1^3.x2  +  { [ 4*alpha + 4 ] } * x1^2.x2^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x1.x2^3
