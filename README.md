@@ -154,8 +154,7 @@ denoted by `X`, `Y`, `Z` if there are at most three variables, otherwise
 they are denoted by `X1`, `X2`, … Here is how to change these symbols:
 
 ``` r
-showSymbolicQsprayOption(J, "showRatioOfQsprays") <- 
-  showRatioOfQspraysXYZ("alpha")
+showSymbolicQsprayOption(J, "a") <- "alpha"
 showSymbolicQsprayOption(J, "X") <- "x"
 J
 ## { [ 2*alpha^2 + 4*alpha + 2 ] } * x1^3.x2  +  { [ 4*alpha + 4 ] } * x1^2.x2^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x1.x2^3
@@ -181,9 +180,8 @@ the monomial symmetric polynomials. This is what the function
 ( J <- JackPolCPP(3, lambda = c(4, 3, 1), alpha = "2") )
 ## 3888*x^4y^3z + 2592*x^4y^2z^2 + 3888*x^4yz^3 + 3888*x^3y^4z + 4752*x^3y^3z^2 + 4752*x^3y^2z^3 + 3888*x^3yz^4 + 2592*x^2y^4z^2 + 4752*x^2y^3z^3 + 2592*x^2y^2z^4 + 3888*xy^4z^3 + 3888*xy^3z^4
 cat(compactSymmetricQspray(J))
-## (3888) * M[4, 3, 1] + (2592) * M[4, 2, 2] + (4752) * M[3, 3, 2]
+## 3888*M[4, 3, 1] + 2592*M[4, 2, 2] + 4752*M[3, 3, 2]
 ```
 
-The function `compactSymmetricQspray` is from the **qspray** package but
-it is also possible to apply it to a `symbolicQspray` object, like a
-Jack polynomial with symbolic Jack parameter.
+The function `compactSymmetricQspray` is also applicable to a `symbolicQspray`
+object, like a Jack polynomial with symbolic Jack parameter.

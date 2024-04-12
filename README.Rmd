@@ -147,8 +147,7 @@ the Jack parameter is denoted by `a` and the variables are denoted by `X`, `Y`, 
 `X2`, ... Here is how to change these symbols:
 
 ```{r}
-showSymbolicQsprayOption(J, "showRatioOfQsprays") <- 
-  showRatioOfQspraysXYZ("alpha")
+showSymbolicQsprayOption(J, "a") <- "alpha"
 showSymbolicQsprayOption(J, "X") <- "x"
 J
 ```
@@ -173,8 +172,5 @@ polynomials. This is what the function `compactSymmetricQspray` does:
 cat(compactSymmetricQspray(J))
 ```
 
-The function `compactSymmetricQspray` is from the **qspray** package but it is 
-also possible to apply it to a `symbolicQspray` object, like a Jack polynomial 
-with symbolic Jack parameter.
-
-
+The function `compactSymmetricQspray` is also applicable to a `symbolicQspray`
+object, like a Jack polynomial with symbolic Jack parameter.
