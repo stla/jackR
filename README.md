@@ -115,9 +115,9 @@ print(
   signif = 2L
 )
 ## Unit: seconds
-##  expr   min    lq mean median   uq   max neval cld
-##     R 60.00 61.00 78.0  62.00 90.0 120.0     5  a 
-##  Rcpp  0.56  0.57  0.9   0.87  1.1   1.4     5   b
+##  expr   min    lq  mean median    uq   max neval cld
+##     R 55.00 58.00 62.00  58.00 68.00 70.00     5  a 
+##  Rcpp  0.53  0.54  0.56   0.56  0.59  0.59     5   b
 ```
 
 ## Skew Schur polynomials
@@ -133,7 +133,7 @@ function:
 
 ``` r
 ( J <- JackSymPol(2, lambda = c(3, 1)) )
-## { [2*a^2 + 4*a + 2] } * X^3Y  +  { [4*a + 4] } * X^2Y^2  +  { [2*a^2 + 4*a + 2] } * XY^3
+## { [ 2*a^2 + 4*a + 2 ] } * X^3Y  +  { [ 4*a + 4 ] } * X^2Y^2  +  { [ 2*a^2 + 4*a + 2 ] } * XY^3
 ```
 
 This is a `symbolicQspray` object, from the
@@ -157,7 +157,7 @@ they are denoted by `X1`, `X2`, … Here is how to change these symbols:
 showSymbolicQsprayOption(J, "a") <- "alpha"
 showSymbolicQsprayOption(J, "X") <- "x"
 J
-## { [2*alpha^2 + 4*alpha + 2] } * x1^3.x2  +  { [4*alpha + 4] } * x1^2.x2^2  +  { [2*alpha^2 + 4*alpha + 2] } * x1.x2^3
+## { [ 2*alpha^2 + 4*alpha + 2 ] } * x1^3.x2  +  { [ 4*alpha + 4 ] } * x1^2.x2^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x1.x2^3
 ```
 
 If you want to have the variables denoted by `x` and `y`, do:
@@ -165,7 +165,7 @@ If you want to have the variables denoted by `x` and `y`, do:
 ``` r
 showSymbolicQsprayOption(J, "showMonomial") <- showMonomialXYZ(c("x", "y"))
 J
-## { [2*alpha^2 + 4*alpha + 2] } * x^3y  +  { [4*alpha + 4] } * x^2y^2  +  { [2*alpha^2 + 4*alpha + 2] } * xy^3
+## { [ 2*alpha^2 + 4*alpha + 2 ] } * x^3y  +  { [ 4*alpha + 4 ] } * x^2y^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * xy^3
 ```
 
 ## Compact expression of Jack polynomials
