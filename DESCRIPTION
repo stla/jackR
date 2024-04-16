@@ -18,7 +18,6 @@ BugReports: https://github.com/stla/jackR/issues
 SystemRequirements: C++17, gmp
 Depends:
     qspray (>= 2.2.0),
-    ratioOfQsprays,
     symbolicQspray
 Imports: 
     DescTools,
