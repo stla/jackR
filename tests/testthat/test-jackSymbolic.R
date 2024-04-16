@@ -32,7 +32,7 @@ test_that("JackSymPol is symmetric", {
   n <- 3
   lambda <- c(4, 2, 2)
   symbolicJackPolynomial <- JackSymPol(n, lambda)
-  expect_true(isSymmetricPolynomial(symbolicJackPolynomial))
+  expect_true(isSymmetricQspray(symbolicJackPolynomial))
 })
 
 test_that("JackSymPol has polynomial coefficients only", {
