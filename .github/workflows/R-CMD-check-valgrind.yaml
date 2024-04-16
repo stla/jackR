@@ -29,6 +29,18 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Install remotes
+        run: |
+          Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
+
+      - name: Install qspray from Github
+        run: |
+          Rscript -e "remotes::install_github('stla/qspray')"
+
+      - name: Install ratioOfQsprays from Github
+        run: |
+          Rscript -e "remotes::install_github('stla/ratioOfQsprays')"
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
