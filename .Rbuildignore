@@ -6,3 +6,5 @@
 ^\.github$
 ^CRAN-SUBMISSION$
 ^inst/trash$
+^inst/julia$
+^inst/essais$
