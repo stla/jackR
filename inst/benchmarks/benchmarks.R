@@ -12,3 +12,17 @@ microbenchmark(
   },
   times = 5
 )
+
+# Haskell is faster:
+#
+# benchmarking Jack/jackPol with the given alpha
+# mean                 33.76 ms
+# std dev              3.004 ms
+#
+# benchmarking Jack/jackSymbolicPol
+# mean                 543.8 ms
+# std dev              44.58 ms
+#
+# benchmarking Jack/jackSymbolicPol evaluated at alpha
+# mean                 621.9 ms
+# std dev              50.79 ms
