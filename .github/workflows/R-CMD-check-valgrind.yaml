@@ -33,13 +33,9 @@ jobs:
         run: |
           Rscript -e "install.packages('remotes', repos='https://ftp.belnet.be/mirror/CRAN')"
 
-      - name: Install qspray from Github
+      - name: Install qspray and ratioOfQsprays from Github
         run: |
-          Rscript -e "remotes::install_github('stla/qspray')"
-
-      - name: Install ratioOfQsprays from Github
-        run: |
-          Rscript -e "remotes::install_github('stla/ratioOfQsprays')"
+          Rscript -e "remotes::install_github(c('stla/qspray', 'stla/ratioOfQsprays'))"
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
