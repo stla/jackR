@@ -34,7 +34,7 @@ To get an exact symbolic polynomial with `JackPol`, you have to supply a
 ``` r
 jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
 jpol
-## 98/25*x^3y + 28/5*x^2y^2 + 98/25*xy^3
+## 98/25*x^3.y + 28/5*x^2.y^2 + 98/25*x.y^3
 ```
 
 This is a `qspray` object, from the
@@ -53,7 +53,7 @@ polynomials.
 ``` r
 zpol <- ZonalPol(2, lambda = c(3, 1))
 zpol
-## 24/7*x^3y + 16/7*x^2y^2 + 24/7*xy^3
+## 24/7*x^3.y + 16/7*x^2.y^2 + 24/7*x.y^3
 ```
 
 It is also possible to convert a `qspray` polynomial to a function whose
@@ -96,7 +96,8 @@ Julia package **JackPolynomials.jl** instead.
 ## ‘Rcpp’ implementation of the polynomials
 
 As of version 5.0.0, a ‘Rcpp’ implementation of the polynomials is
-provided by the package.
+provided by the package: functions `JackPolCPP`, `SchurPolCPP`, and
+`ZonalPolCPP`. Really more efficient.
 
 As of version 5.1.0, there’s also a ‘Rcpp’ implementation of the
 evaluation of the polynomials.
@@ -115,9 +116,9 @@ print(
   signif = 2L
 )
 ## Unit: seconds
-##  expr   min    lq  mean median    uq   max neval cld
-##     R 55.00 58.00 62.00  58.00 68.00 70.00     5  a 
-##  Rcpp  0.53  0.54  0.56   0.56  0.59  0.59     5   b
+##  expr   min    lq  mean median    uq  max neval cld
+##     R 56.00 56.00 61.00  57.00 60.00 76.0     5  a 
+##  Rcpp  0.54  0.54  0.71   0.58  0.79  1.1     5   b
 ```
 
 ## Skew Schur polynomials
@@ -128,16 +129,16 @@ polynomials, with the function `SkewSchurPol`.
 ## Symbolic Jack parameter
 
 As of version 6.0.0, it is possible to get a Jack polynomial with a
-symbolic Jack parameter in its coefficients, with the `JackSymPol`
+symbolic Jack parameter in its coefficients, thanks to the `JackSymPol`
 function:
 
 ``` r
 ( J <- JackSymPol(2, lambda = c(3, 1)) )
-## { [ 2*a^2 + 4*a + 2 ] } * X^3Y  +  { [ 4*a + 4 ] } * X^2Y^2  +  { [ 2*a^2 + 4*a + 2 ] } * XY^3
+## { [ 2*a^2 + 4*a + 2 ] } * X^3.Y  +  { [ 4*a + 4 ] } * X^2.Y^2  +  { [ 2*a^2 + 4*a + 2 ] } * X.Y^3
 ```
 
-This is a `symbolicQspray` object, from the
-[**symbolicQspray**](https://github.com/stla/symbolicQspray) package.
+This is a `symbolicQspray` object, from the [**symbolicQspray**
+package](https://github.com/stla/symbolicQspray).
 
 A `symbolicQspray` object corresponds to a multivariate polynomial whose
 coefficients are fractions of polynomials with rational coefficients.
@@ -147,6 +148,16 @@ However you can see in the above output that for this example, the
 coefficients are *polynomials* in the Jack parameter (`a`): there’s no
 fraction. Actually this is always true for any Jack polynomial. This
 fact is established and it is not obvious.
+
+You can substitute a value to the Jack parameter with the help of the
+`substituteParameters` function:
+
+``` r
+( J5 <- substituteParameters(J, 5) )
+## 72*X^3.Y + 24*X^2.Y^2 + 72*X.Y^3
+J5 == JackPolCPP(2, lambda = c(3, 1), alpha = "5")
+## [1] TRUE
+```
 
 Note that you can change the letters used to denote the variables. By
 default, the Jack parameter is denoted by `a` and the variables are
@@ -165,7 +176,7 @@ If you want to have the variables denoted by `x` and `y`, do:
 ``` r
 showSymbolicQsprayOption(J, "showMonomial") <- showMonomialXYZ(c("x", "y"))
 J
-## { [ 2*alpha^2 + 4*alpha + 2 ] } * x^3y  +  { [ 4*alpha + 4 ] } * x^2y^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * xy^3
+## { [ 2*alpha^2 + 4*alpha + 2 ] } * x^3.y  +  { [ 4*alpha + 4 ] } * x^2.y^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x.y^3
 ```
 
 ## Compact expression of Jack polynomials
@@ -178,10 +189,11 @@ the monomial symmetric polynomials. This is what the function
 
 ``` r
 ( J <- JackPolCPP(3, lambda = c(4, 3, 1), alpha = "2") )
-## 3888*x^4y^3z + 2592*x^4y^2z^2 + 3888*x^4yz^3 + 3888*x^3y^4z + 4752*x^3y^3z^2 + 4752*x^3y^2z^3 + 3888*x^3yz^4 + 2592*x^2y^4z^2 + 4752*x^2y^3z^3 + 2592*x^2y^2z^4 + 3888*xy^4z^3 + 3888*xy^3z^4
+## 3888*x^4.y^3.z + 2592*x^4.y^2.z^2 + 3888*x^4.y.z^3 + 3888*x^3.y^4.z + 4752*x^3.y^3.z^2 + 4752*x^3.y^2.z^3 + 3888*x^3.y.z^4 + 2592*x^2.y^4.z^2 + 4752*x^2.y^3.z^3 + 2592*x^2.y^2.z^4 + 3888*x.y^4.z^3 + 3888*x.y^3.z^4
 cat(compactSymmetricQspray(J))
 ## 3888*M[4, 3, 1] + 2592*M[4, 2, 2] + 4752*M[3, 3, 2]
 ```
 
-The function `compactSymmetricQspray` is also applicable to a `symbolicQspray`
-object, like a Jack polynomial with symbolic Jack parameter.
+The function `compactSymmetricQspray` is also applicable to a
+`symbolicQspray` object, like a Jack polynomial with symbolic Jack
+parameter.

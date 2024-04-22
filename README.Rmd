@@ -94,7 +94,8 @@ Julia. This feature has been removed in version 5.3.0. Use the Julia package
 ## 'Rcpp' implementation of the polynomials
 
 As of version 5.0.0, a 'Rcpp' implementation of the polynomials is provided by 
-the package.
+the package: functions `JackPolCPP`, `SchurPolCPP`, and `ZonalPolCPP`. 
+Really more efficient.
 
 As of version 5.1.0, there's also a 'Rcpp' implementation of the evaluation of 
 the polynomials.
@@ -124,14 +125,14 @@ with the function `SkewSchurPol`.
 ## Symbolic Jack parameter
 
 As of version 6.0.0, it is possible to get a Jack polynomial with a symbolic 
-Jack parameter in its coefficients, with the `JackSymPol` function:
+Jack parameter in its coefficients, thanks to the `JackSymPol` function:
 
 ```{r}
 ( J <- JackSymPol(2, lambda = c(3, 1)) )
 ```
 
 This is a `symbolicQspray` object, from the
-[**symbolicQspray**](https://github.com/stla/symbolicQspray) package.
+[**symbolicQspray** package](https://github.com/stla/symbolicQspray).
 
 A `symbolicQspray` object corresponds to a multivariate polynomial whose 
 coefficients are fractions of polynomials with rational coefficients. 
@@ -141,6 +142,15 @@ can see in the above output that for this example, the coefficients are
 *polynomials* in the Jack parameter (`a`): there's no fraction. Actually this is 
 always true for any Jack polynomial. This fact is established and it is not 
 obvious.
+
+You can substitute a value to the Jack parameter with the help of the 
+`substituteParameters` function:
+
+```{r}
+( J5 <- substituteParameters(J, 5) )
+J5 == JackPolCPP(2, lambda = c(3, 1), alpha = "5")
+```
+
 
 Note that you can change the letters used to denote the variables. By default, 
 the Jack parameter is denoted by `a` and the variables are denoted by `X`, `Y`, `Z` if there are at most three variables, otherwise they are denoted by `X1`, 
