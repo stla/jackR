@@ -39,5 +39,5 @@ test_that("JackSymPol J has polynomial coefficients only", {
   n <- 5
   lambda <- c(4, 4, 3, 2, 1)
   J <- JackSymPol(n, lambda)
-  expect_true(hasPolynomialCoefficients(J))
+  expect_true(hasPolynomialCoefficientsOnly(J))
 })

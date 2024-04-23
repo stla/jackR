@@ -41,8 +41,9 @@ jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
 jpol
 ```
 
-This is a `qspray` object, from the [**qspray**](https://github.com/stla/qspray) 
-package. Here is how you can evaluate this polynomial:
+This is a `qspray` object, from the 
+[**qspray** package](https://github.com/stla/qspray). Here is how you can 
+evaluate this polynomial:
 
 ```{r}
 evalQspray(jpol, c("2", "3/2"))
