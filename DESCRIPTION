@@ -28,7 +28,7 @@ Imports:
     Rcpp,
     spray,
     utils
-Remotes: stla/qspray, stla/ratioOfQsprays, stla/symbolicQspray, stla/syt
+Remotes: stla/ratioOfQsprays, stla/symbolicQspray
 LinkingTo:
     BH,
     Rcpp,
