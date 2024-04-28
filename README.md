@@ -9,7 +9,6 @@ The ‘jack’ package: Jack polynomials
 
 ``` r
 library(jack)
-library(microbenchmark)
 ```
 
 Schur polynomials have applications in combinatorics and zonal
@@ -28,18 +27,19 @@ variables, and an integer partition, the `lambda` argument; the Jack
 polynomial has one more parameter, the `alpha` argument, a number called
 the *Jack parameter*.
 
-To get an exact symbolic polynomial with `JackPol`, you have to supply a
-`bigq` rational number for the Jack parameter `alpha`:
+To get a Jack polynomial with `JackPol`, you have to supply the Jack
+parameter as a `bigq` rational number or as a character string
+representing a fraction, e.g. `"2/5"`:
 
 ``` r
-jpol <- JackPol(2, lambda = c(3, 1), alpha = gmp::as.bigq("2/5"))
+jpol <- JackPol(2, lambda = c(3, 1), alpha = "2/5")
 jpol
 ## 98/25*x^3.y + 28/5*x^2.y^2 + 98/25*x.y^3
 ```
 
-This is a `qspray` object, from the
-[**qspray**](https://github.com/stla/qspray) package. Here is how you
-can evaluate this polynomial:
+This is a `qspray` object, from the [**qspray**
+package](https://github.com/stla/qspray). Here is how you can evaluate
+this polynomial:
 
 ``` r
 evalQspray(jpol, c("2", "3/2"))
@@ -47,35 +47,26 @@ evalQspray(jpol, c("2", "3/2"))
 ## [1] 1239/10
 ```
 
-By default, `ZonalPol`, `ZonalQPol` and `SchurPol` return exact symbolic
-polynomials.
-
-``` r
-zpol <- ZonalPol(2, lambda = c(3, 1))
-zpol
-## 24/7*x^3.y + 16/7*x^2.y^2 + 24/7*x.y^3
-```
-
 It is also possible to convert a `qspray` polynomial to a function whose
 evaluation is performed by the **Ryacas** package:
 
 ``` r
-zyacas <- as.function(zpol)
+jyacas <- as.function(jpol)
 ```
 
 You can provide the values of the variables of this function as numbers
 or character strings:
 
 ``` r
-zyacas(2, "3/2")
-## [1] "594/7"
+jyacas(2, "3/2")
+## [1] "1239/10"
 ```
 
 You can even pass a variable name to this function:
 
 ``` r
-zyacas("x", "x")
-## [1] "(64*x^4)/7"
+jyacas("x", "x")
+## [1] "(336*x^4)/25"
 ```
 
 If you want to substitute a variable with a complex number, use a
@@ -83,42 +74,21 @@ character string which represents this number, with `I` denoting the
 imaginary unit:
 
 ``` r
-zyacas("2 + 2*I", "2/3")
-## [1] "Complex((-2176)/63,2944/63)"
+jyacas("2 + 2*I", "2/3")
+## [1] "Complex((-26656)/675,43232/675)"
 ```
 
-## Jack polynomials with Julia
+## Direct evaluation of the polynomials
 
-As of version 2.0.0, it was possible to calculate the Jack polynomials
-with Julia. This feature has been removed in version 5.3.0. Use the
-Julia package **JackPolynomials.jl** instead.
-
-## ‘Rcpp’ implementation of the polynomials
-
-As of version 5.0.0, a ‘Rcpp’ implementation of the polynomials is
-provided by the package: functions `JackPolCPP`, `SchurPolCPP`, and
-`ZonalPolCPP`. Really more efficient.
-
-As of version 5.1.0, there’s also a ‘Rcpp’ implementation of the
-evaluation of the polynomials.
+If you just have to evaluate a Jack polynomial, you don’t need to resort
+to a `qspray` polynomial: you can use the functions `Jack`, `Zonal`,
+`ZonalQ` or `Schur`, which directly evaluate the polynomial, and this is
+much more efficient than resorting to a `qspray` polynomial.
 
 ``` r
-x <- c("1/2", "2/3", "1", "2/3", "1", "5/4")
-lambda <- c(5, 3, 2, 2, 1)
-alpha <- "3"
-print(
-  microbenchmark(
-        R = Jack(gmp::as.bigq(x), lambda, gmp::as.bigq(alpha)),
-     Rcpp = JackCPP(x, lambda, alpha),
-    times = 5L,
-    unit  = "seconds"
-  ),
-  signif = 2L
-)
-## Unit: seconds
-##  expr   min    lq  mean median    uq  max neval cld
-##     R 56.00 56.00 61.00  57.00 60.00 76.0     5  a 
-##  Rcpp  0.54  0.54  0.71   0.58  0.79  1.1     5   b
+Jack(c("2", "3/2"), lambda = c(3, 1), alpha = "2/5")
+## Big Rational ('bigq') :
+## [1] 1239/10
 ```
 
 ## Skew Schur polynomials
@@ -146,8 +116,9 @@ The Jack polynomials fit into this category: from their definition,
 their coefficients are fractions of polynomials in the Jack parameter.
 However you can see in the above output that for this example, the
 coefficients are *polynomials* in the Jack parameter (`a`): there’s no
-fraction. Actually this is always true for any Jack polynomial. This
-fact is established and it is not obvious.
+fraction. Actually this is always true for any Jack polynomial (for any
+J-Jack polynomial, I should say). This fact is established and it is not
+obvious.
 
 You can substitute a value to the Jack parameter with the help of the
 `substituteParameters` function:
@@ -155,14 +126,15 @@ You can substitute a value to the Jack parameter with the help of the
 ``` r
 ( J5 <- substituteParameters(J, 5) )
 ## 72*X^3.Y + 24*X^2.Y^2 + 72*X.Y^3
-J5 == JackPolCPP(2, lambda = c(3, 1), alpha = "5")
+J5 == JackPol(2, lambda = c(3, 1), alpha = "5")
 ## [1] TRUE
 ```
 
 Note that you can change the letters used to denote the variables. By
 default, the Jack parameter is denoted by `a` and the variables are
-denoted by `X`, `Y`, `Z` if there are at most three variables, otherwise
-they are denoted by `X1`, `X2`, … Here is how to change these symbols:
+denoted by `X`, `Y`, `Z` if there are no more than three variables,
+otherwise they are denoted by `X1`, `X2`, … Here is how to change these
+symbols:
 
 ``` r
 showSymbolicQsprayOption(J, "a") <- "alpha"
@@ -188,7 +160,7 @@ the monomial symmetric polynomials. This is what the function
 `compactSymmetricQspray` does:
 
 ``` r
-( J <- JackPolCPP(3, lambda = c(4, 3, 1), alpha = "2") )
+( J <- JackPol(3, lambda = c(4, 3, 1), alpha = "2") )
 ## 3888*x^4.y^3.z + 2592*x^4.y^2.z^2 + 3888*x^4.y.z^3 + 3888*x^3.y^4.z + 4752*x^3.y^3.z^2 + 4752*x^3.y^2.z^3 + 3888*x^3.y.z^4 + 2592*x^2.y^4.z^2 + 4752*x^2.y^3.z^3 + 2592*x^2.y^2.z^4 + 3888*x.y^4.z^3 + 3888*x.y^3.z^4
 cat(compactSymmetricQspray(J))
 ## 3888*M[4, 3, 1] + 2592*M[4, 2, 2] + 4752*M[3, 3, 2]
