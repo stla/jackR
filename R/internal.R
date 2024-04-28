@@ -44,6 +44,30 @@ hookLengths_gmp <- function(lambda, alpha){
   rbind(lowerHL, upperHL)
 }
 
+JackPcoefficient <- function(lambda, alpha) {
+  if(length(lambda) == 0L){
+    as.bigq(1L)
+  } else {
+    1L / prod(hookLengths_gmp(lambda, alpha)[1L, ])
+  }
+}
+
+JackPcoefficient <- function(lambda, alpha) {
+  if(length(lambda) == 0L){
+    as.bigq(1L)
+  } else {
+    1L / prod(hookLengths_gmp(lambda, alpha)[1L, ])
+  }
+}
+
+JackQcoefficient <- function(lambda, alpha) {
+  if(length(lambda) == 0L){
+    as.bigq(1L)
+  } else {
+    1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+  }
+}
+
 #' @importFrom qspray qlone
 #' @noRd
 symbolicJackPcoefficientInverse <- function(lambda){

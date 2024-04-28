@@ -67,8 +67,8 @@ Schur <- function(x, lambda) {
 #' @return A \code{qspray} multivariate polynomial.
 #'
 #' @export
-#' @importFrom gmp as.bigq
-#' @importFrom qspray qspray_from_list
+#' @importFrom gmp as.bigq factorialZ
+#' @importFrom qspray qspray_from_list ESFpoly
 #'
 #' @examples
 #' JackPol(3, lambda = c(3, 1), alpha = "2/5")
@@ -81,8 +81,14 @@ JackPol <- function(n, lambda, alpha, which = "J") {
   }
   which <- match.arg(which, c("J", "P", "Q"))
   alpha <- as.character(alpha)
-  JackPolynomial <-
-    qspray_from_list(JackPolRcpp(as.integer(n), lambda, alpha))
+  if(alpha == "0") {
+    lambdaPrime <- dualPartition(lambda)
+    f <- prod(factorialZ(lambdaPrime))
+    JackPolynomial <- f * ESFpoly(n, lambdaPrime)
+  } else {
+    JackPolynomial <-
+      qspray_from_list(JackPolRcpp(as.integer(n), lambda, alpha))
+  }
   if(which != "J") {
     K <- switch(
       which,
@@ -115,11 +121,26 @@ JackPol <- function(n, lambda, alpha, which = "J") {
 Jack <- function(x, lambda, alpha) {
   stopifnot(isPartition(lambda))
   lambda <- as.integer(lambda[lambda != 0])
-  if(is.numeric(x) && is.numeric(alpha)) {
+  if(is.numeric(x)) {
     x <- as.double(x)
-    if(anyNA(x)) {
-      stop("Found missing values in `x`.")
+    gmp <- FALSE
+  } else {
+    x <- as.bigq(x)
+    gmp <- TRUE
+  }
+  if(anyNA(x)) {
+    stop("Found missing values in `x`.")
+  }
+  if(alpha == 0) {
+    lambdaPrime <- dualPartition(lambda)
+    if(gmp){
+      f <- prod(factorialZ(lambdaPrime))
+    }else{
+      f <- prod(factorial(lambdaPrime))
     }
+    return(f * ESF(x, lambdaPrime))
+  }
+  if(is.numeric(x) && is.numeric(alpha)) {
     JackEvalRcpp_double(x, lambda, alpha)
   } else {
     alpha <- as.bigq(alpha)
@@ -127,10 +148,6 @@ Jack <- function(x, lambda, alpha) {
       stop("Invalid `alpha`.")
     }
     alpha <- as.character(alpha)
-    x <- as.bigq(x)
-    if(anyNA(x)) {
-      stop("Found missing values in `x`.")
-    }
     res <- JackEvalRcpp_gmpq(as.character(x), lambda, alpha)
     as.bigq(res)
   }

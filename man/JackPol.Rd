@@ -12,7 +12,7 @@ JackPol(n, lambda, alpha, which = "J")
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{alpha}{positive rational number, given as a string such as
+\item{alpha}{rational number, given as a string such as
 \code{"2/3"} or as a \code{bigq} number}
 
 \item{which}{which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}}

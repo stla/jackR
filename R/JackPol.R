@@ -193,8 +193,8 @@ JackPolR <- function(n, lambda, alpha, algorithm = "DK",
       K <- switch(
         which,
         "J" = as.bigq(1L),
-        "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
-        "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+        "P" = JackPcoefficient(lambda, alpha),
+        "Q" = JackQcoefficient(lambda, alpha)
       )
       K * JackPolDK_gmp(n, lambda, alpha)
     } else {

@@ -20,7 +20,7 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
   coefs <- as.bigq(integer(lastRow*nParts))
   coefs[1L] <- as.bigq(1L)
   for(m in 1L:min(lastRow, nParts-1L)){
-    kappa <- allParts[,m]
+    kappa <- allParts[, m]
     for(k in (m+1L):nParts){
       lambda <- allParts[,k]
       btwn <- betweenPartitions(lambda, kappa)
