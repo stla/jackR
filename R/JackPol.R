@@ -161,17 +161,17 @@ JackPolDK_gmp <- function(n, lambda, alpha) {
 #' @importFrom gmp is.bigq
 #' @export
 #'
-#' @examples JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3),
+#' @examples JackPolR(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3),
 #'                   algorithm = "naive")
-#' JackPol(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
-#' JackPol(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
-#' JackPol(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
+#' JackPolR(3, lambda = c(3,1), alpha = 2/3, algorithm = "DK")
+#' JackPolR(3, lambda = c(3,1), alpha = gmp::as.bigq(2,3), algorithm = "DK")
+#' JackPolR(3, lambda = c(3,1), alpha= gmp::as.bigq(2,3),
 #'         algorithm = "naive", basis = "MSF")
 #' # when the Jack polynomial is a `qspray` object, you can
 #' # evaluate it with `qspray::evalQspray`:
-#' jack <- JackPol(3, lambda = c(3, 1), alpha = gmp::as.bigq(2))
-#' qspray::evalQspray(jack, c("1", "1/2", "3"))
-JackPol <- function(n, lambda, alpha, algorithm = "DK",
+#' jack <- JackPolR(3, lambda = c(3, 1), alpha = gmp::as.bigq(2))
+#' evalQspray(jack, c("1", "1/2", "3"))
+JackPolR <- function(n, lambda, alpha, algorithm = "DK",
                     basis = "canonical", which = "J"){
   stopifnot(
     is.numeric(alpha) || is.bigq(alpha),

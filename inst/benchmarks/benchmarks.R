@@ -2,7 +2,7 @@ library(jack)
 library(microbenchmark)
 
 microbenchmark(
-  JackPol = JackPolCPP(n = n, lambda = lambda, alpha = alpha),
+  JackPol = JackPol(n = n, lambda = lambda, alpha = alpha),
   JackSymPol = JackSymPol(n = n, lambda = lambda),
   JackPol2 = evalSymbolicQspray(JackSymPol(n = n, lambda = lambda), a = alpha),
   setup = {

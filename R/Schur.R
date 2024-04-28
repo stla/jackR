@@ -11,16 +11,16 @@
 #' @return A numeric or complex scalar or a \code{bigq} rational number.
 #' @export
 #'
-#' @seealso \code{\link{SchurPol}}
+#' @seealso \code{\link{SchurPolR}}
 #'
 #' @references J. Demmel & P. Koev.
 #' \emph{Accurate and efficient evaluation of Schur and Jack functions}.
 #' Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
 #'
 #' @examples x <- c(2,3,4)
-#' Schur(x, c(2,1,1))
+#' SchurR(x, c(2,1,1))
 #' prod(x) * sum(x)
-Schur <- function(x, lambda, algorithm = "DK"){
+SchurR <- function(x, lambda, algorithm = "DK"){
   algorithm <- match.arg(algorithm, c("DK", "naive"))
   stopifnot(
     is.vector(x) || is.bigq(x),

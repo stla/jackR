@@ -5,10 +5,10 @@ test_that("Littlewood-Richardson multiplication", {
   LRcoeffs <- LR$coeff
   LRparts <- LR$lambda
   LRterms <- lapply(1:length(LRcoeffs), function(i) {
-    LRcoeffs[i] * SchurPolCPP(3, LRparts[[i]])
+    LRcoeffs[i] * SchurPol(3, LRparts[[i]])
   })
   smu_times_snu <- Reduce(`+`, LRterms)
-  expect_true(smu_times_snu == SchurPolCPP(3, mu) * SchurPolCPP(3, nu))
+  expect_true(smu_times_snu == SchurPol(3, mu) * SchurPol(3, nu))
 })
 
 test_that("LR-rule and Standard Young Tableaux counting", {
@@ -26,8 +26,8 @@ test_that("LR-rule and Standard Young Tableaux counting", {
 
 test_that("Skew Schur polynomial", {
   sspol <- SkewSchurPol(3, lambda = c(3, 2, 1), mu = c(1, 1))
-  expected <- SchurPolCPP(3, c(2, 1, 1)) + SchurPolCPP(3, c(2, 2)) +
-    SchurPolCPP(3, c(3, 1))
+  expected <- SchurPol(3, c(2, 1, 1)) + SchurPol(3, c(2, 2)) +
+    SchurPol(3, c(3, 1))
   expect_true(sspol == expected)
 })
 

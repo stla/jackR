@@ -93,11 +93,11 @@ ZonalQPolDK_gmp <- function(m, lambda){
 #'
 #' @export
 #'
-#' @examples ZonalQPol(3, lambda = c(3,1), algorithm = "naive")
-#' ZonalQPol(3, lambda = c(3,1), algorithm = "DK")
-#' ZonalQPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
-#' ZonalQPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
-ZonalQPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
+#' @examples ZonalQPolR(3, lambda = c(3,1), algorithm = "naive")
+#' ZonalQPolR(3, lambda = c(3,1), algorithm = "DK")
+#' ZonalQPolR(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
+#' ZonalQPolR(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
+ZonalQPolR <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)

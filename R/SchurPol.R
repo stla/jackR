@@ -149,11 +149,11 @@ SchurPolDK_gmp <- function(n, lambda){
 #'
 #' @export
 #'
-#' @examples SchurPol(3, lambda = c(3,1), algorithm = "naive")
-#' SchurPol(3, lambda = c(3,1), algorithm = "DK")
-#' SchurPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
-#' SchurPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
-SchurPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
+#' @examples SchurPolR(3, lambda = c(3,1), algorithm = "naive")
+#' SchurPolR(3, lambda = c(3,1), algorithm = "DK")
+#' SchurPolR(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
+#' SchurPolR(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
+SchurPolR <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)

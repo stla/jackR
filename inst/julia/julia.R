@@ -89,7 +89,7 @@ print.exactmvp <- function(x, ...){
 #' @examples # library(jack)
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
 #'   julia <- Jack_julia()
-#'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
+#'   ( pol <- julia$JackPolR(m = 2, lambda = c(3, 1), alpha = "3/2") )
 #'   f <- as.function(pol)
 #'   f(2, "3/7")
 #'   # the evaluation is performed by (R)yacas and complex numbers are
@@ -162,13 +162,13 @@ asIntegerList <- function(lambda){
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
 #'   julia <- Jack_julia()
 #'   # numerical evaluation ####
-#'   julia$Jack(x = c(2, 2/3), lambda = c(3, 1), alpha = 3/2)
+#'   julia$JackR(x = c(2, 2/3), lambda = c(3, 1), alpha = 3/2)
 #'   # to pass rational numbers, use strings:
-#'   julia$Jack(x = c("2", "2/3"), lambda = c(3, 1), alpha = "3/2")
+#'   julia$JackR(x = c("2", "2/3"), lambda = c(3, 1), alpha = "3/2")
 #'   # symbolic polynomials ####
 #'   # for `JackPol`, you must pass a rational `alpha` as a string if
 #'   # you want an exact polynomial:
-#'   ( pol <- julia$JackPol(m = 2, lambda = c(3, 1), alpha = "3/2") )
+#'   ( pol <- julia$JackPolR(m = 2, lambda = c(3, 1), alpha = "3/2") )
 #'   class(pol)
 #'   JuliaConnectoR::stopJulia()
 #' }}
@@ -209,7 +209,7 @@ Jack_julia <- function(){
       x <- lapply(x, rationalize)
       rational <- TRUE
     }
-    result <- JackPolynomials$Jack(
+    result <- JackPolynomials$JackR(
       unname(as.list(x)), asIntegerList(lambda), unname(alpha)
     )
     if(rational){
@@ -275,7 +275,7 @@ Jack_julia <- function(){
     if(rational <- is.character(x)){
       x <- lapply(x, rationalize)
     }
-    result <- JackPolynomials$Zonal(
+    result <- JackPolynomials$ZonalR(
       unname(as.list(x)), asIntegerList(lambda)
     )
     if(rational){
@@ -319,7 +319,7 @@ Jack_julia <- function(){
     if(rational <- is.character(x)){
       x <- lapply(x, rationalize)
     }
-    result <- JackPolynomials$ZonalQ(
+    result <- JackPolynomials$ZonalQR(
       unname(as.list(x)), asIntegerList(lambda)
     )
     if(rational){
@@ -363,7 +363,7 @@ Jack_julia <- function(){
     if(rational <- is.character(x)){
       x <- lapply(x, rationalize)
     }
-    result <- JackPolynomials$Schur(
+    result <- JackPolynomials$SchurR(
       unname(as.list(x)), asIntegerList(lambda)
     )
     if(rational){
@@ -423,7 +423,7 @@ Jack_julia <- function(){
 #' @examples library(jack)
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
 #'   julia <- Jack_julia()
-#'   ( pol <- julia$ZonalPol(m = 2, lambda = c(3, 1), poly = "mvp") )
+#'   ( pol <- julia$ZonalPolR(m = 2, lambda = c(3, 1), poly = "mvp") )
 #'   prettyForm(pol)
 #'   JuliaConnectoR::stopJulia()
 #' }}
@@ -457,7 +457,7 @@ prettyForm <- function(poly, asCharacter = FALSE){
 #' @examples library(jack)
 #' \donttest{if(JuliaConnectoR::juliaSetupOk()){
 #'   julia <- Jack_julia()
-#'   ( pol <- julia$ZonalQPol(m = 2, lambda = c(3, 2), poly = "mvp") )
+#'   ( pol <- julia$ZonalQPolR(m = 2, lambda = c(3, 2), poly = "mvp") )
 #'   toLaTeX(pol)
 #'   JuliaConnectoR::stopJulia()
 #' }}

@@ -27,6 +27,6 @@ monomial <- function(ssyt) {
 monomials <- lapply(ssytx, monomial)
 Reduce(`+`, monomials)
 
-SchurPol(4, lambda)
+SchurPolR(4, lambda)
 
 

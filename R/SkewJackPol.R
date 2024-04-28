@@ -28,12 +28,12 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   }
   stopifnot(isInteger(alpha) || is.bigq(alpha))
   alpha <- as.bigq(alpha)
-  Jlambda <- PSPexpression(JackPolCPP(n, lambda, alpha, which))
-  Jmu     <- JackPolCPP(n, mu, alpha, which)
+  Jlambda <- PSPexpression(JackPol(n, lambda, alpha, which))
+  Jmu     <- JackPol(n, mu, alpha, which)
   nus <- parts(sum(lambda) - sum(mu))
   terms <- apply(nus, 2L, function(nu) {
     if(length(lambda) < length(nu[nu>0L])) return(0L)
-    Jnu <- JackPolCPP(n, nu, alpha, which)
+    Jnu <- JackPol(n, nu, alpha, which)
     coeff <- HallInnerProduct(Jlambda, Jmu * Jnu, alpha) /
       HallInnerProduct(Jnu, Jnu, alpha)
     coeff * Jnu

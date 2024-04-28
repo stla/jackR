@@ -37,8 +37,8 @@ LR <- LRmult(mu, nu, output = "list")
 LRcoeffs <- LR$coeff
 LRparts <- LR$lambda
 LRterms <- lapply(1:length(LRcoeffs), function(i) {
-  LRcoeffs[i] * SchurPolCPP(3, LRparts[[i]])
+  LRcoeffs[i] * SchurPol(3, LRparts[[i]])
 })
 smu_times_snu <- Reduce(`+`, LRterms)
-smu_times_snu == SchurPolCPP(3, mu) * SchurPolCPP(3, nu)
+smu_times_snu == SchurPol(3, mu) * SchurPol(3, nu)
 }

@@ -36,10 +36,10 @@ insertWith <- function(f, mp, key, value) {
 #' LRcoeffs <- LR$coeff
 #' LRparts <- LR$lambda
 #' LRterms <- lapply(1:length(LRcoeffs), function(i) {
-#'   LRcoeffs[i] * SchurPolCPP(3, LRparts[[i]])
+#'   LRcoeffs[i] * SchurPol(3, LRparts[[i]])
 #' })
 #' smu_times_snu <- Reduce(`+`, LRterms)
-#' smu_times_snu == SchurPolCPP(3, mu) * SchurPolCPP(3, nu)
+#' smu_times_snu == SchurPol(3, mu) * SchurPol(3, nu)
 LRmult <- function(mu, nu, output = "dataframe") {
   stopifnot(isPartition(mu), isPartition(nu))
   output <- match.arg(output, c("dataframe", "list"))
@@ -313,7 +313,7 @@ SkewSchurPol <- function(n, lambda, mu) {
   LRcoeffs <- LR[["coeff"]]
   LRparts <- LR[["nu"]]
   LRterms <- lapply(1:length(LRcoeffs), function(i) {
-    LRcoeffs[i] * SchurPolCPP(n, LRparts[[i]])
+    LRcoeffs[i] * SchurPol(n, LRparts[[i]])
   })
   Reduce(`+`, LRterms)
 }

@@ -11,20 +11,20 @@
 #' @return A numeric or complex scalar or a \code{bigq} rational number.
 #' @export
 #'
-#' @seealso \code{\link{ZonalQPol}}
+#' @seealso \code{\link{ZonalQPolR}}
 #'
 #' @references F. Li, Y. Xue. \emph{Zonal polynomials and hypergeometric
 #' functions of quaternion matrix argument}.
 #' Comm. Statist. Theory Methods, 38 (8), 1184-1206, 2009
 #'
 #' @examples lambda <- c(2,2)
-#' ZonalQ(c(3,1), lambda)
-#' ZonalQ(c(gmp::as.bigq(3),gmp::as.bigq(1)), lambda)
+#' ZonalQR(c(3,1), lambda)
+#' ZonalQR(c(gmp::as.bigq(3),gmp::as.bigq(1)), lambda)
 #' ##
 #' x <- c(3,1)
-#' ZonalQ(x, c(1,1)) + ZonalQ(x, 2) # sum(x)^2
-#' ZonalQ(x, 3) + ZonalQ(x, c(2,1)) + ZonalQ(x, c(1,1,1)) # sum(x)^3
-ZonalQ <- function(x, lambda, algorithm = "DK"){
+#' ZonalQR(x, c(1,1)) + ZonalQR(x, 2) # sum(x)^2
+#' ZonalQR(x, 3) + ZonalQR(x, c(2,1)) + ZonalQR(x, c(1,1,1)) # sum(x)^3
+ZonalQR <- function(x, lambda, algorithm = "DK"){
   algorithm <- match.arg(algorithm, c("DK", "naive"))
   stopifnot(
     is.vector(x) || is.bigq(x),

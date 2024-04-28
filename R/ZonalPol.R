@@ -94,11 +94,11 @@ ZonalPolDK_gmp <- function(m, lambda){
 #' @importFrom mvp constant mvp
 #' @export
 #'
-#' @examples ZonalPol(3, lambda = c(3,1), algorithm = "naive")
-#' ZonalPol(3, lambda = c(3,1), algorithm = "DK")
-#' ZonalPol(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
-#' ZonalPol(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
-ZonalPol <- function(n, lambda, algorithm = "DK", basis = "canonical",
+#' @examples ZonalPolR(3, lambda = c(3,1), algorithm = "naive")
+#' ZonalPolR(3, lambda = c(3,1), algorithm = "DK")
+#' ZonalPolR(3, lambda = c(3,1), algorithm = "DK", exact = FALSE)
+#' ZonalPolR(3, lambda = c(3,1), algorithm = "naive", basis = "MSF")
+ZonalPolR <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)

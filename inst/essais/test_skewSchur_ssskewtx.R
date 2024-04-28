@@ -28,6 +28,6 @@ monomial <- function(ssyt) {
 monomials <- lapply(ssytx, monomial)
 Reduce(`+`, monomials)
 
-SkewSchurPol(4, lambda, mu)
+SkewSchurPolR(4, lambda, mu)
 
 

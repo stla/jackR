@@ -1,7 +1,7 @@
 
 x <- jack:::SchurPolRcpp(n = 3L, lambda = 4L)
 qspray::qsprayMaker(x[["exponents"]], x[["coeffs"]])
-jack::SchurPol(3L, 4L)
+jack::SchurPolR(3L, 4L)
 
 
 library(microbenchmark)
@@ -19,7 +19,7 @@ n <- 5
 lambda <- c(4, 3, 3)
 microbenchmark(
   Rcpp  = rcpp(n, lambda),
-  Julia = julia$SchurPol(n, lambda),
+  Julia = julia$SchurPolR(n, lambda),
   times = 6L
 )
 

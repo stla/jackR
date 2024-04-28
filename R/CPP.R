@@ -12,8 +12,8 @@
 #' @importFrom qspray qspray_from_list
 #'
 #' @examples
-#' SchurPolCPP(3, lambda = c(3, 1))
-SchurPolCPP <- function(n, lambda) {
+#' SchurPol(3, lambda = c(3, 1))
+SchurPol <- function(n, lambda) {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   qspray_from_list(SchurPolRcpp(as.integer(n), as.integer(lambda)))
 }
@@ -33,8 +33,8 @@ SchurPolCPP <- function(n, lambda) {
 #' @importFrom gmp as.bigq
 #'
 #' @examples
-#' SchurCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1))
-SchurCPP <- function(x, lambda) {
+#' Schur(c("1", "3/2", "-2/3"), lambda = c(3, 1))
+Schur <- function(x, lambda) {
   stopifnot(isPartition(lambda))
   if(is.numeric(x)) {
     if(anyNA(x)) {
@@ -69,8 +69,8 @@ SchurCPP <- function(x, lambda) {
 #' @importFrom qspray qspray_from_list
 #'
 #' @examples
-#' JackPolCPP(3, lambda = c(3, 1), alpha = "2/5")
-JackPolCPP <- function(n, lambda, alpha, which = "J") {
+#' JackPol(3, lambda = c(3, 1), alpha = "2/5")
+JackPol <- function(n, lambda, alpha, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   alpha <- as.bigq(alpha)
   which <- match.arg(which, c("J", "P", "Q"))
@@ -105,8 +105,8 @@ JackPolCPP <- function(n, lambda, alpha, which = "J") {
 #' @importFrom gmp as.bigq
 #'
 #' @examples
-#' JackCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")
-JackCPP <- function(x, lambda, alpha) {
+#' Jack(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")
+Jack <- function(x, lambda, alpha) {
   stopifnot(isPartition(lambda))
   if(is.numeric(x) && is.numeric(alpha)) {
     stopifnot(alpha >= 0)
@@ -141,10 +141,10 @@ JackCPP <- function(x, lambda, alpha) {
 #' @export
 #' @importFrom gmp as.bigq factorialZ
 #' @examples
-#' ZonalPolCPP(3, lambda = c(3, 1))
-ZonalPolCPP <- function(m, lambda){
+#' ZonalPol(3, lambda = c(3, 1))
+ZonalPol <- function(m, lambda){
   twoq <- as.bigq("2")
-  jack <- JackPolCPP(m, lambda, alpha = "2")
+  jack <- JackPol(m, lambda, alpha = "2")
   jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
   n <- sum(lambda)
   (twoq^n * factorialZ(n) / jlambda) * jack
@@ -165,16 +165,16 @@ ZonalPolCPP <- function(m, lambda){
 #' @importFrom gmp as.bigq factorialZ asNumeric
 #'
 #' @examples
-#' ZonalCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1))
-ZonalCPP <- function(x, lambda){
+#' Zonal(c("1", "3/2", "-2/3"), lambda = c(3, 1))
+Zonal <- function(x, lambda){
   if(is.numeric(x)) {
-    jack <- JackCPP(x, lambda, alpha = 2)
+    jack <- Jack(x, lambda, alpha = 2)
     jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("2"))))
     n <- sum(lambda)
     (factorial(n) * 2^n / jlambda) * jack
   } else {
     twoq <- as.bigq("2")
-    jack <- JackCPP(x, lambda, alpha = "2")
+    jack <- Jack(x, lambda, alpha = "2")
     jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
     n <- sum(lambda)
     (twoq^n * factorialZ(n) / jlambda) * jack
@@ -195,10 +195,10 @@ ZonalCPP <- function(x, lambda){
 #' @export
 #' @importFrom gmp as.bigq factorialZ
 #' @examples
-#' ZonalQPolCPP(3, lambda = c(3, 1))
-ZonalQPolCPP <- function(m, lambda){
+#' ZonalQPol(3, lambda = c(3, 1))
+ZonalQPol <- function(m, lambda){
   onehalfq <- as.bigq("1/2")
-  jack <- JackPolCPP(m, lambda, alpha = onehalfq)
+  jack <- JackPol(m, lambda, alpha = onehalfq)
   jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
   n <- sum(lambda)
   as.qspray(onehalfq^n * factorialZ(n) / jlambda) * jack
@@ -219,16 +219,16 @@ ZonalQPolCPP <- function(m, lambda){
 #' @importFrom gmp as.bigq factorialZ asNumeric
 #'
 #' @examples
-#' ZonalQCPP(c("1", "3/2", "-2/3"), lambda = c(3, 1))
-ZonalQCPP <- function(x, lambda){
+#' ZonalQ(c("1", "3/2", "-2/3"), lambda = c(3, 1))
+ZonalQ <- function(x, lambda){
   if(is.numeric(x)) {
-    jack <- JackCPP(x, lambda, alpha = 0.5)
+    jack <- Jack(x, lambda, alpha = 0.5)
     jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("1/2"))))
     n <- sum(lambda)
     (factorial(n) / 2^n / jlambda) * jack
   } else {
     onehalfq <- as.bigq("1/2")
-    jack <- JackCPP(x, lambda, alpha = "1/2")
+    jack <- Jack(x, lambda, alpha = "1/2")
     jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
     n <- sum(lambda)
     (onehalfq^n * factorialZ(n) / jlambda) * jack

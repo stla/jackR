@@ -11,7 +11,7 @@
 #' @return A numeric or complex scalar or a \code{bigq} rational number.
 #' @export
 #'
-#' @seealso \code{\link{ZonalPol}}
+#' @seealso \code{\link{ZonalPolR}}
 #'
 #' @references \itemize{
 #' \item Robb Muirhead. \emph{Aspects of multivariate statistical theory}.
@@ -28,13 +28,13 @@
 #' }
 #'
 #' @examples lambda <- c(2,2)
-#' Zonal(c(1,1), lambda)
-#' Zonal(c(gmp::as.bigq(1),gmp::as.bigq(1)), lambda)
+#' ZonalR(c(1,1), lambda)
+#' ZonalR(c(gmp::as.bigq(1),gmp::as.bigq(1)), lambda)
 #' ##
 #' x <- c(3,1)
-#' Zonal(x, c(1,1)) + Zonal(x, 2) # sum(x)^2
-#' Zonal(x, 3) + Zonal(x, c(2,1)) + Zonal(x, c(1,1,1)) # sum(x)^3
-Zonal <- function(x, lambda, algorithm = "DK"){
+#' ZonalR(x, c(1,1)) + ZonalR(x, 2) # sum(x)^2
+#' ZonalR(x, 3) + ZonalR(x, c(2,1)) + ZonalR(x, c(1,1,1)) # sum(x)^3
+ZonalR <- function(x, lambda, algorithm = "DK"){
   algorithm <- match.arg(algorithm, c("DK", "naive"))
   stopifnot(
     is.vector(x) || is.bigq(x),
