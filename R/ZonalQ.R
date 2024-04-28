@@ -30,6 +30,8 @@ ZonalQR <- function(x, lambda, algorithm = "DK"){
     is.vector(x) || is.bigq(x),
     is.numeric(x) || is.complex(x) || is.bigq(x)
   )
+  stopifnot(isPartition(lambda))
+  lambda <- lambda[lambda != 0]
   if(algorithm == "DK"){
     ZonalQEval(x, lambda)
   }else{

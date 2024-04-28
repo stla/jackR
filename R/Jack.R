@@ -41,10 +41,11 @@ JackR <- function(x, lambda, alpha, algorithm = "DK"){
     is.numeric(alpha) || is.bigq(alpha),
     length(alpha) == 1L
   )
+  stopifnot(isPartition(lambda))
+  lambda <- lambda[lambda != 0]
   if(alpha == 0){
-    stopifnot(isPartition(lambda))
     gmp <- is.bigq(x)
-    if(length(lambda) == 0L || lambda[1L] == 0L){
+    if(length(lambda) == 0L){
       if(gmp){
         return(as.bigq(1L))
       }else{

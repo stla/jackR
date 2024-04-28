@@ -15,7 +15,8 @@
 #' SchurPol(3, lambda = c(3, 1))
 SchurPol <- function(n, lambda) {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
-  qspray_from_list(SchurPolRcpp(as.integer(n), as.integer(lambda)))
+  lambda <- as.integer(lambda[lambda != 0])
+  qspray_from_list(SchurPolRcpp(as.integer(n), lambda))
 }
 
 #' Evaluation of Schur polynomial - C++ implementation
@@ -36,17 +37,18 @@ SchurPol <- function(n, lambda) {
 #' Schur(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 Schur <- function(x, lambda) {
   stopifnot(isPartition(lambda))
+  lambda <- as.integer(lambda[lambda != 0])
   if(is.numeric(x)) {
     if(anyNA(x)) {
       stop("Found missing values in `x`.")
     }
-    SchurEvalRcpp_double(as.double(x), as.integer(lambda))
+    SchurEvalRcpp_double(as.double(x), lambda)
   } else {
     x <- as.character(as.bigq(x))
     if(anyNA(x)) {
       stop("Found missing values in `x`.")
     }
-    res <- SchurEvalRcpp_gmpq(x, as.integer(lambda))
+    res <- SchurEvalRcpp_gmpq(x, lambda)
     as.bigq(res)
   }
 }
@@ -58,7 +60,7 @@ Schur <- function(x, lambda) {
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
 #'   integers
-#' @param alpha positive rational number, given as a string such as
+#' @param alpha rational number, given as a string such as
 #'   \code{"2/3"} or as a \code{bigq} number
 #' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}
 #'
@@ -72,11 +74,15 @@ Schur <- function(x, lambda) {
 #' JackPol(3, lambda = c(3, 1), alpha = "2/5")
 JackPol <- function(n, lambda, alpha, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
+  lambda <- as.integer(lambda[lambda != 0])
   alpha <- as.bigq(alpha)
+  if(is.na(alpha)) {
+    stop("Invalid `alpha`.")
+  }
   which <- match.arg(which, c("J", "P", "Q"))
   alpha <- as.character(alpha)
   JackPolynomial <-
-    qspray_from_list(JackPolRcpp(as.integer(n), as.integer(lambda), alpha))
+    qspray_from_list(JackPolRcpp(as.integer(n), lambda, alpha))
   if(which != "J") {
     K <- switch(
       which,
@@ -96,7 +102,7 @@ JackPol <- function(n, lambda, alpha, which = "J") {
 #'   be coerced as such (e.g. \code{c("2", "5/3")})
 #' @param lambda an integer partition, given as a vector of decreasing
 #'   integers
-#' @param alpha positive rational number, given as a string such as
+#' @param alpha rational number, given as a string such as
 #'   \code{"2/3"} or as a \code{bigq} number
 #'
 #' @return A \code{bigq} number.
@@ -108,22 +114,24 @@ JackPol <- function(n, lambda, alpha, which = "J") {
 #' Jack(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")
 Jack <- function(x, lambda, alpha) {
   stopifnot(isPartition(lambda))
+  lambda <- as.integer(lambda[lambda != 0])
   if(is.numeric(x) && is.numeric(alpha)) {
-    stopifnot(alpha >= 0)
     x <- as.double(x)
     if(anyNA(x)) {
       stop("Found missing values in `x`.")
     }
-    JackEvalRcpp_double(x, as.integer(lambda), alpha)
+    JackEvalRcpp_double(x, lambda, alpha)
   } else {
     alpha <- as.bigq(alpha)
-    stopifnot(alpha >= 0)
+    if(is.na(alpha)) {
+      stop("Invalid `alpha`.")
+    }
     alpha <- as.character(alpha)
-    x <- as.character(as.bigq(x))
+    x <- as.bigq(x)
     if(anyNA(x)) {
       stop("Found missing values in `x`.")
     }
-    res <- JackEvalRcpp_gmpq(x, as.integer(lambda), alpha)
+    res <- JackEvalRcpp_gmpq(as.character(x), lambda, alpha)
     as.bigq(res)
   }
 }
@@ -145,6 +153,7 @@ Jack <- function(x, lambda, alpha) {
 ZonalPol <- function(m, lambda){
   twoq <- as.bigq("2")
   jack <- JackPol(m, lambda, alpha = "2")
+  lambda <- as.integer(lambda[lambda != 0])
   jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
   n <- sum(lambda)
   (twoq^n * factorialZ(n) / jlambda) * jack
@@ -169,6 +178,7 @@ ZonalPol <- function(m, lambda){
 Zonal <- function(x, lambda){
   if(is.numeric(x)) {
     jack <- Jack(x, lambda, alpha = 2)
+    lambda <- as.integer(lambda[lambda != 0])
     jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("2"))))
     n <- sum(lambda)
     (factorial(n) * 2^n / jlambda) * jack
@@ -199,6 +209,7 @@ Zonal <- function(x, lambda){
 ZonalQPol <- function(m, lambda){
   onehalfq <- as.bigq("1/2")
   jack <- JackPol(m, lambda, alpha = onehalfq)
+  lambda <- as.integer(lambda[lambda != 0])
   jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
   n <- sum(lambda)
   as.qspray(onehalfq^n * factorialZ(n) / jlambda) * jack
@@ -221,6 +232,7 @@ ZonalQPol <- function(m, lambda){
 #' @examples
 #' ZonalQ(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 ZonalQ <- function(x, lambda){
+  lambda <- as.integer(lambda[lambda != 0])
   if(is.numeric(x)) {
     jack <- Jack(x, lambda, alpha = 0.5)
     jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("1/2"))))

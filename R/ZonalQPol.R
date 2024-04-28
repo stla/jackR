@@ -101,6 +101,8 @@ ZonalQPolR <- function(n, lambda, algorithm = "DK", basis = "canonical",
                      exact = TRUE){
   algo <- match.arg(algorithm, c("DK", "naive"))
   lambda <- as.integer(lambda)
+  stopifnot(isPartition(lambda))
+  lambda <- lambda[lambda != 0L]
   if(algo == "DK"){
     if(exact){
       ZonalQPolDK_gmp(n, lambda)

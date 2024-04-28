@@ -187,7 +187,7 @@ JackPolR <- function(n, lambda, alpha, algorithm = "DK",
       "this Jack polynomial."
     )
   }
-  lambda <- as.integer(lambda)
+  lambda <- as.integer(lambda[lambda != 0])
   if(algo == "DK"){
     if(is.bigq(alpha)) {
       K <- switch(

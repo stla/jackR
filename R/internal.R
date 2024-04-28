@@ -17,11 +17,12 @@ isPositiveInteger <- function(n){
 # }
 
 isPartition <- function(lambda){
-  length(lambda) == 0L || all(floor(lambda) == lambda) && all(diff(lambda) <= 0)
+  length(lambda) == 0L ||
+    all(floor(lambda) == lambda) && all(diff(lambda) <= 0)
 }
 
 dualPartition <- function(lambda){
-  if(all(lambda == 0)) 0 else conjugate(lambda)
+  conjugate(lambda)
 }
 
 logHookLengths <- function(lambda, alpha){
@@ -139,7 +140,7 @@ symbolicJackQcoefficientInverse <- function(lambda){
 
 .N <- function(lambda, mu){
   n <- length(lambda)
-  M <- sapply(1L:n, function(i) prod(tail(lambda+1L,n-i)))
+  M <- sapply(1L:n, function(i) prod(tail(lambda+1L, n-i)))
   sum(mu * M)
 }
 
