@@ -5,18 +5,26 @@ in its coefficients. Such polynomials are returned by the function `JackSymPol`.
 This big progress is the reason for which I increased the major version of the 
 package.
 
-- New function `LRmult` for computing the expression of the product of two Schur 
+- Since the functions implemented with **Rcpp** are highly more efficient, 
+the functions `Jack`, `JackPol`, `Schur`, `SchurPol`, `Zonal`, `ZonalPol`, 
+`ZonalQ`, `ZonalQPol`, have been renamed to `JackR`, `JackPolR`, `SchurR`,
+`SchurPolR`, `ZonalR`, `ZonalPolR`, `ZonalQR`, `ZonalQPolR`, and the functions 
+`JackCPP`, `JackPolCPP`, `SchurCPP`, `SchurPolCPP`, `ZonalCPP`, `ZonalPolCPP`, 
+`ZonalQCPP`, `ZonalQPolCPP` have been renaming to `Jack`, `JackPol`, `Schur`,
+`SchurPol`, `Zonal`, `ZonalPol`, `ZonalQ`, `ZonalQPol`.
+
+- New function `LRmult`, to compute the expression of the product of two Schur 
 polynomials as a linear combination of Schur polynomials, using the 
 Littlewood-Richardson rule.
 
-- New function `LRskew` for computing the expression of a skew Schur 
+- New function `LRskew`, to compute the expression of a skew Schur 
 polynomial as a linear combination of Schur polynomials, using the 
 Littlewood-Richardson rule.
 
 - Based on `LRskew`, the new function `SkewSchurPol` computes the skew Schur 
-polynomial associated to a given skew partition.
+polynomial of a given skew partition.
 
-- Actually there are three possible Jack polynomials for a given partition and a
+- Actually there are three possible Jack polynomials of a given partition for a
 given `alpha`, denoted by `J`, `Q` or `P`. It is now possible to get any of them 
 (the previous versions only allowed to get the `J` polynomial).
 
