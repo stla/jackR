@@ -95,3 +95,4 @@ RatioOfQsprays<T> _betaratio(Partition kappa, Partition mu, int k, RatioOfQspray
 }
 
 template RatioOfQsprays<gmpq> _betaratio<RatioOfQsprays<gmpq>>(Partition, Partition, int, RatioOfQsprays<gmpq>);
+

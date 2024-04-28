@@ -31,7 +31,7 @@ Qspray<T> jac(
       return S[Nm];
     }
   }
-  Qspray<T> s = 
+  Qspray<T> s =
     jac(lambda, S, alpha, m-1, 0, nu, nu, oneT) * Qspray<T>(beta) *
       (Qlone<T>(m).power(weight(mu) - weight(nu)));
   int i = k > 1 ? k : 1;
@@ -43,7 +43,7 @@ Qspray<T> jac(
       if(nu[i-1] > 1) {
         s += jac(lambda, S, alpha, m, i, mu, _nu, gamma);
       } else {
-        s += jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneT) * 
+        s += jac(lambda, S, alpha, m-1, 0, _nu, _nu, oneT) *
               Qspray<T>(gamma) * (Qlone<T>(m).power(weight(mu) - weight(_nu)));
       }
     }
@@ -84,4 +84,3 @@ Rcpp::List JackSymPolRcpp(int n, Rcpp::IntegerVector lambda) {
   SymbolicQspray P = JackSymPol(n, lambdaP);
   return returnSymbolicQspray(P);
 }
-
