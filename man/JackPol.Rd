@@ -15,7 +15,8 @@ integers}
 \item{alpha}{rational number, given as a string such as
 \code{"2/3"} or as a \code{bigq} number}
 
-\item{which}{which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}}
+\item{which}{which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"},
+or \code{"C"}}
 }
 \value{
 A \code{qspray} multivariate polynomial.

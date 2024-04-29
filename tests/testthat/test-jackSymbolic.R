@@ -6,6 +6,17 @@ test_that("JackSymPol J", {
   JackPolynomial <- JackPolR(n, lambda, alpha)
   x <- substituteParameters(symbolicJackPolynomial, alpha)
   expect_true(x == JackPolynomial)
+  #
+  n <- 4
+  JackPolynomial <- JackSymPol(n, c(3, 1))
+  a <- qlone(1)
+  M31 <- as(MSFpoly(n, c(3, 1)), "symbolicQspray")
+  M211 <- as(MSFpoly(n, c(2, 1, 1)), "symbolicQspray")
+  M22 <- as(MSFpoly(n, c(2, 2)), "symbolicQspray")
+  M1111 <- as(MSFpoly(n, c(1, 1, 1, 1)), "symbolicQspray")
+  expected <- (2*a^2 + 4*a + 2)*M31 + (6*a + 10)*M211 + (4*a + 4)*M22 +
+    24*M1111
+  expect_true(JackPolynomial == expected)
 })
 
 test_that("JackSymPol P", {

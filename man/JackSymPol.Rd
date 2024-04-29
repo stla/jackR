@@ -12,7 +12,8 @@ JackSymPol(n, lambda, which = "J")
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{which}{which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}}
+\item{which}{which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"},
+or \code{"C"}}
 }
 \value{
 A \code{symbolicQspray} object.
