@@ -10,7 +10,7 @@ the functions `Jack`, `JackPol`, `Schur`, `SchurPol`, `Zonal`, `ZonalPol`,
 `ZonalQ`, `ZonalQPol`, have been renamed to `JackR`, `JackPolR`, `SchurR`,
 `SchurPolR`, `ZonalR`, `ZonalPolR`, `ZonalQR`, `ZonalQPolR`, and the functions 
 `JackCPP`, `JackPolCPP`, `SchurCPP`, `SchurPolCPP`, `ZonalCPP`, `ZonalPolCPP`, 
-`ZonalQCPP`, `ZonalQPolCPP` have been renaming to `Jack`, `JackPol`, `Schur`,
+`ZonalQCPP`, `ZonalQPolCPP` have been renamed to `Jack`, `JackPol`, `Schur`,
 `SchurPol`, `Zonal`, `ZonalPol`, `ZonalQ`, `ZonalQPol`.
 
 - New function `LRmult`, to compute the expression of the product of two Schur 

@@ -20,17 +20,32 @@ library(jack)
 
 Schur polynomials have applications in combinatorics and zonal polynomials have
 applications in multivariate statistics. They are particular cases of
-[Jack polynomials](https://en.wikipedia.org/wiki/Jack_function). This package
-allows to evaluate these polynomials. It can also compute their symbolic form.
+[Jack polynomials][JackPolynomials]. This package allows to evaluate these
+polynomials and also to compute them in symbolic form.
+
+
+## Breaking change in version 6.0.0
+
+In version 6.0.0, each function whose name ended with the suffix `CPP` 
+(`JackCPP`, `JackPolCPP`, etc.) has been renamed by removing this suffix, 
+and the functions `Jack`, `JackPol`, etc. have been renamed by adding the 
+suffix `R` to their name: `JackR`, `JackPolR`, etc. The reason of these 
+changes is that a name like `Jack` is more appealing than `JackCPP` and 
+it is more sensible to assign the more appealing names to the functions 
+implemented with **Rcpp** since they are highly more efficient. The interest 
+of the functions `JackR`, `JackPolR`, etc. is meager.
+
+
+## Getting the polynomials
 
 The functions `JackPol`, `ZonalPol`, `ZonalQPol` and `SchurPol` respectively 
 return the Jack polynomial, the zonal polynomial, the quaternionic zonal 
 polynomial, and the Schur polynomial. 
 
 Each of these polynomials is given by a positive integer, the 
-number of variables, and an integer partition, the `lambda` argument; the 
-Jack polynomial has one more parameter, the `alpha` argument, a number called 
-the *Jack parameter*.
+number of variables (the `n` argument), and an integer partition (the 
+`lambda` argument); the Jack polynomial has a parameter in addition, the 
+`alpha` argument, a number called the *Jack parameter*.
 
 To get a Jack polynomial with `JackPol`, you have to supply the Jack parameter
 as a `bigq` rational number or as a character string representing a fraction, 
@@ -41,9 +56,8 @@ jpol <- JackPol(2, lambda = c(3, 1), alpha = "2/5")
 jpol
 ```
 
-This is a `qspray` object, from the 
-[**qspray** package](https://github.com/stla/qspray). Here is how you can 
-evaluate this polynomial:
+This is a `qspray` object, from the [**qspray** package][qspray]. Here is how 
+you can evaluate this polynomial:
 
 ```{r}
 evalQspray(jpol, c("2", "3/2"))
@@ -81,12 +95,15 @@ jyacas("2 + 2*I", "2/3")
 
 If you just have to evaluate a Jack polynomial, you don't need to resort to 
 a `qspray` polynomial: you can use the functions `Jack`, `Zonal`, `ZonalQ` or
-`Schur`, which directly evaluate the polynomial, and this is much more 
-efficient than resorting to a `qspray` polynomial.
+`Schur`, which directly evaluate the polynomial; this is much more efficient 
+than computing the `qspray` polynomial and then applying `evalQspray`.
 
 ```{r}
 Jack(c("2", "3/2"), lambda = c(3, 1), alpha = "2/5")
 ```
+
+However, if you have to evaluate a Jack polynomial for several values, it 
+could be better to resort to the `qspray` polynomial.
 
 
 ## Skew Schur polynomials
@@ -98,23 +115,25 @@ with the function `SkewSchurPol`.
 ## Symbolic Jack parameter
 
 As of version 6.0.0, it is possible to get a Jack polynomial with a symbolic 
-Jack parameter in its coefficients, thanks to the `JackSymPol` function:
+Jack parameter in its coefficients, thanks to the 
+[**symbolicQspray** package][symbolicQspray]. 
 
 ```{r}
 ( J <- JackSymPol(2, lambda = c(3, 1)) )
 ```
 
-This is a `symbolicQspray` object, from the
-[**symbolicQspray** package](https://github.com/stla/symbolicQspray).
+This is a `symbolicQspray` object, from the **symbolicQspray** package.
 
 A `symbolicQspray` object corresponds to a multivariate polynomial whose 
-coefficients are fractions of polynomials with rational coefficients. 
+coefficients are fractions of polynomials with rational coefficients. The 
+variables of these fractions of polynomials can be seen as some parameters.
 The Jack polynomials fit into this category: from their definition, their 
 coefficients are fractions of polynomials in the Jack parameter. However you 
 can see in the above output that for this example, the coefficients are 
-*polynomials* in the Jack parameter (`a`): there's no fraction. Actually this is 
-always true for any Jack polynomial (for any J-Jack polynomial, I should say). 
-This fact is established and it is not obvious.
+*polynomials* in the Jack parameter (`a`): there's no fraction. Actually this 
+fact is always true for any Jack polynomial (for any *J*-Jack polynomial, 
+I should say). This is an established fact and it is not obvious (it is a 
+consequence of the [Knop & Sahi formula][KnopSahi]).
 
 You can substitute a value to the Jack parameter with the help of the 
 `substituteParameters` function:
@@ -157,3 +176,18 @@ cat(compactSymmetricQspray(J))
 
 The function `compactSymmetricQspray` is also applicable to a `symbolicQspray`
 object, like a Jack polynomial with symbolic Jack parameter.
+
+It is easy to figure out what is a monomial symmetric polynomial: `M[i, j, k]` 
+is the sum of all monomials `x^p.y^q.z^r` where `(p, q, r)` is a permutation 
+of `(i, j, k)`.
+
+
+<!-- -------------------- links -------------------- -->
+
+[JackPolynomials]: https://en.wikipedia.org/wiki/Jack_function "Jack polynomials on Wikipedia"
+
+[qspray]: https://github.com/stla/qspray "the 'qspray' package on Github"
+
+[symbolicQspray]: https://github.com/stla/symbolicQspray "the 'symbolicQspray' package on Github"
+
+[KnopSahi]: https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula "Knop & Sahi formula"
