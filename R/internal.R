@@ -37,18 +37,22 @@ logHookLengths <- function(lambda, alpha){
 hookLengths_gmp <- function(lambda, alpha){
   i <- rep(seq_along(lambda), times = lambda)
   j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
-  lambdaPrime <- as.bigq(dualPartition(lambda))
-  lambda <- as.bigq(lambda)
+  lambdaPrime <- dualPartition(lambda)
+  alpha <- as.bigq(alpha)
   upperHL <- lambdaPrime[j] - i + alpha*(lambda[i] - j + 1L)
   lowerHL <- lambdaPrime[j] - i + 1L + alpha*(lambda[i] - j)
   rbind(lowerHL, upperHL)
 }
 
-JackPcoefficient <- function(lambda, alpha) {
-  if(length(lambda) == 0L){
+#' @importFrom gmp factorialZ
+#' @noRd
+JackCcoefficient <- function(lambda, alpha) {
+  if(length(lambda) == 0L) {
     as.bigq(1L)
   } else {
-    1L / prod(hookLengths_gmp(lambda, alpha)[1L, ])
+    k <- sum(lambda)
+    jlambda <- prod(hookLengths_gmp(lambda, alpha))
+    as.bigq(alpha)^k * factorialZ(k) / jlambda
   }
 }
 
@@ -68,14 +72,17 @@ JackQcoefficient <- function(lambda, alpha) {
   }
 }
 
-#' @importFrom qspray qlone
+#' @importFrom qspray qlone qone
 #' @noRd
-symbolicJackPcoefficientInverse <- function(lambda){
+symbolicJackPcoefficientInverse <- function(lambda) {
+  if(length(lambda) == 0L) {
+    return(qone())
+  }
   i <- rep(seq_along(lambda), times = lambda)
   j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
   lambdaPrime <- as.bigq(dualPartition(lambda))
   lambda <- as.bigq(lambda)
-  alpha <- qlone(1)
+  alpha <- qlone(1L)
   out <- 1L
   for(k in seq_along(i)) {
     out <- out *
@@ -84,17 +91,28 @@ symbolicJackPcoefficientInverse <- function(lambda){
   out
 }
 symbolicJackQcoefficientInverse <- function(lambda){
+  if(length(lambda) == 0L) {
+    return(qone())
+  }
   i <- rep(seq_along(lambda), times = lambda)
   j <- unlist(sapply(lambda, seq_len, simplify = FALSE))
   lambdaPrime <- as.bigq(dualPartition(lambda))
   lambda <- as.bigq(lambda)
-  alpha <- qlone(1)
+  alpha <- qlone(1L)
   out <- 1L
   for(k in seq_along(i)) {
     out <- out *
       (lambdaPrime[j[k]] - i[k] + alpha*(lambda[i[k]] - j[k] + 1L))
   }
   out
+}
+
+symbolicJackCcoefficient <- function(lambda) {
+  k <- sum(lambda)
+  alpha <- qlone(1L)
+  jlambda <- symbolicJackPcoefficientInverse(lambda) *
+    symbolicJackQcoefficientInverse(lambda)
+  factorialZ(k) * alpha^k / jlambda
 }
 
 .Blog <- function(nu, lambda, mu, alpha){

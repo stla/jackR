@@ -62,7 +62,8 @@ Schur <- function(x, lambda) {
 #'   integers
 #' @param alpha rational number, given as a string such as
 #'   \code{"2/3"} or as a \code{bigq} number
-#' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}
+#' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"},
+#'   or \code{"C"}
 #'
 #' @return A \code{qspray} multivariate polynomial.
 #'
@@ -79,7 +80,7 @@ JackPol <- function(n, lambda, alpha, which = "J") {
   if(is.na(alpha)) {
     stop("Invalid `alpha`.")
   }
-  which <- match.arg(which, c("J", "P", "Q"))
+  which <- match.arg(which, c("J", "P", "Q", "C"))
   alpha <- as.character(alpha)
   if(alpha == "0") {
     lambdaPrime <- dualPartition(lambda)
@@ -93,7 +94,8 @@ JackPol <- function(n, lambda, alpha, which = "J") {
     K <- switch(
       which,
       "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
-      "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ])
+      "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ]),
+      "C" = JackCcoefficient(lambda, alpha)
     )
     JackPolynomial <- K * JackPolynomial
   }
@@ -164,16 +166,10 @@ Jack <- function(x, lambda, alpha) {
 #' @return A \code{qspray} multivariate polynomial.
 #'
 #' @export
-#' @importFrom gmp as.bigq factorialZ
 #' @examples
 #' ZonalPol(3, lambda = c(3, 1))
 ZonalPol <- function(m, lambda){
-  twoq <- as.bigq("2")
-  jack <- JackPol(m, lambda, alpha = "2")
-  lambda <- as.integer(lambda[lambda != 0])
-  jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
-  n <- sum(lambda)
-  (twoq^n * factorialZ(n) / jlambda) * jack
+  JackPol(m, lambda, alpha = "2", which = "C")
 }
 
 #' Evaluation of zonal polynomial - C++ implementation
@@ -193,18 +189,14 @@ ZonalPol <- function(m, lambda){
 #' @examples
 #' Zonal(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 Zonal <- function(x, lambda){
+  lambda <- as.integer(lambda[lambda != 0])
+  C <- JackCcoefficient(lambda, 2L)
   if(is.numeric(x)) {
-    jack <- Jack(x, lambda, alpha = 2)
-    lambda <- as.integer(lambda[lambda != 0])
-    jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("2"))))
-    n <- sum(lambda)
-    (factorial(n) * 2^n / jlambda) * jack
+    jack <- Jack(x, lambda, alpha = 2L)
+    asNumeric(C) * jack
   } else {
-    twoq <- as.bigq("2")
     jack <- Jack(x, lambda, alpha = "2")
-    jlambda <- prod(hookLengths_gmp(lambda, alpha = twoq))
-    n <- sum(lambda)
-    (twoq^n * factorialZ(n) / jlambda) * jack
+    C * jack
   }
 }
 
@@ -220,16 +212,10 @@ Zonal <- function(x, lambda){
 #' @return A \code{qspray} multivariate polynomial.
 #'
 #' @export
-#' @importFrom gmp as.bigq factorialZ
 #' @examples
 #' ZonalQPol(3, lambda = c(3, 1))
 ZonalQPol <- function(m, lambda){
-  onehalfq <- as.bigq("1/2")
-  jack <- JackPol(m, lambda, alpha = onehalfq)
-  lambda <- as.integer(lambda[lambda != 0])
-  jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
-  n <- sum(lambda)
-  as.qspray(onehalfq^n * factorialZ(n) / jlambda) * jack
+  JackPol(m, lambda, alpha = "1/2", which = "C")
 }
 
 #' Evaluation of zonal quaternionic polynomial - C++ implementation
@@ -244,22 +230,18 @@ ZonalQPol <- function(m, lambda){
 #' @return A \code{bigq} number.
 #'
 #' @export
-#' @importFrom gmp as.bigq factorialZ asNumeric
+#' @importFrom gmp asNumeric
 #'
 #' @examples
 #' ZonalQ(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 ZonalQ <- function(x, lambda){
   lambda <- as.integer(lambda[lambda != 0])
+  C <- JackCcoefficient(lambda, "1/2")
   if(is.numeric(x)) {
     jack <- Jack(x, lambda, alpha = 0.5)
-    jlambda <- asNumeric(prod(hookLengths_gmp(lambda, alpha = as.bigq("1/2"))))
-    n <- sum(lambda)
-    (factorial(n) / 2^n / jlambda) * jack
+    asNumeric(C) * jack
   } else {
-    onehalfq <- as.bigq("1/2")
     jack <- Jack(x, lambda, alpha = "1/2")
-    jlambda <- prod(hookLengths_gmp(lambda, alpha = onehalfq))
-    n <- sum(lambda)
-    (onehalfq^n * factorialZ(n) / jlambda) * jack
+    C * jack
   }
 }

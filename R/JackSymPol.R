@@ -5,7 +5,8 @@
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
 #'   integers
-#' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}
+#' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"},
+#'  or \code{"C"}
 #'
 #' @return A \code{symbolicQspray} object.
 #'
@@ -16,17 +17,23 @@
 #' JackSymPol(3, lambda = c(3, 1))
 JackSymPol <- function(n, lambda, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
-  which <- match.arg(which, c("J", "P", "Q"))
+  lambda <- as.integer(lambda[lambda != 0])
+  which <- match.arg(which, c("J", "P", "Q", "C"))
   JackPolynomial <- symbolicQspray_from_list(
-    JackSymPolRcpp(as.integer(n), as.integer(lambda))
+    JackSymPolRcpp(as.integer(n), lambda)
   )
   if(which != "J") {
-    invK <- switch(
-      which,
-      "P" = symbolicJackPcoefficientInverse(lambda),
-      "Q" = symbolicJackQcoefficientInverse(lambda)
-    )
-    JackPolynomial <- JackPolynomial / invK
+    if(which == "C") {
+      K <- symbolicJackCcoefficient(lambda)
+      JackPolynomial <- K * JackPolynomial
+    } else {
+      invK <- switch(
+        which,
+        "P" = symbolicJackPcoefficientInverse(lambda),
+        "Q" = symbolicJackQcoefficientInverse(lambda)
+      )
+      JackPolynomial <- JackPolynomial / invK
+    }
   }
   JackPolynomial
 }

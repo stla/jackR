@@ -24,9 +24,9 @@ Littlewood-Richardson rule.
 - Based on `LRskew`, the new function `SkewSchurPol` computes the skew Schur 
 polynomial of a given skew partition.
 
-- Actually there are three possible Jack polynomials of a given partition for a
-given `alpha`, denoted by `J`, `Q` or `P`. It is now possible to get any of them 
-(the previous versions only allowed to get the `J` polynomial).
+- Actually there are four possible Jack polynomials of a given partition for a
+given `alpha`, denoted by `J`, `C`, `Q` or `P`. It is now possible to get any 
+of them (the previous versions only allowed to get the `J` polynomial).
 
 
 # Version 5.3.0 (2023-07-04)
