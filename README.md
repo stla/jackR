@@ -225,7 +225,7 @@ Just to illustrate the possibilities of the packages involved in the
 **jack** package (**qspray**, **ratioOfQsprays**, **symbolicQspray**),
 let us check that the Jack polynomials are eigenpolynomials for the
 [Laplace-Beltrami
-operator](https://symmetricfunctions.com/jack.htm#jackLaplaceBeltrami "Laplace-Beltrami operator")
+operator](https://math.mit.edu/~rstan/pubs/pubfiles/73.pdf "Laplace-Beltrami operator")
 on the space of homogeneous symmetric polynomials.
 
 ``` r

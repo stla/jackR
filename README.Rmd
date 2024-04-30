@@ -263,4 +263,4 @@ collinearQsprays(
 
 [KnopSahi]: https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula "Knop & Sahi formula"
 
-[LaplaceBeltrami]: https://symmetricfunctions.com/jack.htm#jackLaplaceBeltrami "Laplace-Beltrami operator"
+[LaplaceBeltrami]: https://math.mit.edu/~rstan/pubs/pubfiles/73.pdf "Laplace-Beltrami operator"
