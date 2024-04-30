@@ -18,9 +18,9 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
 library(jack)
 ```
 
-Schur polynomials have applications in combinatorics and zonal polynomials have
-applications in multivariate statistics. They are particular cases of
-[Jack polynomials][JackPolynomials]. This package allows to evaluate these
+*Schur polynomials* have applications in combinatorics and *zonal polynomials* 
+have applications in multivariate statistics. They are particular cases of
+[*Jack polynomials*][JackPolynomials]. This package allows to evaluate these
 polynomials and also to compute them in symbolic form.
 
 
@@ -83,11 +83,19 @@ You can even pass a variable name to this function:
 jyacas("x", "x")
 ```
 
-If you want to substitute a variable with a complex number, use a character 
+If you want to substitute a complex number to a variable, use a character 
 string which represents this number, with `I` denoting the imaginary unit:
 
 ```{r}
-jyacas("2 + 2*I", "2/3")
+jyacas("2 + 2*I", "2/3 + I/4")
+```
+
+It is also possible to evaluate a `qspray` polynomial for some complex values 
+of the variables with `evalQspray`. You have to separate the real parts and the
+imaginary parts:
+
+```{r}
+evalQspray(jpol, values_re = c("2", "2/3"), values_im = c("2", "1/4"))
 ```
 
 
@@ -131,7 +139,7 @@ The Jack polynomials fit into this category: from their definition, their
 coefficients are fractions of polynomials in the Jack parameter. However you 
 can see in the above output that for this example, the coefficients are 
 *polynomials* in the Jack parameter (`a`): there's no fraction. Actually this 
-fact is always true for any Jack polynomial (for any *J*-Jack polynomial, 
+fact is always true for any Jack polynomial (for any Jack *J*-polynomial, 
 I should say). This is an established fact and it is not obvious (it is a 
 consequence of the [Knop & Sahi formula][KnopSahi]).
 
@@ -171,7 +179,7 @@ polynomials. This is what the function `compactSymmetricQspray` does:
 
 ```{r}
 ( J <- JackPol(3, lambda = c(4, 3, 1), alpha = "2") )
-cat(compactSymmetricQspray(J))
+compactSymmetricQspray(J) |> cat()
 ```
 
 The function `compactSymmetricQspray` is also applicable to a `symbolicQspray`
@@ -180,6 +188,19 @@ object, like a Jack polynomial with symbolic Jack parameter.
 It is easy to figure out what is a monomial symmetric polynomial: `M[i, j, k]` 
 is the sum of all monomials `x^p.y^q.z^r` where `(p, q, r)` is a permutation 
 of `(i, j, k)`.
+
+The "compact expression" of a Jack polynomial with `n` variables does not 
+depend on `n` if `n >= sum(lambda)`:
+
+```{r}
+lambda <- c(3, 1)
+alpha <- "3"
+J4 <- JackPol(4, lambda, alpha)
+J9 <- JackPol(9, lambda, alpha)
+compactSymmetricQspray(J4) |> cat()
+compactSymmetricQspray(J9) |> cat()
+```
+
 
 
 <!-- -------------------- links -------------------- -->

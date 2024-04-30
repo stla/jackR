@@ -11,10 +11,10 @@ The ‘jack’ package: Jack polynomials
 library(jack)
 ```
 
-Schur polynomials have applications in combinatorics and zonal
-polynomials have applications in multivariate statistics. They are
-particular cases of [Jack
-polynomials](https://en.wikipedia.org/wiki/Jack_function "Jack polynomials on Wikipedia").
+*Schur polynomials* have applications in combinatorics and *zonal
+polynomials* have applications in multivariate statistics. They are
+particular cases of [*Jack
+polynomials*](https://en.wikipedia.org/wiki/Jack_function "Jack polynomials on Wikipedia").
 This package allows to evaluate these polynomials and also to compute
 them in symbolic form.
 
@@ -83,13 +83,23 @@ jyacas("x", "x")
 ## [1] "(336*x^4)/25"
 ```
 
-If you want to substitute a variable with a complex number, use a
+If you want to substitute a complex number to a variable, use a
 character string which represents this number, with `I` denoting the
 imaginary unit:
 
 ``` r
-jyacas("2 + 2*I", "2/3")
-## [1] "Complex((-26656)/675,43232/675)"
+jyacas("2 + 2*I", "2/3 + I/4")
+## [1] "Complex((-158921)/2160,101689/2160)"
+```
+
+It is also possible to evaluate a `qspray` polynomial for some complex
+values of the variables with `evalQspray`. You have to separate the real
+parts and the imaginary parts:
+
+``` r
+evalQspray(jpol, values_re = c("2", "2/3"), values_im = c("2", "1/4"))
+## Big Rational ('bigq') object of length 2:
+## [1] -158921/2160 101689/2160
 ```
 
 ## Direct evaluation of the polynomials
@@ -136,7 +146,7 @@ definition, their coefficients are fractions of polynomials in the Jack
 parameter. However you can see in the above output that for this
 example, the coefficients are *polynomials* in the Jack parameter (`a`):
 there’s no fraction. Actually this fact is always true for any Jack
-polynomial (for any *J*-Jack polynomial, I should say). This is an
+polynomial (for any Jack *J*-polynomial, I should say). This is an
 established fact and it is not obvious (it is a consequence of the [Knop
 & Sahi
 formula](https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula "Knop & Sahi formula")).
@@ -183,7 +193,7 @@ the monomial symmetric polynomials. This is what the function
 ``` r
 ( J <- JackPol(3, lambda = c(4, 3, 1), alpha = "2") )
 ## 3888*x^4.y^3.z + 2592*x^4.y^2.z^2 + 3888*x^4.y.z^3 + 3888*x^3.y^4.z + 4752*x^3.y^3.z^2 + 4752*x^3.y^2.z^3 + 3888*x^3.y.z^4 + 2592*x^2.y^4.z^2 + 4752*x^2.y^3.z^3 + 2592*x^2.y^2.z^4 + 3888*x.y^4.z^3 + 3888*x.y^3.z^4
-cat(compactSymmetricQspray(J))
+compactSymmetricQspray(J) |> cat()
 ## 3888*M[4, 3, 1] + 2592*M[4, 2, 2] + 4752*M[3, 3, 2]
 ```
 
@@ -194,5 +204,19 @@ parameter.
 It is easy to figure out what is a monomial symmetric polynomial:
 `M[i, j, k]` is the sum of all monomials `x^p.y^q.z^r` where `(p, q, r)`
 is a permutation of `(i, j, k)`.
+
+The “compact expression” of a Jack polynomial with `n` variables does
+not depend on `n` if `n >= sum(lambda)`:
+
+``` r
+lambda <- c(3, 1)
+alpha <- "3"
+J4 <- JackPol(4, lambda, alpha)
+J9 <- JackPol(9, lambda, alpha)
+compactSymmetricQspray(J4) |> cat()
+## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]
+compactSymmetricQspray(J9) |> cat()
+## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]
+```
 
 <!-- -------------------- links -------------------- -->

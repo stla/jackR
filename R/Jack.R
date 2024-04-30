@@ -11,7 +11,6 @@
 #'
 #' @return A numeric or complex scalar or a \code{bigq} rational number.
 #' @export
-#' @importFrom partitions conjugate
 #' @importFrom gmp factorialZ is.bigq as.bigq
 #'
 #' @seealso \code{\link{JackPolR}}
@@ -52,11 +51,11 @@ JackR <- function(x, lambda, alpha, algorithm = "DK"){
         return(1)
       }
     }
-    lambdaPrime <- conjugate(lambda)
+    lambdaPrime <- dualPartition(lambda)
     if(gmp){
-      f <- as.bigq(prod(factorialZ(lambdaPrime[lambdaPrime>0L])))
+      f <- as.bigq(prod(factorialZ(lambdaPrime)))
     }else{
-      f <- prod(factorial(lambdaPrime[lambdaPrime>0L]))
+      f <- prod(factorial(lambdaPrime))
     }
     return(f * ESF(x, lambdaPrime))
   }

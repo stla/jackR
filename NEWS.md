@@ -1,9 +1,9 @@
-# Version 6.0.0 (2024-04-XX)
+# Version 6.0.0 (2024-05-XX)
 
 - It is now possible to get a Jack polynomial with a symbolic Jack parameter 
 in its coefficients. Such polynomials are returned by the function `JackSymPol`. 
-This big progress is the reason for which I increased the major version of the 
-package.
+This big progress is the reason for which I increased the major component of 
+the version of the package.
 
 - Since the functions implemented with **Rcpp** are highly more efficient, 
 the functions `Jack`, `JackPol`, `Schur`, `SchurPol`, `Zonal`, `ZonalPol`, 
@@ -25,8 +25,9 @@ Littlewood-Richardson rule.
 polynomial of a given skew partition.
 
 - Actually there are four possible Jack polynomials of a given partition for a
-given `alpha`, denoted by `J`, `C`, `Q` or `P`. It is now possible to get any 
-of them (the previous versions only allowed to get the `J` polynomial).
+given `alpha`, denoted by `J`, `C`, `Q` or `P` (they are the same up to a 
+normalization constant). It is now possible to get any of them (the previous
+versions only allowed to get the `J` polynomial).
 
 
 # Version 5.3.0 (2023-07-04)
