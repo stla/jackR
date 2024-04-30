@@ -180,3 +180,11 @@ test_that(
     expect_identical(res, JackR(x, lambda, alpha))
   }
 )
+
+test_that("Jack polynomial in M-basis", {
+  lambda <- c(3, 1, 1)
+  n <- sum(lambda)
+  m1 <- compactSymmetricQspray(JackPol(n, lambda, 2))
+  m2 <- compactSymmetricQspray(JackPol(n + 5, lambda, 2))
+  expect_identical(m1, m2)
+})

@@ -2,7 +2,7 @@
 #'
 #' Evaluates a Jack polynomial.
 #'
-#' @param x numeric or complex vector or \link[gmp]{bigq} vector
+#' @param x numeric or complex vector or \code{\link[gmp]{bigq}} vector
 #' @param lambda an integer partition, given as a vector of decreasing
 #' integers
 #' @param alpha ordinary number or \code{bigq} rational number
