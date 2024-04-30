@@ -219,4 +219,55 @@ compactSymmetricQspray(J9) |> cat()
 ## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]
 ```
 
+## Laplace-Beltrami operator
+
+Just to illustrate the possibilities of the packages involved in the
+**jack** package (**qspray**, **ratioOfQsprays**, **symbolicQspray**),
+let us check that the Jack polynomials are eigenpolynomials for the
+[Laplace-Beltrami
+operator](https://symmetricfunctions.com/jack.htm#jackLaplaceBeltrami "Laplace-Beltrami operator")
+on the space of homogeneous symmetric polynomials.
+
+``` r
+LaplaceBeltrami <- function(qspray, alpha) {
+  n <- numberOfVariables(qspray)
+  derivatives1 <- lapply(seq_len(n), function(i) {
+    derivQspray(qspray, i)
+  })
+  derivatives2 <- lapply(seq_len(n), function(i) {
+    derivQspray(derivatives1[[i]], i)
+  })
+  x <- lapply(seq_len(n), qlone) # x_1, x_2, ..., x_n
+  # first term
+  out1 <- 0L
+  for(i in seq_len(n)) {
+    out1 <- out1 + alpha * x[[i]]^2 * derivatives2[[i]]
+  }
+  # second term
+  out2 <- 0L
+  for(i in seq_len(n)) {
+    for(j in seq_len(n)) {
+      if(i != j) {
+        out2 <- out2 + x[[i]]^2 * derivatives1[[i]] / (x[[i]] - x[[j]])
+      }
+    }
+  }
+  # at this step, `out2` is a `ratioOfQsprays` object, because of the divisions
+  # by `x[[i]] - x[[j]]`; but actually its denominator is 1 because of some
+  # simplifications and then we extract its numerator to get a `qspray` object
+  out2 <- getNumerator(out2)
+  out1/2 + out2
+}
+```
+
+``` r
+alpha <- "3"
+J <- JackPol(4, c(2, 2), alpha)
+collinearQsprays(
+  qspray1 = LaplaceBeltrami(J, alpha), 
+  qspray2 = J
+)
+## [1] TRUE
+```
+
 <!-- -------------------- links -------------------- -->
