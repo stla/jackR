@@ -42,20 +42,20 @@ MSF <- function(x, lambda){
   if(length(lambda) > m) return(if(gmp) as.bigq(0L) else 0)
   kappa <- numeric(m)
   kappa[seq_along(lambda)] <- lambda
-  perms <- DescTools::Permn(kappa)
+  perms <- Permn(kappa)
   if(gmp){
     out <- as.bigq(0L)
     for(i in 1L:nrow(perms)){
       pows <- as.bigq(rep(0L, m))
       for(j in 1L:m){
-        pows[j] <- x[j]^perms[i,j]
+        pows[j] <- x[j]^perms[i, j]
       }
       out <- out + prod(pows)
     }
   }else{
     out <- 0
     for(i in 1L:nrow(perms)){
-      out <- out + prod(x^perms[i,])
+      out <- out + prod(x^perms[i, ])
     }
   }
   out

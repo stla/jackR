@@ -7,8 +7,8 @@
 Schur(x, lambda)
 }
 \arguments{
-\item{x}{variables, a vector of \code{bigq} numbers, or a vector that can
-be coerced as such (e.g. \code{c("2", "5/3")})}
+\item{x}{values of the variables, a vector of \code{bigq} numbers, or a
+vector that can be coerced as such (e.g. \code{c("2", "5/3")})}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}

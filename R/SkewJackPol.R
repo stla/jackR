@@ -6,10 +6,11 @@
 #' @param mu inner integer partition of the skew partition; it must be a
 #'   subpartition of \code{lambda}
 #' @param alpha the Jack parameter, an integer or a \code{bigq} number
-#' @param which which Jack polynomial, \code{"J"}, \code{"P"} or \code{"Q"}
+#' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
+#'   \code{"C"}
 #'
 #' @return A \code{qspray} polynomial.
-#' @export
+#' @noRd
 #' @importFrom gmp is.bigq as.bigq
 #' @importFrom partitions parts
 #' @importFrom qspray PSPexpression HallInnerProduct

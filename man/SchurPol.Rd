@@ -19,5 +19,6 @@ A \code{qspray} multivariate polynomial.
 Returns the Schur polynomial.
 }
 \examples{
-SchurPol(3, lambda = c(3, 1))
+( schur <- SchurPol(3, lambda = c(3, 1)) )
+schur == JackPol(3, lambda = c(3, 1), alpha = "1", which = "P")
 }

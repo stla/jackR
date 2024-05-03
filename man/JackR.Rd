@@ -7,7 +7,7 @@
 JackR(x, lambda, alpha, algorithm = "DK")
 }
 \arguments{
-\item{x}{numeric or complex vector or \link[gmp]{bigq} vector}
+\item{x}{numeric or complex vector or \code{\link[gmp]{bigq}} vector}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}

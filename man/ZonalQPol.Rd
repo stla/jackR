@@ -4,10 +4,10 @@
 \alias{ZonalQPol}
 \title{Quaternionic zonal polynomial - C++ implementation}
 \usage{
-ZonalQPol(m, lambda)
+ZonalQPol(n, lambda)
 }
 \arguments{
-\item{m}{number of variables, a positive integer}
+\item{n}{number of variables, a positive integer}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
@@ -19,5 +19,6 @@ A \code{qspray} multivariate polynomial.
 Returns the quaternionic zonal polynomial.
 }
 \examples{
-ZonalQPol(3, lambda = c(3, 1))
+( zonalQ <- ZonalQPol(3, lambda = c(3, 1)) )
+zonalQ == JackPol(3, lambda = c(3, 1), alpha = "1/2", which = "C")
 }
