@@ -13,10 +13,7 @@
 #' @noRd
 #' @importFrom gmp is.bigq as.bigq
 #' @importFrom partitions parts
-#' @importFrom qspray PSPexpression HallInnerProduct
-#'
-#' @details
-#' Gröbner bases are used in the algorithm, and this is very slow.
+#' @importFrom qspray HallInnerProduct
 #'
 #' @examples
 #' SkewJackPol(3, c(3,1), c(2), 2)
@@ -29,7 +26,7 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   }
   stopifnot(isInteger(alpha) || is.bigq(alpha))
   alpha <- as.bigq(alpha)
-  Jlambda <- PSPexpression(JackPol(n, lambda, alpha, which))
+  Jlambda <- JackPol(n, lambda, alpha, which)
   Jmu     <- JackPol(n, mu, alpha, which)
   nus <- parts(sum(lambda) - sum(mu))
   terms <- apply(nus, 2L, function(nu) {

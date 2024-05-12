@@ -1,7 +1,7 @@
 Type: Package
 Package: jack
 Title: Jack, Zonal, and Schur Polynomials
-Version: 6.0.0
+Version: 6.0.0.9000
 Date: 2024-05-03
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
@@ -16,9 +16,10 @@ License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
 SystemRequirements: C++17, gmp, mpfr
+Remotes: stla/qspray, stla/ratioOfQsprays, stla/symbolicQspray
 Depends:
-    qspray (>= 3.0.0),
-    symbolicQspray
+    qspray (>= 3.0.0.9000),
+    symbolicQspray (>= 1.0.0.9000)
 Imports: 
     DescTools,
     gmp,
