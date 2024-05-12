@@ -191,7 +191,6 @@ of `(i, j, k)`.
 
 The "compact expression" of a Jack polynomial with `n` variables does not 
 depend on `n` if `n >= sum(lambda)`:
-
 ```{r}
 lambda <- c(3, 1)
 alpha <- "3"
@@ -200,6 +199,8 @@ J9 <- JackPol(9, lambda, alpha)
 compactSymmetricQspray(J4) |> cat()
 compactSymmetricQspray(J9) |> cat()
 ```
+
+In fact I'm not sure the Jack polynomial makes sense when `n < sum(lambda)`.
 
 
 ## Hall inner product
@@ -223,6 +224,7 @@ with symbolic parameter $\alpha$:
 ```{r}
 HallInnerProduct(J1, J1, alpha = NULL)
 ```
+
 This is a `qspray` object. The Hall inner product is always polynomial in 
 $\alpha$.
 
@@ -242,6 +244,7 @@ polynomial with itself, that is, if we run
 ```{r}
 ( Hip <- HallInnerProduct(J, J, alpha = NULL) )
 ```
+
 We get the Hall inner product of the Jack polynomial with itself, with two 
 symbolic parameters: the Jack parameter displayed as `t` and the parameter 
 of the Hall product displayed as `alpha`. This is a `symbolicQspray` object.

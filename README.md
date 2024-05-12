@@ -219,6 +219,94 @@ compactSymmetricQspray(J9) |> cat()
 ## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]
 ```
 
+In fact I’m not sure the Jack polynomial makes sense when
+`n < sum(lambda)`.
+
+## Hall inner product
+
+The **qspray** package provides a function to compute the Hall inner
+product of two symmetric polynomials, namely `HallInnerProduct`. This is
+the generalized Hall inner product, the one with a parameter $\alpha$.
+It is known that the Jack polynomials with parameter $\alpha$ are
+orthogonal for the Hall inner product with parameter $\alpha$. Let’s
+give a try:
+
+``` r
+alpha <- "3"
+J1 <- JackPol(4, lambda = c(3, 1), alpha, which = "P")
+J2 <- JackPol(4, lambda = c(2, 2), alpha, which = "P")
+HallInnerProduct(J1, J2, alpha)
+## Big Rational ('bigq') :
+## [1] 0
+HallInnerProduct(J1, J1, alpha)
+## Big Rational ('bigq') :
+## [1] 135/8
+HallInnerProduct(J2, J2, alpha)
+## Big Rational ('bigq') :
+## [1] 63/5
+```
+
+If you set `alpha=NULL` in `HallInnerProduct`, you get the Hall inner
+product with symbolic parameter $\alpha$:
+
+``` r
+HallInnerProduct(J1, J1, alpha = NULL)
+## 3/128*alpha^4 + 1/4*alpha^3 + 63/128*alpha^2 + 81/64*alpha
+```
+
+This is a `qspray` object. The Hall inner product is always polynomial
+in $\alpha$.
+
+It is also possible to get the Hall inner product of two
+`symbolicQspray` polynomials. Take for example a Jack polynomial with
+symbolic parameter:
+
+``` r
+J <- JackSymPol(4, lambda = c(3, 1), which = "P")
+showSymbolicQsprayOption(J, "a") <- "t"
+HallInnerProduct(J, J, alpha = 2)
+## [ 20*t^4 - 24*t^3 + 92*t^2 - 48*t + 104 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ]
+```
+
+We use `t` to display the Jack parameter and not `alpha` so that there
+is no confusion between the Jack parameter and the parameter of the Hall
+product.
+
+Now, what happens if we compute the symbolic Hall inner product of this
+Jack polynomial with itself, that is, if we run
+`HallInnerProduct(J, J, alpha = NULL)`? Let’s see:
+
+``` r
+( Hip <- HallInnerProduct(J, J, alpha = NULL) )
+## { [ 24 ] %//% [ 4*t^4 + 16*t^3 + 24*t^2 + 16*t + 4 ] } * alpha^4  +  { [ 9*t^2 - 6*t + 1 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^3  +  { [ 3*t^4 - 6*t^3 + 5*t^2 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^2  +  { [ 4*t^4 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha
+```
+
+We get the Hall inner product of the Jack polynomial with itself, with
+two symbolic parameters: the Jack parameter displayed as `t` and the
+parameter of the Hall product displayed as `alpha`. This is a
+`symbolicQspray` object.
+
+Now one could be interested in the symbolic Hall inner product of the
+Jack polynomial with itself for the case when the Jack parameter and the
+parameter of the Hall product coincide, that is, to set `alpha=t` in the
+`symbolicQspray` polynomial that we named `Hip`. One can get it as
+follows:
+
+``` r
+changeVariables(Hip, list(qlone(1)))
+## [ 3*t^4 + t^3 ] %//% [ t^2 + 2*t + 1 ]
+```
+
+This is rather a trick. The `changeVariables` function allows to replace
+the variables of a `symbolicQspray` polynomial with the new variables
+given as a list in its second argument. The `Hip` polynomial has only
+one variable, `alpha`, and it has one parameter, `t`. This parameter `t`
+is the polynomial variable of the `ratioOfQsprays` coefficients of
+`Hip`. Technically this is a `qspray` object: this is `qlone(1)`. So we
+provided `list(qlone(1))` as the list of new variables. This corresponds
+to set `alpha=t`. The usage of the `changeVariables` is a bit deflected,
+because `qlone(1)` is not a new variable for `Hip`, this is a constant.
+
 ## Laplace-Beltrami operator
 
 Just to illustrate the possibilities of the packages involved in the
