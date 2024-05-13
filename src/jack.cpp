@@ -84,5 +84,3 @@ Rcpp::List JackSymPolRcpp(int n, Rcpp::IntegerVector lambda) {
   SymbolicQspray P = JackSymPol(n, lambdaP);
   return returnSymbolicQspray(P);
 }
-
-

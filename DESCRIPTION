@@ -33,7 +33,6 @@ LinkingTo:
     BH,
     Rcpp,
     qspray,
-    RcppArmadillo,
     ratioOfQsprays,
     RcppCGAL,
     symbolicQspray
