@@ -1,4 +1,10 @@
-# Version 6.0.0 (2024-05-XX)
+# Version 6.0.0.9000 (2024-06-XX)
+
+Some minor modifications have been necessary due to the updates of some 
+package dependencies. No change for the user.
+
+
+# Version 6.0.0 (2024-05-03)
 
 - It is now possible to get a Jack polynomial with a symbolic Jack parameter 
 in its coefficients. Such polynomials are returned by the function `JackSymPol`. 
