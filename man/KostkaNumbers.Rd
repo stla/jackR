@@ -4,13 +4,17 @@
 \alias{KostkaNumbers}
 \title{Kostka numbers}
 \usage{
-KostkaNumbers(n)
+KostkaNumbers(n, alpha = NULL)
 }
 \arguments{
 \item{n}{positive integer, the weight of the partitions}
+
+\item{alpha}{the Jack parameter, a \code{bigq} number or an object coercible
+to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
+\code{alpha=1}}
 }
 \value{
-A matrix of integers.
+A matrix of character strings representing integers or fractions.
 }
 \description{
 The Kostka numbers for partitions of a given weight.

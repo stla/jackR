@@ -4,7 +4,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   gmp <- is.bigq(alpha)
   if(length(lambda) == 0L) {
     if(basis == "canonical") {
-      return(if(gmp) as.qspray(1) else as_mvp_spray(one(n)))
+      return(if(gmp) qone() else as_mvp_spray(one(n)))
     } else {
       return("M_()")
     }
@@ -23,7 +23,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   coefs <- coefs[toString(lambda00), ]
   if(basis == "canonical") {
     if(gmp) {
-      out <- as.qspray(0)
+      out <- qzero()
       for(i in 1L:ncol(mus)){
         mu <- mus[, i]
         l <- sum(mu > 0L)

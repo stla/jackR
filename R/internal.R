@@ -209,8 +209,8 @@ dominatedPartitions <- function(lambda){
 betweenPartitions <- function(mu, lambda){
   doms <- dominatedPartitions(lambda)
   n <- sum(mu)
-  doms[,apply(doms, 2L, function(p){
-    isDominated(mu,p) && !all(c(mu, rep(0L,n-length(mu)))==p)
+  doms[, apply(doms, 2L, function(p){
+    isDominated(mu,p) && !all(c(mu, rep(0L, n-length(mu))) == p)
   }), drop = FALSE]
 }
 
@@ -229,6 +229,10 @@ betweenPartitions <- function(mu, lambda){
   }else{
     alpha * .n(dualPartition(lambda)) - .n(lambda)
   }
+}
+
+fromString <- function(string) {
+  as.integer(strsplit(string, ",", fixed = TRUE)[[1L]])
 }
 
 ####
@@ -250,6 +254,6 @@ as_mvp_qspray <- function(s) {
   mvp(vars, s@powers, asNumeric(as.bigq(s@coeffs)))
 }
 
-#' @importFrom qspray as.qspray
+#' @importFrom qspray as.qspray qzero qone
 #' @importFrom spray zero one lone
 NULL
