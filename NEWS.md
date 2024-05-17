@@ -1,7 +1,9 @@
 # Version 6.0.0.9000 (2024-06-XX)
 
-Some minor modifications have been necessary due to the updates of some 
+- Some minor modifications have been necessary due to the updates of some 
 package dependencies. No change for the user.
+
+- The `KostkaNumbers` function has a new argument `alpha`, to compute the Kostka numbers with parameter (for `alpha=1` these are the standard Kostka numbers).
 
 
 # Version 6.0.0 (2024-05-03)
