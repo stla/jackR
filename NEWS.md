@@ -3,7 +3,12 @@
 - Some minor modifications have been necessary due to the updates of some 
 package dependencies. No change for the user.
 
-- The `KostkaNumbers` function has a new argument `alpha`, to compute the Kostka numbers with parameter (for `alpha=1` these are the standard Kostka numbers).
+- The `KostkaNumbers` function has a new argument `alpha`, to compute the 
+Kostka numbers with parameter (for `alpha=1` these are the standard Kostka 
+numbers).
+
+- New function `JackCombination`, to get a symmetric polynomial as a linear 
+combination of some Jack polynomials.
 
 
 # Version 6.0.0 (2024-05-03)
