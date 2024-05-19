@@ -16,3 +16,11 @@ test_that("Hall inner product", {
   expect_true(h13 == 0)
   expect_true(h23 == 0)
 })
+
+test_that("Jack-P and Jack-Q are orthonormal", {
+  alpha <- "3"
+  J1 <- JackPol(3, c(2, 1), alpha, which = "P")
+  J2 <- JackPol(3, c(2, 1), alpha, which = "Q")
+  h <- HallInnerProduct(J1, J2, alpha = alpha)
+  expect_true(h == 1L)
+})
