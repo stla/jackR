@@ -38,7 +38,7 @@ if(alpha == 1L) {
     KostkaMatrix <- KostkaMatrix * factors
   }
 } else {
-  Jcoeffs <- JackCoefficientsQ(totalDegree, alpha)
+  Jcoeffs <- jack:::JackCoefficientsQ(totalDegree, alpha)
   dimNames <- gsub(", 0", "", colnames(Jcoeffs), fixed = TRUE)
   kappas <- lapply(dimNames, jack:::fromString)
   dimNames <- paste0("[", dimNames, "]")
@@ -62,3 +62,47 @@ if(alpha == 1L) {
 }
 invKostkaMatrix <- RationalMatrix::Qinverse(KostkaMatrix)
 rownames(invKostkaMatrix) <- colnames(invKostkaMatrix) <- dimNames
+sprays <- lapply(kappas, function(kappa) {
+  new("qspray", powers = list(kappa), coeffs = "1")
+})
+finalQspray <- qzero()
+lambdas <- names(msCombo)
+range <- seq_along(kappas)
+for(i in seq_along(lambdas)) {
+  invKostkaNumbers <- invKostkaMatrix[lambdas[i], ]
+  spray <- qzero()
+  for(j in range) {
+    coeff <- invKostkaNumbers[j]
+    if(coeff != "0") {
+      spray <- spray + coeff * sprays[[j]]
+    }
+  }
+  finalQspray <- finalQspray + coeffs[i]*spray
+}
+finalQspray <- orderedQspray(finalQspray)
+powers <- finalQspray@powers
+coeffs <- gmp::as.bigq(finalQspray@coeffs)
+combo <- mapply(
+  function(lambda, coeff) {
+    list("coeff" = coeff, "lambda" = lambda)
+  },
+  powers, coeffs,
+  SIMPLIFY = FALSE, USE.NAMES = FALSE
+)
+names(combo) <- paste0(
+  "[",
+  vapply(powers, toString, character(1L)),
+  "]"
+)
+combo
+
+comboToQspray <- function(combo) {
+  lambdas <- lapply(combo, `[[`, "lambda")
+  coeffs <- lapply(combo, `[[`, "coeff")
+  Reduce(`+`, mapply(function(lambda, coeff) {
+    coeff * JackPol(4, lambda, alpha, which)
+  }, lambdas, coeffs, SIMPLIFY = FALSE))
+}
+
+
+comboToQspray(combo)

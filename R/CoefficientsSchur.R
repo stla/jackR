@@ -4,6 +4,11 @@ NULL
 
 SchurCoefficientsQ <- function(n, until = NULL){
   stopifnot(n > 0L, isPositiveInteger(n))
+  if(n == 1L) {
+    out <- as.matrix("1")
+    rownames(out) <- colnames(out) <- "1"
+    return(out)
+  }
   allParts <- dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
