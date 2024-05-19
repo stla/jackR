@@ -2,7 +2,7 @@ Type: Package
 Package: jack
 Title: Jack, Zonal, and Schur Polynomials
 Version: 6.0.0.9000
-Date: 2024-05-03
+Date: 2024-05-19
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials,
@@ -23,9 +23,11 @@ Depends:
 Imports: 
     DescTools,
     gmp,
+    methods,
     multicool,
     mvp,
     partitions,
+    RationalMatrix,
     Rcpp,
     spray,
     utils
