@@ -55,10 +55,12 @@ JackSymbolicCoefficients <- function(n, weight, which){
     lambdas <- apply(allParts, 2L, function(part) {
       part[part != 0L]
     }, simplify = FALSE)
+    names(lambdas) <- names(coefs)
     invPcoeffs <- lapply(lambdas, jack:::symbolicJackPcoefficientInverse)
-    names(invPcoeffs) <- names(coefs)
+    Names <- names(coefs)
+    names(Names) <- Names
     if(which == "J") {
-      coefs <- lapply(names(coefs), function(lambda) {
+      coefs <- lapply(Names, function(lambda) {
         mapply(
           `*`,
           coefs[[lambda]], rep(list(invPcoeffs[[lambda]]), nParts),
@@ -68,22 +70,22 @@ JackSymbolicCoefficients <- function(n, weight, which){
     } else if(which == "C") {
       Ccoefs <- lapply(lambdas, jack:::symbolicJackCcoefficient)
       factors <-
-        mapply(`*`, Ccoefs, invPcoeffs, SIMPLIFY = FALSE, USE.NAMES = FALSE)
-      coefs <- lapply(coefs, function(row) {
+        mapply(`*`, Ccoefs, invPcoeffs, SIMPLIFY = FALSE, USE.NAMES = TRUE)
+      coefs <- lapply(Names, function(lambda) {
         mapply(
           `*`,
-          row, factors,
+          coefs[[lambda]], rep(list(factors[[lambda]]), nParts),
           SIMPLIFY = FALSE, USE.NAMES = TRUE
         )
       })
     } else {
       invQcoeffs <- lapply(lambdas, jack:::symbolicJackQcoefficientInverse)
       factors <-
-        mapply(`/`, invPcoeffs, invQcoeffs, SIMPLIFY = FALSE, USE.NAMES = FALSE)
-      coefs <- lapply(coefs, function(row) {
+        mapply(`/`, invPcoeffs, invQcoeffs, SIMPLIFY = FALSE, USE.NAMES = TRUE)
+      coefs <- lapply(Names, function(lambda) {
         mapply(
           `*`,
-          row, factors,
+          coefs[[lambda]], rep(list(factors[[lambda]]), nParts),
           SIMPLIFY = FALSE, USE.NAMES = TRUE
         )
       })
@@ -92,4 +94,4 @@ JackSymbolicCoefficients <- function(n, weight, which){
   coefs
 }
 
-JackSymbolicCoefficients(3, 4, which = "J")
+JackSymbolicCoefficients(3, 4, which = "C")
