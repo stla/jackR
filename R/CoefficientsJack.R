@@ -9,7 +9,7 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
     rownames(out) <- colnames(out) <- "1"
     return(out)
   }
-  allParts <- dominatedPartitions(n)
+  allParts <- parts(n) #dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   if(!is.null(until)){
@@ -28,7 +28,7 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
     kappa <- allParts[, m]
     for(k in (m+1L):nParts){
       lambda <- allParts[,k]
-      btwn <- betweenPartitions(lambda, kappa)
+      # btwn <- betweenPartitions(lambda, kappa)
       x <- as.bigq(0L)
       for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
@@ -66,7 +66,12 @@ JackCoefficientsQ <- function(n, alpha, until = NULL){
 
 JackCoefficientsNum <- function(n, alpha, until = NULL){
   stopifnot(n > 0L, isPositiveInteger(n))
-  allParts <- dominatedPartitions(n)
+  if(n == 1L) {
+    out <- as.matrix(1)
+    rownames(out) <- colnames(out) <- "1"
+    return(out)
+  }
+  allParts <- parts(n) #dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   if(!is.null(until)){
@@ -83,7 +88,7 @@ JackCoefficientsNum <- function(n, alpha, until = NULL){
     kappa <- allParts[,m]
     for(k in (m+1L):nParts){
       lambda <- allParts[,k]
-      btwn <- betweenPartitions(lambda, kappa)
+      # btwn <- betweenPartitions(lambda, kappa)
       x <- 0
       for(i in 1L:(n-1L)){
         for(j in (i+1L):n){
