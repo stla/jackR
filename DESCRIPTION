@@ -19,6 +19,7 @@ SystemRequirements: C++17, gmp, mpfr
 Remotes: stla/qspray, stla/ratioOfQsprays, stla/symbolicQspray
 Depends:
     qspray (>= 3.0.0.9000),
+    ratioOfQsprays (>= 1.0.0.9000),
     symbolicQspray (>= 1.0.0.9000)
 Imports: 
     DescTools,

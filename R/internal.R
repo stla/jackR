@@ -1,7 +1,12 @@
 #' @importFrom partitions conjugate parts
 #' @importFrom gmp as.bigq is.bigq
 #' @importFrom utils tail
+#' @importFrom qspray qlone
 NULL
+
+partitionAsString <- function(lambda) {
+  paste0("[", toString(lambda), "]")
+}
 
 isInteger <- function(n){
   is.vector(n) && is.numeric(n) &&
@@ -230,6 +235,11 @@ betweenPartitions <- function(mu, lambda){
     alpha * .n(dualPartition(lambda)) - .n(lambda)
   }
 }
+
+.eSymbolic <- function(lambda){
+  .n(dualPartition(lambda))*qlone(1) - .n(lambda)
+}
+
 
 fromString <- function(string) {
   as.integer(strsplit(string, ",", fixed = TRUE)[[1L]])

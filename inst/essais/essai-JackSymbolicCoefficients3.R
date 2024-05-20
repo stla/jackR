@@ -2,6 +2,10 @@ library(gmp)
 library(partitions)
 library(ratioOfQsprays)
 
+partitionAsString <- function(lambda) {
+  paste0("[", toString(lambda), "]")
+}
+
 .eSymbolic <- function(lambda){
   jack:::.n(jack:::dualPartition(lambda))*qlone(1) - jack:::.n(lambda)
 }
@@ -12,14 +16,14 @@ library(ratioOfQsprays)
   zeroRatioOfQsprays <- as.ratioOfQsprays(0L)
   unitRatioOfQsprays <- as.ratioOfQsprays(1L)
   if(weight == 1L) {
-    return(list("1" = list("1" = unitRatioOfQsprays)))
+    return(list("[1]" = list("[1]" = unitRatioOfQsprays)))
   }
   allParts <- restrictedparts(weight, n)
   nParts <- ncol(allParts)
   lambdas <- apply(allParts, 2L, function(part) {
     part[part != 0L]
   }, simplify = FALSE)
-  stringParts <- vapply(lambdas, toString, character(1L))
+  stringParts <- vapply(lambdas, partitionAsString, character(1L))
   row <- rep(list(zeroRatioOfQsprays), nParts)
   names(row) <- stringParts
   coefs <- lapply(seq_len(nParts), function(i) {
@@ -47,12 +51,12 @@ library(ratioOfQsprays)
             if(isDominated(muOrd, lambda)){
               x <- x + (mucopy[i] - mucopy[j]) /
                 (eSymbolic_lambda - eSymbolic_mu) *
-                coefs[[m]][[toString(muOrd)]]
+                coefs[[m]][[partitionAsString(muOrd)]]
             }
           }
         }
       }
-      coefs[[m]][[toString(mu)]] <- x
+      coefs[[m]][[partitionAsString(mu)]] <- x
     }
   }
   if(which != "P") {
