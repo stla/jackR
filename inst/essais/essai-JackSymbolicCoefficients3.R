@@ -99,35 +99,45 @@ sKN <- .symbolicKostkaNumbers(4, 4, which = "J")
 
 invTriMatrix <- function(L) {
   d <- length(L)
+  f <- 1L / L[[d]][[1L]]
   if(d == 1L) {
     invL <- L
-    invL[[1L]][[1L]] <- 1L / invL[[1L]][[1L]]
+    invL[[1L]][[1L]] <- f
     return(invL)
   } else {
     B <- invTriMatrix(lapply(head(L, -1L), function(row) {
       head(row, -1L)
     }))
-    f <- 1L / L[[d]][[1L]]
     newColumn <- lapply(seq_len(d-1L), function(i) {
       toAdd <- mapply(
         `*`,
         B[[i]], lapply(i:(d-1L), function(j) {
           L[[j]][[d-j+1L]]
         }),
-        SIMPLIFY = FALSE, USE.NAMES = TRUE
+        SIMPLIFY = FALSE, USE.NAMES = FALSE
       )
       -Reduce(`+`, toAdd) * f
     })
     B <- c(B, list(list()))
     newColumn <- c(newColumn, list(f))
     names(B) <- names(newColumn) <- names(L)
+    Names <- lapply(L, names)
     mapply(
-      function(row, x) {
-        c(row, list(x))
+      function(row, x, nms) {
+        out <- c(row, list(x))
+        names(out) <- nms
+        out
       },
-      B, newColumn,
+      B, newColumn, Names,
       SIMPLIFY = FALSE, USE.NAMES = TRUE
     )
+    # out <- lapply(seq_along(L), function(i) {
+    #   row <- c(B[[i]], newColumn[i])
+    #   names(row) <- names(L[[i]])
+    #   row
+    # })
+    # names(out) <- names(L)
+    # out
   }
 }
 
