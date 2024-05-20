@@ -7,7 +7,7 @@ library(ratioOfQsprays)
 }
 
 
-JackSymbolicCoefficients <- function(n, weight, which){
+.symbolicKostkaNumbers <- function(n, weight, which){
   #stopifnot(n > 0L, isPositiveInteger(n))
   zeroRatioOfQsprays <- as.ratioOfQsprays(0L)
   unitRatioOfQsprays <- as.ratioOfQsprays(1L)
@@ -95,4 +95,41 @@ JackSymbolicCoefficients <- function(n, weight, which){
   coefs
 }
 
-JackSymbolicCoefficients(3, 4, which = "C")
+sKN <- .symbolicKostkaNumbers(4, 4, which = "J")
+
+invTriMatrix <- function(L) {
+  d <- length(L)
+  if(d == 1L) {
+    invL <- L
+    invL[[1L]][[1L]] <- 1L / invL[[1L]][[1L]]
+    return(invL)
+  } else {
+    B <- invTriMatrix(lapply(head(L, -1L), function(row) {
+      head(row, -1L)
+    }))
+    f <- 1L / L[[d]][[1L]]
+    newColumn <- lapply(seq_len(d-1L), function(i) {
+      toAdd <- mapply(
+        `*`,
+        B[[i]], lapply(i:(d-1L), function(j) {
+          L[[j]][[d-j+1L]]
+        }),
+        SIMPLIFY = FALSE, USE.NAMES = TRUE
+      )
+      -Reduce(`+`, toAdd) * f
+    })
+    B <- c(B, list(list()))
+    newColumn <- c(newColumn, list(f))
+    names(B) <- names(newColumn) <- names(L)
+    mapply(
+      function(row, x) {
+        c(row, list(x))
+      },
+      B, newColumn,
+      SIMPLIFY = FALSE, USE.NAMES = TRUE
+    )
+  }
+}
+
+invTriMatrix(sKN)
+
