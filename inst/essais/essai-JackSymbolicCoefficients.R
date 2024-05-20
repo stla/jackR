@@ -7,15 +7,15 @@ library(ratioOfQsprays)
 }
 
 
-JackSymbolicCoefficients <- function(n, which){
+JackSymbolicCoefficients <- function(n, weight, which){
   #stopifnot(n > 0L, isPositiveInteger(n))
-  if(n == 1L) {
+  if(weight == 1L) {
     out <- list(as.ratioOfQsprays(1L))
     dim(out) <- c(1L, 1L)
     rownames(out) <- colnames(out) <- "1"
     return(out)
   }
-  allParts <- parts(n)
+  allParts <- restrictedparts(weight, n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   coefs <- rep(list(as.ratioOfQsprays(0L)), nParts*nParts)
@@ -69,4 +69,4 @@ JackSymbolicCoefficients <- function(n, which){
   out
 }
 
-JackSymbolicCoefficients(3)
+JackSymbolicCoefficients(3, 4)
