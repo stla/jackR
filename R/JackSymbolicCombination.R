@@ -91,15 +91,15 @@ symbolicJackCombination <- function(qspray, which = "J", check = TRUE) {
         coeffs = list(as.ratioOfQsprays(1L))
       )
     })
+    names(sprays) <- names(invKostkaMatrix)
     lambdas <- names(msCombo)
-    range <- seq_along(kappas)
     for(i in seq_along(lambdas)) {
       invKostkaNumbers <- invKostkaMatrix[[lambdas[i]]]
       spray <- Qzero()
-      for(j in range) {
-        coeff <- invKostkaNumbers[[j]]
+      for(kappa in names(invKostkaNumbers)) {
+        coeff <- invKostkaNumbers[[kappa]]
         if(coeff != 0L) {
-          spray <- spray + coeff * sprays[[j]]
+          spray <- spray + coeff * sprays[[kappa]]
         }
       }
       finalQspray <- finalQspray + coeffs[i]*spray

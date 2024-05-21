@@ -1,20 +1,20 @@
-test_that("JackSymbolicCombination", {
+test_that("symbolicJackCombination", {
   n <- 4L
   qspray <- 3*ESFpoly(n, c(3, 1)) - 5*PSFpoly(n, c(2, 2))
   which <- "P"
-  combo <- JackSymbolicCombination(qspray, which)
+  combo <- symbolicJackCombination(qspray, which)
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)
   alpha <- "2"
   expect_true(qspray == substituteParameters(Qspray, values = alpha))
 })
 
-test_that("JackSymbolicCombination for a combination of Jack polynomials", {
+test_that("symbolicJackCombination for a combination of Jack polynomials", {
   n <- 4L
   which <- "Q"
   alpha <- "2"
   qspray <- 3*JackPol(n, c(3, 1), alpha, which) -
     5*JackPol(n, c(2, 2), alpha, which)
-  combo <- JackSymbolicCombination(qspray, which)
+  combo <- symbolicJackCombination(qspray, which)
   #
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)
   expect_true(qspray == substituteParameters(Qspray, values = alpha))
@@ -37,21 +37,21 @@ test_that("JackSymbolicCombination for a combination of Jack polynomials", {
   expect_true(coeffs[[2L]] == -5)
 })
 
-test_that("JackSymbolicCombination for a non-homogeneous polynomial", {
+test_that("symbolicJackCombination for a non-homogeneous polynomial", {
   n <- 4L
   qspray <- ESFpoly(n, c(3, 1)) + PSFpoly(n, c(2, 1))
   which <- "J"
-  combo <- JackSymbolicCombination(qspray, which)
+  combo <- symbolicJackCombination(qspray, which)
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)
   alpha <- "3"
   expect_true(qspray == substituteParameters(Qspray, values = alpha))
 })
 
-test_that("JackSymbolicCombination for a 'degenerate' symmetric polynomial", {
+test_that("symbolicJackCombination for a 'degenerate' symmetric polynomial", {
   n <- 3L
   qspray <- ESFpoly(n, c(3, 1)) + PSFpoly(n, c(2, 2))
   which <- "C"
-  combo <- JackSymbolicCombination(qspray, which)
+  combo <- symbolicJackCombination(qspray, which)
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)
   alpha <- "3/2"
   expect_true(qspray == substituteParameters(Qspray, values = alpha))

@@ -33,7 +33,7 @@ KostkaNumbers <- function(n, alpha = NULL) {
   Knumbers
 }
 
-#' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysOption
+#' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysOption<-
 #' @importFrom partitions restrictedparts
 #' @importFrom utils tail
 #' @noRd
