@@ -95,9 +95,9 @@ JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
   fullMsCombo <- MSPcombination(qspray - constantTerm, check = check)
   lambdas <- lapply(fullMsCombo, `[[`, "lambda")
   weights <- unique(vapply(lambdas, sum, integer(1L)))
-  invKostkaMatrices <- lapply(weights, function(weight) {
-    .invKostkaMatrix(weight, alpha, which)
-  })
+  # invKostkaMatrices <- lapply(weights, function(weight) {
+  #   .invKostkaMatrix(weight, alpha, which)
+  # })
   finalQspray <- qzero()
   for(weight in weights) {
     invKostkaMatrix <- .invKostkaMatrix(weight, alpha, which)

@@ -8,6 +8,11 @@ partitionAsString <- function(lambda) {
   paste0("[", toString(lambda), "]")
 }
 
+fromPartitionAsString <- function(string) {
+  string <- gsub("(\\[|\\])", "", string)
+  as.integer(strsplit(string, ",", fixed = TRUE)[[1L]])
+}
+
 isInteger <- function(n){
   is.vector(n) && is.numeric(n) &&
     length(n) == 1L && !is.na(n) && as.integer(n) == n
