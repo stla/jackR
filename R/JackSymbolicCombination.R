@@ -46,7 +46,8 @@ msPolynomialsInJackSymbolicBasis <- function(which, n, weight) {
 #' @description Expression of a symmetric polynomial as a linear combination
 #'   of Jack polynomials with symbolic parameter.
 #'
-#' @param qspray a \code{qspray} object defining a symmetric polynomial
+#' @param qspray a \code{qspray} object or a \code{symbolicQspray} object
+#'   defining a symmetric polynomial
 #' @param which which Jack polynomials, \code{"J"}, \code{"P"}, \code{"Q"} or
 #'   \code{"C"}
 #' @param check Boolean, whether to check the symmetry
@@ -67,28 +68,33 @@ symbolicJackCombination <- function(qspray, which = "J", check = TRUE) {
       out <- list()
     } else {
       out <-
-        list(list("coeff" = getConstantTerm(qspray), "lambda" = integer(0L)))
+        list(list(
+          "coeff" = as.ratioOfQsprays(getConstantTerm(qspray)),
+          "lambda" = integer(0L)
+        ))
       names(out) <- "[]"
     }
     return(out)
   }
+  symbolic <- inherits(qspray, "symbolicQspray")
   constantTerm <- getConstantTerm(qspray)
   which <- match.arg(which, c("J", "P", "Q", "C"))
   fullMsCombo <- MSPcombination(qspray - constantTerm, check = check)
   lambdas <- lapply(fullMsCombo, `[[`, "lambda")
   weights <- unique(vapply(lambdas, sum, integer(1L)))
   n <- numberOfVariables(qspray)
-  finalQspray <- qzero()
+  finalQspray <- Qzero()
   for(weight in weights) {
     invKostkaMatrix <- msPolynomialsInJackSymbolicBasis(which, n, weight)
     kappas <- lapply(names(invKostkaMatrix), fromPartitionAsString)
     msCombo <- Filter(function(t) {sum(t[["lambda"]]) == weight}, fullMsCombo)
-    coeffs <- c_bigq(lapply(msCombo, `[[`, "coeff"))
+    coeffs <- lapply(msCombo, `[[`, "coeff")
+    unitRatioOfQsprays <- as.ratioOfQsprays(1L)
     sprays <- lapply(kappas, function(kappa) {
       new(
         "symbolicQspray",
         powers = list(kappa),
-        coeffs = list(as.ratioOfQsprays(1L))
+        coeffs = list(unitRatioOfQsprays)
       )
     })
     names(sprays) <- names(invKostkaMatrix)
@@ -102,7 +108,7 @@ symbolicJackCombination <- function(qspray, which = "J", check = TRUE) {
           spray <- spray + coeff * sprays[[kappa]]
         }
       }
-      finalQspray <- finalQspray + coeffs[i]*spray
+      finalQspray <- finalQspray + coeffs[[i]]*spray
     }
   }
   finalQspray <- orderedQspray(finalQspray)

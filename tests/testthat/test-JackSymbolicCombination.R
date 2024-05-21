@@ -56,3 +56,18 @@ test_that("symbolicJackCombination for a 'degenerate' symmetric polynomial", {
   alpha <- "3/2"
   expect_true(qspray == substituteParameters(Qspray, values = alpha))
 })
+
+test_that("symbolicJackCombination for a symbolicQspray", {
+  n <- 4L
+  which <- "Q"
+  x <- qlone(1L)
+  Qspray <- 3*JackSymPol(n, c(3, 1), which) - 5*x*JackSymPol(n, c(2, 2), which)
+  combo <- symbolicJackCombination(Qspray, which)
+  #
+  lambdas <- names(combo)
+  expect_identical(lambdas, c("[3, 1]", "[2, 2]"))
+  #
+  coeffs <- lapply(combo, `[[`, "coeff")
+  expect_true(coeffs[[1L]] == 3)
+  expect_true(coeffs[[2L]] == -5*x)
+})
