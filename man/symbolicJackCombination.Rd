@@ -7,7 +7,8 @@
 symbolicJackCombination(qspray, which = "J", check = TRUE)
 }
 \arguments{
-\item{qspray}{a \code{qspray} object defining a symmetric polynomial}
+\item{qspray}{a \code{qspray} object or a \code{symbolicQspray} object
+defining a symmetric polynomial}
 
 \item{which}{which Jack polynomials, \code{"J"}, \code{"P"}, \code{"Q"} or
 \code{"C"}}
