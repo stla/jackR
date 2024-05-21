@@ -7,8 +7,14 @@ package dependencies. No change for the user.
 Kostka numbers with parameter (for `alpha=1` these are the standard Kostka 
 numbers).
 
+- New function `symbolicKostkaNumbers`, to get the Kostka numbers with a 
+symbolic parameter.
+
 - New function `JackCombination`, to get a symmetric polynomial as a linear 
 combination of some Jack polynomials.
+
+- New function `symbolicJackCombination`, to get a symmetric polynomial as a 
+linear combination of some Jack polynomials with symbolic Jack parameter.
 
 
 # Version 6.0.0 (2024-05-03)
