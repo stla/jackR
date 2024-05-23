@@ -105,11 +105,11 @@ HallLittlewoodP <- function(n, lambda) {
     dom <- lapply(Columns(dominatedPartitions(kappa)), removeTrailingZeros)
     names(dom) <- vapply(dom, partitionAsString, character(1L))
     lapply(dom, function(mu) {
-      KostaFourbes(kappa, mu)
+      KostaFoulkesPolynomial(kappa, mu)
     })
   })
   coeffs <- invTriMatrix(kfs)
-  coeffs <- coeffs[[lambdaStrings[1L]]]
+  coeffs <- coeffs[[lambdaStrings[i]]]
   hlp <- Qzero()
   for(mu in names(coeffs)) {
     c <- coeffs[[mu]]
