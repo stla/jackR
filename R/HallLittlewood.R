@@ -35,7 +35,7 @@ SSYTXwithGivenShapeAndContent <- function(lambda, mu) { # mu partition
       out <- c(out, unique(ssytx))
     }
   }
-  out
+  unique(out)
 }
 
 #' @importFrom utils tail
@@ -79,6 +79,9 @@ charge <- function(w) {
 #'
 #' @examples
 KostaFoulkesPolynomial <- function(lambda, mu) {
+  stopifnot(isPartition(lambda), isPartition(mu))
+  lambda <- removeTrailingZeros(lambda)
+  mu <- removeTrailingZeros(mu)
   if(isDominated(mu, lambda)) {
     Tx <- SSYTXwithGivenShapeAndContent(lambda, mu)
     ws <- lapply(Tx, function(t) unlist(lapply(t, rev)))
@@ -93,7 +96,9 @@ KostaFoulkesPolynomial <- function(lambda, mu) {
 }
 
 #' @importFrom partitions parts
-#' @importFrom symbolicQspray Qzero
+#' @importFrom symbolicQspray Qzero showSymbolicQsprayOption
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+#' @noRd
 HallLittlewoodP <- function(n, lambda) {
   weight <- sum(lambda)
   lambdas <- lapply(Columns(parts(weight)), removeTrailingZeros)
@@ -116,5 +121,45 @@ HallLittlewoodP <- function(n, lambda) {
     mu <- fromPartitionAsString(mu)
     hlp <- hlp + c * as(SchurPol(n, mu), "symbolicQspray")
   }
+  showSymbolicQsprayOption(hlp, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ("t")
   hlp
+}
+
+phi <- function(r) {
+  t <- qlone(1L)
+  Reduce(`*`, lapply(seq_len(r), function(i) (1L-t^i)))
+}
+
+b <- function(lambda) {
+  m <- vapply(unique(lambda), function(i) sum(lambda == i), integer(1L))
+  Reduce(`*`, lapply(m, phi))
+}
+
+#' @title Hall-Littlewood polynomial
+#' @description Hall-Littlewood polynomial of a given partition.
+#'
+#' @param n number of variables
+#' @param lambda integer partition
+#' @param which which Hall-Littlewood polynomial, \code{"P"} or \code{"Q"}
+#'
+#' @return The Hall-Littlewood polynomial in \code{n} variables of the
+#'   integer partition \code{lambda}.
+#' @export
+#' @importFrom symbolicQspray Qzero
+#'
+#' @examples
+HallLittlewood <- function(n, lambda, which = "P") {
+  stopifnot(isPositiveInteger(n))
+  stopifnot(isPartition(lambda))
+  which <- match.arg(which, c("P", "Q"))
+  lambda <- removeTrailingZeros(lambda)
+  if(length(lambda) > n) {
+    return(Qzero())
+  }
+  Qspray <- HallLittlewoodP(n, lambda)
+  if(which == "Q") {
+    Qspray <- b(lambda) * Qspray
+  }
+  Qspray
 }
