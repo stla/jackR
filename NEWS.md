@@ -11,10 +11,21 @@ numbers).
 symbolic parameter.
 
 - New function `JackCombination`, to get a symmetric polynomial as a linear 
-combination of some Jack polynomials.
+combination of some Jack polynomials with a fixed parameter.
 
 - New function `symbolicJackCombination`, to get a symmetric polynomial as a 
 linear combination of some Jack polynomials with symbolic Jack parameter.
+
+- New function `KostaFoulkesPolynomial`, to get a Kostka-Foulkes polynomial. 
+A Kostka-Foulkes polynomial is a univariate polynomial associated to a pair of
+integer partitions and its value at 1 is the Kostka number associated to these 
+partitions.
+
+- New function `HallLittlewood`, to get a Hall-Littlewood polynomial. A 
+Hall-Littlewood polynomial is a multivariate symmetric polynomial associated 
+to an integer partition and depending on a parameter. When the value of this 
+parameter is 0, then this is the Schur polynomial, and when the value of this 
+parameter is 1, then this is the monomial symmetric polynomial.
 
 
 # Version 6.0.0 (2024-05-03)
