@@ -73,7 +73,7 @@ charge <- function(w) {
 #' @param lambda,mu integer partitions
 #'
 #' @return The Kostka-Foulkes polynomial associated to \code{lambda} and
-#'   \code{mu}.
+#'   \code{mu}. This is a univariate \code{qspray} polynomial.
 #' @export
 #' @importFrom qspray qlone qzero showQsprayOption<- showQsprayXYZ
 KostaFoulkesPolynomial <- function(lambda, mu) {
@@ -179,14 +179,18 @@ b <- function(lambda) {
 #' @param which which Hall-Littlewood polynomial, \code{"P"} or \code{"Q"}
 #'
 #' @return The Hall-Littlewood polynomial in \code{n} variables of the
-#'   integer partition \code{lambda}.
+#'   integer partition \code{lambda}. This is a \code{symbolicQspray}
+#'   polynomial with a unique parameter.
 #' @export
-#' @importFrom symbolicQspray Qzero
+#' @importFrom symbolicQspray Qzero Qone
 HallLittlewood <- function(n, lambda, which = "P") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   which <- match.arg(which, c("P", "Q"))
   lambda <- removeTrailingZeros(lambda)
+  if(length(lambda) == 0L) {
+    return(Qone())
+  }
   if(length(lambda) > n) {
     return(Qzero())
   }

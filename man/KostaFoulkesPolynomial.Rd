@@ -11,7 +11,7 @@ KostaFoulkesPolynomial(lambda, mu)
 }
 \value{
 The Kostka-Foulkes polynomial associated to \code{lambda} and
-  \code{mu}.
+  \code{mu}. This is a univariate \code{qspray} polynomial.
 }
 \description{
 Kostka-Foulkes polynomial for two given partitions.

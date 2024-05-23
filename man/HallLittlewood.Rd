@@ -15,7 +15,8 @@ HallLittlewood(n, lambda, which = "P")
 }
 \value{
 The Hall-Littlewood polynomial in \code{n} variables of the
-  integer partition \code{lambda}.
+  integer partition \code{lambda}. This is a \code{symbolicQspray}
+  polynomial with a unique parameter.
 }
 \description{
 Hall-Littlewood polynomial of a given partition.
