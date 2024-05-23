@@ -93,6 +93,43 @@ KostaFoulkesPolynomial <- function(lambda, mu) {
   out
 }
 
+#' @importFrom utils head
+#' @importFrom qspray qone
+#' @noRd
+invUnitTriMatrix <- function(L) {
+  d <- length(L)
+  if(d == 1L) {
+    return(L)
+  } else {
+    B <- invUnitTriMatrix(lapply(head(L, -1L), function(row) {
+      head(row, -1L)
+    }))
+    newColumn <- lapply(seq_len(d-1L), function(i) {
+      toAdd <- mapply(
+        `*`,
+        B[[i]], lapply(i:(d-1L), function(j) {
+          L[[j]][[d-j+1L]]
+        }),
+        SIMPLIFY = FALSE, USE.NAMES = FALSE
+      )
+      -Reduce(`+`, toAdd)
+    })
+    B <- c(B, list(list()))
+    newColumn <- c(newColumn, list(qone()))
+    names(B) <- names(newColumn) <- names(L)
+    Names <- lapply(L, names)
+    mapply(
+      function(row, x, nms) {
+        out <- c(row, list(x))
+        names(out) <- nms
+        out
+      },
+      B, newColumn, Names,
+      SIMPLIFY = FALSE, USE.NAMES = TRUE
+    )
+  }
+}
+
 #' @importFrom partitions parts
 #' @importFrom symbolicQspray Qzero showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
@@ -111,7 +148,7 @@ HallLittlewoodP <- function(n, lambda) {
       KostaFoulkesPolynomial(kappa, mu)
     })
   })
-  coeffs <- invTriMatrix(kfs)
+  coeffs <- invUnitTriMatrix(kfs)
   coeffs <- coeffs[[lambdaStrings[i]]]
   hlp <- Qzero()
   for(mu in names(coeffs)) {
