@@ -76,8 +76,6 @@ charge <- function(w) {
 #'   \code{mu}.
 #' @export
 #' @importFrom qspray qlone qzero showQsprayOption<- showQsprayXYZ
-#'
-#' @examples
 KostaFoulkesPolynomial <- function(lambda, mu) {
   stopifnot(isPartition(lambda), isPartition(mu))
   lambda <- removeTrailingZeros(lambda)
@@ -96,7 +94,7 @@ KostaFoulkesPolynomial <- function(lambda, mu) {
 }
 
 #' @importFrom partitions parts
-#' @importFrom symbolicQspray Qzero showSymbolicQsprayOption
+#' @importFrom symbolicQspray Qzero showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
 #' @noRd
 HallLittlewoodP <- function(n, lambda) {
@@ -147,8 +145,6 @@ b <- function(lambda) {
 #'   integer partition \code{lambda}.
 #' @export
 #' @importFrom symbolicQspray Qzero
-#'
-#' @examples
 HallLittlewood <- function(n, lambda, which = "P") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
