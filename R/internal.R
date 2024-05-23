@@ -4,6 +4,26 @@
 #' @importFrom qspray qlone
 NULL
 
+isDecreasing <- function(x) {
+  all(diff(x) <= 0)
+}
+
+#' @importFrom utils head
+#' @noRd
+removeTrailingZeros <- function(x) {
+  n <- length(x)
+  while(x[n] == 0 && n > 0L) {
+    n <- n - 1L
+  }
+  head(x, n)
+}
+
+Columns <- function(M) {
+  lapply(seq_len(ncol(M)), function(j) {
+    M[, j]
+  })
+}
+
 partitionAsString <- function(lambda) {
   paste0("[", toString(lambda), "]")
 }
@@ -272,3 +292,4 @@ as_mvp_qspray <- function(s) {
 #' @importFrom qspray as.qspray qzero qone
 #' @importFrom spray zero one lone
 NULL
+
