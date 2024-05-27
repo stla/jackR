@@ -30,11 +30,7 @@ p
 SkewSchurPol(n, lambda, mu)
 
 # skew Hall-Littlewood
-phi_theta <- function(skt) {
-  lambda <- lengths(skt)
-  mu <- jack:::removeTrailingZeros(vapply(skt, function(row) {
-    sum(is.na(row))
-  }, integer(1L)))
+phi_lambda_mu <- function(lambda, mu) {
   lambdaPrime <- conjugate(lambda)
   muPrime <- conjugate(mu)
   l <- length(lambdaPrime)
@@ -61,7 +57,7 @@ phi_theta <- function(skt) {
 
 lambda <- c(2, 2, 1)
 mu <- c(2, 2)
-phi_theta(lambda, mu)
+phi_lambda_mu(lambda, mu)
 
 lambdais <- function(lambda, mu) {
   lambda0 <- mu
@@ -80,3 +76,38 @@ lambdais <- function(lambda, mu) {
 }
 
 lambdais(c(3,3,3,2), c(2,1,1))
+
+phiT <- function(skt) {
+  lambda <- lengths(skt)
+  mu <- jack:::removeTrailingZeros(vapply(skt, function(row) {
+    sum(is.na(row))
+  }, integer(1L)))
+  lambdas <- lambdais(lambda, mu)
+  r <- length(lambdas)
+  Reduce(`*`, lapply(2L:r, function(i) {
+    phi_lambda_mu(lambdas[[i]], lambdas[[i-1]])
+  }))
+
+}
+
+
+lambda <- c(3, 2, 1)
+mu <- c(1, 1)
+n <- 4
+sktx <- syt::all_ssSkewTableaux(lambda, mu, n)
+length(sktx)
+phiT(sktx[[3]])
+
+p <- Qzero()
+lones <- lapply(1:n, Qlone)
+for(skt in sktx) {
+  ct <- content(skt)
+  q <- Qone()
+  for(i in seq_along(ct)) {
+    q <- q * lones[[i]]^(ct[i])
+  }
+  p <- p + phiT(skt)*q
+}
+p
+SkewSchurPol(n, lambda, mu)
+substituteParameters(p, 0)
