@@ -56,6 +56,32 @@ phi_lambda_mu <- function(lambda, mu) {
   }
 }
 
+psi_lambda_mu <- function(lambda, mu) {
+  lambdaPrime <- conjugate(lambda)
+  muPrime <- conjugate(mu)
+  l <- length(lambdaPrime)
+  muPrime <- c(muPrime, rep(0L, l - length(muPrime)))
+  thetaPrime <- lambdaPrime - muPrime
+  i_ <- which(head(thetaPrime, -1L) - tail(thetaPrime, -1L) == -1L)
+  # i_ <- integer(0L)
+  # for(k in seq_len(length(thetaPrime) - 1L)) {
+  #   if(thetaPrime[k] > thetaPrime[k+1]) {
+  #     i_ <- c(i_, k)
+  #   }
+  # }
+  if(length(i_) > 0L) {
+    m_ <- vapply(i_, function(i) {
+      sum(mu == i)
+    }, integer(1L))
+    t <- qlone(1L)
+    Reduce(`*`, lapply(m_, function(m) {
+      1L - t^m
+    }))
+  } else {
+    qone()
+  }
+}
+
 lambda <- c(2, 2, 1)
 mu <- c(2, 2)
 phi_lambda_mu(lambda, mu)
@@ -68,7 +94,7 @@ lambdais <- function(lambda, mu) {
   lambdas <- vector("list", r+1L)
   lambdas[[1L]] <- mu
   lambdas[[r+1L]] <- lambda
-  for(i in seq_len(r)) {
+  for(i in seq_len(r-1L)) {
     kappa <- lambdas[[i]]
     kappa[ws[i]] <- lambda[ws[i]]
     lambdas[[i+1L]] <- kappa
@@ -86,18 +112,19 @@ phiT <- function(skt) {
   lambdas <- lambdais(lambda, mu)
   r <- length(lambdas)
   Reduce(`*`, lapply(2L:r, function(i) {
-    phi_lambda_mu(lambdas[[i]], lambdas[[i-1]])
+    psi_lambda_mu(lambdas[[i]], lambdas[[i-1L]])
   }))
 
 }
 
 
-lambda <- c(3, 2, 1)
-mu <- c(2, 1, 1)
-n <- 5
+lambda <- c(4,3)
+mu <- c(2,2)
+n <- 7
 sktx <- syt::all_ssSkewTableaux(lambda, mu, n)
 length(sktx)
 phiT(sktx[[3]])
+lapply(sktx[1:36], phiT)
 
 p <- Qzero()
 lones <- lapply(1:n, Qlone)
@@ -113,4 +140,6 @@ p
 SkewSchurPol(n, lambda, mu)
 substituteParameters(p, 0)
 evalQspray(jack:::b(mu), 0) / evalQspray(jack:::b(lambda), 0)
+jack:::b(lambda) / jack:::b(mu) * p
+jack:::b(mu) / jack:::b(lambda) * p
 
