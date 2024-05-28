@@ -141,13 +141,15 @@ HallLittlewoodP <- function(n, lambda) {
   names(lambdas) <- lambdaStrings
   i <- match(partitionAsString(lambda), lambdaStrings)
   lambdas <- lambdas[i:length(lambdas)]
-  kfs <- lapply(lambdas, function(kappa) {
-    dom <- lapply(Columns(dominatedPartitions(kappa)), removeTrailingZeros)
-    names(dom) <- vapply(dom, partitionAsString, character(1L))
-    lapply(dom, function(mu) {
+  kfs <- lapply(seq_along(lambdas), function(j) {
+    kappas <- lambdas[j:length(lambdas)]
+    names(kappas) <- vapply(kappas, partitionAsString, character(1L))
+    kappa <- kappas[[1L]]
+    lapply(kappas, function(mu) {
       KostaFoulkesPolynomial(kappa, mu)
     })
   })
+  names(kfs) <- lambdaStrings[i:length(lambdaStrings)]
   coeffs <- invUnitTriMatrix(kfs)
   coeffs <- coeffs[[lambdaStrings[i]]]
   hlp <- Qzero()
@@ -161,14 +163,14 @@ HallLittlewoodP <- function(n, lambda) {
   hlp
 }
 
-phi <- function(r) {
+phi_r <- function(r) {
   t <- qlone(1L)
   Reduce(`*`, lapply(seq_len(r), function(i) (1L-t^i)))
 }
 
 b <- function(lambda) {
   m <- vapply(unique(lambda), function(i) sum(lambda == i), integer(1L))
-  Reduce(`*`, lapply(m, phi))
+  Reduce(`*`, lapply(m, phi_r))
 }
 
 #' @title Hall-Littlewood polynomial
