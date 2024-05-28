@@ -21,11 +21,17 @@ A Kostka-Foulkes polynomial is a univariate polynomial associated to a pair of
 integer partitions and its value at 1 is the Kostka number associated to these 
 partitions.
 
-- New function `HallLittlewood`, to get a Hall-Littlewood polynomial. A 
+- New function `HallLittlewoodPol`, to get a Hall-Littlewood polynomial. A 
 Hall-Littlewood polynomial is a multivariate symmetric polynomial associated 
 to an integer partition and depending on a parameter. When the value of this 
 parameter is 0, then this is the Schur polynomial, and when the value of this 
 parameter is 1, then this is the monomial symmetric polynomial.
+
+- New function `SkewHallLittlewoodPol`, to get a skew Hall-Littlewood 
+polynomial. A skew Hall-Littlewood polynomial is a multivariate symmetric 
+polynomial associated to a skew integer partition and depending on a parameter. 
+When the value of this parameter is 0, then this is the skew Schur polynomial.
+
 
 
 # Version 6.0.0 (2024-05-03)
