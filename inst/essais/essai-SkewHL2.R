@@ -32,15 +32,17 @@ columnStrictTableau <- function(tableau) {
 psi <- function(lambda, mu) {
   t <- qlone(1L)
   out <- qone()
-  mlambda <- vapply(1:lambda[1], function(i) {
+  i_ <- seq_len(lambda[1L])
+  mlambda <- vapply(i_, function(i) {
     sum(lambda == i)
   }, integer(1L))
-  mmu <- vapply(1:lambda[1], function(i) {
+  mmu <- vapply(i_, function(i) {
     sum(mu == i)
   }, integer(1L))
-  for(i in 1:lambda[1]) {
-    if(mmu[i] == mlambda[i]+1) {
-      out <- out * (1-t^mmu[i])
+  for(i in i_) {
+    mmu_i <- mmu[i]
+    if(mmu_i == mlambda[i]+1) {
+      out <- out * (1L - t^mmu_i)
     }
   }
   out
@@ -49,15 +51,17 @@ psi <- function(lambda, mu) {
 phi <- function(lambda, mu) {
   t <- qlone(1L)
   out <- qone()
-  mlambda <- vapply(1:lambda[1], function(i) {
+  i_ <- seq_len(lambda[1L])
+  mlambda <- vapply(i_, function(i) {
     sum(lambda == i)
   }, integer(1L))
-  mmu <- vapply(1:lambda[1], function(i) {
+  mmu <- vapply(i_, function(i) {
     sum(mu == i)
   }, integer(1L))
-  for(i in 1:lambda[1]) {
-    if(mmu[i]+1L == mlambda[i]) {
-      out <- out * (1-t^mlambda[i])
+  for(i in i_) {
+    mlambda_i <- mlambda[i]
+    if(mmu[i]+1L == mlambda_i) {
+      out <- out * (1L - t^mlambda_i)
     }
   }
   out
