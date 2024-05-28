@@ -14,6 +14,12 @@
 #' @examples
 #' KostkaNumbers(4)
 KostkaNumbers <- function(n, alpha = NULL) {
+  stopifnot(isPositiveInteger(n))
+  if(n == 0L) {
+    Knumbers <- as.matrix("1")
+    colnames(Knumbers) <- rownames(Knumbers) <- "()"
+    return(Knumbers)
+  }
   if(is.null(alpha)) {
     Knumbers <- SchurCoefficientsQ(n)
     stringParts <- paste0("(", gsub("(, 0| )", "", colnames(Knumbers)), ")")
@@ -145,5 +151,9 @@ KostkaNumbers <- function(n, alpha = NULL) {
 #' @examples
 #' symbolicKostkaNumbers(3)
 symbolicKostkaNumbers <- function(n) {
-  .symbolicKostkaNumbers(n, n, which = "P")
+  if(n == 0L) {
+    list("[]" = list("[]" = as.ratioOfQsprays(1L)))
+  } else {
+    .symbolicKostkaNumbers(n, n, which = "P")
+  }
 }
