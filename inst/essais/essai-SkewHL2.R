@@ -41,7 +41,7 @@ psi <- function(lambda, mu) {
   }, integer(1L))
   for(i in i_) {
     mmu_i <- mmu[i]
-    if(mmu_i == mlambda[i]+1) {
+    if(mmu_i == mlambda[i]+1L) {
       out <- out * (1L - t^mmu_i)
     }
   }
@@ -142,10 +142,14 @@ SkewHallLittlewoodP <- function(n, lambda, mu) {
   paths <- Paths(n, lambda, mu)
   Pskew <- Qzero()
   lones <- lapply(1L:n, Qlone)
-  for(j in 1:length(paths)) {
+  for(j in 1L:length(paths)) {
     nu <- rev(paths[[j]])
-    Pskew <- Pskew + Reduce(`*`, lapply(1L+seq_len(length(nu)-1L), function(i) {
-      psi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]-nu[[i-1]]))
+    l <- length(nu) - 1L
+    Pskew <- Pskew + Reduce(`*`, lapply(seq_len(l), function(i) {
+      nu_i <- nu[[i]]
+      next_nu_i <- nu[[i+1L]]
+      lone_i <- lones[[i]]
+      psi(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
     }))
   }
   Pskew
@@ -182,9 +186,53 @@ SkewHallLittlewoodQ <- function(n, lambda, mu) {
   Qskew
 }
 
+SkewHallLittlewood <- function(n, lambda, mu, which = "P") {
+  stopifnot(jack:::isPositiveInteger(n))
+  which <- match.arg(which, c("P", "Q"))
+  lambda <- as.integer(jack:::removeTrailingZeros(lambda))
+  mu <- as.integer(jack:::removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  mu <- c(mu, rep(0L, ellLambda - ellMu))
+  if(any(lambda - mu < 0L)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  if(n == 0L){
+    if(all(lambda == mu)) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
+  }
+  paths <- Paths(n, lambda, mu)
+  out <- Qzero()
+  lones <- lapply(1L:n, Qlone)
+  if(which == "P") {
+    ptheta <- psi
+  } else {
+    ptheta <- phi
+  }
+  for(j in 1L:length(paths)) {
+    nu <- rev(paths[[j]])
+    l <- length(nu) - 1L
+    out <- out + Reduce(`*`, lapply(seq_len(l), function(i) {
+      nu_i <- nu[[i]]
+      next_nu_i <- nu[[i+1L]]
+      lone_i <- lones[[i]]
+      ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
+    }))
+  }
+  out
+}
+
 lambda <- c(3, 2, 1)
 mu <- c(2, 1)
 n <- sum(lambda) - sum(mu)
+SkewHallLittlewood(n, lambda, mu, "Q")
+
 Pskew <- SkewHallLittlewoodP(n, lambda, mu)
 SkewSchurPol(n, lambda, mu)
 substituteParameters(Pskew, 0)
