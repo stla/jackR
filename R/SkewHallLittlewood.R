@@ -120,10 +120,10 @@ Paths <- function(n, lambda, mu) {
 #'
 #' @examples
 #' n <- 3; lambda <- c(3, 2, 1); mu <- c(1, 1)
-#' skewHLpoly <- SkewHallLittlewood(n, lambda, mu)
+#' skewHLpoly <- SkewHallLittlewoodPol(n, lambda, mu)
 #' skewSchurPoly <- SkewSchurPol(n, lambda, mu)
 #' substituteParameters(skewHLpoly, 0) == skewSchurPoly # should be TRUE
-SkewHallLittlewood <- function(n, lambda, mu, which = "P") {
+SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
   stopifnot(isPositiveInteger(n))
   which <- match.arg(which, c("P", "Q"))
   lambda <- as.integer(removeTrailingZeros(lambda))

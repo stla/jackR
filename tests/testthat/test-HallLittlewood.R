@@ -1,5 +1,5 @@
 test_that("Hall-Littlewood P (2,2,1)", {
-  hlp <- HallLittlewood(5, c(2, 2, 1), "P")
+  hlp <- HallLittlewoodPol(5, c(2, 2, 1), "P")
   t <- qlone(1)
   M221 <- as(MSFpoly(5, c(2, 2, 1)), "symbolicQspray")
   M2111 <- as(MSFpoly(5, c(2, 1, 1, 1)), "symbolicQspray")
@@ -9,10 +9,10 @@ test_that("Hall-Littlewood P (2,2,1)", {
 })
 
 test_that("Hall-Littlewood Q", {
-  HLQ2 <- HallLittlewood(4, c(2), "Q")
-  HLQ22 <- HallLittlewood(4, c(2, 2), "Q")
-  HLQ31 <- HallLittlewood(4, c(3, 1), "Q")
-  HLQ4 <- HallLittlewood(4, c(4), "Q")
+  HLQ2 <- HallLittlewoodPol(4, c(2), "Q")
+  HLQ22 <- HallLittlewoodPol(4, c(2, 2), "Q")
+  HLQ31 <- HallLittlewoodPol(4, c(3, 1), "Q")
+  HLQ4 <- HallLittlewoodPol(4, c(4), "Q")
   t <- qlone(1)
   expected <- HLQ22 + (1-t)*HLQ31 + (1-t)*HLQ4
   expect_true(HLQ2^2 == expected)

@@ -182,10 +182,11 @@ b <- function(lambda) {
 #'
 #' @return The Hall-Littlewood polynomial in \code{n} variables of the
 #'   integer partition \code{lambda}. This is a \code{symbolicQspray}
-#'   polynomial with a unique parameter.
+#'   polynomial with a unique parameter, and its coefficients are
+#'   polynomial in this parameter.
 #' @export
 #' @importFrom symbolicQspray Qzero Qone
-HallLittlewood <- function(n, lambda, which = "P") {
+HallLittlewoodPol <- function(n, lambda, which = "P") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   which <- match.arg(which, c("P", "Q"))
