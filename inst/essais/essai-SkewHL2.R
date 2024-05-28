@@ -46,8 +46,16 @@ psi <- function(lambda, mu) {
   out
 }
 
+Combos <- function(a, b, n) {
+  if(n == 1L) {
+    return(cbind(a:b))
+  }
+  do.call(rbind, lapply(a:b, function(i) {
+    cbind(i, Combos(i, b, n-1L))
+  }))
+}
+
 Paths <- function(n, lambda, mu) {
-  mu0 <- mu
   mu <- c(mu, rep(0L, length(lambda) - length(mu)))
   diffs <- lambda - mu
   Grid <- as.matrix(expand.grid(lapply(diffs, function(i) c(0L, seq_len(i)))))
@@ -56,17 +64,19 @@ Paths <- function(n, lambda, mu) {
   kappas <- Filter(jack:::isDecreasing, apply(as.matrix(Grid), 1L, function(kappa) {
     kappa + mu
   }, simplify = FALSE))
-  combos <- arrangements::combinations(length(kappas), n-1L, replace = TRUE)
+  # combos <- arrangements::combinations(length(kappas), n-1L, replace = TRUE)
+  combos <- Combos(1L, length(kappas), n - 1L)
   Filter(columnStrictTableau, apply(combos, 1L, function(combo) {
-    Filter(function(nu) length(nu) > 0, c(list(lambda), lapply(combo, function(i) {
+    c(list(lambda), lapply(combo, function(i) {
       kappas[[i]]
-    }), list(mu)))
+    }), list(mu))
   }, simplify = FALSE))
 }
 
-lambda <- c(4, 3)
-mu <- c(2, 2)
-n <- sum(lambda) - sum(mu) + 1
+
+lambda <- c(3, 2, 1)
+mu <- c(2, 1)
+n <- sum(lambda) - sum(mu)
 paths <- Paths(n, lambda, mu)
 Pskew <- Qzero()
 lones <- lapply(1L:n, Qlone)
