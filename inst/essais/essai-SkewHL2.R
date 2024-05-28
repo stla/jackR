@@ -215,7 +215,7 @@ SkewHallLittlewood <- function(n, lambda, mu, which = "P") {
   } else {
     ptheta <- phi
   }
-  for(j in 1L:length(paths)) {
+  for(j in seq_along(paths)) {
     nu <- rev(paths[[j]])
     l <- length(nu) - 1L
     out <- out + Reduce(`*`, lapply(seq_len(l), function(i) {
