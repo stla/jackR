@@ -69,6 +69,9 @@ jack:::b(lambda) / jack:::b(mu) * psi(lambda, mu)
 phi(lambda, mu)
 
 Combos <- function(a, b, n) {
+  if(n == 0L) {
+    return(matrix(NA_integer_, nrow = 1L, ncol = 0L))
+  }
   if(n == 1L) {
     return(cbind(a:b))
   }
@@ -77,13 +80,25 @@ Combos <- function(a, b, n) {
   }))
 }
 
+cartesianProduct <- function(diffs) {
+  if(length(diffs) == 1L) {
+    return(cbind(rev(c(0L, seq_len(diffs)))))
+  }
+  previous <- cartesianProduct(tail(diffs, -1L))
+  do.call(rbind, lapply(rev(c(0L, seq_len(diffs[1L]))), function(i) {
+    cbind(i, previous)
+  }))
+}
+
+# assumes lambda is clean and length(mu)=length(lambda)
 Paths <- function(n, lambda, mu) {
-  mu <- c(mu, rep(0L, length(lambda) - length(mu)))
+  # mu <- c(mu, rep(0L, length(lambda) - length(mu)))
   diffs <- lambda - mu
-  Grid <- as.matrix(expand.grid(lapply(diffs, function(i) c(0L, seq_len(i)))))
-  o <- qspray:::lexorder(Grid)
-  Grid <- Grid[o, ]
-  kappas <- Filter(jack:::isDecreasing, apply(as.matrix(Grid), 1L, function(kappa) {
+  # Grid <- as.matrix(expand.grid(lapply(diffs, function(i) c(0L, seq_len(i)))))
+  # o <- qspray:::lexorder(Grid)
+  # Grid <- Grid[o, ]
+  Grid <- cartesianProduct(diffs)
+  kappas <- Filter(jack:::isDecreasing, apply(Grid, 1L, function(kappa) {
     kappa + mu
   }, simplify = FALSE))
   # combos <- arrangements::combinations(length(kappas), n-1L, replace = TRUE)
@@ -95,7 +110,31 @@ Paths <- function(n, lambda, mu) {
   }, simplify = FALSE))
 }
 
+# diffs <- c(1,1,2)
+# Grid <- as.matrix(expand.grid(lapply(diffs, function(i) c(0L, seq_len(i)))))
+# o <- qspray:::lexorder(Grid)
+# all(Grid[o, ] == cartesianProduct(diffs))
+
+
 SkewHallLittlewoodP <- function(n, lambda, mu) {
+  lambda <- as.integer(jack:::removeTrailingZeros(lambda))
+  mu <- as.integer(jack:::removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  mu <- c(mu, rep(0L, ellLambda - ellMu))
+  if(any(lambda - mu < 0L)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  if(n == 0L){
+    if(all(lambda == mu)) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
+  }
   paths <- Paths(n, lambda, mu)
   Pskew <- Qzero()
   lones <- lapply(1L:n, Qlone)
@@ -109,6 +148,24 @@ SkewHallLittlewoodP <- function(n, lambda, mu) {
 }
 
 SkewHallLittlewoodQ <- function(n, lambda, mu) {
+  lambda <- as.integer(jack:::removeTrailingZeros(lambda))
+  mu <- as.integer(jack:::removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  mu <- c(mu, rep(0L, ellLambda - ellMu))
+  if(any(lambda - mu < 0L)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  if(n == 0L){
+    if(all(lambda == mu)) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
+  }
   paths <- Paths(n, lambda, mu)
   Qskew <- Qzero()
   lones <- lapply(1L:n, Qlone)

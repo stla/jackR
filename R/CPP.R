@@ -9,15 +9,23 @@
 #' @return A \code{qspray} multivariate polynomial.
 #'
 #' @export
-#' @importFrom qspray qspray_from_list
+#' @importFrom qspray qspray_from_list qone qzero
 #'
 #' @examples
 #' ( schur <- SchurPol(3, lambda = c(3, 1)) )
 #' schur == JackPol(3, lambda = c(3, 1), alpha = "1", which = "P")
 SchurPol <- function(n, lambda) {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
-  lambda <- as.integer(lambda[lambda != 0])
-  qspray_from_list(SchurPolRcpp(as.integer(n), lambda))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  if(n == 0L){
+    if(length(lambda) == 0L) {
+      qone()
+    } else {
+      qzero()
+    }
+  } else {
+    qspray_from_list(SchurPolRcpp(as.integer(n), lambda))
+  }
 }
 
 #' Evaluation of Schur polynomial - C++ implementation
@@ -70,16 +78,23 @@ Schur <- function(x, lambda) {
 #'
 #' @export
 #' @importFrom gmp as.bigq factorialZ
-#' @importFrom qspray qspray_from_list ESFpoly
+#' @importFrom qspray qspray_from_list ESFpoly qone qzero
 #'
 #' @examples
 #' JackPol(3, lambda = c(3, 1), alpha = "2/5")
 JackPol <- function(n, lambda, alpha, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
-  lambda <- as.integer(lambda[lambda != 0])
+  lambda <- as.integer(removeTrailingZeros(lambda))
   alpha <- as.bigq(alpha)
   if(is.na(alpha)) {
     stop("Invalid `alpha`.")
+  }
+  if(n == 0L){
+    if(length(lambda) == 0L) {
+      return(qone())
+    } else {
+      return(qzero())
+    }
   }
   which <- match.arg(which, c("J", "P", "Q", "C"))
   alpha <- as.character(alpha)

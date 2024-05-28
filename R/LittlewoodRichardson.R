@@ -44,13 +44,13 @@ LRmult <- function(mu, nu, output = "dataframe") {
   stopifnot(isPartition(mu), isPartition(nu))
   output <- match.arg(output, c("dataframe", "list"))
   add <- function(old, lambda) {
-    insertWith(`+`, old, toString(lambda), 1L)
+    insertWith(`+`, old, partitionAsString(lambda), 1L)
   }
   v <- Reduce(add, addMu(mu, nu), init = integer(0L))
   if(output == "dataframe") {
     data.frame("coeff" = v, "lambda" = names(v))
   } else {
-    partitions <- lapply(strsplit(names(v), ","), as.integer)
+    partitions <- lapply(names(v), fromPartitionAsString)
     list("coeff" = unname(v), "lambda" = partitions)
   }
 }
@@ -189,15 +189,29 @@ diffSeq <- function(x) {
 LRskew <- function(lambda, mu, output = "dataframe") {
   stopifnot(isPartition(lambda), isPartition(mu))
   output <- match.arg(output, c("list", "dataframe"))
-  l <- length(lambda)
-  mu <- c(mu, rep(0L, l - length(mu)))
+  lambda <- as.integer(jack:::removeTrailingZeros(lambda))
+  mu <- as.integer(jack:::removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  mu <- c(mu, rep(0L, ellLambda - ellMu))
   if(any(lambda - mu < 0L)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
-  f <- function(old, nu) {
-    insertWith(`+`, old, toString(nu), 1L)
+  n <- sum(lambda - mu)
+  if(n == 0L) {
+    if(output == "dataframe") {
+      return(data.frame("coeff" = 1L, "nu" = "[]"))
+    } else {
+      return(list("coeff" = 1L, "nu" = list(integer(0L))))
+    }
   }
-  Liab <- rev(zip3(seq_len(l), lambda, mu))
+  f <- function(old, nu) {
+    insertWith(`+`, old, partitionAsString(nu), 1L)
+  }
+  Liab <- rev(zip3(seq_len(ellLambda), lambda, mu))
   diagram <- do.call(rbind, do.call(c, lapply(Liab, function(iab) {
     i <- iab[1L]
     a <- iab[2L]
@@ -207,13 +221,12 @@ LRskew <- function(lambda, mu, output = "dataframe") {
       c(i, j)
     })
   })))
-  n <- sum(lambda - mu)
   Lnu <- lapply(fillings(n, diagram), `[[`, 1L)
   v <- Reduce(f, Lnu, init = integer(0L))
   if(output == "dataframe") {
     data.frame("coeff" = v, "nu" = names(v))
   } else {
-    partitions <- lapply(strsplit(names(v), ","), as.integer)
+    partitions <- lapply(names(v), fromPartitionAsString)
     list("coeff" = unname(v), "nu" = partitions)
   }
 }
@@ -232,9 +245,11 @@ fillings <- function(n, diagram) {
     x <- xy[1L]
     y <- xy[2L]
     rest <- diagram[-1L, , drop = FALSE]
-    diagram <- apply(diagram, 1L, toString)
-    upper <- n + 1L - match(toString(c(x, y + 1L)), diagram, nomatch = n + 1L)
-    lower <- n + 1L - match(toString(c(x - 1L, y)), diagram, nomatch = n + 1L)
+    diagram <- apply(diagram, 1L, partitionAsString)
+    upper <-
+      n + 1L - match(partitionAsString(c(x, y + 1L)), diagram, nomatch = n + 1L)
+    lower <-
+      n + 1L - match(partitionAsString(c(x - 1L, y)), diagram, nomatch = n + 1L)
     L <- lapply(fillings(n - 1L, rest), function(filling) {
       nextLetter(lower, upper, filling)
     })

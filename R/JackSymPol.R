@@ -11,14 +11,21 @@
 #' @return A \code{symbolicQspray} object.
 #'
 #' @export
-#' @importFrom symbolicQspray symbolicQspray_from_list
+#' @importFrom symbolicQspray symbolicQspray_from_list Qzero Qone
 #'
 #' @examples
 #' JackSymPol(3, lambda = c(3, 1))
 JackSymPol <- function(n, lambda, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
-  lambda <- as.integer(lambda[lambda != 0])
+  lambda <- as.integer(removeTrailingZeros(lambda))
   which <- match.arg(which, c("J", "P", "Q", "C"))
+  if(n == 0L){
+    if(length(lambda) == 0L) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
+  }
   JackPolynomial <- symbolicQspray_from_list(
     JackSymPolRcpp(as.integer(n), lambda)
   )
