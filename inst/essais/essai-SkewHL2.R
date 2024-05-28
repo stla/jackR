@@ -46,6 +46,28 @@ psi <- function(lambda, mu) {
   out
 }
 
+phi <- function(lambda, mu) {
+  t <- qlone(1L)
+  out <- qone()
+  mlambda <- vapply(1:lambda[1], function(i) {
+    sum(lambda == i)
+  }, integer(1L))
+  mmu <- vapply(1:lambda[1], function(i) {
+    sum(mu == i)
+  }, integer(1L))
+  for(i in 1:lambda[1]) {
+    if(mmu[i]+1L == mlambda[i]) {
+      out <- out * (1-t^mlambda[i])
+    }
+  }
+  out
+}
+
+lambda <- c(3, 1)
+mu <- c(2, 1)
+jack:::b(lambda) / jack:::b(mu) * psi(lambda, mu)
+phi(lambda, mu)
+
 Combos <- function(a, b, n) {
   if(n == 1L) {
     return(cbind(a:b))
@@ -73,22 +95,39 @@ Paths <- function(n, lambda, mu) {
   }, simplify = FALSE))
 }
 
+SkewHallLittlewoodP <- function(n, lambda, mu) {
+  paths <- Paths(n, lambda, mu)
+  Pskew <- Qzero()
+  lones <- lapply(1L:n, Qlone)
+  for(j in 1:length(paths)) {
+    nu <- rev(paths[[j]])
+    Pskew <- Pskew + Reduce(`*`, lapply(1L+seq_len(length(nu)-1L), function(i) {
+      psi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]-nu[[i-1]]))
+    }))
+  }
+  Pskew
+}
+
+SkewHallLittlewoodQ <- function(n, lambda, mu) {
+  paths <- Paths(n, lambda, mu)
+  Qskew <- Qzero()
+  lones <- lapply(1L:n, Qlone)
+  for(j in 1:length(paths)) {
+    nu <- rev(paths[[j]])
+    Qskew <- Qskew + Reduce(`*`, lapply(1L+seq_len(length(nu)-1L), function(i) {
+      phi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]-nu[[i-1]]))
+    }))
+  }
+  Qskew
+}
 
 lambda <- c(3, 2, 1)
 mu <- c(2, 1)
 n <- sum(lambda) - sum(mu)
-paths <- Paths(n, lambda, mu)
-Pskew <- Qzero()
-lones <- lapply(1L:n, Qlone)
-for(j in 1:length(paths)) {
-  #  nu <- Filter(function(kappa) any(kappa)>0, paths[[i]])
-  nu <- rev(paths[[j]])
-  Pskew <- Pskew + Reduce(`*`, lapply(1L+seq_len(length(nu)-1L), function(i) {
-    psi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]-nu[[i-1]]))
-  }))
-}
-Pskew
+Pskew <- SkewHallLittlewoodP(n, lambda, mu)
 SkewSchurPol(n, lambda, mu)
 substituteParameters(Pskew, 0)
+Qskew <- SkewHallLittlewoodQ(n, lambda, mu)
 
+jack:::b(lambda) / jack:::b(mu) * Pskew == Qskew
 
