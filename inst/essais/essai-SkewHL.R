@@ -82,7 +82,7 @@ psi_lambda_mu <- function(lambda, mu) {
   }
 }
 
-lambda <- c(2, 2, 1)
+lambda <- c(4, 3)
 mu <- c(2, 2)
 phi_lambda_mu(lambda, mu)
 
@@ -116,24 +116,50 @@ phiT <- function(lambda, mu) {
   }))
 }
 
+phiT <- function(skt) {
+  r <- 3#max(na.omit(unlist(skt)))
+  lambdas <- lapply(1:r, function(i) {
+    lengths(lapply(skt, function(row) Filter(function(x) is.na(x) || x <= i, row)))
+  })
+  mus <- lapply(1:r, function(i) {
+    lengths(lapply(skt, function(row) Filter(function(x) is.na(x) || x <= i-1, row)))
+  })
+  Reduce(`*`, lapply(1L:r, function(i) {
+    psi_lambda_mu(lambdas[[i]], mus[[i]])
+  }))
+}
 
 lambda <- c(4,3)
 mu <- c(2,2)
-phiT_lambda_mu <- phiT(lambda, mu)
+#phiT_lambda_mu <- phiT(lambda, mu)
 n <- 3
 sktx <- syt::all_ssSkewTableaux(lambda, mu, n)
 length(sktx)
+
+weight <- function(skt) {
+  r <- 3#max(na.omit(unlist(skt)))
+  out <- NULL
+  for(i in 1:r) {
+    lambda <- lengths(lapply(skt, function(row) Filter(function(x) is.na(x) || x <= i, row)))
+    mu <- lengths(lapply(skt, function(row) Filter(function(x) is.na(x) || x <= i-1, row)))
+    out <- c(out, sum(lambda)-sum(mu))
+  }
+  out
+}
 
 p <- Qzero()
 lones <- lapply(1:n, Qlone)
 for(skt in sktx) {
   ct <- content(skt)
+  ct <- weight(skt)
   q <- Qone()
   for(i in seq_along(ct)) {
     q <- q * lones[[i]]^(ct[i])
   }
-  p <- p + q
+  p <- p + phiT(skt)*q
 }
+p
+
 p <- phiT_lambda_mu * p
 p
 SkewSchurPol(n, lambda, mu)
@@ -151,6 +177,59 @@ Reduce(`*`, lapply(2:4, function(i) {
   psi_lambda_mu(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]) - sum(nu[[i-1]]))
 }))
 
+f <- function(diffs, mu) {
+  n <- length(diffs)
+  if(n == 1L) {
+    return(rbind(diffs:0L))
+  }
+  previous <- f(tail(diffs, -1L))
+  do.call(cbind, lapply(0L:(diffs[1L]), function(i) {
+    rbind(i, previous[previous[1L, ]+i, ])
+  }))
+}
+
+f(c(1,1,1))
+
+columnStrictTableau <- function(tableau) {
+  all(
+    mapply(
+      horizontalStrip,
+      head(tableau, -1L), tail(tableau, -1L),
+      SIMPLIFY = TRUE, USE.NAMES = FALSE
+    )
+  )
+}
+
+Paths <- function(n, lambda, mu) {
+  mu0 <- mu
+  mu <- c(mu, rep(0L, length(lambda) - length(mu)))
+  diffs <- lambda - mu
+  Grid <- as.matrix(expand.grid(lapply(diffs, function(i) c(0L, seq_len(i)))))
+  o <- qspray:::lexorder(Grid)
+  Grid <- Grid[o, ]
+  kappas <- Filter(jack:::isDecreasing, apply(as.matrix(Grid), 1L, function(kappa) {
+    kappa + mu
+  }, simplify = FALSE))
+  combos <- arrangements::combinations(length(kappas), n-1L, replace = TRUE)
+  Filter(columnStrictTableau, apply(combos, 1L, function(combo) {
+    Filter(function(nu) length(nu) > 0, c(list(lambda), lapply(combo, function(i) {
+      kappas[[i]]
+    }), list(mu)))
+  }, simplify = FALSE))
+}
+
+paths <- Paths(3, c(4,3), c(2,2))
+Q <- Qzero()
+for(j in 1:length(paths)) {
+#  nu <- Filter(function(kappa) any(kappa)>0, paths[[i]])
+  nu <- rev(paths[[j]])
+    Q <- Q + Reduce(`*`, lapply(2:4, function(i) {
+      psi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]-nu[[i-1]]))
+    }))
+}
+Q
+
+
 paths <- cbind(
   c("2-2", "2-2"),
   c("2-2", "3-2"),
@@ -160,11 +239,20 @@ paths <- cbind(
   c("3-2", "4-3"),
   c("4-2", "4-2"),
   c("4-2", "4-3"),
-  c("4-3", "4-3")
+  c("4-3", "4-3"),
+  c("3-2", "3-3")
 )
 
 #paths <- ppp[, ppp[1,] == "2-2" & ppp[4,] == "4-3"]
 horizontalStrip <- function(lambda, mu) {
+  mu <- c(mu, rep(0L, length(lambda) - length(mu)))
+  x <- lambda[1] >= mu[1]
+  i <- 1L
+  while(x && i < length(lambda)) {
+    x <- mu[i] >= lambda[i+1] && lambda[i+1] >= mu[i+1]
+    i <- i+1
+  }
+  return(x)
   lambdaPrime <- conjugate(lambda)
   muPrime <- conjugate(mu)
   muPrime <- c(muPrime, rep(0L, length(lambdaPrime) - length(muPrime)))
@@ -205,7 +293,7 @@ for(j in 1:ncol(paths)) {
   nu <- lapply(path, vtonu)
   if(columnStrictTableau(nu)) {
     Q <- Q + Reduce(`*`, lapply(2:4, function(i) {
-      psi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]) - sum(nu[[i-1]]))
+      psi(nu[[i]], nu[[i-1]]) * lones[[i-1]]^(sum(nu[[i]]-nu[[i-1]]))
     }))
   }
 }
