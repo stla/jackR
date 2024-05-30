@@ -8,6 +8,18 @@ isDecreasing <- function(x) {
   all(diff(x) <= 0)
 }
 
+isIncreasing <- function(x) {
+  all(diff(x) >= 0)
+}
+
+.rg <- function(start, end) {
+  if(start <= end) {
+    start:end
+  } else {
+    integer(0L)
+  }
+}
+
 #' @importFrom utils head
 #' @noRd
 removeTrailingZeros <- function(x) {
