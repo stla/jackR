@@ -13,7 +13,8 @@ Description: Symbolic calculation and evaluation of the Jack polynomials,
     polynomials. Zonal polynomials appear in random matrix theory. Schur
     polynomials appear in the field of combinatorics, and Hall-Littlewood 
     polynomials generalize Schur polynomials. The package can also 
-    compute the skew Schur polynomials.
+    compute the skew Schur polynomials and the skew Hall-Littlewood 
+    polynomials.
 License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
@@ -33,6 +34,7 @@ Imports:
     RationalMatrix,
     Rcpp,
     spray,
+    syt,
     utils
 LinkingTo:
     BH,
@@ -42,7 +44,6 @@ LinkingTo:
     RcppCGAL,
     symbolicQspray
 Suggests: 
-    testthat,
-    syt
+    testthat
 Encoding: UTF-8
 RoxygenNote: 7.3.1

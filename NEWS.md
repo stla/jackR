@@ -32,6 +32,9 @@ polynomial. A skew Hall-Littlewood polynomial is a multivariate symmetric
 polynomial associated to a skew integer partition and depending on a parameter. 
 When the value of this parameter is 0, then this is the skew Schur polynomial.
 
+- New function `flaggedSchurPol`, to get a flagged Schur polynomial.
+
+- New function `flaggedSkewSchurPol`, to get a flagged skew Schur polynomial.
 
 
 # Version 6.0.0 (2024-05-03)
