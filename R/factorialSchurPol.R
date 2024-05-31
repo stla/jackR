@@ -30,6 +30,7 @@ factorialSchurPol <- function(n, lambda, a) {
       })
       Reduce(`*`, toMultiply)
     })
+    Reduce(`*`, factors)
   })
   Reduce(`+`, toAdd)
 }
