@@ -1,7 +1,7 @@
 test_that("Factorial Schur polynomial with a=(0, ...) is Schur polynomial", {
   n <- 4
   lambda <- c(3, 3, 2, 2)
-  a <- rep(0, n + lambda[1] -1)
+  a <- rep(0, n + lambda[1] - 1)
   factorialSchurPoly <- factorialSchurPol(n, lambda, a)
   schurPoly <- SchurPol(n, lambda)
   expect_true(factorialSchurPoly == schurPoly)
