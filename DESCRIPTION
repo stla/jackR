@@ -2,19 +2,21 @@ Type: Package
 Package: jack
 Title: Jack, Zonal, Schur, and Hall-Littlewood Polynomials
 Version: 6.0.0.9000
-Date: 2024-05-23
+Date: 2024-05-31
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials,
-    zonal polynomials, Schur polynomials, and Hall-Littlewood polynomials. 
+    zonal polynomials, Schur polynomials (possibly skew), Hall-Littlewood 
+    polynomials (possibly skew), flagged Schur polynomials (possibly skew),
+    and factorial Schur polynomials (possibly skew). 
     Mainly based on Demmel & Koev's paper (2006) 
-    <doi:10.1090/S0025-5718-05-01780-1>. Zonal
+    <doi:10.1090/S0025-5718-05-01780-1> and Macdonald's book (1995)
+    <doi:10.1093/oso/9780198534891.003.0001>. Zonal
     polynomials and Schur polynomials are particular cases of Jack
     polynomials. Zonal polynomials appear in random matrix theory. Schur
-    polynomials appear in the field of combinatorics, and Hall-Littlewood 
-    polynomials generalize Schur polynomials. The package can also 
-    compute the skew Schur polynomials and the skew Hall-Littlewood 
-    polynomials.
+    polynomials appear in the field of combinatorics. Hall-Littlewood 
+    polynomials, flagged Schur polynomials, and factorial Schur polynomials 
+    generalize Schur polynomials. 
 License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
