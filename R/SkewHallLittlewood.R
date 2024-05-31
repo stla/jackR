@@ -125,6 +125,7 @@ Paths <- function(n, lambda, mu) {
 #' substituteParameters(skewHLpoly, 0) == skewSchurPoly # should be TRUE
 SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
   stopifnot(isPositiveInteger(n))
+  stopifnot(isPartition(lambda), isPartition(mu))
   which <- match.arg(which, c("P", "Q"))
   lambda <- as.integer(removeTrailingZeros(lambda))
   mu <- as.integer(removeTrailingZeros(mu))
