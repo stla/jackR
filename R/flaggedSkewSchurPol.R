@@ -73,7 +73,7 @@ skewTableauWeight <- function(tableau) {
 #'
 #' @return A \code{qspray} polynomial.
 #' @export
-#' @importFrom qspray qlone qzero
+#' @importFrom qspray qlone qzero qone
 #' @importFrom utils head
 #'
 #' @examples
@@ -91,7 +91,11 @@ flaggedSkewSchurPol <- function(lambda, mu, a, b) {
     stop("`lambda`, `a`, and `b` must have the same length.")
   }
   mu <- as.integer(removeTrailingZeros(mu))
-  if(l < length(mu)) {
+  ellMu <- length(mu)
+  if(ellMu == l && all(lambda == mu)) {
+    return(qone())
+  }
+  if(l < ellMu) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   stopifnot(isIncreasing(a))

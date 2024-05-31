@@ -16,7 +16,7 @@
 #' @return A \code{qspray} polynomial.
 #' @export
 #' @importFrom syt all_ssytx
-#' @importFrom qspray qlone
+#' @importFrom qspray qlone qone qzero
 #'
 #' @references I.G. Macdonald.
 #' \emph{Schur functions: theme and variations}.
@@ -34,8 +34,15 @@ factorialSchurPol <- function(n, lambda, a) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   lambda <- removeTrailingZeros(as.integer(lambda))
-  tableaux <- all_ssytx(lambda, n)
   l <- length(lambda)
+  if(n == 0L) {
+    if(l == 0L) {
+      return(qone())
+    } else {
+      return(qzero())
+    }
+  }
+  tableaux <- all_ssytx(lambda, n)
   i_ <- 1L:l
   qlones <- lapply(1L:n, qlone)
   toAdd <- lapply(tableaux, function(tableau) {

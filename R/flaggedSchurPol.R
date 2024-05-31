@@ -48,7 +48,7 @@ tableauWeight <- function(tableau) {
 #'
 #' @return A \code{qspray} polynomial.
 #' @export
-#' @importFrom qspray qlone qzero
+#' @importFrom qspray qlone qzero qone
 #' @importFrom utils head
 #'
 #' @examples
@@ -62,6 +62,9 @@ flaggedSchurPol <- function(lambda, a, b) {
   stopifnot(isPartition(lambda))
   lambda <- removeTrailingZeros(as.integer(lambda))
   l <- length(lambda)
+  if(l == 0L) {
+    return(qone())
+  }
   if(!(l == length(a) && l == length(b))) {
     stop("`lambda`, `a`, and `b` must have the same length.")
   }
