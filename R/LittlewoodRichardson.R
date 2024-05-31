@@ -189,15 +189,15 @@ diffSeq <- function(x) {
 LRskew <- function(lambda, mu, output = "dataframe") {
   stopifnot(isPartition(lambda), isPartition(mu))
   output <- match.arg(output, c("list", "dataframe"))
-  lambda <- as.integer(jack:::removeTrailingZeros(lambda))
-  mu <- as.integer(jack:::removeTrailingZeros(mu))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
   ellMu <- length(mu)
   if(ellLambda < ellMu) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   mu <- c(mu, rep(0L, ellLambda - ellMu))
-  if(any(lambda - mu < 0L)) {
+  if(any(lambda < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   n <- sum(lambda - mu)

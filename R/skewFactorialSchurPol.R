@@ -1,5 +1,6 @@
-#' @title Factorial Schur polynomial
-#' @description Computes a factorial Schur polynomial.
+#' @title Skew factorial Schur polynomial
+#' @description Computes the skew factorial Schur polynomial associated to a
+#'   given skew partition.
 #'
 #' @param n number of variables
 #' @param lambda,mu integer partitions defining the skew partition:
@@ -10,12 +11,12 @@
 #'   \eqn{a} in the
 #'   \href{https://www.kurims.kyoto-u.ac.jp/EMIS/journals/SLC/opapers/s28macdonald.pdf}{reference paper},
 #'   section \strong{6th Variation} (in this paper \eqn{a} is a doubly
-#'   infinite sequence, but in the case of a non-skew partition, the
-#'   non-positive indices of this sequence are not involved); the length of
-#'   this vector must be large enough (an error will be thrown if it is too
-#'   small) but it is not easy to know the minimal possible length
+#'   infinite sequence, but only a finite number of indices are not involved);
+#'   the length of this vector must be large enough (an error will be thrown
+#'   if it is too small) but it is not easy to know the minimal possible length
 #' @param i0 positive integer, the index of \code{a} that must be considered
-#'   as the zero index
+#'   as the zero index of the sequence denoted by \eqn{a} in the reference
+#'   paper
 #'
 #' @return A \code{qspray} polynomial.
 #' @export
@@ -27,13 +28,15 @@
 #' Publ. IRMA Strasbourg, 1992.
 #'
 #' @examples
-#' # for a=c(0, 0, ...), the factorial Schur polynomial is the Schur polynomial
-#' n <- 3
-#' lambda <- c(2, 2, 2)
-#' a <- c(0, 0, 0, 0)
-#' factorialSchurPoly <- factorialSchurPol(n, lambda, a)
-#' schurPoly <- SchurPol(n, lambda)
-#' factorialSchurPoly == schurPoly # should be TRUE
+#' # for a=c(0, 0, ...), the skew factorial Schur polynomial is the
+#' # skew Schur polynomial; let's check
+#' n <- 4
+#' lambda <- c(3, 3, 2, 2); mu <- c(2, 2)
+#' a <- rep(0, 9)
+#' i0 <- 3
+#' skewFactorialSchurPoly <- SkewFactorialSchurPol(n, lambda, mu, a, i0)
+#' skewSchurPoly <- SkewSchurPol(n, lambda, mu)
+#' skewFactorialSchurPoly == skewSchurPoly # should be TRUE
 SkewFactorialSchurPol <- function(n, lambda, mu, a, i0) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda), isPartition(mu))
@@ -72,13 +75,3 @@ SkewFactorialSchurPol <- function(n, lambda, mu, a, i0) {
   })
   Reduce(`+`, toAdd)
 }
-
-#   | otherwise =
-#       sumOfSprays sprays
-#       let (a, k) = idx tableau i j in lones !! (a-1) <+ y IM.! k
-#     i_ = [1 .. length lambda]
-#     ij_ tableau =
-#       [(i, j) | i <- i_, j <- [1 .. length (snd (tableau !! (i-1)))]]
-#     factors tableau = [factor tableau i j | (i, j) <- ij_ tableau]
-#     spray tableau = productOfSprays (factors (getSkewTableau tableau))
-#     sprays = map spray skewTableaux

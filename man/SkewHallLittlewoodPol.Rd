@@ -22,7 +22,8 @@ A \code{symbolicQspray} multivariate polynomial, the skew
   coefficients are polynomial in this parameter.
 }
 \description{
-Returns the skew
+Returns the skew Hall-Littlewood polynomial associated to
+  the given skew partition.
 }
 \examples{
 n <- 3; lambda <- c(3, 2, 1); mu <- c(1, 1)

@@ -26,3 +26,7 @@ mydocument <- function() {
     roxygen2::roxygenise(load_code = roxygen2::load_installed)
   }
 }
+
+rox <- function() {
+  roxygen2::roxygenise()
+}

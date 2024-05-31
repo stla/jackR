@@ -8,15 +8,6 @@ test_that("Skew factorial Schur polynomial with a=(0, ...) is skew Schur polynom
   expect_true(skewFactorialSchurPoly == skewSchurPoly)
 })
 
-#   , testCase "Skew factorial Schur polynomial with y=0 is skew Schur polynomial" $ do
-#     let
-#       n = 5
-#       lambda = [4, 3, 2, 2]
-#       mu = [2, 2]
-#       y = IM.fromList (zip [-2 .. 8] (repeat 0))
-#       skewFactorialSchurPoly = skewFactorialSchurPol' n lambda mu y
-#     assertEqual "" skewFactorialSchurPoly (skewSchurPol' n lambda mu)
-
 test_that("SkewFactorialSchurPol: comparison with Haskell", {
   skewFactorialSchurPoly <-
     SkewFactorialSchurPol(3, c(3, 2, 2), c(2, 1), c(2, 6, 1, 2, 3, 4, 5, 6), 3)

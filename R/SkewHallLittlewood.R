@@ -102,7 +102,8 @@ Paths <- function(n, lambda, mu) {
 }
 
 #' @title Skew Hall-Littlewood polynomial
-#' @description Returns the skew
+#' @description Returns the skew Hall-Littlewood polynomial associated to
+#'   the given skew partition.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda,mu integer partitions defining the skew partition:
@@ -135,7 +136,7 @@ SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   mu <- c(mu, rep(0L, ellLambda - ellMu))
-  if(any(lambda - mu < 0L)) {
+  if(any(lambda < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   if(n == 0L){

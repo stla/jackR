@@ -133,6 +133,7 @@ invUnitTriMatrix <- function(L) {
 #' @importFrom partitions parts
 #' @importFrom symbolicQspray Qzero showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+#' @importFrom methods as
 #' @noRd
 HallLittlewoodP <- function(n, lambda) {
   weight <- sum(lambda)
