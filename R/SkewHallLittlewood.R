@@ -1,28 +1,28 @@
-# assumes lambda clean and length(mu)=length(lambda)
-horizontalStrip <- function(lambda, mu) {
-  ellLambda <- length(lambda)
-  test <- lambda[1L] >= mu[1L]
-  i <- 1L
-  while(test && i < ellLambda) {
-    j <- i + 1L
-    k <- lambda[j]
-    test <- mu[i] >= k && k >= mu[j]
-    i <- j
-  }
-  test
-}
-
-#' @importFrom utils head tail
-#' @noRd
-columnStrictTableau <- function(tableau) {
-  all(
-    mapply(
-      horizontalStrip,
-      head(tableau, -1L), tail(tableau, -1L),
-      SIMPLIFY = TRUE, USE.NAMES = FALSE
-    )
-  )
-}
+#' # assumes lambda clean and length(mu)=length(lambda)
+#' horizontalStrip <- function(lambda, mu) {
+#'   ellLambda <- length(lambda)
+#'   test <- lambda[1L] >= mu[1L]
+#'   i <- 1L
+#'   while(test && i < ellLambda) {
+#'     j <- i + 1L
+#'     k <- lambda[j]
+#'     test <- mu[i] >= k && k >= mu[j]
+#'     i <- j
+#'   }
+#'   test
+#' }
+#'
+#' #' @importFrom utils head tail
+#' #' @noRd
+#' columnStrictTableau <- function(tableau) {
+#'   all(
+#'     mapply(
+#'       horizontalStrip,
+#'       head(tableau, -1L), tail(tableau, -1L),
+#'       SIMPLIFY = TRUE, USE.NAMES = FALSE
+#'     )
+#'   )
+#' }
 
 #' @importFrom qspray qlone qone
 #' @noRd
@@ -64,42 +64,73 @@ phi <- function(lambda, mu) {
   out
 }
 
-Combos <- function(a, b, n) {
-  if(n == 0L) {
-    return(matrix(NA_integer_, nrow = 1L, ncol = 0L))
-  }
-  if(n == 1L) {
-    return(cbind(a:b))
-  }
-  do.call(rbind, lapply(a:b, function(i) {
-    cbind(i, Combos(i, b, n-1L))
-  }))
-}
+# Combos <- function(a, b, n) {
+#   if(n == 0L) {
+#     return(matrix(NA_integer_, nrow = 1L, ncol = 0L))
+#   }
+#   if(n == 1L) {
+#     return(cbind(a:b))
+#   }
+#   do.call(rbind, lapply(a:b, function(i) {
+#     cbind(i, Combos(i, b, n-1L))
+#   }))
+# }
+#
+# cartesianProduct <- function(diffs) {
+#   if(length(diffs) == 1L) {
+#     return(cbind(rev(c(0L, seq_len(diffs)))))
+#   }
+#   previous <- cartesianProduct(tail(diffs, -1L))
+#   do.call(rbind, lapply(rev(c(0L, seq_len(diffs[1L]))), function(i) {
+#     cbind(i, previous)
+#   }))
+# }
 
-cartesianProduct <- function(diffs) {
-  if(length(diffs) == 1L) {
-    return(cbind(rev(c(0L, seq_len(diffs)))))
-  }
-  previous <- cartesianProduct(tail(diffs, -1L))
-  do.call(rbind, lapply(rev(c(0L, seq_len(diffs[1L]))), function(i) {
-    cbind(i, previous)
-  }))
-}
+# # assumes lambda is clean and length(mu)=length(lambda)
+# Paths <- function(n, lambda, mu) {
+#   diffs <- lambda - mu
+#   Grid <- cartesianProduct(diffs)
+#   kappas <- Filter(isDecreasing, apply(Grid, 1L, function(kappa) {
+#     kappa + mu
+#   }, simplify = FALSE))
+#   # kappas identical to boundedNonIncrSeqs(0L, mu, lambda)
+#   combos <- Combos(1L, length(kappas), n - 1L)
+#   Filter(columnStrictTableau, apply(combos, 1L, function(combo) {
+#     c(list(lambda), lapply(combo, function(i) {
+#       kappas[[i]]
+#     }), list(mu))
+#   }, simplify = FALSE))
+# }
+# # compos = partitions::compositions(sum(lambda)-sum(mu), n)
+# # do.call(c, apply(compos, 2L, function(w) {
+# #   skewGelfandTsetlinPatterns(lambda, mu, w)
+# #  }, simplify = FALSE))
 
-# assumes lambda is clean and length(mu)=length(lambda)
+#' @importFrom syt skewGelfandTsetlinPatterns
+#' @importFrom partitions compositions
+#' @noRd
 Paths <- function(n, lambda, mu) {
-  diffs <- lambda - mu
-  Grid <- cartesianProduct(diffs)
-  kappas <- Filter(isDecreasing, apply(Grid, 1L, function(kappa) {
-    kappa + mu
-  }, simplify = FALSE))
-  combos <- Combos(1L, length(kappas), n - 1L)
-  Filter(columnStrictTableau, apply(combos, 1L, function(combo) {
-    c(list(lambda), lapply(combo, function(i) {
-      kappas[[i]]
-    }), list(mu))
+  do.call(c, apply(compositions(sum(lambda) - sum(mu), n), 2L, function(w) {
+    skewGelfandTsetlinPatterns(lambda, mu, w)
   }, simplify = FALSE))
 }
+# _paths :: Int -> Seq Int -> Seq Int -> [[Seq Int]]
+# _paths n lambda mu =
+# --  filter columnStrictTableau
+#     (concatMap
+#      (skewGelfandTsetlinPatterns (DF.toList lambda) (DF.toList mu))
+#       (compositions n (DF.sum lambda - DF.sum mu)))
+
+# _skewKostkaFoulkesPolynomial lambda mu nu =
+#   if sum lambda == sum mu + sum nu
+# then sumOfSprays sprays
+# else zeroSpray
+# where
+# tableaux = skewTableauxWithGivenShapeAndWeight lambda mu nu
+# word skewT = mconcat (map S.reverse (snd (unzip skewT)))
+# mm = lone' 1
+#     sprays = map (mm . charge . word) tableaux
+
 
 #' @title Skew Hall-Littlewood polynomial
 #' @description Returns the skew Hall-Littlewood polynomial associated to
@@ -154,16 +185,25 @@ SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
   } else {
     ptheta <- phi
   }
-  for(j in seq_along(paths)) {
-    nu <- rev(paths[[j]])
-    l <- length(nu) - 1L
-    out <- out + Reduce(`*`, lapply(seq_len(l), function(i) {
-      nu_i <- nu[[i]]
-      next_nu_i <- nu[[i+1L]]
+  i_ <- seq_len(n)
+  for(nu in paths) {
+    out <- out + Reduce(`*`, lapply(i_, function(i) {
+      nu_i <- nu[i, ]
+      next_nu_i <- nu[i+1L, ]
       lone_i <- lones[[i]]
       ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
     }))
   }
+  # for(j in seq_along(paths)) {
+  #   nu <- rev(paths[[j]])
+  #   l <- length(nu) - 1L
+  #   out <- out + Reduce(`*`, lapply(seq_len(l), function(i) {
+  #     nu_i <- nu[[i]]
+  #     next_nu_i <- nu[[i+1L]]
+  #     lone_i <- lones[[i]]
+  #     ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
+  #   }))
+  # }
   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
     showRatioOfQspraysXYZ("t")
   out

@@ -1,42 +1,42 @@
-SSYTXwithGivenShapeAndContent <- function(lambda, mu) { # mu partition
-  if(sum(lambda) != sum(mu)) {
-    return(list())
-  }
-  if(!isDominated(mu, lambda)) {
-    return(list())
-  }
-  if(all(lambda == 1L)) {
-    if(all(mu == 1L)) {
-      return(list(as.list(seq_along(lambda))))
-    } else {
-      return(list())
-    }
-  }
-  l <- length(mu)
-  mu[l] <- mu[l] - 1L
-  mu <- removeTrailingZeros(mu)
-  out <- list()
-  for(i in seq_along(lambda)) {
-    kappa <- lambda
-    kappa[i] <- kappa[i] - 1L
-    if(isDecreasing(kappa)) {
-      kappa <- removeTrailingZeros(kappa)
-      ssytx <- SSYTXwithGivenShapeAndContent(kappa, mu)
-      ssytx <- lapply(ssytx, function(ssyt) {
-        copy <- ssyt
-        if(i > length(ssyt)) {
-          row <- integer(0L)
-        } else {
-          row <- ssyt[[i]]
-        }
-        copy[[i]] <- c(row, l)
-        copy
-      })
-      out <- c(out, unique(ssytx))
-    }
-  }
-  unique(out)
-}
+# SSYTXwithGivenShapeAndContent <- function(lambda, mu) { # mu partition
+#   if(sum(lambda) != sum(mu)) {
+#     return(list())
+#   }
+#   if(!isDominated(mu, lambda)) {
+#     return(list())
+#   }
+#   if(all(lambda == 1L)) {
+#     if(all(mu == 1L)) {
+#       return(list(as.list(seq_along(lambda))))
+#     } else {
+#       return(list())
+#     }
+#   }
+#   l <- length(mu)
+#   mu[l] <- mu[l] - 1L
+#   mu <- removeTrailingZeros(mu)
+#   out <- list()
+#   for(i in seq_along(lambda)) {
+#     kappa <- lambda
+#     kappa[i] <- kappa[i] - 1L
+#     if(isDecreasing(kappa)) {
+#       kappa <- removeTrailingZeros(kappa)
+#       ssytx <- SSYTXwithGivenShapeAndContent(kappa, mu)
+#       ssytx <- lapply(ssytx, function(ssyt) {
+#         copy <- ssyt
+#         if(i > length(ssyt)) {
+#           row <- integer(0L)
+#         } else {
+#           row <- ssyt[[i]]
+#         }
+#         copy[[i]] <- c(row, l)
+#         copy
+#       })
+#       out <- c(out, unique(ssytx))
+#     }
+#   }
+#   unique(out)
+# }
 
 #' @importFrom utils tail
 #' @noRd
@@ -67,6 +67,10 @@ charge <- function(w) {
   sum(indices) + charge(w[-positions])
 }
 
+ssytWord <- function(ssyt) {
+  do.call(c, lapply(ssyt, rev))
+}
+
 #' @title Kostka-Foulkes polynomial
 #' @description Kostka-Foulkes polynomial for two given partitions.
 #'
@@ -75,17 +79,23 @@ charge <- function(w) {
 #' @return The Kostka-Foulkes polynomial associated to \code{lambda} and
 #'   \code{mu}. This is a univariate \code{qspray} polynomial.
 #' @export
-#' @importFrom qspray qlone qzero showQsprayOption<- showQsprayXYZ
+#' @importFrom qspray qlone qzero showQsprayOption<- showQsprayXYZ qsprayMaker
+#' @importFrom syt ssytx_withGivenShapeAndWeight
 KostaFoulkesPolynomial <- function(lambda, mu) {
   stopifnot(isPartition(lambda), isPartition(mu))
-  lambda <- removeTrailingZeros(lambda)
-  mu <- removeTrailingZeros(mu)
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  mu <- removeTrailingZeros(as.integer(mu))
   if(isDominated(mu, lambda)) {
-    Tx <- SSYTXwithGivenShapeAndContent(lambda, mu)
-    ws <- lapply(Tx, function(t) unlist(lapply(t, rev)))
-    charges <- vapply(ws, charge, integer(1L))
-    t <- qlone(1L)
-    out <- Reduce(`+`, lapply(charges, function(e) t^e))
+    # Tx <- SSYTXwithGivenShapeAndContent(lambda, mu)
+    Tx <- ssytx_withGivenShapeAndWeight(lambda, mu)
+    charges <- lapply(Tx, function(ssyt) {
+      charge(ssytWord(ssyt))
+    })
+    out <- qsprayMaker(powers = charges, coeffs = rep("1", length(charges)))
+    # ws <- lapply(Tx, function(t) unlist(lapply(t, rev)))
+    # charges <- vapply(ws, charge, integer(1L))
+    # t <- qlone(1L)
+    # out <- Reduce(`+`, lapply(charges, function(e) t^e))
   } else {
     out <- qzero()
   }
