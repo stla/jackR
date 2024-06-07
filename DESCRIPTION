@@ -2,7 +2,7 @@ Type: Package
 Package: jack
 Title: Jack, Zonal, Schur, and Hall-Littlewood Polynomials
 Version: 6.0.0.9000
-Date: 2024-05-31
+Date: 2024-06-07
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Symbolic calculation and evaluation of the Jack polynomials,
