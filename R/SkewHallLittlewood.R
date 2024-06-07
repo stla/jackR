@@ -121,16 +121,6 @@ Paths <- function(n, lambda, mu) {
 #      (skewGelfandTsetlinPatterns (DF.toList lambda) (DF.toList mu))
 #       (compositions n (DF.sum lambda - DF.sum mu)))
 
-# _skewKostkaFoulkesPolynomial lambda mu nu =
-#   if sum lambda == sum mu + sum nu
-# then sumOfSprays sprays
-# else zeroSpray
-# where
-# tableaux = skewTableauxWithGivenShapeAndWeight lambda mu nu
-# word skewT = mconcat (map S.reverse (snd (unzip skewT)))
-# mm = lone' 1
-#     sprays = map (mm . charge . word) tableaux
-
 
 #' @title Skew Hall-Littlewood polynomial
 #' @description Returns the skew Hall-Littlewood polynomial associated to
