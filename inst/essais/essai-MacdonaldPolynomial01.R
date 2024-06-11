@@ -80,22 +80,30 @@ psiLambdaMu <- function(lambda, mu) {
   ss <- do.call(
     rbind,
     lapply(nonEmptyRows, function(i) {
-      cbind(i, intersect(emptyColumns, seq_len(lambda[i])))
+      columns <- intersect(emptyColumns, seq_len(lambda[i]))
+      cbind(rep(i, length(columns)), columns)
     })
   )
-  codedRatios <- apply(ss, 1L, function(ij) {
-    codedRatio(lambda, lambdap, mu, mup, ij)
-  }, simplify = FALSE)
-  list(
-    do.call(
-      rbind,
-      lapply(codedRatios, `[[`, 2L)
-    ),
-    do.call(
-      rbind,
-      lapply(codedRatios, `[[`, 1L)
+  if(nrow(ss) >= 1L) {
+    codedRatios <- apply(ss, 1L, function(ij) {
+      codedRatio(lambda, lambdap, mu, mup, ij)
+    }, simplify = FALSE)
+    list(
+      do.call(
+        rbind,
+        lapply(codedRatios, `[[`, 2L)
+      ),
+      do.call(
+        rbind,
+        lapply(codedRatios, `[[`, 1L)
+      )
     )
-  )
+  } else {
+    list(
+      matrix(NA_integer_, nrow = 0L, ncol = 2L),
+      matrix(NA_integer_, nrow = 0L, ncol = 2L)
+    )
+  }
 }
 
 #   both concat (unzip (map (swap . (codedRatio (lambda, lambda') (mu, mu'))) ss))
