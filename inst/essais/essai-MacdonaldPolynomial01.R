@@ -106,4 +106,22 @@ psiLambdaMu <- function(lambda, mu) {
   }
 }
 
-#   both concat (unzip (map (swap . (codedRatio (lambda, lambda') (mu, mu'))) ss))
+
+# gtPatternDiagonals' :: GT -> [Seq Int]
+# gtPatternDiagonals' pattern = S.empty : [diagonal j | j <- [0 .. l]]
+#   where
+#     dropTrailingZeros = S.dropWhileR (== 0)
+#     l = length pattern - 1
+#     diagonal j =
+#       dropTrailingZeros
+#         (S.fromList
+#           [pattern !! r !! c | (r, c) <- zip [l-j .. l] [0 .. j]])
+gtPatternDiagonals <- function(pattern) {
+  ell <- length(pattern)
+  c(list(integer(0L)), lapply(seq_len(ell), function(j) {
+    indices <- cbind(jack:::.rg(ell-j+1L, ell), jack:::.rg(1L, j))
+    jack:::removeTrailingZeros(do.call(c, apply(indices, 1L, function(rc) {
+      pattern[[rc[1L]]][rc[2L]]
+    }, simplify = FALSE)))
+  }))
+}
