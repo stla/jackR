@@ -17,8 +17,10 @@
 #       l' = lambda' `S.index` (j-1) - i
 
 codedRatio <- function(
-  lambda, lambdap, mu, mup, i, j
+  lambda, lambdap, mu, mup, ij
 ) {
+  i <- ij[1L]
+  j <- ij[2L]
   ellMu <- length(mu)
   if(i <= ellMu && j <= (mu_i <- mu[i])) {
     a <- mu_i - j
@@ -54,3 +56,46 @@ codedRatio <- function(
   }
 }
 
+# psiLambdaMu (lambda, mu) =
+#   both concat (unzip (map (swap . (codedRatio (lambda, lambda') (mu, mu'))) ss))
+#   where
+#     lambda' = _dualPartition' lambda
+#     mu' = _dualPartition' mu
+#     bools = S.zipWith (==) lambda mu >< S.replicate (S.length lambda - S.length mu) False
+#     nonEmptyRows = S.elemIndicesL False bools
+#     bools' = S.zipWith (==) lambda' mu'
+#     emptyColumns = S.elemIndicesL True bools'
+#     ss = [(i+1, j+1) | i <- nonEmptyRows, j <- emptyColumns]
+
+#' @importFrom partitions conjugate
+#' @noRd
+psiLambdaMu <- function(lambda, mu) {
+  lambdap <- conjugate(lambda)
+  mup <- conjugate(mu)
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  nonEmptyRows <-
+    c(which(lambda[seq_len(ellMu)] != mu), .rg(ellMu + 1L, ellLambda))
+  emptyColumns <- which(lambdap[seq_along(mup)] == mup)
+  ss <- do.call(
+    rbind,
+    lapply(nonEmptyRows, function(i) {
+      cbind(i, intersect(emptyColumns, seq_len(lambda[i])))
+    })
+  )
+  codedRatios <- apply(ss, 1L, function(ij) {
+    codedRatio(lambda, lambdap, mu, mup, ij)
+  }, simplify = FALSE)
+  list(
+    do.call(
+      rbind,
+      lapply(codedRatios, `[[`, 2L)
+    ),
+    do.call(
+      rbind,
+      lapply(codedRatios, `[[`, 1L)
+    )
+  )
+}
+
+#   both concat (unzip (map (swap . (codedRatio (lambda, lambda') (mu, mu'))) ss))
