@@ -168,3 +168,77 @@ matrix2 <- rbind(
   c(2, 2),
   c(4, 5)
 )
+
+pairing <- function(lambdas) {
+  mapply(
+    function(lambda1, lambda2) {
+      list(lambda1, lambda2)
+    },
+    tail(lambdas, -1L), head(lambdas, -1L),
+    USE.NAMES = FALSE, SIMPLIFY = FALSE
+  )
+}
+
+.MacdonaldPolynomial <- function(f, n, lambda) {
+  mus <- Filter(
+    function(mu) length(mu) <= n,
+    apply(
+      jack:::dominatedPartitions(lambda), 2L, jack:::removeTrailingZeros, simplify = FALSE
+    )
+  )
+  listsOfPairs <- lapply(mus, function(mu) {
+    lapply(syt::GelfandTsetlinPatterns(lambda, mu), function(pattern) {
+      pairing(gtPatternDiagonals(pattern))
+    })
+  })
+  allPairs <- unique(
+    do.call(
+      c,
+      do.call(
+        c,
+        listsOfPairs
+      )
+    )
+  )
+  pairsMap <- lapply(allPairs, function(pair) {
+    f(pair[[1L]], pair[[2L]])
+  })
+  names(pairsMap) <- vapply(allPairs, toString, character(1L))
+
+}
+# _macdonaldPolynomial f n lambda = HM.unions hashMaps
+#   where
+#     lambda' = toPartitionUnsafe lambda
+#     mus = filter (\mu -> partitionWidth mu <= n) (dominatedPartitions lambda')
+#     pairing lambdas = zip (drop1 lambdas) lambdas
+#     listsOfPairs =
+#       map (
+#         map (pairing . gtPatternDiagonals')
+#           . (kostkaGelfandTsetlinPatterns lambda')
+#       ) mus
+#     allPairs = nub $ concat (concat listsOfPairs)
+#     pairsMap = DM.fromList (zip allPairs (map f allPairs))
+#     coeffs = HM.fromList
+#       (zipWith
+#         (\mu listOfPairs ->
+#           (
+#             S.fromList (fromPartition mu)
+#           , AlgAdd.sum (map (makeRatioOfSprays pairsMap) listOfPairs)
+#           )
+#         ) mus listsOfPairs
+#       )
+#     dropTrailingZeros = S.dropWhileR (== 0)
+#     hashMaps =
+#       map
+#         (\mu ->
+#           let mu' = fromPartition mu
+#               mu'' = S.fromList mu'
+#               mu''' = mu' ++ (replicate (n - S.length mu'') 0)
+#               coeff = coeffs HM.! mu''
+#               compos = permuteMultiset mu'''
+#           in
+#             HM.fromList
+#               [let compo' = dropTrailingZeros (S.fromList compo) in
+#                 (Powers compo' (S.length compo'), coeff) | compo <- compos]
+#         ) mus
+#
