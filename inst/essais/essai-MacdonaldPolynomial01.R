@@ -125,3 +125,46 @@ gtPatternDiagonals <- function(pattern) {
     }, simplify = FALSE)))
   }))
 }
+
+simplifyTheTwoMatrices <- function(matrix1, matrix2) {
+  pairs1 <- apply(matrix1, 1L, toString)
+  pairs2 <- apply(matrix2, 1L, toString)
+  allPairs <- union(pairs1, pairs2)
+  table1 <- table(factor(pairs1, levels = allPairs))
+  table2 <- table(factor(pairs2, levels = allPairs))
+  diffs <- table1 - table2
+  pairsNumerator <- Filter(function(count) count > 0L, diffs)
+  pairsDenominator <- Filter(function(count) count > 0L, -diffs)
+  rownames(matrix1) <- pairs1
+  rownames(matrix2) <- pairs2
+  colnames(matrix1) <- colnames(matrix2) <- c("i", "j")
+  list(
+    cbind(
+      matrix1[names(pairsNumerator), , drop = FALSE],
+      count = pairsNumerator,
+      deparse.level = 0L
+    ),
+    cbind(
+      matrix2[names(pairsDenominator), , drop = FALSE],
+      count = pairsDenominator,
+      deparse.level = 0L
+    )
+  )
+}
+
+matrix1 <- rbind(
+  c(1, 2),
+  c(1, 2),
+  c(1, 2),
+  c(1, 2),
+  c(2, 2),
+  c(3, 4)
+)
+matrix2 <- rbind(
+  c(1, 2),
+  c(1, 2),
+  c(2, 2),
+  c(2, 2),
+  c(2, 2),
+  c(4, 5)
+)
