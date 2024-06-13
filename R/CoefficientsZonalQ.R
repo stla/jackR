@@ -4,7 +4,7 @@ NULL
 
 zonalQCoefficientsQ <- function(n, until = NULL){
   stopifnot(n > 0L, isPositiveInteger(n))
-  allParts <- dominatedPartitions(n)
+  allParts <- parts(n) #dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   if(!is.null(until)){
@@ -55,7 +55,7 @@ zonalQCoefficientsQ <- function(n, until = NULL){
 
 zonalQCoefficientsNum <- function(n, until = NULL){
   stopifnot(n > 0L, isPositiveInteger(n))
-  allParts <- dominatedPartitions(n)
+  allParts <- parts(n) #dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   if(!is.null(until)){

@@ -1,10 +1,11 @@
 #' @importFrom multicool multinom
 #' @importFrom gmp as.bigq asNumeric
+#' @importFrom partitions parts
 NULL
 
 zonalCoefficientsQ <- function(n, until = NULL){
   stopifnot(n > 0L, isPositiveInteger(n))
-  allParts <- dominatedPartitions(n)
+  allParts <- parts(n) #dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   if(!is.null(until)){
@@ -55,7 +56,7 @@ zonalCoefficientsQ <- function(n, until = NULL){
 
 zonalCoefficientsNum <- function(n, until = NULL){
   stopifnot(n > 0L, isPositiveInteger(n))
-  allParts <- dominatedPartitions(n)
+  allParts <- parts(n) #dominatedPartitions(n)
   nParts <- ncol(allParts)
   stringParts <- apply(allParts, 2L, toString)
   if(!is.null(until)){
