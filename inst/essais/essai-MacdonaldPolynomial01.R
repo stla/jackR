@@ -56,17 +56,6 @@ codedRatio <- function(
   }
 }
 
-# psiLambdaMu (lambda, mu) =
-#   both concat (unzip (map (swap . (codedRatio (lambda, lambda') (mu, mu'))) ss))
-#   where
-#     lambda' = _dualPartition' lambda
-#     mu' = _dualPartition' mu
-#     bools = S.zipWith (==) lambda mu >< S.replicate (S.length lambda - S.length mu) False
-#     nonEmptyRows = S.elemIndicesL False bools
-#     bools' = S.zipWith (==) lambda' mu'
-#     emptyColumns = S.elemIndicesL True bools'
-#     ss = [(i+1, j+1) | i <- nonEmptyRows, j <- emptyColumns]
-
 #' @importFrom partitions conjugate
 #' @noRd
 psiLambdaMu <- function(lambda, mu) {
@@ -106,16 +95,54 @@ psiLambdaMu <- function(lambda, mu) {
   }
 }
 
+#' @importFrom partitions conjugate
+#' @noRd
+phiLambdaMu <- function(lambda, mu) {
+  lambdap <- conjugate(lambda)
+  mup <- conjugate(mu)
+  ellLambdap <- length(lambdap)
+  ellMup <- length(mup)
+  nonEmptyColumns <-
+    c(which(lambdap[seq_len(ellMup)] != mup), .rg(ellMup + 1L, ellLambdap))
+  ss <- do.call(
+    rbind,
+    lapply(nonEmptyColumns, function(j) {
+      lambdap_j <- lambdap[j]
+      cbind(seq_len(lambdap_j), rep(j, lambdap_j))
+    })
+  )
+  # phiLambdaMu (lambda, mu) =
+  #   both concat (unzip (map (codedRatio (lambda, lambda') (mu, mu')) ss))
+  #   where
+  #     lambda' = _dualPartition' lambda
+  #     mu' = _dualPartition' mu
+  #     bools' =
+  #       S.zipWith (==) lambda' mu'
+  #         >< S.replicate (S.length lambda' - S.length mu') False
+  #     nonEmptyColumns = S.elemIndicesL False bools'
+  #     ss = [(i, j+1) | j <- nonEmptyColumns, i <- [1 .. lambda' `S.index` j]]
+  if(nrow(ss) >= 1L) {
+    codedRatios <- apply(ss, 1L, function(ij) {
+      codedRatio(lambda, lambdap, mu, mup, ij)
+    }, simplify = FALSE)
+    list(
+      do.call(
+        rbind,
+        lapply(codedRatios, `[[`, 1L)
+      ),
+      do.call(
+        rbind,
+        lapply(codedRatios, `[[`, 2L)
+      )
+    )
+  } else {
+    list(
+      matrix(NA_integer_, nrow = 0L, ncol = 2L),
+      matrix(NA_integer_, nrow = 0L, ncol = 2L)
+    )
+  }
+}
 
-# gtPatternDiagonals' :: GT -> [Seq Int]
-# gtPatternDiagonals' pattern = S.empty : [diagonal j | j <- [0 .. l]]
-#   where
-#     dropTrailingZeros = S.dropWhileR (== 0)
-#     l = length pattern - 1
-#     diagonal j =
-#       dropTrailingZeros
-#         (S.fromList
-#           [pattern !! r !! c | (r, c) <- zip [l-j .. l] [0 .. j]])
 gtPatternDiagonals <- function(pattern) {
   ell <- length(pattern)
   c(list(integer(0L)), lapply(seq_len(ell), function(j) {
@@ -331,7 +358,11 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
 #                 (Powers compo' (S.length compo'), coeff) | compo <- compos]
 #         ) mus
 #
+
 MacdonaldPolynomialP <- function(n, lambda) {
   .MacdonaldPolynomial(psiLambdaMu, n, lambda)
 }
 
+MacdonaldPolynomialQ <- function(n, lambda) {
+  .MacdonaldPolynomial(phiLambdaMu, n, lambda)
+}
