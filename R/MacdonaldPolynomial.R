@@ -255,14 +255,38 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
   )
 }
 
-MacdonaldPolynomial <- function(n, lambda, which) {
+#' @title Macdonald polynomial
+#' @description Returns the Macdonald polynomial associated to
+#'   the given integer partition.
+#'
+#' @param n number of variables, a positive integer
+#' @param lambda integer partition
+#' @param which which Macdonald polynomial, \code{"P"} or \code{"Q"}
+#'
+#' @return A \code{symbolicQspray} multivariate polynomial, the
+#'   Macdonald polynomial associated to the integer partition
+#'   \code{lambda}. It has two parameters.
+#' @export
+#' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone Qzero
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+MacdonaldPol <- function(n, lambda, which) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   stopifnot(which %in% c("P", "Q"))
   lambda <- as.integer(removeTrailingZeros(lambda))
-  if(which == "P") {
-    .MacdonaldPolynomial(psiLambdaMu, n, lambda)
-  } else {
-    .MacdonaldPolynomial(phiLambdaMu, n, lambda)
+  if(n == 0L){
+    if(length(lambda) == 0L) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
   }
+  if(which == "P") {
+    out <- .MacdonaldPolynomial(psiLambdaMu, n, lambda)
+  } else {
+    out <- .MacdonaldPolynomial(phiLambdaMu, n, lambda)
+  }
+  showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ(c("q", "t"))
+  out
 }

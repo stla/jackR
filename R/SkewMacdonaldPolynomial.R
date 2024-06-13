@@ -11,18 +11,6 @@ lastSubpartition <- function(w, lambda) {
   }
 }
 
-
-#     nus =
-#       filter ((<= n) . partitionWidth) $ dropEnd 1
-#         (dominatedPartitions
-#           (toPartitionUnsafe (lastSubPartition (sum lambda - sum mu) lambda)))
-#     pairing lambdas = zip (drop1 lambdas) lambdas
-#     listsOfPairs =
-#       map (
-#         map pairing
-#           . (skewGelfandTsetlinPatterns lambda mu)
-#           . fromPartition
-#       ) nus
 #' @importFrom DescTools Permn
 #' @importFrom methods new
 #' @importFrom syt skewGelfandTsetlinPatterns
@@ -83,16 +71,47 @@ lastSubpartition <- function(w, lambda) {
   )
 }
 
-SkewMacdonaldPolynomial <- function(n, lambda, mu, which) {
+#' @title Skew Macdonald polynomial
+#' @description Returns the skew Macdonald polynomial associated to
+#'   the given skew partition.
+#'
+#' @param n number of variables, a positive integer
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#' @param which which skew Macdonald polynomial, \code{"P"} or \code{"Q"}
+#'
+#' @return A \code{symbolicQspray} multivariate polynomial, the skew
+#'   Macdonald polynomial associated to the skew partition defined by
+#'   \code{lambda} and \code{mu}. It has two parameters.
+#' @export
+#' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone Qzero
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+SkewMacdonaldPol <- function(n, lambda, mu, which) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   stopifnot(isPartition(mu))
   stopifnot(which %in% c("P", "Q"))
   lambda <- as.integer(removeTrailingZeros(lambda))
   mu <- as.integer(removeTrailingZeros(mu))
-  if(which == "P") {
-    .SkewMacdonaldPolynomial(psiLambdaMu, n, lambda, mu)
-  } else {
-    .SkewMacdonaldPolynomial(phiLambdaMu, n, lambda, mu)
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(lambda[seq_len(ellMu)] < mu)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
+  if(n == 0L){
+    if(ellLambda == ellMu && all(lambda == mu)) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
+  }
+  if(which == "P") {
+    out <- .SkewMacdonaldPolynomial(psiLambdaMu, n, lambda, mu)
+  } else {
+    out <- .SkewMacdonaldPolynomial(phiLambdaMu, n, lambda, mu)
+  }
+  showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ(c("q", "t"))
+  out
 }
