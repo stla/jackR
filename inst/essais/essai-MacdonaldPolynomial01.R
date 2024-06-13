@@ -192,21 +192,31 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
     lapply(pairsOfMatrices, `[[`, 2L)
   )
   simplifiedMatrices <- simplifyTheTwoMatrices(matrix1, matrix2)
+  matrix1 <- simplifiedMatrices[[1L]]
+  matrix2 <- simplifiedMatrices[[2L]]
   q <- qlone(1L)
   t <- qlone(2L)
   unitQSpray <- qone()
-  num <- Reduce(
-    `*`,
-    apply(simplifiedMatrices[[1L]], 1L, function(alc) {
-      (unitQSpray - q^(alc[1L]) * t^(alc[2L]))^alc[3L]
-    }, simplify = FALSE)
-  )
-  den <- Reduce(
-    `*`,
-    apply(simplifiedMatrices[[2L]], 1L, function(alc) {
-      (unitQSpray - q^(alc[1L]) * t^(alc[2L]))^alc[3L]
-    }, simplify = FALSE)
-  )
+  if(nrow(matrix1) >= 1L) {
+    num <- Reduce(
+      `*`,
+      apply(matrix1, 1L, function(alc) {
+        (unitQSpray - q^(alc[1L]) * t^(alc[2L]))^alc[3L]
+      }, simplify = FALSE)
+    )
+  } else {
+    num <- unitQSpray
+  }
+  if(nrow(matrix2) >= 1L) {
+    den <- Reduce(
+      `*`,
+      apply(matrix2, 1L, function(alc) {
+        (unitQSpray - q^(alc[1L]) * t^(alc[2L]))^alc[3L]
+      }, simplify = FALSE)
+    )
+  } else {
+    den <- unitQSpray
+  }
   num / den
 }
 
@@ -274,7 +284,7 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
     )
   })
   new(
-    "symbolicQSpray",
+    "symbolicQspray",
     powers = do.call(
       c,
       lapply(QSprays, `[[`, "powers")
@@ -285,21 +295,6 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
     )
   )
 }
-#     dropTrailingZeros = S.dropWhileR (== 0)
-#     hashMaps =
-#       map
-#         (\mu ->
-#           let mu' = fromPartition mu
-#               mu'' = S.fromList mu'
-#               mu''' = mu' ++ (replicate (n - S.length mu'') 0)
-#               coeff = coeffs HM.! mu''
-#               compos = permuteMultiset mu'''
-#           in
-#             HM.fromList
-#               [let compo' = dropTrailingZeros (S.fromList compo) in
-#                 (Powers compo' (S.length compo'), coeff) | compo <- compos]
-#         ) mus
-
 # _macdonaldPolynomial f n lambda = HM.unions hashMaps
 #   where
 #     lambda' = toPartitionUnsafe lambda
@@ -336,3 +331,7 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
 #                 (Powers compo' (S.length compo'), coeff) | compo <- compos]
 #         ) mus
 #
+MacdonaldPolynomialP <- function(n, lambda) {
+  .MacdonaldPolynomial(psiLambdaMu, n, lambda)
+}
+
