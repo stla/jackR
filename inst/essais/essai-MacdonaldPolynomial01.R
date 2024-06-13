@@ -179,6 +179,59 @@ pairing <- function(lambdas) {
   )
 }
 
+#' @importFrom qspray qone qlone
+#' @noRd
+makeRatioOfSprays <- function(pairsMap, pairs) {
+  pairsOfMatrices <- pairsMap[vapply(pairs, toString, character(1L))]
+  matrix1 <- do.call(
+    rbind,
+    lapply(pairsOfMatrices, `[[`, 1L)
+  )
+  matrix2 <- do.call(
+    rbind,
+    lapply(pairsOfMatrices, `[[`, 2L)
+  )
+  simplifiedMatrices <- simplifyTheTwoMatrices(matrix1, matrix2)
+  q <- qlone(1L)
+  t <- qlone(2L)
+  unitQSpray <- qone()
+  num <- Reduce(
+    `*`,
+    apply(simplifiedMatrices[[1L]], 1L, function(alc) {
+      (unitQSpray - q^(alc[1L]) * t^(alc[2L]))^alc[3L]
+    }, simplify = FALSE)
+  )
+  den <- Reduce(
+    `*`,
+    apply(simplifiedMatrices[[2L]], 1L, function(alc) {
+      (unitQSpray - q^(alc[1L]) * t^(alc[2L]))^alc[3L]
+    }, simplify = FALSE)
+  )
+  num / den
+}
+
+# makeRatioOfSprays ::
+#   (Eq a, AlgField.C a) =>
+#   PairsMap -> [PartitionsPair] -> RatioOfSprays a
+# makeRatioOfSprays pairsMap pairs = num %//% den
+#   where
+#     als = both concat (unzip (map ((DM.!) pairsMap) pairs))
+#     (num_map, den_map) =
+#       both (foldl' (\m k -> DM.insertWith (+) k 1 m) DM.empty) als
+#     f k1 k2 = if k1 > k2 then Just (k1 - k2) else Nothing
+#     assocs = both DM.assocs
+#       (
+#         DM.differenceWith f num_map den_map
+#       , DM.differenceWith f den_map num_map
+#       )
+#     -- (num_als, den_als) = both concat (unzip (map ((DM.!) pairsMap) pairs))
+#     -- als = (num_als \\ den_als, den_als \\ num_als)
+#     -- assocs =
+#     --   both (DM.assocs . (foldl' (\m k -> DM.insertWith (+) k 1 m) DM.empty)) als
+#     q = lone' 1
+#     t = lone' 2
+#     poly ((a, l), c) = (unitSpray ^-^ q a ^*^ t l) ^**^ c
+#     (num, den) = both (productOfSprays . (map poly)) assocs
 .MacdonaldPolynomial <- function(f, n, lambda) {
   mus <- Filter(
     function(mu) length(mu) <= n,
