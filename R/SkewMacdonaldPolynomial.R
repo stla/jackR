@@ -34,8 +34,12 @@ lastSubpartition <- function(w, lambda) {
       lastSubpartition(sum(lambda) - sum(mu), lambda)
     )
   )
-  listsOfPairs <- lapply(nus, function(nu) {
-    lapply(skewGelfandTsetlinPatterns(lambda, mu, nu), function(pattern) {
+  listsOfPatterns <- lapply(nus, function(nu) {
+    skewGelfandTsetlinPatterns(lambda, mu, nu)
+  })
+  i_ <- which(lengths(listsOfPatterns) != 0L)
+  listsOfPairs <- lapply(listsOfPatterns[i_], function(patterns) {
+    lapply(patterns, function(pattern) {
       pairing(apply(pattern, 1L, removeTrailingZeros, simplify = FALSE))
     })
   })
@@ -52,6 +56,7 @@ lastSubpartition <- function(w, lambda) {
     f(pair[[1L]], pair[[2L]])
   })
   names(pairsMap) <- vapply(allPairs, toString, character(1L))
+  nus <- nus[i_]
   QSprays <- lapply(seq_along(nus), function(i) {
     nu <- nus[[i]]
     listOfPairs <- listsOfPairs[[i]]
