@@ -232,6 +232,9 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
 #     t = lone' 2
 #     poly ((a, l), c) = (unitSpray ^-^ q a ^*^ t l) ^**^ c
 #     (num, den) = both (productOfSprays . (map poly)) assocs
+#' @importFrom DescTools Permn
+#' @importFrom methods new
+#' @noRd
 .MacdonaldPolynomial <- function(f, n, lambda) {
   mus <- Filter(
     function(mu) length(mu) <= n,
@@ -257,8 +260,46 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
     f(pair[[1L]], pair[[2L]])
   })
   names(pairsMap) <- vapply(allPairs, toString, character(1L))
-
+  QSprays <- lapply(seq_along(mus), function(i) {
+    mu <- mus[[i]]
+    listOfPairs <- listsOfPairs[[i]]
+    rOQ <- Reduce(`+`, lapply(listOfPairs, function(pairs) {
+      makeRatioOfSprays(pairsMap, pairs)
+    }))
+    compos <- DescTools::Permn(c(mu, rep(0L, n - length(mu))))
+    powers <- apply(compos, 1L, jack:::removeTrailingZeros, simplify = FALSE)
+    list(
+      "powers" = powers,
+      "coeffs" = rep(list(rOQ), length(powers))
+    )
+  })
+  new(
+    "symbolicQSpray",
+    powers = do.call(
+      c,
+      lapply(QSprays, `[[`, "powers")
+    ),
+    coeffs = do.call(
+      c,
+      lapply(QSprays, `[[`, "coeffs")
+    )
+  )
 }
+#     dropTrailingZeros = S.dropWhileR (== 0)
+#     hashMaps =
+#       map
+#         (\mu ->
+#           let mu' = fromPartition mu
+#               mu'' = S.fromList mu'
+#               mu''' = mu' ++ (replicate (n - S.length mu'') 0)
+#               coeff = coeffs HM.! mu''
+#               compos = permuteMultiset mu'''
+#           in
+#             HM.fromList
+#               [let compo' = dropTrailingZeros (S.fromList compo) in
+#                 (Powers compo' (S.length compo'), coeff) | compo <- compos]
+#         ) mus
+
 # _macdonaldPolynomial f n lambda = HM.unions hashMaps
 #   where
 #     lambda' = toPartitionUnsafe lambda
