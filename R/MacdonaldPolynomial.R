@@ -1,23 +1,5 @@
-# codedRatio ::
-#   PartitionsPair -> PartitionsPair -> (Int, Int) -> ([(Int,Int)], [(Int,Int)])
-# codedRatio (lambda, lambda') (mu, mu') (i, j)
-#   | i <= ellMu && j <= mu_im1 =
-#       ([(a+1, l), (a', l'+1)], [(a, l+1), (a'+1, l)])
-#   | j <= lambda_im1 =
-#       ([(a', l'+1)], [(a'+1, l')])
-#   | otherwise =
-#       ([], [])
-#     where
-#       ellMu = S.length mu
-#       mu_im1 = mu `S.index` (i-1)
-#       a = mu_im1 - j
-#       l = mu' `S.index` (j-1) - i
-#       lambda_im1 = lambda `S.index` (i-1)
-#       a' = lambda_im1 - j
-#       l' = lambda' `S.index` (j-1) - i
-
 codedRatio <- function(
-  lambda, lambdap, mu, mup, ij
+    lambda, lambdap, mu, mup, ij
 ) {
   i <- ij[1L]
   j <- ij[2L]
@@ -111,16 +93,6 @@ phiLambdaMu <- function(lambda, mu) {
       cbind(seq_len(lambdap_j), rep(j, lambdap_j))
     })
   )
-  # phiLambdaMu (lambda, mu) =
-  #   both concat (unzip (map (codedRatio (lambda, lambda') (mu, mu')) ss))
-  #   where
-  #     lambda' = _dualPartition' lambda
-  #     mu' = _dualPartition' mu
-  #     bools' =
-  #       S.zipWith (==) lambda' mu'
-  #         >< S.replicate (S.length lambda' - S.length mu') False
-  #     nonEmptyColumns = S.elemIndicesL False bools'
-  #     ss = [(i, j+1) | j <- nonEmptyColumns, i <- [1 .. lambda' `S.index` j]]
   if(nrow(ss) >= 1L) {
     codedRatios <- apply(ss, 1L, function(ij) {
       codedRatio(lambda, lambdap, mu, mup, ij)
@@ -146,8 +118,8 @@ phiLambdaMu <- function(lambda, mu) {
 gtPatternDiagonals <- function(pattern) {
   ell <- length(pattern)
   c(list(integer(0L)), lapply(seq_len(ell), function(j) {
-    indices <- cbind(jack:::.rg(ell-j+1L, ell), jack:::.rg(1L, j))
-    jack:::removeTrailingZeros(do.call(c, apply(indices, 1L, function(rc) {
+    indices <- cbind((ell-j+1L):ell, seq_len(j))
+    removeTrailingZeros(do.call(c, apply(indices, 1L, function(rc) {
       pattern[[rc[1L]]][rc[2L]]
     }, simplify = FALSE)))
   }))
@@ -178,23 +150,6 @@ simplifyTheTwoMatrices <- function(matrix1, matrix2) {
     )
   )
 }
-
-matrix1 <- rbind(
-  c(1, 2),
-  c(1, 2),
-  c(1, 2),
-  c(1, 2),
-  c(2, 2),
-  c(3, 4)
-)
-matrix2 <- rbind(
-  c(1, 2),
-  c(1, 2),
-  c(2, 2),
-  c(2, 2),
-  c(2, 2),
-  c(4, 5)
-)
 
 pairing <- function(lambdas) {
   mapply(
@@ -247,40 +202,17 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
   num / den
 }
 
-# makeRatioOfSprays ::
-#   (Eq a, AlgField.C a) =>
-#   PairsMap -> [PartitionsPair] -> RatioOfSprays a
-# makeRatioOfSprays pairsMap pairs = num %//% den
-#   where
-#     als = both concat (unzip (map ((DM.!) pairsMap) pairs))
-#     (num_map, den_map) =
-#       both (foldl' (\m k -> DM.insertWith (+) k 1 m) DM.empty) als
-#     f k1 k2 = if k1 > k2 then Just (k1 - k2) else Nothing
-#     assocs = both DM.assocs
-#       (
-#         DM.differenceWith f num_map den_map
-#       , DM.differenceWith f den_map num_map
-#       )
-#     -- (num_als, den_als) = both concat (unzip (map ((DM.!) pairsMap) pairs))
-#     -- als = (num_als \\ den_als, den_als \\ num_als)
-#     -- assocs =
-#     --   both (DM.assocs . (foldl' (\m k -> DM.insertWith (+) k 1 m) DM.empty)) als
-#     q = lone' 1
-#     t = lone' 2
-#     poly ((a, l), c) = (unitSpray ^-^ q a ^*^ t l) ^**^ c
-#     (num, den) = both (productOfSprays . (map poly)) assocs
 #' @importFrom DescTools Permn
 #' @importFrom methods new
+#' @importFrom syt GelfandTsetlinPatterns
 #' @noRd
 .MacdonaldPolynomial <- function(f, n, lambda) {
   mus <- Filter(
     function(mu) length(mu) <= n,
-    apply(
-      jack:::dominatedPartitions(lambda), 2L, jack:::removeTrailingZeros, simplify = FALSE
-    )
+    listOfDominatedPartitions(lambda)
   )
   listsOfPairs <- lapply(mus, function(mu) {
-    lapply(syt::GelfandTsetlinPatterns(lambda, mu), function(pattern) {
+    lapply(GelfandTsetlinPatterns(lambda, mu), function(pattern) {
       pairing(gtPatternDiagonals(pattern))
     })
   })
@@ -303,8 +235,8 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
     rOQ <- Reduce(`+`, lapply(listOfPairs, function(pairs) {
       makeRatioOfSprays(pairsMap, pairs)
     }))
-    compos <- DescTools::Permn(c(mu, rep(0L, n - length(mu))))
-    powers <- apply(compos, 1L, jack:::removeTrailingZeros, simplify = FALSE)
+    compos <- Permn(c(mu, rep(0L, n - length(mu))))
+    powers <- apply(compos, 1L, removeTrailingZeros, simplify = FALSE)
     list(
       "powers" = powers,
       "coeffs" = rep(list(rOQ), length(powers))
@@ -322,47 +254,15 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
     )
   )
 }
-# _macdonaldPolynomial f n lambda = HM.unions hashMaps
-#   where
-#     lambda' = toPartitionUnsafe lambda
-#     mus = filter (\mu -> partitionWidth mu <= n) (dominatedPartitions lambda')
-#     pairing lambdas = zip (drop1 lambdas) lambdas
-#     listsOfPairs =
-#       map (
-#         map (pairing . gtPatternDiagonals')
-#           . (kostkaGelfandTsetlinPatterns lambda')
-#       ) mus
-#     allPairs = nub $ concat (concat listsOfPairs)
-#     pairsMap = DM.fromList (zip allPairs (map f allPairs))
-#     coeffs = HM.fromList
-#       (zipWith
-#         (\mu listOfPairs ->
-#           (
-#             S.fromList (fromPartition mu)
-#           , AlgAdd.sum (map (makeRatioOfSprays pairsMap) listOfPairs)
-#           )
-#         ) mus listsOfPairs
-#       )
-#     dropTrailingZeros = S.dropWhileR (== 0)
-#     hashMaps =
-#       map
-#         (\mu ->
-#           let mu' = fromPartition mu
-#               mu'' = S.fromList mu'
-#               mu''' = mu' ++ (replicate (n - S.length mu'') 0)
-#               coeff = coeffs HM.! mu''
-#               compos = permuteMultiset mu'''
-#           in
-#             HM.fromList
-#               [let compo' = dropTrailingZeros (S.fromList compo) in
-#                 (Powers compo' (S.length compo'), coeff) | compo <- compos]
-#         ) mus
-#
 
-MacdonaldPolynomialP <- function(n, lambda) {
-  .MacdonaldPolynomial(psiLambdaMu, n, lambda)
-}
-
-MacdonaldPolynomialQ <- function(n, lambda) {
-  .MacdonaldPolynomial(phiLambdaMu, n, lambda)
+MacdonaldPolynomial <- function(n, lambda, which) {
+  stopifnot(isPositiveInteger(n))
+  stopifnot(isPartition(lambda))
+  stopifnot(which %in% c("P", "Q"))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  if(which == "P") {
+    .MacdonaldPolynomial(psiLambdaMu, n, lambda)
+  } else {
+    .MacdonaldPolynomial(phiLambdaMu, n, lambda)
+  }
 }
