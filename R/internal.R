@@ -15,7 +15,7 @@ pairing <- function(lambdas) {
 }
 
 lastSubpartition <- function(w, lambda) {
-  if(length(lambda) == 0L) {
+  if(w == 0L || length(lambda) == 0L) {
     integer(0L)
   } else {
     k <- lambda[1L]

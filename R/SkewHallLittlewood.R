@@ -165,17 +165,15 @@ Paths <- function(n, lambda, mu) {
       )
     })
     listOfPowers <- apply(Permn(nu), 1L, removeTrailingZeros, simplify = FALSE)
-    mapply(
-      function(powers, spray) {
+    do.call(c, lapply(listOfPowers, function(powers) {
+      lapply(sprays, function(spray) {
         new(
           "symbolicQspray",
           powers = list(powers),
           coeffs = list(as.ratioOfQsprays(spray))
         )
-      },
-      listOfPowers, sprays,
-      USE.NAMES = FALSE, SIMPLIFY = FALSE
-    )
+      })
+    }))
   })
   Reduce(`+`, do.call(c, listsOfSprays))
 }
