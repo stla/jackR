@@ -1,16 +1,3 @@
-lastSubpartition <- function(w, lambda) {
-  if(length(lambda) == 0L) {
-    integer(0L)
-  } else {
-    k <- lambda[1L]
-    if(w <= k) {
-      w
-    } else {
-      c(k, lastSubpartition(w - k, tail(lambda, -1L)))
-    }
-  }
-}
-
 #' @importFrom DescTools Permn
 #' @importFrom methods new
 #' @importFrom syt skewGelfandTsetlinPatterns

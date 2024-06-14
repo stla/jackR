@@ -151,16 +151,6 @@ simplifyTheTwoMatrices <- function(matrix1, matrix2) {
   )
 }
 
-pairing <- function(lambdas) {
-  mapply(
-    function(lambda1, lambda2) {
-      list(lambda1, lambda2)
-    },
-    tail(lambdas, -1L), head(lambdas, -1L),
-    USE.NAMES = FALSE, SIMPLIFY = FALSE
-  )
-}
-
 #' @importFrom qspray qone qlone
 #' @noRd
 makeRatioOfSprays <- function(pairsMap, pairs) {

@@ -1,8 +1,31 @@
 #' @importFrom partitions conjugate parts
 #' @importFrom gmp as.bigq is.bigq
-#' @importFrom utils tail
+#' @importFrom utils tail head
 #' @importFrom qspray qlone
 NULL
+
+pairing <- function(lambdas) {
+  mapply(
+    function(lambda1, lambda2) {
+      list(lambda1, lambda2)
+    },
+    tail(lambdas, -1L), head(lambdas, -1L),
+    USE.NAMES = FALSE, SIMPLIFY = FALSE
+  )
+}
+
+lastSubpartition <- function(w, lambda) {
+  if(length(lambda) == 0L) {
+    integer(0L)
+  } else {
+    k <- lambda[1L]
+    if(w <= k) {
+      w
+    } else {
+      c(k, lastSubpartition(w - k, tail(lambda, -1L)))
+    }
+  }
+}
 
 isDecreasing <- function(x) {
   all(diff(x) <= 0)

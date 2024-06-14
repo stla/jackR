@@ -13,7 +13,7 @@ SkewHallLittlewoodPol(n, lambda, mu, which = "P")
 \code{lambda} is the outer partition and \code{mu} is the inner partition
 (so \code{mu} must be a subpartition of \code{lambda})}
 
-\item{which}{which Hall-Littlewood polynomial, \code{"P"} or \code{"Q"}}
+\item{which}{which skew Hall-Littlewood polynomial, \code{"P"} or \code{"Q"}}
 }
 \value{
 A \code{symbolicQspray} multivariate polynomial, the skew

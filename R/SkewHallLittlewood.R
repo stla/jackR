@@ -107,20 +107,78 @@ phi <- function(lambda, mu) {
 # #  }, simplify = FALSE))
 
 #' @importFrom syt skewGelfandTsetlinPatterns
-#' @importFrom partitions compositions
 #' @noRd
 Paths <- function(n, lambda, mu) {
-  do.call(c, apply(compositions(sum(lambda) - sum(mu), n), 2L, function(w) {
-    skewGelfandTsetlinPatterns(lambda, mu, w)
-  }, simplify = FALSE))
+  nus <- Filter(
+    function(nu) length(nu) <= n,
+    listOfDominatedPartitions(lastSubpartition(sum(lambda) - sum(mu), lambda))
+  )
+  Filter(
+    Negate(is.null),
+    lapply(nus, function(nu) {
+      w <- c(nu, rep(0L, n - length(nu)))
+      patterns <- skewGelfandTsetlinPatterns(lambda, mu, w)
+      if(length(patterns) == 0L) {
+        NULL
+      } else {
+        list(
+          "weight" = w,
+          "pairs" = lapply(patterns, function(pattern) {
+            pairing(
+              apply(pattern, 1L, removeTrailingZeros, simplify = FALSE)
+            )
+          })
+        )
+      }
+    })
+  )
+  # do.call(c, apply(compositions(sum(lambda) - sum(mu), n), 2L, function(w) {
+  #   skewGelfandTsetlinPatterns(lambda, mu, w)
+  # }, simplify = FALSE))
 }
-# _paths :: Int -> Seq Int -> Seq Int -> [[Seq Int]]
-# _paths n lambda mu =
-# --  filter columnStrictTableau
-#     (concatMap
-#      (skewGelfandTsetlinPatterns (DF.toList lambda) (DF.toList mu))
-#       (compositions n (DF.sum lambda - DF.sum mu)))
 
+#' @importFrom ratioOfQsprays as.ratioOfQsprays
+#' @importFrom DescTools Permn
+.SkewHallLittlewood <- function(f, n, lambda, mu) {
+  paths <- Paths(n, lambda, mu)
+  allPairs <- unique(
+    do.call(
+      c,
+      do.call(
+        c,
+        lapply(paths, `[[`, "pairs")
+      )
+    )
+  )
+  listOfSprays <- lapply(allPairs, function(pair) {
+    f(pair[[1L]], pair[[2L]])
+  })
+  names(listOfSprays) <-
+    vapply(allPairs, toString, character(1L), USE.NAMES = FALSE)
+  listsOfSprays <- lapply(paths, function(nu_listsOfPairs) {
+    nu <- nu_listsOfPairs[[1L]]
+    listsOfPairs <- nu_listsOfPairs[[2L]]
+    sprays <- lapply(listsOfPairs, function(pairs) {
+      Reduce(
+        `*`,
+        listOfSprays[vapply(pairs, toString, character(1L), USE.NAMES = FALSE)]
+      )
+    })
+    listOfPowers <- apply(Permn(nu), 1L, removeTrailingZeros, simplify = FALSE)
+    mapply(
+      function(powers, spray) {
+        new(
+          "symbolicQspray",
+          powers = list(powers),
+          coeffs = list(as.ratioOfQsprays(spray))
+        )
+      },
+      listOfPowers, sprays,
+      USE.NAMES = FALSE, SIMPLIFY = FALSE
+    )
+  })
+  Reduce(`+`, do.call(c, listsOfSprays))
+}
 
 #' @title Skew Hall-Littlewood polynomial
 #' @description Returns the skew Hall-Littlewood polynomial associated to
@@ -130,14 +188,14 @@ Paths <- function(n, lambda, mu) {
 #' @param lambda,mu integer partitions defining the skew partition:
 #'   \code{lambda} is the outer partition and \code{mu} is the inner partition
 #'   (so \code{mu} must be a subpartition of \code{lambda})
-#' @param which which Hall-Littlewood polynomial, \code{"P"} or \code{"Q"}
+#' @param which which skew Hall-Littlewood polynomial, \code{"P"} or \code{"Q"}
 #'
 #' @return A \code{symbolicQspray} multivariate polynomial, the skew
 #'   Hall-Littlewood polynomial associated to the skew partition defined by
 #'   \code{lambda} and \code{mu}. It has only one parameter and its
 #'   coefficients are polynomial in this parameter.
 #' @export
-#' @importFrom symbolicQspray Qzero Qone Qlone showSymbolicQsprayOption<-
+#' @importFrom symbolicQspray Qzero Qone showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
 #'
 #' @examples
@@ -156,46 +214,94 @@ SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
   if(ellLambda < ellMu) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
-  mu <- c(mu, rep(0L, ellLambda - ellMu))
-  if(any(lambda < mu)) {
+  if(any(lambda[seq_len(ellMu)] < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   if(n == 0L){
-    if(all(lambda == mu)) {
+    if(ellLambda == ellMu && all(lambda == mu)) {
       return(Qone())
     } else {
       return(Qzero())
     }
   }
-  paths <- Paths(n, lambda, mu)
-  out <- Qzero()
-  lones <- lapply(1L:n, Qlone)
   if(which == "P") {
-    ptheta <- psi
+    out <- .SkewHallLittlewood(psi, n, lambda, mu)
   } else {
-    ptheta <- phi
+    out <- .SkewHallLittlewood(phi, n, lambda, mu)
   }
-  i_ <- seq_len(n)
-  for(nu in paths) {
-    out <- out + Reduce(`*`, lapply(i_, function(i) {
-      nu_i <- nu[i, ]
-      next_nu_i <- nu[i+1L, ]
-      lone_i <- lones[[i]]
-      ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
-    }))
-  }
-  # for(j in seq_along(paths)) {
-  #   nu <- rev(paths[[j]])
-  #   l <- length(nu) - 1L
-  #   out <- out + Reduce(`*`, lapply(seq_len(l), function(i) {
-  #     nu_i <- nu[[i]]
-  #     next_nu_i <- nu[[i+1L]]
-  #     lone_i <- lones[[i]]
-  #     ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
-  #   }))
-  # }
   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
     showRatioOfQspraysXYZ("t")
   out
 }
+# _skewHallLittlewood :: forall a. (Eq a, AlgRing.C a)
+#   => (Seq Int -> Seq Int -> Spray a) -> Int -> Seq Int -> Seq Int
+#       -> SimpleParametricSpray a
+# _skewHallLittlewood f n lambda mu =
+#   sumOfSprays (concatMap sprays paths)
+#   where
+#     paths = _paths n lambda mu
+#     allPairs = nub (concat (concat (snd (unzip paths))))
+#     psis =
+#       HM.fromList
+#         (map (\pair -> (pair, uncurry f pair)) allPairs)
+#     dropTrailingZeros = S.dropWhileR (== 0)
+#     sprays (nu, listsOfPairs) =
+#       let
+#         sprays' =
+#           [productOfSprays [psis HM.! pair | pair <- pairs]
+#             | pairs <- listsOfPairs]
+#         listOfPowers =
+#           [Powers expnts (S.length expnts) |
+#             compo <- permuteMultiset nu,
+#             let expnts = dropTrailingZeros (S.fromList compo)]
+#         in
+#         [
+#           HM.singleton powers spray
+#           | spray <- sprays', powers <- listOfPowers
+#         ]
+#
+
+# SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
+#   stopifnot(isPositiveInteger(n))
+#   stopifnot(isPartition(lambda), isPartition(mu))
+#   which <- match.arg(which, c("P", "Q"))
+#   lambda <- as.integer(removeTrailingZeros(lambda))
+#   mu <- as.integer(removeTrailingZeros(mu))
+#   ellLambda <- length(lambda)
+#   ellMu <- length(mu)
+#   if(ellLambda < ellMu) {
+#     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+#   }
+#   mu <- c(mu, rep(0L, ellLambda - ellMu))
+#   if(any(lambda < mu)) {
+#     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+#   }
+#   if(n == 0L){
+#     if(all(lambda == mu)) {
+#       return(Qone())
+#     } else {
+#       return(Qzero())
+#     }
+#   }
+#   paths <- Paths(n, lambda, mu)
+#   out <- Qzero()
+#   lones <- lapply(1L:n, Qlone)
+#   if(which == "P") {
+#     ptheta <- psi
+#   } else {
+#     ptheta <- phi
+#   }
+#   i_ <- seq_len(n)
+#   for(nu in paths) {
+#     out <- out + Reduce(`*`, lapply(i_, function(i) {
+#       nu_i <- nu[i, ]
+#       next_nu_i <- nu[i+1L, ]
+#       lone_i <- lones[[i]]
+#       ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
+#     }))
+#   }
+#   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
+#     showRatioOfQspraysXYZ("t")
+#   out
+# }
 
