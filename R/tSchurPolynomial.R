@@ -72,9 +72,15 @@ sequencesOfRibbons <- function(lambda, mu, rho) {
   }
   Reduce(f, rho, init = list(list(c(mu, rep(0L, length(lambda) - length(mu))))))
 }
+
 .lambdas <- function(lambda, r, nu) {
+  if(length(lambda) >= 2L) {
+    pairs <- rbind(.pairs(lambda, r, nu), .pairsp(lambda, r, nu))
+  } else {
+    pairs <- .pairs(lambda, r, nu)
+  }
   apply(
-    rbind(.pairs(lambda, r, nu), .pairsp(lambda, r, nu)),
+    pairs,
     1L,
     function(pq) {
       .flambda(pq, r, nu)
@@ -224,3 +230,61 @@ zlambda <- function(lambda) {
 #          AlgMod.*> tPowerSumPol rho
 #       | (rho, c) <- chi_lambda_mu_rhos, c /= 0
 #       ]
+
+
+#' @title t-Schur polynomial
+#' @description Returns the t-Schur polynomial associated to
+#'   the given partition.
+#'
+#' @param n number of variables, a positive integer
+#' @param lambda integer partition
+#'
+#' @return A \code{symbolicQspray} multivariate polynomial, the
+#'   t-Schur polynomial associated to \code{lambda}.
+#'   It has one parameter and its coefficients
+#'   are polynomials in this parameter.
+#' @export
+#' @importFrom symbolicQspray showSymbolicQsprayOption<-
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+tSchurPol <- function(n, lambda) {
+  stopifnot(isPositiveInteger(n))
+  stopifnot(isPartition(lambda))
+  out <- .tSkewSchurPolynomial(
+    n, as.integer(removeTrailingZeros(lambda)), integer(0L)
+  )
+  showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ(c("t"))
+  out
+}
+
+#' @title Skew t-Schur polynomial
+#' @description Returns the skew t-Schur polynomial associated to
+#'   the given skew partition.
+#'
+#' @param n number of variables, a positive integer
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#'
+#' @return A \code{symbolicQspray} multivariate polynomial, the skew
+#'   t-Schur polynomial associated to the skew partition defined by
+#'   \code{lambda} and \code{mu}. It has one parameter and its coefficients
+#'   are polynomials in this parameter.
+#' @export
+#' @importFrom symbolicQspray showSymbolicQsprayOption<-
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+tSkewSchurPol <- function(n, lambda, mu) {
+  stopifnot(isPositiveInteger(n))
+  stopifnot(isPartition(lambda), isPartition(mu))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(head(lambda, ellMu) < mu)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  out <- .tSkewSchurPolynomial(n, lambda, mu)
+  showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ(c("t"))
+  out
+}
