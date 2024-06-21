@@ -116,3 +116,43 @@ sequencesOfRibbons <- function(lambda, mu, rho) {
 #           && nu_qm1 <= lambda `S.index` (p-1)
 #           && all (uncurry (<))
 #                   (S.zip (S.take (q-p) (S.drop (p-1) nu)) (S.drop p lambda))
+
+
+# chi_lambda_mu_rho :: Seq Int -> Seq Int -> Seq Int -> Int
+# chi_lambda_mu_rho lambda mu rho =
+#   if S.null rho then 1 else 2 * nevens - length sequences
+#   where
+#     ribbonHeight :: Seq Int -> Seq Int -> Int
+#     ribbonHeight kappa nu =
+#       DF.sum
+#         (S.zipWith (\k n -> fromEnum (k /= n)) kappa nu)
+#           - 1
+#       -- kappa and mu have same length so don't need to add S.length kappa - S.length mu
+#     sequences = sequencesOfRibbons lambda mu rho
+#     nevens =
+#       sum $ map
+#         (
+#           \sq ->
+#             (fromEnum . even . DF.sum) $
+#               S.zipWith ribbonHeight (S.drop 1 sq) sq
+#         )
+#           sequences
+chi_lambda_mu_rho <- function(lambda, mu, rho) {
+  if(length(rho) == 0L) {
+    1L
+  } else {
+    sequences <- sequencesOfRibbons(lambda, mu, rho)
+    nevens <- sum(
+      vapply(sequences, function(sq) {
+        sum(
+          vapply(seq_len(length(sq)-1L), function(i) {
+            kappa <- sq[[i+1L]]
+            nu <- sq[[i]]
+            sum(kappa != nu) - 1L
+          }, integer(1L))
+        ) %% 2L == 0L
+      }, logical(1L))
+    )
+    2L * nevens - length(sequences)
+  }
+}
