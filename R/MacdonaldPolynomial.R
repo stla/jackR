@@ -192,6 +192,37 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
   num / den
 }
 
+# clambda :: (Eq a, AlgRing.C a) => Seq Int -> Spray a
+# clambda lambda =
+#   productOfSprays [unitSpray ^-^ q (a s) ^*^ t (l s + 1) | s <- pairs]
+#   where
+#     q = lone' 1
+#     t = lone' 2
+#     pairs = [(i, j) | i <- [1 .. S.length lambda], j <- [1 .. lambda `S.index` (i-1)]]
+#     lambda' = _dualPartition' lambda
+#     a (i, j) = lambda `S.index` (i-1) - j
+#     l (i, j) = lambda' `S.index` (j-1) - i
+#' @importFrom qspray qlone qone
+#' @importFrom partitions conjugate
+clambda <- function(lambda) {
+  q <- qlone(1)
+  t <- qlone(2)
+  lambdap <- conjugate(lambda)
+  unitSpray <- qone()
+  sprays <- do.call(
+    c,
+    lapply(seq_along(lambda), function(i) {
+      lambda_i <- lambda[i]
+      lapply(seq_len(lambda_i), function(j) {
+        a <- lambda_i - j
+        l <- lambdap[j] - i
+        unitSpray - q^a * t^(l + 1L)
+      })
+    })
+  )
+  Reduce(`*`, sprays)
+}
+
 #' @importFrom DescTools Permn
 #' @importFrom methods new
 #' @importFrom syt GelfandTsetlinPatterns
@@ -251,7 +282,8 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda integer partition
-#' @param which which Macdonald polynomial, \code{"P"} or \code{"Q"}
+#' @param which which Macdonald polynomial, \code{"P"}, \code{"Q"},
+#'   or \code{"J"}
 #'
 #' @return A \code{symbolicQspray} multivariate polynomial, the
 #'   Macdonald polynomial associated to the integer partition
@@ -262,7 +294,7 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
 MacdonaldPol <- function(n, lambda, which) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
-  stopifnot(which %in% c("P", "Q"))
+  stopifnot(which %in% c("P", "Q", "J"))
   lambda <- as.integer(removeTrailingZeros(lambda))
   if(n == 0L){
     if(length(lambda) == 0L) {
@@ -273,8 +305,10 @@ MacdonaldPol <- function(n, lambda, which) {
   }
   if(which == "P") {
     out <- .MacdonaldPolynomial(psiLambdaMu, n, lambda)
-  } else {
+  } else if(which == "Q") {
     out <- .MacdonaldPolynomial(phiLambdaMu, n, lambda)
+  } else {
+    out <- clambda(lambda) * .MacdonaldPolynomial(psiLambdaMu, n, lambda)
   }
   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
     showRatioOfQspraysXYZ(c("q", "t"))
