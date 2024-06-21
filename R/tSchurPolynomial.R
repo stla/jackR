@@ -6,7 +6,12 @@
 .flambda <- function(pq, r, nu) {
   p <- pq[1L]
   q <- pq[2L]
-  c(head(nu, p-1L), nu[q]+p-q+r, head(tail(nu, 1L-p), q-p) + 1L, tail(nu, -q))
+  if(p == 1L) {
+    tnu <- nu
+  } else {
+    tnu <- tail(nu, 1L-p)
+  }
+  c(head(nu, p-1L), nu[q]+p-q+r, head(tnu, q-p) + 1L, tail(nu, -q))
 }
 
 #     ok q r nu =
@@ -55,7 +60,7 @@ sequencesOfRibbons <- function(lambda, mu, rho) {
       lapply(
           Filter(
             function(lbda) {
-              all(lbda <= lambda)
+              all(lbda <= lambda[seq_along(lbda)])
             },
             .lambdas(lambda, r, z[[length(z)]])
           ),
@@ -156,3 +161,66 @@ chi_lambda_mu_rho <- function(lambda, mu, rho) {
     2L * nevens - length(sequences)
   }
 }
+
+zlambda <- function(lambda) {
+  parts <- unique(lambda)
+  mjs <- vapply(parts, function(j) {
+    sum(lambda == j)
+  }, integer(1L))
+  prod(factorial(mjs) * parts^mjs)
+}
+# _tSkewSchurPolynomial ::
+#   (Eq a, AlgField.C a)
+#   => (Integer -> Integer -> a)
+#   -> Int
+#   -> Partition
+#   -> Partition
+#   -> SimpleParametricSpray a
+.tSkewSchurPolynomial <- function(n, lambda, mu) {
+  w <- sum(lambda) - sum(mu)
+  rhos <- apply(parts(w), 2L, removeTrailingZeros, simplify = FALSE)
+  unitSpray <- qone()
+  t <- qlone(1L)
+  mapOfSprays <- lapply(seq_len(w), function(r) {
+    unitSpray - t^r
+  })
+  sprays <- lapply(rhos, function(rho) {
+    c <- chi_lambda_mu_rho(lambda, mu, rho)
+    if(c == 0L) {
+      qzero()
+    } else {
+      psPoly <- PSFpoly(n, rho)
+      coeffs <- lapply(psPoly@coeffs, function(coeff) {
+        as.ratioOfQsprays(coeff * Reduce(`*`, mapOfSprays[rho]))
+      })
+      tPowerSumPol <- new(
+        "symbolicQspray",
+        powers = psPoly@powers,
+        coeffs = coeffs
+      )
+      as.bigq(c, zlambda(rho)) * tPowerSumPol
+    }
+  })
+  Reduce(`+`, sprays)
+}
+# _tSkewSchurPolynomial f n lambda mu = sumOfSprays sprays
+#   where
+#     w = sum lambda - sum mu
+#     rhos = partitions w
+#     t = lone' 1
+#     mapOfSprays = IM.fromList (map (\r -> (r, unitSpray ^-^ t r)) [1 .. w])
+#     tPowerSumPol rho =
+#       HM.map
+#         (flip (*^) (productOfSprays (map ((IM.!) mapOfSprays) rho)))
+#           (psPolynomial n rho)
+#     lambda' = S.fromList lambda
+#     mu' = S.fromList mu
+#     chi_lambda_mu_rhos =
+#       [(rho', chi_lambda_mu_rho lambda' mu' (S.fromList rho'))
+#         | rho <- rhos, let rho' = fromPartition rho]
+#     sprays =
+#       [
+#         (f (toInteger c) (toInteger (zlambda rho)))
+#          AlgMod.*> tPowerSumPol rho
+#       | (rho, c) <- chi_lambda_mu_rhos, c /= 0
+#       ]
