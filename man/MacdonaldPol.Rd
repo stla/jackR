@@ -11,7 +11,8 @@ MacdonaldPol(n, lambda, which)
 
 \item{lambda}{integer partition}
 
-\item{which}{which Macdonald polynomial, \code{"P"} or \code{"Q"}}
+\item{which}{which Macdonald polynomial, \code{"P"}, \code{"Q"},
+or \code{"J"}}
 }
 \value{
 A \code{symbolicQspray} multivariate polynomial, the

@@ -184,6 +184,9 @@ zlambda <- function(lambda) {
 #   -> SimpleParametricSpray a
 .tSkewSchurPolynomial <- function(n, lambda, mu) {
   w <- sum(lambda) - sum(mu)
+  if(w == 0L) {
+    return(Qone())
+  }
   rhos <- apply(parts(w), 2L, removeTrailingZeros, simplify = FALSE)
   unitSpray <- qone()
   t <- qlone(1L)
