@@ -95,19 +95,33 @@ MacdonaldPolynomialJinPSbasis <- function(mu) {
 #               *^ psPolynomial n lambda)
 #       zeroSpray psCombo
 
+#' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone Qzero
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+#' @importFrom methods as
+#' @importFrom qspray qlone qone
 modifiedMacdonaldPolynomial <- function(n, mu) {
   psCombo <- MacdonaldPolynomialJinPSbasis(mu)
   nmu <- sum(seq_len(length(mu) - 1L) * tail(mu, -1L))
-  t <- qlone(2)
-  Reduce(
+  t <- qlone(2L)
+  unitSpray <- qone()
+  out <- Reduce(
     `+`,
     lapply(psCombo, function(term) {
       lambda <- term[["lambda"]]
       spray <- term[["coeff"]]
-      rOS <- .toROS(t^(nmu + sum(lambda)) * spray) / .den(lambda)
+      den_lambda <- Reduce(
+        `*`,
+        lapply(lambda, function(k) {
+          t^k - unitSpray
+        })
+      )
+      rOS <- .toROS(t^(nmu + sum(lambda)) * spray) / den_lambda
       rOS@numerator * as(PSFpoly(n, lambda), "symbolicQspray")
     })
   )
+  showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ(c("q", "t"))
+  out
 }
 #   where
 #     psCombo = macdonaldJinPSbasis mu
@@ -150,13 +164,3 @@ modifiedMacdonaldPolynomial <- function(n, mu) {
   )
 }
 #     den lambda = productOfSprays [t' k ^-^ unitSpray | k <- lambda]
-.den <- function(lambda) {
-  t <- qlone(2)
-  unitSpray <- qone()
-  Reduce(
-    `*`,
-    lapply(lambda, function(k) {
-      t^k - unitSpray
-    })
-  )
-}
