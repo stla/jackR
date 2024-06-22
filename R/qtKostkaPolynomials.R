@@ -23,17 +23,12 @@
 #           (DM.map (\ikNumber -> (ikNumber .^ c) %//% den lambda) (coeffs lambda))
 #       )
 #       DM.empty psCombo
-.den2 <- function(lambda) {
-  t <- qlone(2)
-  unitSpray <- qone()
-  Reduce(
-    `*`,
-    lapply(lambda, function(k) {
-      unitSpray - t^k
-    })
-  )
-}
 
+
+#' @importFrom qspray MSPcombination PSFpoly qlone qone showQsprayOption<- showQsprayXYZ
+#' @importFrom RationalMatrix Qinverse
+#' @importFrom partitions parts
+#' @importFrom gmp c_bigq
 qtKostkaPolynomials <- function(mu) {
   stopifnot(isPartition(mu))
   n <- sum(mu)
@@ -68,16 +63,24 @@ qtKostkaPolynomials <- function(mu) {
   }
   coeffsMap <- lapply(lambdas, coeffs)
   names(coeffsMap) <- lambdasAsStrings
+  t <- qlone(2L)
+  unitSpray <- qone()
   maps <- lapply(names(psCombo), function(p) {
     lambda <- psCombo[[p]][["lambda"]]
     spray <- psCombo[[p]][["coeff"]]
     coeffs_lambda <- coeffsMap[[p]]
+    den_lambda <- Reduce(
+      `*`,
+      lapply(lambda, function(k) {
+        unitSpray - t^k
+      })
+    )
     lapply(lambdasAsStrings, function(lambdaAsString) {
       coeff_lambda <- coeffs_lambda[[lambdaAsString]]
       list(
         "lambda" = coeff_lambda[["lambda"]],
         "lambdaAsString" = lambdaAsString,
-        "coeff" =  coeff_lambda[["coeff"]] * spray / .den2(lambda)
+        "coeff" =  coeff_lambda[["coeff"]] * spray / den_lambda
       )
     })
   })
@@ -85,9 +88,11 @@ qtKostkaPolynomials <- function(mu) {
   f <- vapply(cmapOfMaps, `[[`, character(1L), "lambdaAsString")
   lapply(split(cmapOfMaps, f), function(l) {
     rOQ <- Reduce(`+`, lapply(l, `[[`, "coeff"))
+    spray <- rOQ@numerator
+    showQsprayOption(spray, "showQspray") <- showQsprayXYZ(c("q", "t"))
     list(
       "lambda" = l[[1L]][["lambda"]],
-      "coeff" = rOQ@numerator
+      "polynomial" = spray
     )
   })
 }
