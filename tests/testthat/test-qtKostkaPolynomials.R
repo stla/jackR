@@ -27,3 +27,40 @@ test_that("qt-Kostka polynomials", {
   )
   expect_true(macJpoly == expected)
 })
+
+test_that("Skew qt-Kostka polynomials", {
+  lambda <- c(2, 1, 1)
+  mu <- c(1, 1)
+  qtSkewKostkaPolys <- qtSkewKostkaPolynomials(lambda, mu)
+  q <- qlone(1)
+  t <- qlone(2)
+  expected <- lapply(qtSkewKostkaPolys, function(nu_poly) {
+    changeParameters(
+      changeParameters(
+        nu_poly[["polynomial"]], list(qzero(), t)
+      ),
+      list(t, q)
+    )
+  })
+  skewKFpolys <- lapply(qtSkewKostkaPolys, function(nu_poly) {
+    SkewKostkaFoulkesPolynomial(lambda, mu, nu_poly[["nu"]])
+  })
+  check <- mapply(
+    `==`,
+    expected, skewKFpolys,
+    SIMPLIFY = TRUE
+  )
+  expect_true(all(check))
+})
+#   , testCase "Skew qt-Kostka polynomials" $ do
+#     let
+#       lambda = [2, 1, 1]
+#       mu = [1, 1]
+#       qtSkewKostkaPolys = qtSkewKostkaPolynomials' lambda mu
+#       expected =
+#         map ((swapVariables (1, 2)) . (substitute [Just 0, Nothing]))
+#               (DM.elems qtSkewKostkaPolys)
+#       skewKFpolys =
+#         map (skewKostkaFoulkesPolynomial' lambda mu)
+#               (DM.keys qtSkewKostkaPolys)
+#     assertEqual "" skewKFpolys expected
