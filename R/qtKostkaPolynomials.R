@@ -35,11 +35,24 @@
 }
 
 qtKostkaPolynomials <- function(mu) {
-  psCombo <- MacdonaldPolynomialJinPSbasis(mu)
+  stopifnot(isPartition(mu))
   n <- sum(mu)
+  if(n == 0L) {
+    out <- list(
+      list(
+        "lambda" = integer(0L),
+        "polynomial" = qone()
+      )
+    )
+    names(out) <- partitionAsString(integer(0L))
+    return(out)
+  }
+  psCombo <- MacdonaldPolynomialJinPSbasis(mu)
   iknMatrix <- Qinverse(KostkaNumbers(n))
   lambdas <- apply(parts(n), 2L, removeTrailingZeros, simplify = FALSE)
-  colnames(iknMatrix) <- rownames(iknMatrix) <- vapply(lambdas, partitionAsString, character(1L))
+  lambdasAsStrings <-
+    vapply(lambdas, partitionAsString, character(1L))
+  rownames(iknMatrix) <- lambdasAsStrings
   coeffs <- function(lambda) {
     combo <- MSPcombination(PSFpoly(length(lambda), lambda), check = FALSE)
     out <- lapply(seq_along(lambdas), function(i) {
@@ -50,134 +63,31 @@ qtKostkaPolynomials <- function(mu) {
         })))
       )
     })
-    names(out) <- vapply(lambdas, partitionAsString, character(1L))
+    names(out) <- lambdasAsStrings
     out
   }
+  coeffsMap <- lapply(lambdas, coeffs)
+  names(coeffsMap) <- lambdasAsStrings
   maps <- lapply(names(psCombo), function(p) {
     lambda <- psCombo[[p]][["lambda"]]
     spray <- psCombo[[p]][["coeff"]]
-    coeffs_lambda <- coeffs(lambda)
-    lapply(names(coeffs_lambda), function(x) {
+    coeffs_lambda <- coeffsMap[[p]]
+    lapply(lambdasAsStrings, function(lambdaAsString) {
+      coeff_lambda <- coeffs_lambda[[lambdaAsString]]
       list(
-        "lambda" = coeffs_lambda[[x]][["lambda"]],
-        "lambdaAsString" = x,
-        "coeff" =  coeffs_lambda[[x]][["coeff"]] * spray / .den2(lambda)
+        "lambda" = coeff_lambda[["lambda"]],
+        "lambdaAsString" = lambdaAsString,
+        "coeff" =  coeff_lambda[["coeff"]] * spray / .den2(lambda)
       )
     })
   })
   cmapOfMaps <- do.call(c, maps)
   f <- vapply(cmapOfMaps, `[[`, character(1L), "lambdaAsString")
   lapply(split(cmapOfMaps, f), function(l) {
-    spray <- Reduce(`+`, lapply(l, `[[`, "coeff"))
+    rOQ <- Reduce(`+`, lapply(l, `[[`, "coeff"))
     list(
       "lambda" = l[[1L]][["lambda"]],
-      "coeff" = spray
+      "coeff" = rOQ@numerator
     )
   })
-
-
-  # ikn <- lapply(seq_along(lambdas), function(i) {
-  #   # ikNumbers <- iknMatrix[, i]
-  #   # names(ikNumbers) <- vapply(lambdas, partitionAsString, character(1L))
-  #   lambda <- lambdas[[i]]
-  #   combo <- MSPcombination(PSFpoly(length(lambda), lambda), check = FALSE)
-  #   # out <- lapply(names(combo), function(p) {
-  #   #   list(
-  #   #     "lambda" = combo[[p]][["lambda"]],
-  #   #     "coeff" = sum(c_bigq(lapply(names(combo), function(p) {
-  #   #       combo[[p]][["coeff"]] * iknMatrix[i,p]
-  #   #     })))
-  #   #   )
-  #   # })
-  #   # names(out) <- names(combo)#vapply(lambdas, partitionAsString, character(1L))
-  #
-  #   out <- lapply(seq_along(lambdas), function(j) {
-  #     # ikNumbers <- iknMatrix[, j]
-  #     # names(ikNumbers) <- vapply(lambdas, partitionAsString, character(1L))
-  #     kappa <- lambdas[[j]]
-  #     list(
-  #       "lambda" = kappa,
-  #       "coeff" = sum(c_bigq(lapply(names(combo), function(p) {
-  #         combo[[p]][["coeff"]] * iknMatrix[i,p]
-  #       })))
-  #     )
-  #   })
-  #   names(out) <- vapply(lambdas, partitionAsString, character(1L))
-  #   out
-  #   # lapply(names(combo), function(p) {
-  #   #   list(
-  #   #     "lambda" = combo[[p]][["lambda"]],
-  #   #   )
-  #   # })
-  #   # list(
-  #   #   "lambda" = lambda,
-  #   #   "coeff" = sum(c_bigq(lapply(names(combo), function(p) {
-  #   #     combo[[p]][["coeff"]] * iknMatrix[p,i]
-  #   #   })))
-  #   # )
-  # })
-  # names(ikn) <- vapply(lambdas, partitionAsString, character(1L))
-  # maps <- lapply(psCombo, function(term) {
-  #   lambda <- term[["lambda"]]
-  #   p <- partitionAsString(lambda)
-  #   spray <- psCombo[[p]][["coeff"]]
-  #   # lambda <- psCombo[[p]][["lambda"]]
-  #   # list(
-  #   #   "lambdaAsString" = partitionAsString(ikn[[p]][["lambda"]]),
-  #   #   "lambda" = ikn[[p]][["lambda"]],
-  #   #   "coeff" = ikn[[p]][["coeff"]] * spray / .den(lambda)
-  #   # )
-  #   # coeff <- Reduce(`+`, lapply(ikn[[p]], function(t) {
-  #   #   t[["coeff"]] * spray / .den(lambda)
-  #   #   # list(
-  #   #   #   "lambda" = t[["lambda"]],
-  #   #   #   "coeff" = t[["coeff"]] * spray / .den(lambda)
-  #   #   # )
-  #   # }))
-  #   #    names(coeff) <- vapply(ikn[[p]], function(t) partitionAsString(t[["lambda"]]), character(1L))
-  #   # list(
-  #   #   "lambdaAsString" = p,
-  #   #   "lambda" = lambda,
-  #   #   "coeff" = ikn[[p]][["coeff"]] * spray / .den(lambda)
-  #   #   # lapply(ikn, function(t) {
-  #   #   #   t[["coeff"]] * spray / .den(lambda)
-  #   #   # })
-  #   #
-  #   #   # "coeff" = list(
-  #   #   #   "lambda" = ikn[[p]][["lambda"]],
-  #   #   #   "coeff" = ikn[[p]][["coeff"]] * spray / .den(lambda)
-  #   #   # )
-  #   # )
-  #   list(
-  #     "lambdaAsString" = p,
-  #     "coeff" = lapply(ikn, function(l) {
-  #       lapply(l, function(t) {
-  #         list("lambda" = t[["lambda"]], "coeff" = t[["coeff"]] * spray / .den(lambda))
-  #         #        function(t) t[["coeff"]] * spray / .den(lambda)
-  #       })
-  #     })
-  #   )
-  #   # lapply(ikn, function(l) {
-  #   #   list(
-  #   #     "lambdaAsString" = p,#partitionAsString(t[["lambda"]]),
-  #   #     "lambda" = lambda,
-  #   #     "coeff" = lapply(l, function(t) t[["coeff"]] * spray / .den(lambda))
-  #   #   )
-  #   #
-  #   #   # list(
-  #   #   #   "lambdaAsString" = p,#partitionAsString(t[["lambda"]]),
-  #   #   #   "lambda" = t[["lambda"]],
-  #   #   #   "coeff" = t[["coeff"]] * spray / .den(lambda)
-  #   #   # )
-  #   # })
-  # })
-  # cmapOfMaps <- maps#do.call(c, maps)
-  # f <- vapply(cmapOfMaps, `[[`, character(1L), "lambdaAsString")
-  # lapply(maps, function(l) {
-  #   rOS <- lapply(do.call(c, l[["coeff"]]), `[[`, "coeff")
-  #   list(
-  #     "lambda" = NULL,#l[["lambdaAsString"]],
-  #     "coeff" = rOS
-  #   )
-  # })
 }
