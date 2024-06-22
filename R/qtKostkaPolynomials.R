@@ -85,6 +85,26 @@ qtKostkaPolynomials <- function(mu) {
   })
 }
 
+#' @title Skew qt-Kostka polynomials
+#' @description Skew qt-Kostka polynomials associated to a given skew
+#'    partition.
+#'
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#'
+#' @return A list. The skew qt-Kostka polynomials are usually denoted by
+#'   \eqn{K_{\lambda/\mu, \nu}(q, t)} where \eqn{q} and \eqn{t} denote the two
+#'   variables, \eqn{\lambda} and \eqn{\mu} are the two integer partitions
+#'   defining the skew partition, and \eqn{\nu} is an integer partition.
+#'   For given partitions \eqn{\lambda} and \eqn{\mu}, the function returns the
+#'   polynomials \eqn{K_{\lambda/\mu, \nu}(q, t)} as \code{qspray} objects
+#'   for all partitions \eqn{\nu} of the same weight as the skew partition. The
+#'   generated list is a list of lists with two elements: the integer
+#'   partition \eqn{\nu} and the polynomial.
+#' @export
+#' @importFrom qspray qone showQsprayOption<- showQsprayXYZ
+#' @importFrom partitions parts
 qtSkewKostkaPolynomials <- function(lambda, mu) {
   stopifnot(isPartition(lambda))
   stopifnot(isPartition(mu))
@@ -117,8 +137,7 @@ qtSkewKostkaPolynomials <- function(lambda, mu) {
         lrCoeffs[[pi]][["coeff"]] * qtKostkaPolys[[pi]][["polynomial"]]
       })
     )
-    showSymbolicQsprayOption(poly, "showRatioOfQsprays") <-
-      showRatioOfQspraysXYZ(c("q", "t"))
+    showQsprayOption(poly, "showQspray") <- showQsprayXYZ(c("q", "t"))
     list(
       "nu" = nu,
       "polynomial" = poly
