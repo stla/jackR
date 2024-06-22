@@ -84,3 +84,79 @@ MacdonaldPolynomialJinPSbasis <- function(mu) {
     })
   )
 }
+
+# modifiedMacdonaldPolynomial n mu = jp
+
+#     nmu = sum (zipWith (*) [1 .. ] (drop 1 mu))
+#     jp = DM.foldlWithKey
+#       (\spray lambda c ->
+#           spray ^+^
+#             _numerator (toROS (t' (nmu + sum lambda) ^*^ c) %/% den lambda)
+#               *^ psPolynomial n lambda)
+#       zeroSpray psCombo
+
+modifiedMacdonaldPolynomial <- function(n, mu) {
+  psCombo <- MacdonaldPolynomialJinPSbasis(mu)
+  nmu <- sum(seq_len(length(mu) - 1L) * tail(mu, -1L))
+  t <- qlone(2)
+  Reduce(
+    `+`,
+    lapply(psCombo, function(term) {
+      lambda <- term[["lambda"]]
+      spray <- term[["coeff"]]
+      rOS <- .toROS(t^(nmu + sum(lambda)) * spray) / .den(lambda)
+      rOS@numerator * as(PSFpoly(n, lambda), "symbolicQspray")
+    })
+  )
+}
+#   where
+#     psCombo = macdonaldJinPSbasis mu
+#     q' = lone' 1
+#     t' = lone' 2
+#     -- toROS spray =
+#     --   evaluateAt [q', tm1] (HM.map constantRatioOfSprays spray)
+#     num_and_den Empty = undefined
+#     num_and_den (e :<| Empty) = (q' e, unitSpray)
+#     num_and_den (e1 :<| (e2 :<| _)) = (q' e1, t' e2)
+#     rOS_from_term powers coeff = coeff *^ RatioOfSprays spray1 spray2
+#       where
+#         (spray1, spray2) = num_and_den (exponents powers)
+.rOS_from_term <- function(powers, coeff) {
+  q <- qlone(1)
+  t <- qlone(2)
+  if(length(powers) == 1L) {
+    coeff * as.ratioOfQsprays(q^powers)
+  } else {
+    coeff *
+      new(
+        "ratioOfQsprays",
+        numerator = q^(powers[1L]),
+        denominator = t^(powers[2L])
+      )
+  }
+}
+#     toROS spray =
+#       HM.foldlWithKey'
+#         (\ros powers coeff -> ros AlgAdd.+ rOS_from_term powers coeff)
+#           zeroRatioOfSprays spray
+.toROS <- function(spray) {
+  Reduce(
+    `+`,
+    mapply(
+      .rOS_from_term,
+      spray@powers, spray@coeffs,
+      USE.NAMES = FALSE, SIMPLIFY = FALSE
+    )
+  )
+}
+#     den lambda = productOfSprays [t' k ^-^ unitSpray | k <- lambda]
+.den <- function(lambda) {
+  t <- qlone(2)
+  unitSpray <- qone()
+  Reduce(
+    `*`,
+    lapply(lambda, function(k) {
+      t^k - unitSpray
+    })
+  )
+}
