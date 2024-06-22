@@ -118,7 +118,7 @@ qtSkewKostkaPolynomials <- function(lambda, mu) {
     names(out) <- partitionAsString(integer(0L))
     return(out)
   }
-  lrCoeffs <- LRskew(lambda, mu)
+  lrCoeffs <- LRskew(lambda, mu, output = "list")
   nus <- apply(parts(w), 2L, removeTrailingZeros, simplify = FALSE)
   out <- lapply(nus, function(nu) {
     qtKostkaPolys <- qtKostkaPolynomials(nu)

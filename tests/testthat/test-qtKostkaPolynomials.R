@@ -35,8 +35,8 @@ test_that("Skew qt-Kostka polynomials", {
   q <- qlone(1)
   t <- qlone(2)
   expected <- lapply(qtSkewKostkaPolys, function(nu_poly) {
-    changeParameters(
-      changeParameters(
+    changeVariables(
+      changeVariables(
         nu_poly[["polynomial"]], list(qzero(), t)
       ),
       list(t, q)
