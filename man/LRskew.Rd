@@ -22,10 +22,11 @@ This computes the expression of the skew Schur polynomial
   gives the partitions defining the Schur polynomials of this linear
   combination as character strings, e.g. the partition \code{c(4, 3, 1)} is
   given by \code{"4, 3, 1"}. If \code{output="list"}, the output is a list
-  with two fields: the field \code{coeff} is the vector made of the
-  coefficients of the linear combination, and the field \code{nu} is the
-  list of partitions defining the Schur polynomials of the linear combination
-  given as integer vectors.
+  of lists with two elements. Each of these lists with two elements
+  corresponds to a term of the linear combination: the first element is the
+  coefficient, it is named \code{coeff}, and the second element, named
+  \code{nu}, is the integer partition of the Schur polynomial of the linear
+  combination.
 }
 \description{
 Expression of a skew Schur polynomial as a linear

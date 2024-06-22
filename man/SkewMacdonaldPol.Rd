@@ -13,7 +13,8 @@ SkewMacdonaldPol(n, lambda, mu, which)
 \code{lambda} is the outer partition and \code{mu} is the inner partition
 (so \code{mu} must be a subpartition of \code{lambda})}
 
-\item{which}{which skew Macdonald polynomial, \code{"P"} or \code{"Q"}}
+\item{which}{which skew Macdonald polynomial, \code{"P"}, \code{"Q"}
+or \code{"J"}}
 }
 \value{
 A \code{symbolicQspray} multivariate polynomial, the skew

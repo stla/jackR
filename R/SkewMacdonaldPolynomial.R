@@ -66,7 +66,8 @@
 #' @param lambda,mu integer partitions defining the skew partition:
 #'   \code{lambda} is the outer partition and \code{mu} is the inner partition
 #'   (so \code{mu} must be a subpartition of \code{lambda})
-#' @param which which skew Macdonald polynomial, \code{"P"} or \code{"Q"}
+#' @param which which skew Macdonald polynomial, \code{"P"}, \code{"Q"}
+#'   or \code{"J"}
 #'
 #' @return A \code{symbolicQspray} multivariate polynomial, the skew
 #'   Macdonald polynomial associated to the skew partition defined by

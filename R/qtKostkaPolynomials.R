@@ -1,36 +1,24 @@
-# qtKostkaPolynomials ::
-#   forall a. (Eq a, AlgField.C a)
-#   => Partition
-#   -> Map Partition (Spray a)
-# qtKostkaPolynomials mu =  DM.map _numerator scs
-#   where
-#     psCombo = macdonaldJinPSbasis mu
-#     t = lone' 2
-# --    f = psCombo -- psCombination'' (macdonaldJpolynomial n mu)
-#     den lambda = productOfSprays [unitSpray ^-^ t k | k <- lambda]
-#     msCombo lambda =
-#       msCombination (psPolynomial (length lambda) lambda)
-#     ikn = inverseKostkaNumbers (sum mu)
-#     coeffs lambda =
-#       let combo = msCombo lambda in
-#         DM.map
-#           (\ikNumbers ->
-#             DF.sum $ DM.intersectionWith (*) combo ikNumbers)
-#           ikn
-#     scs = DM.foldlWithKey
-#       (\m lambda c ->
-#         DM.unionWith (AlgAdd.+) m
-#           (DM.map (\ikNumber -> (ikNumber .^ c) %//% den lambda) (coeffs lambda))
-#       )
-#       DM.empty psCombo
-
-
+#' @title qt-Kostka polynomials
+#' @description qt-Kostka polynomials, aka Kostka-Macdonald polynomials.
+#'
+#' @param mu integer partition
+#'
+#' @return A list. The qt-Kostka polynomials are usually denoted by
+#'   \eqn{K_{\lambda, \mu}(q, t)} where \eqn{q} and \eqn{t} denote the two
+#'   variables and \eqn{\lambda} and \eqn{\mu} are two integer partitions.
+#'   For a given partition \eqn{\mu}, the function returns the
+#'   polynomials \eqn{K_{\lambda, \mu}(q, t)} as \code{qspray} objects
+#'   for all partitions \eqn{\lambda} of the same weight as \eqn{\mu}. The
+#'   generated list is a list of lists with two elements: the integer
+#'   partition \eqn{\lambda} and the polynomial.
+#' @export
 #' @importFrom qspray MSPcombination PSFpoly qlone qone showQsprayOption<- showQsprayXYZ
 #' @importFrom RationalMatrix Qinverse
 #' @importFrom partitions parts
 #' @importFrom gmp c_bigq
 qtKostkaPolynomials <- function(mu) {
   stopifnot(isPartition(mu))
+  mu <- as.integer(removeTrailingZeros(mu))
   n <- sum(mu)
   if(n == 0L) {
     out <- list(

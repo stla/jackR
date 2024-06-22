@@ -61,6 +61,9 @@
   spray^(alc[3L])
 }
 
+#' @importFrom partitions conjugate
+#' @importFrom qspray qone
+#' @noRd
 clambdamu <- function(lambda, mu) {
   lambdap <- conjugate(lambda)
   mup <- conjugate(mu)
