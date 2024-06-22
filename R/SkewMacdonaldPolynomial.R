@@ -78,7 +78,7 @@ SkewMacdonaldPol <- function(n, lambda, mu, which) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   stopifnot(isPartition(mu))
-  stopifnot(which %in% c("P", "Q"))
+  stopifnot(which %in% c("P", "Q", "J"))
   lambda <- as.integer(removeTrailingZeros(lambda))
   mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
@@ -95,8 +95,11 @@ SkewMacdonaldPol <- function(n, lambda, mu, which) {
   }
   if(which == "P") {
     out <- .SkewMacdonaldPolynomial(psiLambdaMu, n, lambda, mu)
-  } else {
+  } else if(which == "Q") {
     out <- .SkewMacdonaldPolynomial(phiLambdaMu, n, lambda, mu)
+  } else {
+    out <- clambdamu(lambda, mu) *
+      .SkewMacdonaldPolynomial(psiLambdaMu, n, lambda, mu)
   }
   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
     showRatioOfQspraysXYZ(c("q", "t"))

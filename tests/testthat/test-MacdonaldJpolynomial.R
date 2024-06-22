@@ -33,7 +33,23 @@ test_that("Macdonald J-polynomial", {
 #         HM.map ((swapVariables (1, 2)) . (substitute [Just 0, Nothing]))
 #           (skewMacdonaldJpolynomial' n lambda mu)
 #     assertEqual "" skewHLpoly expected
-#
+test_that("Skew Macdonald J-polynomial at q=0", {
+  n <- 3
+  lambda <- c(3, 2)
+  mu <- c(2, 1)
+  skewHLpoly <- SkewHallLittlewoodPol(n, lambda, mu, "Q")
+  skewMacPolyJ <- SkewMacdonaldPol(n, lambda, mu, "J")
+  q <- qlone(1)
+  t <- qlone(2)
+  expected <-
+    changeParameters(
+      changeParameters(
+        skewMacPolyJ, list(qzero(), t)
+      ),
+      list(t, q)
+    )
+  expect_true(skewHLpoly == expected)
+})
 #   , testCase "Macdonald polynomial branching rule" $ do
 #     let
 #       nx = 2

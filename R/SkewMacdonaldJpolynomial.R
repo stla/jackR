@@ -67,16 +67,26 @@ clambdamu <- function(lambda, mu) {
   als_lambda <- .als(lambda, lambdap)
   als_mu <- .als(mu, mup)
   matrices <- simplifyTheTwoMatrices(als_lambda, als_mu)
-  num <-
-    Reduce(
-      `*`,
-      apply(matrices[[1L]], 1L, .poly, simplify = FALSE)
-    )
-  den <-
-    Reduce(
-      `*`,
-      apply(matrices[[2L]], 1L, .poly, simplify = FALSE)
-    )
+  matrix1 <- matrices[[1L]]
+  if(nrow(matrix1) >= 1L) {
+    num <-
+      Reduce(
+        `*`,
+        apply(matrix1, 1L, .poly, simplify = FALSE)
+      )
+  } else {
+    num <- qone()
+  }
+  matrix2 <- matrices[[2L]]
+  if(nrow(matrix2) >= 1L) {
+    den <-
+      Reduce(
+        `*`,
+        apply(matrix2, 1L, .poly, simplify = FALSE)
+      )
+  } else {
+    den <- qone()
+  }
   num / den
 }
 
