@@ -205,7 +205,8 @@ LRskew <- function(lambda, mu, output = "dataframe") {
     if(output == "dataframe") {
       return(data.frame("coeff" = 1L, "nu" = "[]"))
     } else {
-      return(list("coeff" = 1L, "nu" = list(integer(0L))))
+      return(list(list("coeff" = 1L, "nu" = integer(0L))))
+#      return(list("coeff" = 1L, "nu" = list(integer(0L))))
     }
   }
   f <- function(old, nu) {
@@ -226,8 +227,17 @@ LRskew <- function(lambda, mu, output = "dataframe") {
   if(output == "dataframe") {
     data.frame("coeff" = v, "nu" = names(v))
   } else {
-    partitions <- lapply(names(v), fromPartitionAsString)
-    list("coeff" = unname(v), "nu" = partitions)
+    nusAsStrings <- names(v)
+    out <- lapply(nusAsStrings, function(nuAsString) {
+      list(
+        "coeff" = v[[nuAsString]],
+        "nu" = fromPartitionAsString(nuAsString)
+      )
+    })
+    names(out) <- nusAsStrings
+    out
+    # partitions <- lapply(names(v), fromPartitionAsString)
+    # list("coeff" = unname(v), "nu" = partitions)
   }
 }
 
@@ -325,10 +335,13 @@ finish <- function(xxs) {
 SkewSchurPol <- function(n, lambda, mu) {
   stopifnot(isPositiveInteger(n))
   LR <- LRskew(lambda, mu, output = "list")
-  LRcoeffs <- LR[["coeff"]]
-  LRparts <- LR[["nu"]]
-  LRterms <- lapply(1:length(LRcoeffs), function(i) {
-    LRcoeffs[i] * SchurPol(n, LRparts[[i]])
+  LRterms <- lapply(LR, function(coeff_nu) {
+    coeff_nu[["coeff"]] * SchurPol(n, coeff_nu[["nu"]])
   })
+  # LRcoeffs <- LR[["coeff"]]
+  # LRparts <- LR[["nu"]]
+  # LRterms <- lapply(1:length(LRcoeffs), function(i) {
+  #   LRcoeffs[i] * SchurPol(n, LRparts[[i]])
+  # })
   Reduce(`+`, LRterms)
 }

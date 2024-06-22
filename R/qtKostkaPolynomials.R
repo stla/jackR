@@ -96,3 +96,68 @@ qtKostkaPolynomials <- function(mu) {
     )
   })
 }
+
+qtSkewKostkaPolynomials <- function(lambda, mu) {
+  stopifnot(isPartition(lambda))
+  stopifnot(isPartition(mu))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(lambda[seq_len(ellMu)] < mu)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  w <- sum(lambda) - sum(mu)
+  if(w == 0L){
+    out <- list(
+      list(
+        "nu" = integer(0L),
+        "polynomial" = qone()
+      )
+    )
+    names(out) <- partitionAsString(integer(0L))
+    return(out)
+  }
+  lrCoeffs <- LRskew(lambda, mu)
+  nus <- apply(parts(w), 2L, removeTrailingZeros, simplify = FALSE)
+  out <- lapply(nus, function(nu) {
+    qtKostkaPolys <- qtKostkaPolynomials(nu)
+    pis <- intersect(names(lrCoeffs), names(qtKostkaPolys))
+    poly <- Reduce(
+      `+`,
+      lapply(pis, function(pi) {
+        lrCoeffs[[pi]][["coeff"]] * qtKostkaPolys[[pi]][["polynomial"]]
+      })
+    )
+    showSymbolicQsprayOption(poly, "showRatioOfQsprays") <-
+      showRatioOfQspraysXYZ(c("q", "t"))
+    list(
+      "nu" = nu,
+      "polynomial" = poly
+    )
+  })
+  names(out) <- vapply(nus, partitionAsString, character(1L))
+  out
+}
+#   => Partition -- ^ outer partition of the skew partition
+#   -> Partition -- ^ inner partition of the skew partition
+#   -> Map Partition (Spray a)
+# qtSkewKostkaPolynomials lambda mu
+#   | not (isSkewPartition lambda mu) =
+#       error "qtSkewKostkaPolynomials: invalid skew partition."
+#   | lambda == mu =
+#       DM.singleton [] unitSpray
+#   | otherwise =
+#       DM.fromList (map spray nus)
+#   where
+#     lrCoeffs = skewSchurLRCoefficients lambda mu
+#     nus = partitions (sum lambda - sum mu)
+#     spray nu =
+#       let nu' = fromPartition nu in
+#         (
+#           nu',
+#           foldl'
+#             (^+^)
+#               zeroSpray
+#                 (DM.intersectionWith (.^) lrCoeffs (qtKostkaPolynomials nu'))
+#         )
