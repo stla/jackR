@@ -1,15 +1,3 @@
-#   , testCase "Macdonald J-polynomial" $ do
-#     let
-#       n = 3
-#       macJpoly = macdonaldJpolynomial' n [2, 1]
-#       q = qlone 1
-#       t = qlone 2
-#       mus = [[3], [2, 1], [1, 1, 1]]
-#       qtKFpolys = [t, unitSpray ^+^ q ^*^ t, q]
-#       tSchurPolys = map ((HM.map (flip changeVariables [t])) . (tSchurPolynomial' n)) mus
-#       expected = sumOfSprays (zipWith (*^) qtKFpolys tSchurPolys)
-#     assertEqual "" macJpoly expected
-#
 test_that("Macdonald J-polynomial", {
   n <- 3
   macJpoly <- MacdonaldPol(n, c(2, 1), "J")
@@ -23,16 +11,7 @@ test_that("Macdonald J-polynomial", {
   expected <- Reduce(`+`, tSchurPolys)
   expect_true(macJpoly == expected)
 })
-#   , testCase "Skew Macdonald J-polynomial at q=0" $ do
-#     let
-#       n = 3
-#       lambda = [3, 2]
-#       mu = [2, 1]
-#       skewHLpoly = skewHallLittlewoodPolynomial' n lambda mu 'Q'
-#       expected = asSimpleParametricSpray $
-#         HM.map ((swapVariables (1, 2)) . (substitute [Just 0, Nothing]))
-#           (skewMacdonaldJpolynomial' n lambda mu)
-#     assertEqual "" skewHLpoly expected
+
 test_that("Skew Macdonald J-polynomial at q=0", {
   n <- 3
   lambda <- c(3, 2)
@@ -49,6 +28,24 @@ test_that("Skew Macdonald J-polynomial at q=0", {
       list(t, q)
     )
   expect_true(skewHLpoly == expected)
+})
+
+test_that("Macdonald J-polynomials branching rule", {
+  nx <- 2
+  ny <- 2
+  lambda <- c(2, 2)
+  macJpoly <- MacdonaldPol(nx + ny, lambda, "J")
+  lones <- list(Qlone(3), Qlone(4))
+  mus <- list(integer(0), 1, 2, c(1, 1), c(2, 1), c(2, 2))
+  expected <-
+    Reduce(
+      `+`,
+      lapply(mus, function(mu) {
+        SkewMacdonaldPol(nx, lambda, mu, "J") *
+          changeVariables(MacdonaldPol(ny, mu, "J"), lones)
+      })
+    )
+  expect_true(macJpoly == expected)
 })
 #   , testCase "Macdonald polynomial branching rule" $ do
 #     let

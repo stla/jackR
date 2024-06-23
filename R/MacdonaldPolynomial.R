@@ -296,12 +296,12 @@ MacdonaldPol <- function(n, lambda, which) {
   stopifnot(isPartition(lambda))
   stopifnot(which %in% c("P", "Q", "J"))
   lambda <- as.integer(removeTrailingZeros(lambda))
-  if(n == 0L){
-    if(length(lambda) == 0L) {
-      return(Qone())
-    } else {
-      return(Qzero())
-    }
+  ellLambda <- length(lambda)
+  if(ellLambda == 0L) {
+    return(Qone())
+  }
+  if(n < ellLambda){
+    return(Qzero())
   }
   if(which == "P") {
     out <- .MacdonaldPolynomial(psiLambdaMu, n, lambda)

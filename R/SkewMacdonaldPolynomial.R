@@ -87,12 +87,11 @@ SkewMacdonaldPol <- function(n, lambda, mu, which) {
   if(ellLambda < ellMu || any(lambda[seq_len(ellMu)] < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
+  if(ellLambda == ellMu && all(lambda == mu)) {
+    return(Qone())
+  }
   if(n == 0L){
-    if(ellLambda == ellMu && all(lambda == mu)) {
-      return(Qone())
-    } else {
-      return(Qzero())
-    }
+    return(Qzero())
   }
   if(which == "P") {
     out <- .SkewMacdonaldPolynomial(psiLambdaMu, n, lambda, mu)
