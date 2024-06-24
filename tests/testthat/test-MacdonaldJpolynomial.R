@@ -47,18 +47,3 @@ test_that("Macdonald J-polynomials branching rule", {
     )
   expect_true(macJpoly == expected)
 })
-#   , testCase "Macdonald polynomial branching rule" $ do
-#     let
-#       nx = 2
-#       ny = 2
-#       lambda = [2, 2]
-#       ys = [lone 3, lone 4]
-#       macJpoly = macdonaldJpolynomial' (nx + ny) lambda
-#       expected = asSimpleParametricSpray $
-#         sumOfSprays
-#           [
-#             skewMacdonaldJpolynomial' nx lambda mu
-#               ^*^ changeVariables (HM.map asRatioOfSprays $ macdonaldJpolynomial' ny mu) ys
-#           | mu <- [[], [1], [2], [1,1], [2,1], [2,2]]
-#           ]
-#     assertEqual "" macJpoly expected

@@ -146,25 +146,3 @@ qtSkewKostkaPolynomials <- function(lambda, mu) {
   names(out) <- vapply(nus, partitionAsString, character(1L))
   out
 }
-#   => Partition -- ^ outer partition of the skew partition
-#   -> Partition -- ^ inner partition of the skew partition
-#   -> Map Partition (Spray a)
-# qtSkewKostkaPolynomials lambda mu
-#   | not (isSkewPartition lambda mu) =
-#       error "qtSkewKostkaPolynomials: invalid skew partition."
-#   | lambda == mu =
-#       DM.singleton [] unitSpray
-#   | otherwise =
-#       DM.fromList (map spray nus)
-#   where
-#     lrCoeffs = skewSchurLRCoefficients lambda mu
-#     nus = partitions (sum lambda - sum mu)
-#     spray nu =
-#       let nu' = fromPartition nu in
-#         (
-#           nu',
-#           foldl'
-#             (^+^)
-#               zeroSpray
-#                 (DM.intersectionWith (.^) lrCoeffs (qtKostkaPolynomials nu'))
-#         )

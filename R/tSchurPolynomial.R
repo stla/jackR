@@ -1,8 +1,3 @@
-#     flambda p q r nu =
-#       (S.take (p-1) nu |>
-#         nu `S.index` (q-1) + p - q + r) ><
-#           fmap (+1) (S.take (q-p) (S.drop (p-1) nu)) ><
-#             S.drop q nu
 .flambda <- function(pq, r, nu) {
   p <- pq[1L]
   q <- pq[2L]
@@ -14,23 +9,11 @@
   c(head(nu, p-1L), nu[q]+p-q+r, head(tnu, q-p) + 1L, tail(nu, -q))
 }
 
-#     ok q r nu =
-#       let nu_qm1 = nu `S.index` (q-1) in
-#         nu_qm1 - q + r > nu `S.index` 0 - 1
-#           && nu_qm1 <= lambda `S.index` 0
 .ok <- function(lambda, q, r, nu) {
   nu_q <- nu[q]
   nu_q - q + r >= nu[1L] && nu_q <= lambda[1L]
 }
-#     pairs' r nu =
-#       [(p, q) | p <- [2 .. n], q <- [p .. n], ok' p q r nu]
-#     ok' p q r nu =
-#        let nu_qm1 = nu `S.index` (q-1) in
-#         nu_qm1 - q + r > nu `S.index` (p-1) - p
-#           && nu `S.index` (p-2) - p >= nu_qm1 - q + r
-#           && nu_qm1 <= lambda `S.index` (p-1)
-#           && all (uncurry (<))
-#                   (S.zip (S.take (q-p) (S.drop (p-1) nu)) (S.drop p lambda))
+
 .okp <- function(lambda, pq, r, nu) {
   p <- pq[1L]
   q <- pq[2L]
@@ -40,20 +23,7 @@
       nu_q <= lambda[p] &&
         all(head(tail(nu, 1L-p), q-p) < tail(lambda, -p))
 }
-# sequencesOfRibbons :: Seq Int -> Seq Int -> Seq Int -> [Seq (Seq Int)]
-# sequencesOfRibbons lambda mu rho =
-#    foldr
-#      (\r zs ->
-#       [z |> lbda
-#         | z <- zs
-#         , lbda <- lambdas r (z `S.index` (S.length z - 1))
-#         , and (S.zipWith (<=) lbda lambda)
-#       ])
-#         [S.singleton (mu >< (S.replicate (n - S.length mu) 0))]
-#           rho
-#    where
-#     n = S.length lambda
-#     lambdas r nu = [flambda p q r nu | (p, q) <- pairs r nu ++ pairs' r nu]
+
 sequencesOfRibbons <- function(lambda, mu, rho) {
   f <- function(zs, r) {
     do.call(c, lapply(zs, function(z) {
@@ -88,15 +58,7 @@ sequencesOfRibbons <- function(lambda, mu, rho) {
     simplify = FALSE
   )
 }
-#     flambda p q r nu =
-#       (S.take (p-1) nu |>
-#         nu `S.index` (q-1) + p - q + r) ><
-#           fmap (+1) (S.take (q-p) (S.drop (p-1) nu)) ><
-#             S.drop q nu
-#     pairs r nu = [(1, q) | q <- [1 .. n], ok q r nu]
-#     ok q r nu =
-#       let nu_qm1 = nu `S.index` (q-1) in
-#         nu_qm1 - q + r > nu `S.index` 0 - 1
+
 .pairs <- function(lambda, r, nu) {
   cbind(
     1L,
@@ -106,9 +68,7 @@ sequencesOfRibbons <- function(lambda, mu, rho) {
     )
   )
 }
-#           && nu_qm1 <= lambda `S.index` 0
-#     pairs' r nu =
-#       [(p, q) | p <- [2 .. n], q <- [p .. n], ok' p q r nu]
+
 .pairsp <- function(lambda, r, nu) {
   n <- length(lambda)
   Grid <- do.call(
@@ -120,34 +80,7 @@ sequencesOfRibbons <- function(lambda, mu, rho) {
   })
   Grid[keep, , drop = FALSE]
 }
-#     ok' p q r nu =
-#        let nu_qm1 = nu `S.index` (q-1) in
-#         nu_qm1 - q + r > nu `S.index` (p-1) - p
-#           && nu `S.index` (p-2) - p >= nu_qm1 - q + r
-#           && nu_qm1 <= lambda `S.index` (p-1)
-#           && all (uncurry (<))
-#                   (S.zip (S.take (q-p) (S.drop (p-1) nu)) (S.drop p lambda))
 
-
-# chi_lambda_mu_rho :: Seq Int -> Seq Int -> Seq Int -> Int
-# chi_lambda_mu_rho lambda mu rho =
-#   if S.null rho then 1 else 2 * nevens - length sequences
-#   where
-#     ribbonHeight :: Seq Int -> Seq Int -> Int
-#     ribbonHeight kappa nu =
-#       DF.sum
-#         (S.zipWith (\k n -> fromEnum (k /= n)) kappa nu)
-#           - 1
-#       -- kappa and mu have same length so don't need to add S.length kappa - S.length mu
-#     sequences = sequencesOfRibbons lambda mu rho
-#     nevens =
-#       sum $ map
-#         (
-#           \sq ->
-#             (fromEnum . even . DF.sum) $
-#               S.zipWith ribbonHeight (S.drop 1 sq) sq
-#         )
-#           sequences
 chi_lambda_mu_rho <- function(lambda, mu, rho) {
   if(length(rho) == 0L) {
     1L
@@ -175,13 +108,7 @@ zlambda <- function(lambda) {
   }, integer(1L))
   prod(factorial(mjs) * parts^mjs)
 }
-# _tSkewSchurPolynomial ::
-#   (Eq a, AlgField.C a)
-#   => (Integer -> Integer -> a)
-#   -> Int
-#   -> Partition
-#   -> Partition
-#   -> SimpleParametricSpray a
+
 .tSkewSchurPolynomial <- function(n, lambda, mu) {
   w <- sum(lambda) - sum(mu)
   if(w == 0L) {
@@ -212,28 +139,6 @@ zlambda <- function(lambda) {
   })
   Reduce(`+`, sprays)
 }
-# _tSkewSchurPolynomial f n lambda mu = sumOfSprays sprays
-#   where
-#     w = sum lambda - sum mu
-#     rhos = partitions w
-#     t = lone' 1
-#     mapOfSprays = IM.fromList (map (\r -> (r, unitSpray ^-^ t r)) [1 .. w])
-#     tPowerSumPol rho =
-#       HM.map
-#         (flip (*^) (productOfSprays (map ((IM.!) mapOfSprays) rho)))
-#           (psPolynomial n rho)
-#     lambda' = S.fromList lambda
-#     mu' = S.fromList mu
-#     chi_lambda_mu_rhos =
-#       [(rho', chi_lambda_mu_rho lambda' mu' (S.fromList rho'))
-#         | rho <- rhos, let rho' = fromPartition rho]
-#     sprays =
-#       [
-#         (f (toInteger c) (toInteger (zlambda rho)))
-#          AlgMod.*> tPowerSumPol rho
-#       | (rho, c) <- chi_lambda_mu_rhos, c /= 0
-#       ]
-
 
 #' @title t-Schur polynomial
 #' @description Returns the t-Schur polynomial associated to

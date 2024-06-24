@@ -8,18 +8,6 @@ test_that("t-Schur polynomial", {
   expect_true(tSchurPoly == expected)
 })
 
-#   testCase "t-Schur polynomial" $ do
-#     let
-#       tSchurPoly = tSchurPolynomial' 2 [2, 1]
-#       t = qlone 1
-#       x = lone 1 :: SimpleParametricQSpray
-#       y = lone 2 :: SimpleParametricQSpray
-#       expected =
-#         (unitSpray ^-^ t) *^
-#           ((unitSpray ^-^ t)^**^2 *^ (x^**^2 ^*^ y ^+^ x ^*^ y^**^2)
-#             ^-^ t *^ (x^**^3 ^+^ y^**^3))
-#     assertEqual "" tSchurPoly expected
-#
 test_that("Skew t-Schur polynomial - branching rule", {
   lambda <- c(2, 2)
   tSchurPoly <- tSchurPol(4, lambda)
@@ -34,16 +22,3 @@ test_that("Skew t-Schur polynomial - branching rule", {
     )
   expect_true(tSchurPoly == expected)
 })
-#   , testCase "Skew t-Schur polynomial - branching rule" $ do
-#     let
-#       lambda = [2, 2]
-#       tSchurPoly = tSchurPolynomial' 4 lambda
-#       ys = [lone 3, lone 4]
-#       expected = sumOfSprays
-#         [
-#           tSkewSchurPolynomial' 2 lambda mu
-#             ^*^ changeVariables (tSchurPolynomial' 2 mu) ys
-#           | mu <- [[], [1], [2], [1,1], [2,1], [2,2]]
-#         ]
-#     assertEqual "" tSchurPoly expected
-#

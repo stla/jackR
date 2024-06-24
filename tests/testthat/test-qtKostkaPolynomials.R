@@ -1,15 +1,3 @@
-#   , testCase "qt-Kostka polynomials" $ do
-#     let
-#       n = 4
-#       mu = [2, 1, 1]
-#       macJpoly = macdonaldJpolynomial' n mu
-#       qtKostkaPolys = qtKostkaPolynomials' mu
-#       expected =
-#         sumOfSprays $ DM.elems $ DM.mapWithKey
-#           (\lambda kp ->
-#             kp *^ (HM.map (swapVariables (1, 2)) (tSchurPolynomial' n lambda)))
-#         qtKostkaPolys
-#     assertEqual "" macJpoly expected
 test_that("qt-Kostka polynomials", {
   n <- 4
   mu <- c(2, 1, 1)
@@ -52,15 +40,3 @@ test_that("Skew qt-Kostka polynomials", {
   )
   expect_true(all(check))
 })
-#   , testCase "Skew qt-Kostka polynomials" $ do
-#     let
-#       lambda = [2, 1, 1]
-#       mu = [1, 1]
-#       qtSkewKostkaPolys = qtSkewKostkaPolynomials' lambda mu
-#       expected =
-#         map ((swapVariables (1, 2)) . (substitute [Just 0, Nothing]))
-#               (DM.elems qtSkewKostkaPolys)
-#       skewKFpolys =
-#         map (skewKostkaFoulkesPolynomial' lambda mu)
-#               (DM.keys qtSkewKostkaPolys)
-#     assertEqual "" skewKFpolys expected

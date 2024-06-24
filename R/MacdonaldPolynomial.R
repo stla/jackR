@@ -192,18 +192,10 @@ makeRatioOfSprays <- function(pairsMap, pairs) {
   num / den
 }
 
-# clambda :: (Eq a, AlgRing.C a) => Seq Int -> Spray a
-# clambda lambda =
-#   productOfSprays [unitSpray ^-^ q (a s) ^*^ t (l s + 1) | s <- pairs]
-#   where
-#     q = lone' 1
-#     t = lone' 2
-#     pairs = [(i, j) | i <- [1 .. S.length lambda], j <- [1 .. lambda `S.index` (i-1)]]
-#     lambda' = _dualPartition' lambda
-#     a (i, j) = lambda `S.index` (i-1) - j
-#     l (i, j) = lambda' `S.index` (j-1) - i
+
 #' @importFrom qspray qlone qone
 #' @importFrom partitions conjugate
+#' @noRd
 clambda <- function(lambda) {
   q <- qlone(1)
   t <- qlone(2)
