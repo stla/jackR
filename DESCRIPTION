@@ -1,27 +1,23 @@
 Type: Package
 Package: jack
-Title: Jack, Zonal, Schur, and Hall-Littlewood Polynomials
+Title: Jack, Zonal, Schur, and Other Symmetric Polynomials
 Version: 6.0.0.9000
 Date: 2024-06-07
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
-Description: Symbolic calculation and evaluation of the Jack polynomials,
-    zonal polynomials, Schur polynomials (possibly skew), Hall-Littlewood 
-    polynomials (possibly skew), flagged Schur polynomials (possibly skew),
-    and factorial Schur polynomials (possibly skew). 
-    Mainly based on Demmel & Koev's paper (2006) 
+Description: Schur polynomials appear in combinatorics and zonal
+    polynomials appear in random matrix theory. They are particular cases
+    of Jack polynomials. This package allows to compute these polynomials
+    and other symmetric multivariate polynomials: flagged Schur
+    polynomials, factorial Schur polynomials, Kostka-Foulkes polynomials,
+    t-Schur polynomials, Hall-Littlewood polynomials, Kostka-Macdonald
+    polynomials, Macdonald polynomials, and modified Macdonald
+    polynomials. Mainly based on Demmel & Koev's paper (2006)
     <doi:10.1090/S0025-5718-05-01780-1> and Macdonald's book (1995)
-    <doi:10.1093/oso/9780198534891.003.0001>. Zonal
-    polynomials and Schur polynomials are particular cases of Jack
-    polynomials. Zonal polynomials appear in random matrix theory. Schur
-    polynomials appear in the field of combinatorics. Hall-Littlewood 
-    polynomials, flagged Schur polynomials, and factorial Schur polynomials 
-    generalize Schur polynomials. 
+    <doi:10.1093/oso/9780198534891.003.0001>.
 License: GPL-3
 URL: https://github.com/stla/jackR
 BugReports: https://github.com/stla/jackR/issues
-SystemRequirements: C++17, gmp, mpfr
-Remotes: stla/qspray, stla/ratioOfQsprays, stla/symbolicQspray, stla/syt
 Depends:
     qspray (>= 3.0.0.9000),
     ratioOfQsprays (>= 1.0.0.9000),
@@ -38,14 +34,20 @@ Imports:
     spray,
     syt (>= 0.4.0.9000),
     utils
-LinkingTo:
-    BH,
-    Rcpp,
-    qspray,
-    ratioOfQsprays,
-    RcppCGAL,
-    symbolicQspray
 Suggests: 
     testthat
+LinkingTo:
+    BH,
+    qspray,
+    ratioOfQsprays,
+    Rcpp,
+    RcppCGAL,
+    symbolicQspray
+Remotes: 
+    stla/qspray,
+    stla/ratioOfQsprays,
+    stla/symbolicQspray,
+    stla/syt
 Encoding: UTF-8
 RoxygenNote: 7.3.1
+SystemRequirements: C++17, gmp, mpfr
