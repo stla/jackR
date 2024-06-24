@@ -2,9 +2,9 @@ test_that("Modified Macdonald polynomial mu (q, t) = Modified Macdonald polynomi
   n <- 4
   mu <- c(2, 1, 1)
   mup <- c(3, 1)
-  macHpoly <- modifiedMacdonaldPolynomial(n, mu)
+  macHpoly <- modifiedMacdonaldPol(n, mu)
   macHpolyp <- changeParameters(
-    modifiedMacdonaldPolynomial(n, mup),
+    modifiedMacdonaldPol(n, mup),
     list(qlone(2), qlone(1))
   )
   expect_true(macHpoly == macHpolyp)

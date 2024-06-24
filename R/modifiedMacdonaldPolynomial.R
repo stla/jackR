@@ -114,7 +114,7 @@ MacdonaldPolynomialJinPSbasis <- function(mu) {
 #' @importFrom methods as
 #' @importFrom qspray qlone qone PSFpoly
 #' @importFrom utils tail
-modifiedMacdonaldPolynomial <- function(n, mu) {
+modifiedMacdonaldPol <- function(n, mu) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(mu))
   mu <- as.integer(removeTrailingZeros(mu))

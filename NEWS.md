@@ -16,6 +16,14 @@ combination of some Jack polynomials with a fixed parameter.
 - New function `symbolicJackCombination`, to get a symmetric polynomial as a 
 linear combination of some Jack polynomials with symbolic Jack parameter.
 
+- New function `flaggedSchurPol`, to get a flagged Schur polynomial.
+
+- New function `flaggedSkewSchurPol`, to get a flagged skew Schur polynomial.
+
+- New function `factorialSchurPol`, to get a factorial Schur polynomial.
+
+- New function `SkewFactorialSchurPol`, to get a skew factorial Schur polynomial.
+
 - New function `KostaFoulkesPolynomial`, to get a Kostka-Foulkes polynomial. 
 A Kostka-Foulkes polynomial is a univariate polynomial associated to a pair of
 integer partitions and its value at 1 is the Kostka number associated to these 
@@ -35,17 +43,18 @@ polynomial. A skew Hall-Littlewood polynomial is a multivariate symmetric
 polynomial associated to a skew integer partition and depending on a parameter. 
 When the value of this parameter is 0, then this is the skew Schur polynomial.
 
+- New function `qtKostkaPolynomials`, to get qt-Kostka polynomials, 
+aka Kostka-Macdonald polynomials.
+
+- New function `qtSkewKostkaPolynomials`, to get skew qt-Kostka 
+polynomials.
+
 - New function `MacdonaldPol`, to get a Macdonald polynomial.
 
 - New function `SkewMacdonaldPol`, to get a skew Macdonald polynomial.
 
-- New function `flaggedSchurPol`, to get a flagged Schur polynomial.
-
-- New function `flaggedSkewSchurPol`, to get a flagged skew Schur polynomial.
-
-- New function `factorialSchurPol`, to get a factorial Schur polynomial.
-
-- New function `SkewFactorialSchurPol`, to get a skew factorial Schur polynomial.
+- New function `modifiedMacdonaldPol`, to get a modified Macdonald 
+polynomial.
 
 
 # Version 6.0.0 (2024-05-03)
