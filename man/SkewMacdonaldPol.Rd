@@ -4,7 +4,7 @@
 \alias{SkewMacdonaldPol}
 \title{Skew Macdonald polynomial}
 \usage{
-SkewMacdonaldPol(n, lambda, mu, which)
+SkewMacdonaldPol(n, lambda, mu, which = "P")
 }
 \arguments{
 \item{n}{number of variables, a positive integer}

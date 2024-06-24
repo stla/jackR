@@ -157,6 +157,9 @@ You can substitute a value to the Jack parameter with the help of the
 ``` r
 ( J5 <- substituteParameters(J, 5) )
 ## 72*X^3.Y + 24*X^2.Y^2 + 72*X.Y^3
+```
+
+``` r
 J5 == JackPol(2, lambda = c(3, 1), alpha = "5")
 ## [1] TRUE
 ```
@@ -193,6 +196,9 @@ the monomial symmetric polynomials. This is what the function
 ``` r
 ( J <- JackPol(3, lambda = c(4, 3, 1), alpha = "2") )
 ## 3888*x^4.y^3.z + 2592*x^4.y^2.z^2 + 3888*x^4.y.z^3 + 3888*x^3.y^4.z + 4752*x^3.y^3.z^2 + 4752*x^3.y^2.z^3 + 3888*x^3.y.z^4 + 2592*x^2.y^4.z^2 + 4752*x^2.y^3.z^3 + 2592*x^2.y^2.z^4 + 3888*x.y^4.z^3 + 3888*x.y^3.z^4
+```
+
+``` r
 compactSymmetricQspray(J) |> cat()
 ## 3888*M[4, 3, 1] + 2592*M[4, 2, 2] + 4752*M[3, 3, 2]
 ```
@@ -215,6 +221,9 @@ J4 <- JackPol(4, lambda, alpha)
 J9 <- JackPol(9, lambda, alpha)
 compactSymmetricQspray(J4) |> cat()
 ## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]
+```
+
+``` r
 compactSymmetricQspray(J9) |> cat()
 ## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]
 ```
@@ -238,9 +247,15 @@ J2 <- JackPol(4, lambda = c(2, 2), alpha, which = "P")
 HallInnerProduct(J1, J2, alpha)
 ## Big Rational ('bigq') :
 ## [1] 0
+```
+
+``` r
 HallInnerProduct(J1, J1, alpha)
 ## Big Rational ('bigq') :
 ## [1] 135/8
+```
+
+``` r
 HallInnerProduct(J2, J2, alpha)
 ## Big Rational ('bigq') :
 ## [1] 63/5
@@ -278,7 +293,7 @@ Jack polynomial with itself, that is, if we run
 
 ``` r
 ( Hip <- HallInnerProduct(J, J, alpha = NULL) )
-## { [ 24 ] %//% [ 4*t^4 + 16*t^3 + 24*t^2 + 16*t + 4 ] } * alpha^4  +  { [ 9*t^2 - 6*t + 1 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^3  +  { [ 3*t^4 - 6*t^3 + 5*t^2 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^2  +  { [ 4*t^4 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha
+## { [ 6 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^4  +  { [ 9*t^2 - 6*t + 1 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^3  +  { [ 3*t^4 - 6*t^3 + 5*t^2 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^2  +  { [ 4*t^4 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha
 ```
 
 We get the Hall inner product of the Jack polynomial with itself, with
@@ -355,6 +370,57 @@ collinearQsprays(
   qspray1 = LaplaceBeltrami(J, alpha), 
   qspray2 = J
 )
+## [1] TRUE
+```
+
+## Other symmetric polynomials
+
+Many other symmetric multivariate polynomials have been introduced in
+version 6.1.0. Let’s see a couple of them.
+
+### $t$-Schur polynomials
+
+The $t$-Schur polynomials depend on a single parameter usually denoted
+by $t$ and their coefficients are polynomials in this parameter. They
+yield the Schur polynomials when substituting $t$ with $0$:
+
+``` r
+n <- 3
+lambda <- c(2, 2)
+tSchurPoly <- tSchurPol(n, lambda)
+substituteParameters(tSchurPoly, values = 0) == SchurPol(n, lambda)
+## [1] TRUE
+```
+
+### Hall-Littlewood polynomials
+
+Similarly to the $t$-Schur polynomials, the Hall-Littlewood polynomials
+depend on a single parameter usually denoted by $t$ and their
+coefficients are polynomials in this parameter. The Hall-Littlewood
+$P$-polynomials yield the Schur polynomials when substituting $t$ with
+$0$:
+
+``` r
+n <- 3
+lambda <- c(2, 2)
+hlPoly <- HallLittlewoodPol(n, lambda, which = "P")
+substituteParameters(hlPoly, values = 0) == SchurPol(n, lambda)
+## [1] TRUE
+```
+
+### Macdonald polynomials
+
+The Macdonald polynomials depend on two parameters usually denoted by
+$q$ and $t$. Their coefficients are not polynomials in $q$ and $t$ in
+general, they are ratios of polynomials in $q$ and $t$. They yield the
+Hall-Littlewood polynomials when substituting $q$ with $0$:
+
+``` r
+n <- 3
+lambda <- c(2, 2)
+macPoly <- MacdonaldPol(n, lambda)
+hlPoly <- HallLittlewoodPol(n, lambda)
+changeParameters(macPoly, list(0, qlone(1))) == hlPoly
 ## [1] TRUE
 ```
 

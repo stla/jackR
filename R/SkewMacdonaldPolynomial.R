@@ -75,7 +75,7 @@
 #' @export
 #' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone Qzero
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
-SkewMacdonaldPol <- function(n, lambda, mu, which) {
+SkewMacdonaldPol <- function(n, lambda, mu, which = "P") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   stopifnot(isPartition(mu))

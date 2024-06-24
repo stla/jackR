@@ -132,9 +132,6 @@ Paths <- function(n, lambda, mu) {
       }
     })
   )
-  # do.call(c, apply(compositions(sum(lambda) - sum(mu), n), 2L, function(w) {
-  #   skewGelfandTsetlinPatterns(lambda, mu, w)
-  # }, simplify = FALSE))
 }
 
 #' @importFrom ratioOfQsprays as.ratioOfQsprays
@@ -209,10 +206,7 @@ SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
   mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
   ellMu <- length(mu)
-  if(ellLambda < ellMu) {
-    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
-  }
-  if(any(lambda[seq_len(ellMu)] < mu)) {
+  if(ellLambda < ellMu || any(head(lambda, ellMu) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   if(n == 0L){
@@ -231,75 +225,3 @@ SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
     showRatioOfQspraysXYZ("t")
   out
 }
-# _skewHallLittlewood :: forall a. (Eq a, AlgRing.C a)
-#   => (Seq Int -> Seq Int -> Spray a) -> Int -> Seq Int -> Seq Int
-#       -> SimpleParametricSpray a
-# _skewHallLittlewood f n lambda mu =
-#   sumOfSprays (concatMap sprays paths)
-#   where
-#     paths = _paths n lambda mu
-#     allPairs = nub (concat (concat (snd (unzip paths))))
-#     psis =
-#       HM.fromList
-#         (map (\pair -> (pair, uncurry f pair)) allPairs)
-#     dropTrailingZeros = S.dropWhileR (== 0)
-#     sprays (nu, listsOfPairs) =
-#       let
-#         sprays' =
-#           [productOfSprays [psis HM.! pair | pair <- pairs]
-#             | pairs <- listsOfPairs]
-#         listOfPowers =
-#           [Powers expnts (S.length expnts) |
-#             compo <- permuteMultiset nu,
-#             let expnts = dropTrailingZeros (S.fromList compo)]
-#         in
-#         [
-#           HM.singleton powers spray
-#           | spray <- sprays', powers <- listOfPowers
-#         ]
-#
-
-# SkewHallLittlewoodPol <- function(n, lambda, mu, which = "P") {
-#   stopifnot(isPositiveInteger(n))
-#   stopifnot(isPartition(lambda), isPartition(mu))
-#   which <- match.arg(which, c("P", "Q"))
-#   lambda <- as.integer(removeTrailingZeros(lambda))
-#   mu <- as.integer(removeTrailingZeros(mu))
-#   ellLambda <- length(lambda)
-#   ellMu <- length(mu)
-#   if(ellLambda < ellMu) {
-#     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
-#   }
-#   mu <- c(mu, rep(0L, ellLambda - ellMu))
-#   if(any(lambda < mu)) {
-#     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
-#   }
-#   if(n == 0L){
-#     if(all(lambda == mu)) {
-#       return(Qone())
-#     } else {
-#       return(Qzero())
-#     }
-#   }
-#   paths <- Paths(n, lambda, mu)
-#   out <- Qzero()
-#   lones <- lapply(1L:n, Qlone)
-#   if(which == "P") {
-#     ptheta <- psi
-#   } else {
-#     ptheta <- phi
-#   }
-#   i_ <- seq_len(n)
-#   for(nu in paths) {
-#     out <- out + Reduce(`*`, lapply(i_, function(i) {
-#       nu_i <- nu[i, ]
-#       next_nu_i <- nu[i+1L, ]
-#       lone_i <- lones[[i]]
-#       ptheta(next_nu_i, nu_i) * lone_i^(sum(next_nu_i-nu_i))
-#     }))
-#   }
-#   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-
-#     showRatioOfQspraysXYZ("t")
-#   out
-# }
-

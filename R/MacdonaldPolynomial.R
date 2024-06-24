@@ -283,7 +283,7 @@ clambda <- function(lambda) {
 #' @export
 #' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone Qzero
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
-MacdonaldPol <- function(n, lambda, which) {
+MacdonaldPol <- function(n, lambda, which = "P") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   stopifnot(which %in% c("P", "Q", "J"))

@@ -4,7 +4,7 @@
 \alias{MacdonaldPol}
 \title{Macdonald polynomial}
 \usage{
-MacdonaldPol(n, lambda, which)
+MacdonaldPol(n, lambda, which = "P")
 }
 \arguments{
 \item{n}{number of variables, a positive integer}

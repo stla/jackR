@@ -24,6 +24,10 @@ linear combination of some Jack polynomials with symbolic Jack parameter.
 
 - New function `SkewFactorialSchurPol`, to get a skew factorial Schur polynomial.
 
+- New function `tSchurPol`, to get a t-Schur polynomial.
+
+- New function `tSkewSchurPol`, to get a skew t-Schur polynomial.
+
 - New function `KostaFoulkesPolynomial`, to get a Kostka-Foulkes polynomial. 
 A Kostka-Foulkes polynomial is a univariate polynomial associated to a pair of
 integer partitions and its value at 1 is the Kostka number associated to these 

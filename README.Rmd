@@ -318,6 +318,58 @@ collinearQsprays(
 ```
 
 
+## Other symmetric polynomials
+
+Many other symmetric multivariate polynomials have been introduced in version 6.1.0. 
+Let's see a couple of them.
+
+
+### $t$-Schur polynomials
+
+The $t$-Schur polynomials depend on a single parameter usually denoted by $t$ and 
+their coefficients are polynomials in this parameter. They yield the Schur polynomials
+when substituting $t$ with $0$:
+
+```{r}
+n <- 3
+lambda <- c(2, 2)
+tSchurPoly <- tSchurPol(n, lambda)
+substituteParameters(tSchurPoly, values = 0) == SchurPol(n, lambda)
+```
+
+
+### Hall-Littlewood polynomials
+
+Similarly to the $t$-Schur polynomials, the Hall-Littlewood polynomials depend on a
+single parameter usually denoted by $t$ and their coefficients are polynomials in 
+this parameter. The Hall-Littlewood $P$-polynomials yield the Schur polynomials
+when substituting $t$ with $0$:
+
+```{r}
+n <- 3
+lambda <- c(2, 2)
+hlPoly <- HallLittlewoodPol(n, lambda, which = "P")
+substituteParameters(hlPoly, values = 0) == SchurPol(n, lambda)
+```
+
+
+### Macdonald polynomials
+
+The Macdonald polynomials depend on two parameters usually denoted by $q$ and $t$.
+Their coefficients are not polynomials in $q$ and $t$ in general, they are ratios 
+of polynomials in $q$ and $t$. They yield the Hall-Littlewood polynomials when 
+substituting $q$ with $0$:
+
+```{r}
+n <- 3
+lambda <- c(2, 2)
+macPoly <- MacdonaldPol(n, lambda)
+hlPoly <- HallLittlewoodPol(n, lambda)
+changeParameters(macPoly, list(0, qlone(1))) == hlPoly
+```
+
+
+
 
 <!-- -------------------- links -------------------- -->
 
