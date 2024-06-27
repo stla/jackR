@@ -1,6 +1,6 @@
-#' @title Kostka numbers
+#' @title Kostka-Jack numbers
 #'
-#' @description The Kostka numbers for partitions of a given weight.
+#' @description The Kostka-Jack numbers for partitions of a given weight.
 #'
 #' @param n positive integer, the weight of the partitions
 #' @param alpha the Jack parameter, a \code{bigq} number or an object coercible
@@ -12,8 +12,8 @@
 #' @importFrom gmp as.bigq c_bigq
 #'
 #' @examples
-#' KostkaNumbers(4)
-KostkaNumbers <- function(n, alpha = NULL) {
+#' KostkaJackNumbers(4)
+KostkaJackNumbers <- function(n, alpha = NULL) {
   stopifnot(isPositiveInteger(n))
   if(n == 0L) {
     Knumbers <- as.matrix("1")
@@ -134,9 +134,9 @@ KostkaNumbers <- function(n, alpha = NULL) {
   coefs
 }
 
-#' @title Symbolic Kostka numbers
+#' @title Symbolic Kostka-Jack numbers
 #'
-#' @description Kostka numbers with symbolic parameter for partitions of a
+#' @description Kostka-Jack numbers with symbolic parameter for partitions of a
 #'   given weight.
 #'
 #' @param n positive integer, the weight of the partitions
@@ -149,11 +149,72 @@ KostkaNumbers <- function(n, alpha = NULL) {
 #' @export
 #'
 #' @examples
-#' symbolicKostkaNumbers(3)
-symbolicKostkaNumbers <- function(n) {
+#' symbolicKostkaJackNumbers(3)
+symbolicKostkaJackNumbers <- function(n) {
   if(n == 0L) {
     list("[]" = list("[]" = as.ratioOfQsprays(1L)))
   } else {
     .symbolicKostkaNumbers(n, n, which = "P")
   }
 }
+
+#' @title Skew Kostka-Jack numbers
+#' @description Skew Kostka-Jack numbers associated to a given skew partition.
+#'
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#' @param alpha the Jack parameter, a \code{bigq} number or an object coercible
+#'   to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
+#'   \code{alpha=1}
+#' @param output the format of the output, either \code{"vector"} or
+#'   \code{"list"}
+#'
+#' @return If \code{output="vector"}, the function returns a named vector.
+#'   This vector is made of the non-zero skew Kostka numbers
+#'   \eqn{K_{\lambda/\mu,\nu}(\alpha)} given as character strings and its names
+#'   encode the partitions \eqn{\nu}.
+#'   If \code{ouput="list"}, the function returns a list. Each element of this
+#'   list is a named list with two elements: an integer partition \eqn{\nu}
+#'   in the field named \code{"nu"}, and the corresponding skew Kostka number
+#'   \eqn{K_{\lambda/\mu,\nu}(\alpha)} in the field named \code{"value"}. Only
+#'   the non-null skew Kostka numbers are provided by this list.
+#' @export
+#' @importFrom gmp as.bigq c_bigq
+#' @importFrom utils head
+#'
+#' @examples
+#' skewKostkaJackNumbers(c(4,2,2), c(2,2))
+skewKostkaJackNumbers <- function(lambda, mu, alpha = NULL, output = "vector") {
+  stopifnot(isPartition(lambda), isPartition(mu))
+  output <- match.arg(output, c("vector", "list"))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(head(lambda, ellMU) < mu)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  if(is.null(alpha)) {
+    alpha <- "1"
+  }
+  alpha <- as.bigq(alpha)
+  if(is.na(alpha)) {
+    stop("Invalid `alpha`.")
+  }
+  listOfKnumbers <- skewJackInMSPbasis(alpha, "P", lambda, mu)
+  if(output == "vector") {
+    values <- lapply(listOfKnumbers, `[[`, "coeff")
+    kNumbers <- as.character(c_bigq(values))
+    names(kNumbers) <- names(listOfKnumbers)
+  } else {
+    kNumbers <- lapply(
+      listOfKnumbers,
+      function(lst) {
+        list("nu" = lst[["nu"]], "value" = lst[["coeff"]])
+      }
+    )
+  }
+  kNumbers
+}
+
