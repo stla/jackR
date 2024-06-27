@@ -31,7 +31,7 @@ qtKostkaPolynomials <- function(mu) {
     return(out)
   }
   psCombo <- MacdonaldPolynomialJinPSbasis(mu)
-  iknMatrix <- Qinverse(KostkaNumbers(n))
+  iknMatrix <- Qinverse(KostkaJackNumbers(n))
   lambdas <- apply(parts(n), 2L, removeTrailingZeros, simplify = FALSE)
   lambdasAsStrings <-
     vapply(lambdas, partitionAsString, character(1L))
