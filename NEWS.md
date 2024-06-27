@@ -16,6 +16,12 @@ combination of some Jack polynomials with a fixed parameter.
 - New function `symbolicJackCombination`, to get a symmetric polynomial as a 
 linear combination of some Jack polynomials with symbolic Jack parameter.
 
+- New function `SkewJackPol`, to get a skew Jack polynomial with a given Jack
+parameter.
+
+- New function `SkewJackSymPol`, to get a skew Jack polynomial with a symbolic 
+Jack parameter.
+
 - New function `flaggedSchurPol`, to get a flagged Schur polynomial.
 
 - New function `flaggedSkewSchurPol`, to get a flagged skew Schur polynomial.

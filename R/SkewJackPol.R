@@ -245,7 +245,7 @@ SkewJackSymPol <- function(n, lambda, mu, which = "J") {
   mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
   ellMu <- length(mu)
-  if(ellLambda < ellMu || any(head(lambda, ellLambda) < mu)) {
+  if(ellLambda < ellMu || any(head(lambda, ellMu) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   which <- match.arg(which, c("J", "P", "Q", "C"))
