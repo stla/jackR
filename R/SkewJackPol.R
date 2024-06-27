@@ -155,6 +155,7 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
 #' @importFrom DescTools Permn
 #' @importFrom methods new
 #' @importFrom utils head
+#' @importFrom qspray qone qzero
 #'
 #' @examples
 #' SkewJackPol(3, c(3,1), c(2), "2")
@@ -171,6 +172,14 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   alpha <- as.bigq(alpha)
   if(is.na(alpha)) {
     stop("Invalid alpha.")
+  }
+  which <- match.arg(which, c("J", "P", "Q", "C"))
+  if(n == 0L) {
+    if(ellLambda == ellMu && all(lambda == mu)) {
+      return(qone())
+    } else {
+      return(qzero())
+    }
   }
   msCombo <-
     Filter(
@@ -199,6 +208,75 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
     )
   new(
     "qspray",
+    powers = powers_and_coeffs[["powers"]],
+    coeffs = powers_and_coeffs[["coeffs"]]
+  )
+}
+
+#' Skew Jack polynomial with symbolic Jack parameter
+#' @description Computes a skew Jack polynomial with a symbolic Jack parameter.
+#'
+#' @param n positive integer, the number of variables
+#' @param lambda outer integer partition of the skew partition
+#' @param mu inner integer partition of the skew partition; it must be a
+#'   subpartition of \code{lambda}
+#' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
+#'   \code{"C"}
+#'
+#' @return A \code{symbolicQspray} polynomial.
+#' @export
+#' @importFrom DescTools Permn
+#' @importFrom methods new
+#' @importFrom utils head
+#' @importFrom symbolicQspray Qone Qzero
+#'
+#' @examples
+#' SkewJackSymPol(3, c(3,1), c(2))
+SkewJackSymPol <- function(n, lambda, mu, which = "J") {
+  stopifnot(isPositiveInteger(n))
+  stopifnot(isPartition(lambda), isPartition(mu))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(head(lambda, ellLambda) < mu)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  which <- match.arg(which, c("J", "P", "Q", "C"))
+  if(n == 0L) {
+    if(ellLambda == ellMu && all(lambda == mu)) {
+      return(Qone())
+    } else {
+      return(Qzero())
+    }
+  }
+  msCombo <-
+    Filter(
+      function(lst) {
+        lst[["ellNu"]] <= n
+      },
+      skewSymbolicJackInMSPbasis(which, lambda, mu)
+    )
+  powers_and_coeffs <-
+    Reduce(
+      function(l1, l2) {
+        list(
+          "powers" = c(l1[["powers"]], l2[["powers"]]),
+          "coeffs" = c(l1[["coeffs"]], l2[["coeffs"]])
+        )
+      },
+      lapply(msCombo, function(lst) {
+        nu <- c(lst[["nu"]], rep(0L, n - lst[["ellNu"]]))
+        coeff <- lst[["coeff"]]
+        powers <- apply(Permn(nu), 1L, removeTrailingZeros, simplify = FALSE)
+        list(
+          "powers" = powers,
+          "coeffs" = rep(list(coeff), length(powers))
+        )
+      })
+    )
+  new(
+    "symbolicQspray",
     powers = powers_and_coeffs[["powers"]],
     coeffs = powers_and_coeffs[["coeffs"]]
   )
