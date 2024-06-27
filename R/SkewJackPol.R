@@ -1,11 +1,5 @@
-# _skewJackInMSPbasis ::
-#   forall a. (AlgRing.C a)
-#   => (([((Int, Int), Int)], [((Int, Int), Int)]) -> a)
-#   -> (Partition -> Partition -> a)
-#   -> Char
-#   -> Partition
-#   -> Partition
-#   -> Map Partition a
+#' @importFrom syt skewGelfandTsetlinPatterns
+#' @noRd
 .skewJackInMSPbasis <- function(func, ccoeff, which, lambda, mu) {
   nus <- listOfDominatedPartitions(
     lastSubpartition(sum(lambda) - sum(mu), lambda)
@@ -82,46 +76,9 @@
     USE.NAMES = TRUE, SIMPLIFY = FALSE
   )
 }
-# _skewJackInMSPbasis func ccoeff which lambda mu =
-#   DM.map makeCoeffFromListOfPairs mapOfPairs
-#   where
-#     nus =
-#       dominatedPartitions
-#         (toPartitionUnsafe (lastSubPartition (sum lambda - sum mu) lambda))
-#     pairing lambdas = zip (drop1 lambdas) lambdas
-#     mapOfPatterns = DM.filter (not . null)
-#       (DM.fromList (map (\nu ->
-#         let nu' = fromPartition nu in
-#           (
-#             nu'
-#           , skewGelfandTsetlinPatterns lambda mu nu'
-#           )
-#         ) nus))
-#     mapOfPairs = DM.map (map pairing) mapOfPatterns
-#     listsOfPairs = DM.elems mapOfPairs
-#     allPairs = nub $ concat (concat listsOfPairs)
-#     funcLambdaMu = if which == 'Q' then phiLambdaMu else psiLambdaMu
-#     pairsMap =
-#       DM.fromList (zip allPairs (map funcLambdaMu allPairs))
-#     makeAssocsFromPairs ::
-#       [PartitionsPair] -> ([((Int, Int), Int)], [((Int, Int), Int)])
-#     makeAssocsFromPairs pairs = assocsFromMaps num_map den_map
-#       where
-#         als =
-#           both (S.fromList . concat)
-#             (unzip (DM.elems $ DM.restrictKeys pairsMap (DS.fromList pairs)))
-#         (num_map, den_map) = both alMapFromPairs als
-#     makeCoeffFromListOfPairs :: [[PartitionsPair]] -> a
-#     makeCoeffFromListOfPairs listOfPairs
-#       | which == 'J' =
-#           c AlgRing.* coeff
-#       | which == 'C' =
-#           ccoeff lambda mu AlgRing.* c AlgRing.* coeff
-#       | otherwise =
-#           coeff
-#       where
-#         c = func (clambdamuAssocs (S.fromList lambda) (S.fromList mu))
-#         coeff = AlgAdd.sum (map (func . makeAssocsFromPairs) listOfPairs)
+
+#' @importFrom qspray qlone qone
+#' @noRd
 skewSymbolicJackInMSPbasis <- function(which, lambda, mu) {
   alpha <- qlone(1L)
   poly_from_alc <- function(alc) {
@@ -151,12 +108,14 @@ skewSymbolicJackInMSPbasis <- function(which, lambda, mu) {
   .skewJackInMSPbasis(rosFromMatrices, ccoeff, which, lambda, mu)
 }
 
+#' @importFrom gmp c_bigq as.bigq
+#' @noRd
 skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
   coeff_from_alc <- function(alc) {
     (alc[1L] * alpha + alc[2L])^(alc[3L])
   }
   coeff_from_alcs <- function(alcs) {
-    product(c_bigq(apply(alcs, 1L, coeff_from_alc, simplify = FALSE)))
+    prod(c_bigq(apply(alcs, 1L, coeff_from_alc, simplify = FALSE)))
   }
   ratioFromMatrices <- function(alcsMatrices) {
     matrix1 <- alcsMatrices[[1L]]
@@ -178,15 +137,6 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
   }
   .skewJackInMSPbasis(ratioFromMatrices, ccoeff, which, lambda, mu)
 }
-# skewJackInMSPbasis alpha =
-#   _skewJackInMSPbasis ratioFromAssocs ccoeff
-#   where
-#     coeff ((a, l), c) =
-#       (a .^ alpha AlgAdd.+ (_fromInt l)) AlgRing.^ (toInteger c)
-#     ratioFromAssocs assocs = num AlgField./ den
-#       where
-#         (num, den) = both (AlgRing.product . (map coeff)) assocs
-#     ccoeff lambda mu = jackCoeffC lambda alpha AlgField./ jackCoeffC mu alpha
 
 #' Skew Jack polynomial
 #' @description Computes a skew Jack polynomial.
@@ -200,13 +150,14 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
 #'   \code{"C"}
 #'
 #' @return A \code{qspray} polynomial.
-#' @noRd
-#' @importFrom gmp is.bigq as.bigq
-#' @importFrom partitions parts
-#' @importFrom qspray HallInnerProduct
+#' @export
+#' @importFrom gmp as.bigq
+#' @importFrom DescTools Permn
+#' @importFrom methods new
+#' @importFrom utils head
 #'
 #' @examples
-#' SkewJackPol(3, c(3,1), c(2), 2)
+#' SkewJackPol(3, c(3,1), c(2), "2")
 SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda), isPartition(mu))
@@ -217,8 +168,10 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   if(ellLambda < ellMu || any(head(lambda, ellLambda) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
-  stopifnot(isInteger(alpha) || is.bigq(alpha))
   alpha <- as.bigq(alpha)
+  if(is.na(alpha)) {
+    stop("Invalid alpha.")
+  }
   msCombo <-
     Filter(
       function(lst) {
@@ -226,15 +179,27 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
       },
       skewJackInMSPbasis(alpha, which, lambda, mu)
     )
-  qsprays <- lapply(msCombo, function(lst) {
-    nu <- c(lst[["nu"]], rep(0L, n - lst[["ellNu"]]))
-    coeff <- as.character(lst[["coeff"]])
-    powers <- apply(Permn(nu), 1L, removeTrailingZeros, simplify = FALSE)
-    new(
-      "qspray",
-      powers = powers,
-      coeffs = rep(coeff, length(powers))
+  powers_and_coeffs <-
+    Reduce(
+      function(l1, l2) {
+        list(
+          "powers" = c(l1[["powers"]], l2[["powers"]]),
+          "coeffs" = c(l1[["coeffs"]], l2[["coeffs"]])
+        )
+      },
+      lapply(msCombo, function(lst) {
+        nu <- c(lst[["nu"]], rep(0L, n - lst[["ellNu"]]))
+        coeff <- as.character(lst[["coeff"]])
+        powers <- apply(Permn(nu), 1L, removeTrailingZeros, simplify = FALSE)
+        list(
+          "powers" = powers,
+          "coeffs" = rep(coeff, length(powers))
+        )
+      })
     )
-  })
-  Reduce(`+`, qsprays)
+  new(
+    "qspray",
+    powers = powers_and_coeffs[["powers"]],
+    coeffs = powers_and_coeffs[["coeffs"]]
+  )
 }
