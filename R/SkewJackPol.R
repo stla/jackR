@@ -145,7 +145,7 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
 }
 
 #' Skew Jack polynomial
-#' @description Computes a skew Jack polynomial.
+#' @description Computes a skew Jack polynomial with a given Jack parameter.
 #'
 #' @param n positive integer, the number of variables
 #' @param lambda outer integer partition of the skew partition
@@ -172,7 +172,7 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
   ellMu <- length(mu)
-  if(ellLambda < ellMu || any(head(lambda, ellLambda) < mu)) {
+  if(ellLambda < ellMu || any(head(lambda, ellMu) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   alpha <- as.bigq(alpha)
