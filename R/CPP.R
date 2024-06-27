@@ -17,12 +17,10 @@
 SchurPol <- function(n, lambda) {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   lambda <- as.integer(removeTrailingZeros(lambda))
-  if(n == 0L){
-    if(length(lambda) == 0L) {
-      qone()
-    } else {
-      qzero()
-    }
+  if(length(lambda) == 0L) {
+    qone()
+  } else if(n == 0L){
+    qzero()
   } else {
     qspray_from_list(SchurPolRcpp(as.integer(n), lambda))
   }
@@ -89,12 +87,11 @@ JackPol <- function(n, lambda, alpha, which = "J") {
   if(is.na(alpha)) {
     stop("Invalid `alpha`.")
   }
+  if(length(lambda) == 0L) {
+    return(qone())
+  }
   if(n == 0L){
-    if(length(lambda) == 0L) {
-      return(qone())
-    } else {
-      return(qzero())
-    }
+    return(qzero())
   }
   which <- match.arg(which, c("J", "P", "Q", "C"))
   alpha <- as.character(alpha)

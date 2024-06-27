@@ -19,12 +19,11 @@ JackSymPol <- function(n, lambda, which = "J") {
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   lambda <- as.integer(removeTrailingZeros(lambda))
   which <- match.arg(which, c("J", "P", "Q", "C"))
+  if(length(lambda) == 0L) {
+    return(Qone())
+  }
   if(n == 0L){
-    if(length(lambda) == 0L) {
-      return(Qone())
-    } else {
-      return(Qzero())
-    }
+    return(Qzero())
   }
   JackPolynomial <- symbolicQspray_from_list(
     JackSymPolRcpp(as.integer(n), lambda)

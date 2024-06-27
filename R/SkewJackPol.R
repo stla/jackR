@@ -43,6 +43,12 @@
       rbind,
       lapply(pairsOfMatrices, `[[`, 2L)
     )
+    if(is.null(matrix1)) {
+      matrix1 <- matrix(NA_integer_, nrow = 0L, ncol = 2L)
+    }
+    if(is.null(matrix2)) {
+      matrix2 <- matrix(NA_integer_, nrow = 0L, ncol = 2L)
+    }
     simplifyTheTwoMatrices(matrix1, matrix2)
   }
   makeCoeffFromListOfPairs <- function(listOfPairs) {

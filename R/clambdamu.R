@@ -7,7 +7,8 @@
       j_ <- seq_len(lambda_i)
       cbind(
         lambda_i - j_,
-        lambdap[j_] - i + 1L
+        lambdap[j_] - i + 1L,
+        deparse.level = 0L
       )
     })
   )
@@ -74,7 +75,11 @@
 # clambda lambda =
 #   poly_from_assocs (DM.assocs (alMap lambda))
 .clambda <- function(lambda) {
-  .poly_from_alcs(.alcsFromPartition(lambda))
+  if(length(lambda) == 0L) {
+    qone()
+  } else {
+    .poly_from_alcs(.alcsFromPartition(lambda))
+  }
 }
 # assocsFromMaps ::
 #   Map (Int, Int) Int -> Map (Int, Int) Int
@@ -88,9 +93,15 @@
 #   where
 #     f k1 k2 = if k1 > k2 then Just (k1 - k2) else Nothing
 .clambdamuMatrices <- function(lambda, mu) {
+  matrix1 <- .alsMatrixFromPartition(lambda)
+  if(length(mu) == 0L) {
+    matrix2 <- matrix(NA_integer_, nrow = 0L, ncol = 2L)
+  } else {
+    matrix2 <- .alsMatrixFromPartition(mu)
+  }
   simplifyTheTwoMatrices(
-    .alsMatrixFromPartition(lambda),
-    .alsMatrixFromPartition(mu)
+    matrix1,
+    matrix2
   )
 }
 # clambdamuAssocs ::
