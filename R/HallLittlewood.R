@@ -201,7 +201,7 @@ HallLittlewoodPol <- function(n, lambda, which = "P") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))
   which <- match.arg(which, c("P", "Q"))
-  lambda <- removeTrailingZeros(lambda)
+  lambda <- as.integer(removeTrailingZeros(lambda))
   if(length(lambda) == 0L) {
     return(Qone())
   }

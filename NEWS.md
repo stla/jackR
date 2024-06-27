@@ -3,12 +3,18 @@
 - Some minor modifications have been necessary due to the updates of some 
 package dependencies. No change for the user.
 
-- The `KostkaNumbers` function has a new argument `alpha`, to compute the 
-Kostka numbers with parameter (for `alpha=1` these are the standard Kostka 
-numbers).
+- The `KostkaNumbers` function has been renamed to `KostkaJackNumbers` and
+it has a new argument `alpha`, to compute the Kostka numbers with a Jack 
+parameter (for `alpha=1` these are the standard Kostka numbers).
 
-- New function `symbolicKostkaNumbers`, to get the Kostka numbers with a 
-symbolic parameter.
+- New function `symbolicKostkaJackNumbers`, to get the Kostka numbers with a 
+symbolic Jack parameter.
+
+- New function `skewKostkaJackNumbers`, to get skew Kostka numbers with a 
+given Jack parameter.
+
+- New function `symbolicSkewKostkaJackNumbers`, to get skew Kostka numbers 
+with a symbolic Jack parameter.
 
 - New function `JackCombination`, to get a symmetric polynomial as a linear 
 combination of some Jack polynomials with a fixed parameter.
