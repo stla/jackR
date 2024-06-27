@@ -158,8 +158,9 @@ symbolicKostkaJackNumbers <- function(n) {
   }
 }
 
-#' @title Skew Kostka-Jack numbers
-#' @description Skew Kostka-Jack numbers associated to a given skew partition.
+#' @title Skew Kostka-Jack numbers with given Jack parameter
+#' @description Skew Kostka-Jack numbers associated to a given skew partition
+#'   and a given Jack parameter.
 #'
 #' @param lambda,mu integer partitions defining the skew partition:
 #'   \code{lambda} is the outer partition and \code{mu} is the inner partition
@@ -218,3 +219,42 @@ skewKostkaJackNumbers <- function(lambda, mu, alpha = NULL, output = "vector") {
   kNumbers
 }
 
+#' @title Skew Kostka-Jack numbers with symbolic Jack parameter
+#' @description Skew Kostka-Jack numbers associated to a given skew partition
+#'   with a symbolic Jack parameter.
+#'
+#' @param lambda,mu integer partitions defining the skew partition:
+#'   \code{lambda} is the outer partition and \code{mu} is the inner partition
+#'   (so \code{mu} must be a subpartition of \code{lambda})
+#'
+#' @return The function returns a list. Each element of this
+#'   list is a named list with two elements: an integer partition \eqn{\nu}
+#'   in the field named \code{"nu"}, and the corresponding skew Kostka number
+#'   \eqn{K_{\lambda/\mu,\nu}(\alpha)} in the field named \code{"value"}, a
+#'   \code{ratioOfQsprays} object.
+#' @export
+#' @importFrom utils head
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
+#'
+#' @examples
+#' symbolicSkewKostkaJackNumbers(c(4,2,2), c(2,2))
+symbolicSkewKostkaJackNumbers <- function(lambda, mu) {
+  stopifnot(isPartition(lambda), isPartition(mu))
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(head(lambda, ellMU) < mu)) {
+    stop("The partition `mu` is not a subpartition of the partition `lambda`.")
+  }
+  listOfKnumbers <- skewSymbolicJackInMSPbasis("P", lambda, mu)
+  lapply(
+    listOfKnumbers,
+    function(lst) {
+      rOS <- lst[["coeff"]]
+      showRatioOfQspraysOption(rOS, "showRatioOfQsprays") <-
+        showRatioOfQspraysXYZ("alpha")
+      list("nu" = lst[["nu"]], "value" = rOS)
+    }
+  )
+}

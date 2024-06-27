@@ -23,7 +23,7 @@ subpartition of \code{lambda}}
 A \code{qspray} polynomial.
 }
 \description{
-Computes a skew Jack polynomial.
+Computes a skew Jack polynomial with a given Jack parameter.
 }
 \examples{
 SkewJackPol(3, c(3,1), c(2), "2")
