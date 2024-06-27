@@ -193,7 +193,7 @@ skewKostkaJackNumbers <- function(lambda, mu, alpha = NULL, output = "vector") {
   mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
   ellMu <- length(mu)
-  if(ellLambda < ellMu || any(head(lambda, ellMU) < mu)) {
+  if(ellLambda < ellMu || any(head(lambda, ellMu) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   if(is.null(alpha)) {
@@ -244,7 +244,7 @@ symbolicSkewKostkaJackNumbers <- function(lambda, mu) {
   mu <- as.integer(removeTrailingZeros(mu))
   ellLambda <- length(lambda)
   ellMu <- length(mu)
-  if(ellLambda < ellMu || any(head(lambda, ellMU) < mu)) {
+  if(ellLambda < ellMu || any(head(lambda, ellMu) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   listOfKnumbers <- skewSymbolicJackInMSPbasis("P", lambda, mu)

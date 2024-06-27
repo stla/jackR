@@ -34,3 +34,27 @@ test_that("Symbolic Kostka numbers are the coefficients of symbolic Jack P-polyn
   }
   expect_true(Qspray == jp)
 })
+
+test_that("Skew Kostka-Jack numbers for alpha=1 are ordinary skew Kostka numbers", {
+  lambda <- c(3, 2, 1)
+  mu <- c(2, 1)
+  sKJnumbers <- skewKostkaJackNumbers(lambda, mu, alpha = "1", output = "vector")
+  sKnumbers <- syt::skewKostkaNumbers(lambda, mu, output = "vector")
+  nus <- names(sKnumbers)
+  expect_true(length(setdiff(nus, names(sKJnumbers))) == 0L)
+  expect_true(all(sKJnumbers[nus] == sKnumbers))
+})
+
+test_that("Symbolic skew Kostka-Jack numbers", {
+  lambda <- c(3, 2, 1)
+  mu <- c(2, 1)
+  symsKJnumbers <- symbolicSkewKostkaJackNumbers(lambda, mu)
+  alpha <- "2"
+  sKJnumbers <- skewKostkaJackNumbers(lambda, mu, alpha, output = "vector")
+  nus <- names(sKJnumbers)
+  expect_true(length(setdiff(nus, names(symsKJnumbers))) == 0L)
+  evals <- vapply(symsKJnumbers, function(lst) {
+    as.character(evalRatioOfQsprays(lst[["value"]], alpha))
+  }, character(1L), USE.NAMES = TRUE)
+  expect_true(all(evals[nus] == sKJnumbers))
+})
