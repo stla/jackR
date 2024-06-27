@@ -378,6 +378,23 @@ collinearQsprays(
 Many other symmetric multivariate polynomials have been introduced in
 version 6.1.0. Let’s see a couple of them.
 
+### Skew Jack polynomials
+
+The skew Jack polynomials are now available. They generalize the skew
+Schur polynomials. The skew Schur polynomial associated to some skew
+partition is the skew Jack $P$-polynomial with Jack parameter $\alpha=1$
+associated to the same skew partition:
+
+``` r
+n <- 3
+lambda <- c(3, 3)
+mu <- c(2, 1)
+skewSchurPoly <- SkewSchurPol(n, lambda, mu)
+skewJackPoly <- SkewJackPol(n, lambda, mu, alpha = 1, which = "P")
+skewSchurPoly == skewJackPoly
+## [1] TRUE
+```
+
 ### $t$-Schur polynomials
 
 The $t$-Schur polynomials depend on a single parameter usually denoted
