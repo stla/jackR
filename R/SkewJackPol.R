@@ -74,6 +74,7 @@
     function(listOfPairs, nu) {
       list(
         "nu" = nu,
+        "ellNu" = length(nu),
         "coeff" = makeCoeffFromListOfPairs(listOfPairs)
       )
     },
@@ -162,13 +163,13 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
     if(nrow(matrix1) >= 1L) {
       num <- coeff_from_alcs(matrix1)
     } else {
-      num <- 1L
+      num <- as.bigq(1L)
     }
     matrix2 <- alcsMatrices[[2L]]
     if(nrow(matrix2) >= 1L) {
       den <- coeff_from_alcs(matrix2)
     } else {
-      den <- 1L
+      den <- as.bigq(1L)
     }
     num / den
   }
@@ -209,21 +210,31 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
 SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda), isPartition(mu))
-  mu <- c(mu, rep(0L, length(lambda) - length(mu)))
-  if(any(lambda - mu < 0L)) {
+  lambda <- as.integer(removeTrailingZeros(lambda))
+  mu <- as.integer(removeTrailingZeros(mu))
+  ellLambda <- length(lambda)
+  ellMu <- length(mu)
+  if(ellLambda < ellMu || any(head(lambda, ellLambda) < mu)) {
     stop("The partition `mu` is not a subpartition of the partition `lambda`.")
   }
   stopifnot(isInteger(alpha) || is.bigq(alpha))
   alpha <- as.bigq(alpha)
-  Jlambda <- JackPol(n, lambda, alpha, which)
-  Jmu     <- JackPol(n, mu, alpha, which)
-  nus <- parts(sum(lambda) - sum(mu))
-  terms <- apply(nus, 2L, function(nu) {
-    if(length(lambda) < length(nu[nu>0L])) return(0L)
-    Jnu <- JackPol(n, nu, alpha, which)
-    coeff <- HallInnerProduct(Jlambda, Jmu * Jnu, alpha) /
-      HallInnerProduct(Jnu, Jnu, alpha)
-    coeff * Jnu
-  }, simplify = FALSE)
-  Reduce(`+`, terms)
+  msCombo <-
+    Filter(
+      function(lst) {
+        lst[["ellNu"]] <= n
+      },
+      skewJackInMSPbasis(alpha, which, lambda, mu)
+    )
+  qsprays <- lapply(msCombo, function(lst) {
+    nu <- c(lst[["nu"]], rep(0L, n - lst[["ellNu"]]))
+    coeff <- as.character(lst[["coeff"]])
+    powers <- apply(Permn(nu), 1L, removeTrailingZeros, simplify = FALSE)
+    new(
+      "qspray",
+      powers = powers,
+      coeffs = rep(coeff, length(powers))
+    )
+  })
+  Reduce(`+`, qsprays)
 }
