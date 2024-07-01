@@ -42,3 +42,20 @@ test_that(
     expect_true(jp == expected)
   }
 )
+
+test_that("Jack combination of skew Jack with Hall inner product", {
+  lambda <- c(3, 1, 1)
+  mu <- c(2, 1)
+  alpha <- "2"
+  n <- sum(lambda)
+  skewJackPoly <- SkewJackPol(n, lambda, mu, alpha, "Q")
+  jackCombo <- JackCombination(skewJackPoly, alpha, "Q")
+  nus <- lapply(jackCombo, `[[`, "lambda")
+  coeffs <- gmp::c_bigq(lapply(jackCombo, `[[`, "coeff"))
+  jackQpoly <- JackPol(n, lambda, alpha, "Q")
+  jackPpoly <- JackPol(n, mu, alpha, "P")
+  fs <- gmp::c_bigq(lapply(nus, function(nu) {
+    HallInnerProduct(jackQpoly, jackPpoly * JackPol(n, nu, alpha, "P"), alpha)
+  }))
+  expect_true(all(coeffs == fs))
+})
