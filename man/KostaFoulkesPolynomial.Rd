@@ -7,7 +7,10 @@
 KostaFoulkesPolynomial(lambda, mu)
 }
 \arguments{
-\item{lambda, mu}{integer partitions}
+\item{lambda, mu}{integer partitions; in order for the Kostka-Foulkes
+polynomial to be non-zero, a necessary condition is that \code{lambda}
+and \code{mu} have the same weight; more precisely, \code{mu} must
+be dominated by \code{lambda}}
 }
 \value{
 The Kostka-Foulkes polynomial associated to \code{lambda} and

@@ -19,6 +19,10 @@ A matrix of character strings representing integers or fractions.
 \description{
 The Kostka-Jack numbers for partitions of a given weight.
 }
+\details{
+The Kostka-Jack numbers generalize the Kostka numbers: these ones
+  are obtained when \code{alpha=1}.
+}
 \examples{
 KostkaJackNumbers(4)
 }

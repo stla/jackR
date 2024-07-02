@@ -14,7 +14,8 @@ SkewJackPol(n, lambda, mu, alpha, which = "J")
 \item{mu}{inner integer partition of the skew partition; it must be a
 subpartition of \code{lambda}}
 
-\item{alpha}{the Jack parameter, an integer or a \code{bigq} number}
+\item{alpha}{the Jack parameter, any object coercible to a \code{bigq}
+number}
 
 \item{which}{which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
 \code{"C"}}

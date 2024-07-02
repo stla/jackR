@@ -19,7 +19,7 @@ or \code{"C"}}
 A \code{symbolicQspray} object.
 }
 \description{
-Returns the Jack polynomial with symbolic Jack parameter.
+Returns the Jack polynomial with a symbolic Jack parameter.
 }
 \examples{
 JackSymPol(3, lambda = c(3, 1))

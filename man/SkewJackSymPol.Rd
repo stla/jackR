@@ -14,8 +14,8 @@ SkewJackSymPol(n, lambda, mu, which = "J")
 \item{mu}{inner integer partition of the skew partition; it must be a
 subpartition of \code{lambda}}
 
-\item{which}{which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
-\code{"C"}}
+\item{which}{which skew Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"}
+or \code{"C"}}
 }
 \value{
 A \code{symbolicQspray} polynomial.

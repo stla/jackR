@@ -1,6 +1,6 @@
 #' Jack polynomial with symbolic Jack parameter
 #'
-#' Returns the Jack polynomial with symbolic Jack parameter.
+#' Returns the Jack polynomial with a symbolic Jack parameter.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing

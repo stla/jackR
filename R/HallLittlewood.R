@@ -74,7 +74,10 @@ ssytWord <- function(ssyt) {
 #' @title Kostka-Foulkes polynomial
 #' @description Kostka-Foulkes polynomial for two given partitions.
 #'
-#' @param lambda,mu integer partitions
+#' @param lambda,mu integer partitions; in order for the Kostka-Foulkes
+#'   polynomial to be non-zero, a necessary condition is that \code{lambda}
+#'   and \code{mu} have the same weight; more precisely, \code{mu} must
+#'   be dominated by \code{lambda}
 #'
 #' @return The Kostka-Foulkes polynomial associated to \code{lambda} and
 #'   \code{mu}. This is a univariate \code{qspray} polynomial.

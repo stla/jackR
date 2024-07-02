@@ -151,7 +151,8 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
 #' @param lambda outer integer partition of the skew partition
 #' @param mu inner integer partition of the skew partition; it must be a
 #'   subpartition of \code{lambda}
-#' @param alpha the Jack parameter, an integer or a \code{bigq} number
+#' @param alpha the Jack parameter, any object coercible to a \code{bigq}
+#'   number
 #' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
 #'   \code{"C"}
 #'
@@ -226,8 +227,8 @@ SkewJackPol <- function(n, lambda, mu, alpha, which = "J") {
 #' @param lambda outer integer partition of the skew partition
 #' @param mu inner integer partition of the skew partition; it must be a
 #'   subpartition of \code{lambda}
-#' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
-#'   \code{"C"}
+#' @param which which skew Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"}
+#'   or \code{"C"}
 #'
 #' @return A \code{symbolicQspray} polynomial.
 #' @export

@@ -14,11 +14,10 @@ A named list of named lists of \code{ratioOfQsprays} objects.
   Denoting the Kostka numbers by \eqn{K_{\lambda,\mu}(\alpha)}, the names
   of the outer list correspond to the partitions \eqn{\lambda}, and the
   names of the inner lists correspond to the partitions \eqn{\mu}.
-  This list contains only the non-zero Kostka numbers.
 }
 \description{
-Kostka-Jack numbers with symbolic parameter for partitions of a
-  given weight.
+Kostka-Jack numbers with symbolic Jack parameter for partitions
+  of a given weight.
 }
 \examples{
 symbolicKostkaJackNumbers(3)

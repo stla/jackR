@@ -11,6 +11,9 @@
 #' @export
 #' @importFrom gmp as.bigq c_bigq
 #'
+#' @details The Kostka-Jack numbers generalize the Kostka numbers: these ones
+#'   are obtained when \code{alpha=1}.
+#'
 #' @examples
 #' KostkaJackNumbers(4)
 KostkaJackNumbers <- function(n, alpha = NULL) {
