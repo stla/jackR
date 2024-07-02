@@ -149,8 +149,9 @@ zlambda <- function(lambda) {
 #'
 #' @return A \code{symbolicQspray} multivariate polynomial, the
 #'   t-Schur polynomial associated to \code{lambda}.
-#'   It has one parameter and its coefficients
-#'   are polynomials in this parameter.
+#'   It has a single parameter usually denoted by \eqn{t} and its
+#'   coefficients are polynomials in this parameter. Substituting
+#'   \eqn{t} with \eqn{0} yields the Schur polynomials.
 #' @export
 #' @importFrom symbolicQspray showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
@@ -176,8 +177,10 @@ tSchurPol <- function(n, lambda) {
 #'
 #' @return A \code{symbolicQspray} multivariate polynomial, the skew
 #'   t-Schur polynomial associated to the skew partition defined by
-#'   \code{lambda} and \code{mu}. It has one parameter and its coefficients
-#'   are polynomials in this parameter.
+#'   \code{lambda} and \code{mu}.
+#'   It has a single parameter usually denoted by \eqn{t} and its
+#'   coefficients are polynomials in this parameter. Substituting
+#'   \eqn{t} with \eqn{0} yields the skew Schur polynomials.
 #' @export
 #' @importFrom symbolicQspray showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ

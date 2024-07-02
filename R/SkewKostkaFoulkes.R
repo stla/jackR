@@ -10,7 +10,9 @@
 #'
 #' @return The skew Kostka-Foulkes polynomial associated to the skew
 #'   partitiion defined by \code{lambda} and \code{mu} and to the partition
-#'   \code{nu}. This is a univariate \code{qspray} polynomial.
+#'   \code{nu}. This is a univariate \code{qspray} polynomial whose value
+#'   at \code{1} is the skew Kostka number associated to the skew partition
+#'   defined by \code{lambda} and \code{mu} and to the partition \code{nu}.
 #' @export
 #' @importFrom syt skewTableauxWithGivenShapeAndWeight
 #' @importFrom utils head

@@ -16,8 +16,10 @@ tSkewSchurPol(n, lambda, mu)
 \value{
 A \code{symbolicQspray} multivariate polynomial, the skew
   t-Schur polynomial associated to the skew partition defined by
-  \code{lambda} and \code{mu}. It has one parameter and its coefficients
-  are polynomials in this parameter.
+  \code{lambda} and \code{mu}.
+  It has a single parameter usually denoted by \eqn{t} and its
+  coefficients are polynomials in this parameter. Substituting
+  \eqn{t} with \eqn{0} yields the skew Schur polynomials.
 }
 \description{
 Returns the skew t-Schur polynomial associated to

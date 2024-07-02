@@ -17,7 +17,9 @@ or \code{"J"}}
 \value{
 A \code{symbolicQspray} multivariate polynomial, the
   Macdonald polynomial associated to the integer partition
-  \code{lambda}. It has two parameters.
+  \code{lambda}. It has two parameters usually denoted by \eqn{q}
+  and \eqn{t}. Substituting \eqn{q} with \eqn{0} yields the
+  Hall-Littlewood polynomials.
 }
 \description{
 Returns the Macdonald polynomial associated to

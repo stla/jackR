@@ -14,8 +14,9 @@ tSchurPol(n, lambda)
 \value{
 A \code{symbolicQspray} multivariate polynomial, the
   t-Schur polynomial associated to \code{lambda}.
-  It has one parameter and its coefficients
-  are polynomials in this parameter.
+  It has a single parameter usually denoted by \eqn{t} and its
+  coefficients are polynomials in this parameter. Substituting
+  \eqn{t} with \eqn{0} yields the Schur polynomials.
 }
 \description{
 Returns the t-Schur polynomial associated to

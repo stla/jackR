@@ -18,8 +18,10 @@ SkewHallLittlewoodPol(n, lambda, mu, which = "P")
 \value{
 A \code{symbolicQspray} multivariate polynomial, the skew
   Hall-Littlewood polynomial associated to the skew partition defined by
-  \code{lambda} and \code{mu}. It has only one parameter and its
-  coefficients are polynomial in this parameter.
+  \code{lambda} and \code{mu}. It has a single parameter usually denoted
+  by \eqn{t} and its coefficients are polynomial in this parameter.
+  When substituting \eqn{t} with \eqn{0} in the skew Hall-Littlewood
+  \eqn{P}-polynomials, one obtains the skew Schur polynomials.
 }
 \description{
 Returns the skew Hall-Littlewood polynomial associated to

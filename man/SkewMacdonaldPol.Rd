@@ -19,7 +19,9 @@ or \code{"J"}}
 \value{
 A \code{symbolicQspray} multivariate polynomial, the skew
   Macdonald polynomial associated to the skew partition defined by
-  \code{lambda} and \code{mu}. It has two parameters.
+  \code{lambda} and \code{mu}. It has two parameters usually
+  denoted by \eqn{q} and \eqn{t}. Substituting \eqn{q} with \eqn{0}
+  yields the skew Hall-Littlewood polynomials.
 }
 \description{
 Returns the skew Macdonald polynomial associated to

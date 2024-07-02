@@ -14,7 +14,9 @@ be dominated by \code{lambda}}
 }
 \value{
 The Kostka-Foulkes polynomial associated to \code{lambda} and
-  \code{mu}. This is a univariate \code{qspray} polynomial.
+  \code{mu}. This is a univariate \code{qspray} polynomial whose value
+  at \code{1} is the Kostka number associated to \code{lambda} and
+  \code{mu}.
 }
 \description{
 Kostka-Foulkes polynomial for two given partitions.

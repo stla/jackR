@@ -16,6 +16,8 @@ A list. The skew qt-Kostka polynomials are usually denoted by
   \eqn{K_{\lambda/\mu, \nu}(q, t)} where \eqn{q} and \eqn{t} denote the two
   variables, \eqn{\lambda} and \eqn{\mu} are the two integer partitions
   defining the skew partition, and \eqn{\nu} is an integer partition.
+  One obtains the skew Kostka-Foulkes polynomials by substituting \eqn{q}
+  with \eqn{0}.
   For given partitions \eqn{\lambda} and \eqn{\mu}, the function returns the
   polynomials \eqn{K_{\lambda/\mu, \nu}(q, t)} as \code{qspray} objects
   for all partitions \eqn{\nu} of the same weight as the skew partition. The

@@ -279,7 +279,9 @@ clambda <- function(lambda) {
 #'
 #' @return A \code{symbolicQspray} multivariate polynomial, the
 #'   Macdonald polynomial associated to the integer partition
-#'   \code{lambda}. It has two parameters.
+#'   \code{lambda}. It has two parameters usually denoted by \eqn{q}
+#'   and \eqn{t}. Substituting \eqn{q} with \eqn{0} yields the
+#'   Hall-Littlewood polynomials.
 #' @export
 #' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone Qzero
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ

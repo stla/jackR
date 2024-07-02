@@ -80,7 +80,9 @@ ssytWord <- function(ssyt) {
 #'   be dominated by \code{lambda}
 #'
 #' @return The Kostka-Foulkes polynomial associated to \code{lambda} and
-#'   \code{mu}. This is a univariate \code{qspray} polynomial.
+#'   \code{mu}. This is a univariate \code{qspray} polynomial whose value
+#'   at \code{1} is the Kostka number associated to \code{lambda} and
+#'   \code{mu}.
 #' @export
 #' @importFrom qspray qlone qzero showQsprayOption<- showQsprayXYZ qsprayMaker
 #' @importFrom syt ssytx_withGivenShapeAndWeight
@@ -196,8 +198,10 @@ b <- function(lambda) {
 #'
 #' @return The Hall-Littlewood polynomial in \code{n} variables of the
 #'   integer partition \code{lambda}. This is a \code{symbolicQspray}
-#'   polynomial with a unique parameter, and its coefficients are
-#'   polynomial in this parameter.
+#'   polynomial with a unique parameter usually denoted by \eqn{t} and
+#'   its coefficients are polynomial in this parameter. When substituting
+#'   \eqn{t} with \eqn{0} in the Hall-Littlewood \eqn{P}-polynomials, one
+#'   obtains the Schur polynomials.
 #' @export
 #' @importFrom symbolicQspray Qzero Qone
 HallLittlewoodPol <- function(n, lambda, which = "P") {

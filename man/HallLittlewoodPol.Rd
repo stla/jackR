@@ -16,8 +16,10 @@ HallLittlewoodPol(n, lambda, which = "P")
 \value{
 The Hall-Littlewood polynomial in \code{n} variables of the
   integer partition \code{lambda}. This is a \code{symbolicQspray}
-  polynomial with a unique parameter, and its coefficients are
-  polynomial in this parameter.
+  polynomial with a unique parameter usually denoted by \eqn{t} and
+  its coefficients are polynomial in this parameter. When substituting
+  \eqn{t} with \eqn{0} in the Hall-Littlewood \eqn{P}-polynomials, one
+  obtains the Schur polynomials.
 }
 \description{
 Hall-Littlewood polynomial of a given partition.
