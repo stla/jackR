@@ -17,7 +17,9 @@ integers}
 A \code{bigq} number.
 }
 \description{
-Evaluates the zonal quaternionic polynomial.
+Evaluates a zonal quaternionic polynomial. The quaternionic
+  zonal polynomials are the Jack \eqn{C}-polynomials with Jack
+  parameter \eqn{\alpha=1/Z}.
 }
 \examples{
 ZonalQ(c("1", "3/2", "-2/3"), lambda = c(3, 1))

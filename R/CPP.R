@@ -1,6 +1,7 @@
 #' Schur polynomial - C++ implementation
 #'
-#' Returns the Schur polynomial.
+#' @description Returns a Schur polynomial. The Schur polynomials are the
+#'   Jack \eqn{P}-polynomials with Jack parameter \eqn{\alpha=1}.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -28,7 +29,8 @@ SchurPol <- function(n, lambda) {
 
 #' Evaluation of Schur polynomial - C++ implementation
 #'
-#' Evaluates the Schur polynomial.
+#' @description Evaluates a Schur polynomial. The Schur polynomials are the
+#'   Jack \eqn{P}-polynomials with Jack parameter \eqn{\alpha=1}.
 #'
 #' @param x values of the variables, a vector of \code{bigq} numbers, or a
 #'   vector that can be coerced as such (e.g. \code{c("2", "5/3")})
@@ -62,7 +64,7 @@ Schur <- function(x, lambda) {
 
 #' Jack polynomial - C++ implementation
 #'
-#' Returns the Jack polynomial.
+#' Returns a Jack polynomial.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -117,7 +119,7 @@ JackPol <- function(n, lambda, alpha, which = "J") {
 
 #' Evaluation of Jack polynomial - C++ implementation
 #'
-#' Evaluates the Jack polynomial.
+#' Evaluates a Jack polynomial.
 #'
 #' @param x values of the variables, a vector of \code{bigq} numbers, or a
 #'   vector that can be coerced as such (e.g. \code{c("2", "5/3")})
@@ -170,7 +172,8 @@ Jack <- function(x, lambda, alpha) {
 
 #' Zonal polynomial - C++ implementation
 #'
-#' Returns the zonal polynomial.
+#' @description Returns a zonal polynomial. The zonal polynomials are the
+#'   Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -188,7 +191,8 @@ ZonalPol <- function(n, lambda){
 
 #' Evaluation of zonal polynomial - C++ implementation
 #'
-#' Evaluates the zonal polynomial.
+#' @description Evaluates a zonal polynomial. The zonal polynomials are the
+#'   Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
 #'
 #' @param x values of the variables, a vector of \code{bigq} numbers, or a
 #'   vector that can be coerced as such (e.g. \code{c("2", "5/3")})
@@ -217,7 +221,9 @@ Zonal <- function(x, lambda){
 
 #' Quaternionic zonal polynomial - C++ implementation
 #'
-#' Returns the quaternionic zonal polynomial.
+#' @description Returns a quaternionic zonal polynomial. The quaternionic
+#'   zonal polynomials are the Jack \eqn{C}-polynomials with Jack
+#'   parameter \eqn{\alpha=1/Z}.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -235,7 +241,9 @@ ZonalQPol <- function(n, lambda){
 
 #' Evaluation of zonal quaternionic polynomial - C++ implementation
 #'
-#' Evaluates the zonal quaternionic polynomial.
+#' @description Evaluates a zonal quaternionic polynomial. The quaternionic
+#'   zonal polynomials are the Jack \eqn{C}-polynomials with Jack
+#'   parameter \eqn{\alpha=1/Z}.
 #'
 #' @param x values of the variables, a vector of \code{bigq} numbers, or a
 #'   vector that can be coerced as such (e.g. \code{c("2", "5/3")})

@@ -16,7 +16,8 @@ integers}
 A \code{qspray} multivariate polynomial.
 }
 \description{
-Returns the zonal polynomial.
+Returns a zonal polynomial. The zonal polynomials are the
+  Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
 }
 \examples{
 ( zonal <- ZonalPol(3, lambda = c(3, 1)) )

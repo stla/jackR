@@ -16,7 +16,8 @@ integers}
 A \code{qspray} multivariate polynomial.
 }
 \description{
-Returns the Schur polynomial.
+Returns a Schur polynomial. The Schur polynomials are the
+  Jack \eqn{P}-polynomials with Jack parameter \eqn{\alpha=1}.
 }
 \examples{
 ( schur <- SchurPol(3, lambda = c(3, 1)) )

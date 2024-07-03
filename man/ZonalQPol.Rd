@@ -16,7 +16,9 @@ integers}
 A \code{qspray} multivariate polynomial.
 }
 \description{
-Returns the quaternionic zonal polynomial.
+Returns a quaternionic zonal polynomial. The quaternionic
+  zonal polynomials are the Jack \eqn{C}-polynomials with Jack
+  parameter \eqn{\alpha=1/Z}.
 }
 \examples{
 ( zonalQ <- ZonalQPol(3, lambda = c(3, 1)) )

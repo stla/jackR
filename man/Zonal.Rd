@@ -17,7 +17,8 @@ integers}
 A \code{bigq} number.
 }
 \description{
-Evaluates the zonal polynomial.
+Evaluates a zonal polynomial. The zonal polynomials are the
+  Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
 }
 \examples{
 Zonal(c("1", "3/2", "-2/3"), lambda = c(3, 1))

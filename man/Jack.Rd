@@ -20,7 +20,7 @@ integers}
 A \code{bigq} number.
 }
 \description{
-Evaluates the Jack polynomial.
+Evaluates a Jack polynomial.
 }
 \examples{
 Jack(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")

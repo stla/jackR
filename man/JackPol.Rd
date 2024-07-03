@@ -22,7 +22,7 @@ or \code{"C"}}
 A \code{qspray} multivariate polynomial.
 }
 \description{
-Returns the Jack polynomial.
+Returns a Jack polynomial.
 }
 \examples{
 JackPol(3, lambda = c(3, 1), alpha = "2/5")

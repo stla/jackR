@@ -17,7 +17,8 @@ integers}
 A \code{bigq} number.
 }
 \description{
-Evaluates the Schur polynomial.
+Evaluates a Schur polynomial. The Schur polynomials are the
+  Jack \eqn{P}-polynomials with Jack parameter \eqn{\alpha=1}.
 }
 \examples{
 Schur(c("1", "3/2", "-2/3"), lambda = c(3, 1))
