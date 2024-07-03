@@ -2,7 +2,7 @@
 % Please edit documentation in R/Kostka.R
 \name{KostkaJackNumbers}
 \alias{KostkaJackNumbers}
-\title{Kostka-Jack numbers}
+\title{Kostka-Jack numbers with a given Jack parameter}
 \usage{
 KostkaJackNumbers(n, alpha = NULL)
 }
@@ -14,15 +14,26 @@ to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
 \code{alpha=1}}
 }
 \value{
-A matrix of character strings representing integers or fractions.
+The matrix of the Kostka-Jack numbers \eqn{K_{\lambda,\mu}(\alpha)}
+  given as character strings representing integers or fractions.
+  The row names of this matrix encode the partitions \eqn{\lambda} and
+  the column names encode the partitions \eqn{\mu}
 }
 \description{
-The Kostka-Jack numbers for partitions of a given weight.
+Kostka numbers with Jack parameter, or Kostka-Jack numbers,
+  for partitions of a given weight and a given Jack parameter.
 }
 \details{
-The Kostka-Jack numbers generalize the Kostka numbers: these ones
-  are obtained when \code{alpha=1}.
+The Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)} is the
+  coefficient of the monomial symmetric polynomial \eqn{m_\mu} in the
+  expression of the \eqn{P}-Jack polynomial \eqn{P_\lambda(\alpha)} as a
+  linear combination of monomial symmetric polynomials. For \eqn{\alpha=1}
+  it is the ordinary Kostka number.
 }
 \examples{
 KostkaJackNumbers(4)
+}
+\seealso{
+\code{\link{symbolicKostkaJackNumbers}},
+  \code{\link{skewKostkaJackNumbers}}.
 }

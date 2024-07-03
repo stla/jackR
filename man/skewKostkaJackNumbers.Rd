@@ -20,19 +20,30 @@ to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
 }
 \value{
 If \code{output="vector"}, the function returns a named vector.
-  This vector is made of the non-zero skew Kostka numbers
+  This vector is made of the non-zero skew Kostka-Jack numbers
   \eqn{K_{\lambda/\mu,\nu}(\alpha)} given as character strings and its names
   encode the partitions \eqn{\nu}.
   If \code{ouput="list"}, the function returns a list. Each element of this
   list is a named list with two elements: an integer partition \eqn{\nu}
-  in the field named \code{"nu"}, and the corresponding skew Kostka number
-  \eqn{K_{\lambda/\mu,\nu}(\alpha)} in the field named \code{"value"}. Only
-  the non-null skew Kostka numbers are provided by this list.
+  in the field named \code{"nu"}, and the corresponding skew Kostka-Jack
+  number \eqn{K_{\lambda/\mu,\nu}(\alpha)} in the field named \code{"value"}.
+  Only the non-null skew Kostka-Jack numbers are provided by this list.
 }
 \description{
 Skew Kostka-Jack numbers associated to a given skew partition
   and a given Jack parameter.
 }
+\details{
+The skew Kostka-Jack number \eqn{K_{\lambda/\mu,\nu}(\alpha)} is
+  the coefficient of the monomial symmetric polynomial \eqn{m_\nu} in the
+  expression of the skew \eqn{P}-Jack polynomial
+  \eqn{P_{\lambda/\mu}(\alpha)} as a linear combination of monomial
+  symmetric polynomials. For \eqn{\alpha=1} it is the ordinary skew Kostka
+  number.
+}
 \examples{
 skewKostkaJackNumbers(c(4,2,2), c(2,2))
+}
+\seealso{
+\code{\link{symbolicSkewKostkaJackNumbers}}.
 }

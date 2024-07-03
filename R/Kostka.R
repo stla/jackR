@@ -1,18 +1,27 @@
-#' @title Kostka-Jack numbers
+#' @title Kostka-Jack numbers with a given Jack parameter
 #'
-#' @description The Kostka-Jack numbers for partitions of a given weight.
+#' @description Kostka numbers with Jack parameter, or Kostka-Jack numbers,
+#'   for partitions of a given weight and a given Jack parameter.
 #'
 #' @param n positive integer, the weight of the partitions
 #' @param alpha the Jack parameter, a \code{bigq} number or an object coercible
 #'   to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
 #'   \code{alpha=1}
 #'
-#' @return A matrix of character strings representing integers or fractions.
+#' @return The matrix of the Kostka-Jack numbers \eqn{K_{\lambda,\mu}(\alpha)}
+#'   given as character strings representing integers or fractions.
+#'   The row names of this matrix encode the partitions \eqn{\lambda} and
+#'   the column names encode the partitions \eqn{\mu}
 #' @export
+#' @seealso \code{\link{symbolicKostkaJackNumbers}},
+#'   \code{\link{skewKostkaJackNumbers}}.
 #' @importFrom gmp as.bigq c_bigq
 #'
-#' @details The Kostka-Jack numbers generalize the Kostka numbers: these ones
-#'   are obtained when \code{alpha=1}.
+#' @details The Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)} is the
+#'   coefficient of the monomial symmetric polynomial \eqn{m_\mu} in the
+#'   expression of the \eqn{P}-Jack polynomial \eqn{P_\lambda(\alpha)} as a
+#'   linear combination of monomial symmetric polynomials. For \eqn{\alpha=1}
+#'   it is the ordinary Kostka number.
 #'
 #' @examples
 #' KostkaJackNumbers(4)
@@ -137,17 +146,17 @@ KostkaJackNumbers <- function(n, alpha = NULL) {
   coefs
 }
 
-#' @title Symbolic Kostka-Jack numbers
+#' @title Kostka-Jack numbers with symbolic Jack parameter
 #'
-#' @description Kostka-Jack numbers with symbolic Jack parameter for partitions
-#'   of a given weight.
+#' @description Kostka-Jack numbers with a symbolic Jack parameter for
+#'   integer partitions of a given weight.
 #'
 #' @param n positive integer, the weight of the partitions
 #'
 #' @return A named list of named lists of \code{ratioOfQsprays} objects.
-#'   Denoting the Kostka numbers by \eqn{K_{\lambda,\mu}(\alpha)}, the names
-#'   of the outer list correspond to the partitions \eqn{\lambda}, and the
-#'   names of the inner lists correspond to the partitions \eqn{\mu}.
+#'   Denoting the Kostka-Jack numbers by \eqn{K_{\lambda,\mu}(\alpha)}, the
+#'   names of the outer list correspond to the partitions \eqn{\lambda}, and
+#'   the names of the inner lists correspond to the partitions \eqn{\mu}.
 #' @export
 #'
 #' @examples
@@ -174,18 +183,26 @@ symbolicKostkaJackNumbers <- function(n) {
 #'   \code{"list"}
 #'
 #' @return If \code{output="vector"}, the function returns a named vector.
-#'   This vector is made of the non-zero skew Kostka numbers
+#'   This vector is made of the non-zero skew Kostka-Jack numbers
 #'   \eqn{K_{\lambda/\mu,\nu}(\alpha)} given as character strings and its names
 #'   encode the partitions \eqn{\nu}.
 #'   If \code{ouput="list"}, the function returns a list. Each element of this
 #'   list is a named list with two elements: an integer partition \eqn{\nu}
-#'   in the field named \code{"nu"}, and the corresponding skew Kostka number
-#'   \eqn{K_{\lambda/\mu,\nu}(\alpha)} in the field named \code{"value"}. Only
-#'   the non-null skew Kostka numbers are provided by this list.
+#'   in the field named \code{"nu"}, and the corresponding skew Kostka-Jack
+#'   number \eqn{K_{\lambda/\mu,\nu}(\alpha)} in the field named \code{"value"}.
+#'   Only the non-null skew Kostka-Jack numbers are provided by this list.
 #' @export
+#' @seealso \code{\link{symbolicSkewKostkaJackNumbers}}.
+#'
 #' @importFrom gmp as.bigq c_bigq
 #' @importFrom utils head
 #'
+#' @details The skew Kostka-Jack number \eqn{K_{\lambda/\mu,\nu}(\alpha)} is
+#'   the coefficient of the monomial symmetric polynomial \eqn{m_\nu} in the
+#'   expression of the skew \eqn{P}-Jack polynomial
+#'   \eqn{P_{\lambda/\mu}(\alpha)} as a linear combination of monomial
+#'   symmetric polynomials. For \eqn{\alpha=1} it is the ordinary skew Kostka
+#'   number.
 #' @examples
 #' skewKostkaJackNumbers(c(4,2,2), c(2,2))
 skewKostkaJackNumbers <- function(lambda, mu, alpha = NULL, output = "vector") {
