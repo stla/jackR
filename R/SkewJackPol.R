@@ -153,11 +153,12 @@ skewJackInMSPbasis <- function(alpha, which, lambda, mu) {
 #'   subpartition of \code{lambda}
 #' @param alpha the Jack parameter, any object coercible to a \code{bigq}
 #'   number
-#' @param which which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
-#'   \code{"C"}
+#' @param which which skew Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"}
+#'   or \code{"C"}
 #'
 #' @return A \code{qspray} polynomial.
 #' @export
+#' @seealso \code{\link{SkewJackSymPol}}.
 #' @importFrom gmp as.bigq
 #' @importFrom DescTools Permn
 #' @importFrom methods new

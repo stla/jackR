@@ -17,8 +17,8 @@ subpartition of \code{lambda}}
 \item{alpha}{the Jack parameter, any object coercible to a \code{bigq}
 number}
 
-\item{which}{which Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"} or
-\code{"C"}}
+\item{which}{which skew Jack polynomial, \code{"J"}, \code{"P"}, \code{"Q"}
+or \code{"C"}}
 }
 \value{
 A \code{qspray} polynomial.
@@ -28,4 +28,7 @@ Computes a skew Jack polynomial with a given Jack parameter.
 }
 \examples{
 SkewJackPol(3, c(3,1), c(2), "2")
+}
+\seealso{
+\code{\link{SkewJackSymPol}}.
 }
