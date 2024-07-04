@@ -16,10 +16,11 @@ library(jack)
 *Schur polynomials* have applications in combinatorics and *zonal
 polynomials* have applications in multivariate statistics. They are
 particular cases of [*Jack
-polynomials*](https://en.wikipedia.org/wiki/Jack_function "Jack polynomials on Wikipedia").
-The original purpose of this package was the evaluation and the
-computation in symbolic form of these polynomials. Now it contains much
-more stuff dealing with multivariate symmetric polynomials.
+polynomials*](https://en.wikipedia.org/wiki/Jack_function "Jack polynomials on Wikipedia"),
+which are some multivariate symmetric polynomials. The original purpose
+of this package was the evaluation and the computation in symbolic form
+of these polynomials. Now it contains much more stuff dealing with
+multivariate symmetric polynomials.
 
 ## Breaking change in version 6.0.0
 
@@ -52,8 +53,10 @@ specify which one you want with the `which` argument, which is set to
 factor.
 
 To get a Jack polynomial with `JackPol`, you have to supply the Jack
-parameter as a `bigq` rational number or as a character string
-representing a fraction, e.g. `"2/5"`:
+parameter as a `bigq` rational number or anything coercible to a `bigq`
+number by an application of the `as.bigq` function of the **gmp**
+package, such as a character string representing a fraction,
+e.g. `"2/5"`:
 
 ``` r
 jpol <- JackPol(2, lambda = c(3, 1), alpha = "2/5")
@@ -391,7 +394,9 @@ version 6.1.0. Let’s see a couple of them.
 ### Skew Jack polynomials
 
 The skew Jack polynomials are now available. They generalize the skew
-Schur polynomials. The skew Schur polynomial associated to some skew
+Schur polynomials. In order to specify the skew integer partition
+$\lambda/\mu$, one has to provide the outer partition $\lambda$ and the
+inner partition $\mu$. The skew Schur polynomial associated to some skew
 partition is the skew Jack $P$-polynomial with Jack parameter $\alpha=1$
 associated to the same skew partition:
 
@@ -439,8 +444,9 @@ substituteParameters(hlPoly, values = 0) == SchurPol(n, lambda)
 
 The Macdonald polynomials depend on two parameters usually denoted by
 $q$ and $t$. Their coefficients are not polynomials in $q$ and $t$ in
-general, they are ratios of polynomials in $q$ and $t$. They yield the
-Hall-Littlewood polynomials when substituting $q$ with $0$:
+general, they are ratios of polynomials in $q$ and $t$. These
+polynomials yield the Hall-Littlewood polynomials when substituting $q$
+with $0$:
 
 ``` r
 n <- 3
