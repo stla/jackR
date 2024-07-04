@@ -1,6 +1,8 @@
 The ‘jack’ package: Jack polynomials
 ================
 
+***Jack, zonal, Schur, and other symmetric polynomials.***
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/stla/jackR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/jackR/actions/workflows/R-CMD-check.yaml)
@@ -15,8 +17,9 @@ library(jack)
 polynomials* have applications in multivariate statistics. They are
 particular cases of [*Jack
 polynomials*](https://en.wikipedia.org/wiki/Jack_function "Jack polynomials on Wikipedia").
-This package allows to evaluate these polynomials and also to compute
-them in symbolic form.
+The original purpose of this package was the evaluation and the
+computation in symbolic form of these polynomials. Now it contains much
+more stuff dealing with multivariate symmetric polynomials.
 
 ## Breaking change in version 6.0.0
 
@@ -40,6 +43,13 @@ Each of these polynomials is given by a positive integer, the number of
 variables (the `n` argument), and an integer partition (the `lambda`
 argument); the Jack polynomial has a parameter in addition, the `alpha`
 argument, a number called the *Jack parameter*.
+
+Actually there are four possible Jack polynomials for a given Jack
+parameter and a given integer partition: the $J$-polynomial, the
+$P$-polynomial, the $Q$-polynomial and the $C$-polynomial. You can
+specify which one you want with the `which` argument, which is set to
+`"J"` by default. These four polynomials differ only by a constant
+factor.
 
 To get a Jack polynomial with `JackPol`, you have to supply the Jack
 parameter as a `bigq` rational number or as a character string
@@ -145,10 +155,9 @@ parameters. The Jack polynomials fit into this category: from their
 definition, their coefficients are fractions of polynomials in the Jack
 parameter. However you can see in the above output that for this
 example, the coefficients are *polynomials* in the Jack parameter (`a`):
-there’s no fraction. Actually this fact is always true for any Jack
-polynomial (for any Jack *J*-polynomial, I should say). This is an
-established fact and it is not obvious (it is a consequence of the [Knop
-& Sahi
+there’s no fraction. Actually this fact is always true for the Jack
+$J$-polynomials. This is an established fact and it is not obvious (it
+is a consequence of the [Knop & Sahi
 formula](https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula "Knop & Sahi formula")).
 
 You can substitute a value to the Jack parameter with the help of the
