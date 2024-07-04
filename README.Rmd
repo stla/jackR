@@ -1,5 +1,5 @@
 ---
-title: "The 'jack' package: Jack polynomials"
+title: "The 'jack' package: Jack and other symmetric polynomials"
 output: github_document
 editor_options: 
   chunk_output_type: console
@@ -123,10 +123,11 @@ However, if you have to evaluate a Jack polynomial for several values, it
 could be better to resort to the `qspray` polynomial.
 
 
-## Skew Schur polynomials
+## Skew Jack polynomials
 
-As of version 6.0.0, the package is able to compute the skew Schur polynomials, 
-with the function `SkewSchurPol`.
+As of version 6.0.0, the package is able to compute the skew Schur polynomials 
+with the function `SkewSchurPol`, and the general skew Jack polynomial is 
+available as of version 6.1.0 (function `SkewJackPol`).
 
 
 ## Symbolic Jack parameter
@@ -395,6 +396,13 @@ changeParameters(macPoly, list(0, qlone(1))) == hlPoly
 ```
 
 
+## References
+
+* I.G. Macdonald. *Symmetric Functions and Hall Polynomials*. Oxford Mathematical Monographs. The Clarendon Press Oxford University Press, New York, second edition, 1995.
+
+* J. Demmel and P. Koev. *Accurate and efficient evaluation of Schur and Jack functions*. Mathematics of computations, vol. 75, n. 253, 223-229, 2005.
+
+* The symmetric functions catalog. <https://www.symmetricfunctions.com/index.htm>.
 
 
 <!-- -------------------- links -------------------- -->
