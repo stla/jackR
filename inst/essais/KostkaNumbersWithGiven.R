@@ -24,7 +24,7 @@ KostkaNumbersWithGivenLambda <- function(lambda, output = "vector") {
       nmu <- sum(i_ * tail(mu, -1L))
       nmup <- sum(seq_len(mu[1L] - 1L) * tail(mup, -1L))
       emu <- nmup - nmu
-      ee <- as.bigq(elambda - emu)
+      ee <- elambda - emu # as.bigq(elambda - emu)
       x <- 0L
       for(i in i_) {
         mu_i <- mu[i]
@@ -32,18 +32,25 @@ KostkaNumbersWithGivenLambda <- function(lambda, output = "vector") {
           mu_j <- mu[j]
           dmuij <- mu_i - mu_j
           kappa <- mu
-          for(t in seq_len(mu_j)) {
+          for(t in seq_len(mu_j - 1L)) {
             kappa[i] <- mu_i + t
             kappa[j] <- mu_j - t
-            kappaOrd <- removeTrailingZeros(sort(kappa, decreasing = TRUE))
+            kappaOrd <- sort(kappa, decreasing = TRUE)
             kappaOrdAsString <- partitionAsString(kappaOrd)
             if(kappaOrdAsString %in% musAsStrings){
-              x <- x + kNumbers[kappaOrdAsString] * (dmuij + 2*t) / ee
+              x <- x + kNumbers[kappaOrdAsString] * (dmuij + 2L*t) / ee
             }
+          }
+          mu_i_plus_mu_j <- mu_i + mu_j
+          kappa[i] <- mu_i_plus_mu_j
+          kappaOrd <- sort(kappa[-j], decreasing = TRUE)
+          kappaOrdAsString <- partitionAsString(kappaOrd)
+          if(kappaOrdAsString %in% musAsStrings){
+            x <- x + kNumbers[kappaOrdAsString] * mu_i_plus_mu_j
           }
         }
       }
-      kNumbers[muAsString] <- as.integer(x)
+      kNumbers[muAsString] <- x %/% ee
     }
   }
   if(output == "list") {
