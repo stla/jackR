@@ -60,8 +60,7 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
       kNumbers[[muAsString]] <- x / ee
     }
   }
-
-  lastKnumber <- kNumbers[[nParts]]
+  lastKnumber <- kNumbers[[nparts]]
   facto <- as.bigq(factorialZ(sum(lambda)))
   f <- facto / lastKnumber
   coeff <- JackPcoefficient(lambda, alpha) * f
@@ -83,5 +82,5 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
   kNumbers
 }
 
-KostkaJackNumbersWithGivenLambda(c(2,2,1), "2")
-
+KostkaJackNumbersWithGivenLambda(c(3,2), "2")
+KostkaJackNumbers(5, "2")
