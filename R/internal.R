@@ -254,9 +254,10 @@ symbolicJackCcoefficient <- function(lambda) {
 #####
 isDominated <- function(mu, lambda){
   n <- sum(lambda)
-  if(sum(mu) != n) {
-    return(FALSE)
-  }
+  # assumption: n == sum(mu)
+  # if(sum(mu) != n) {
+  #   return(FALSE)
+  # }
   lambda <- lambda[seq_len(match(0L, lambda, nomatch = length(lambda)+1L)-1L)]
   lambda <- c(lambda, rep(0L, n-length(lambda)))
   mu <- mu[seq_len(match(0L, mu, nomatch = length(mu)+1L)-1L)]
