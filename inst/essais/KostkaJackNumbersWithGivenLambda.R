@@ -10,19 +10,16 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
   nparts <- length(mus)
   musAsStrings <-
     vapply(mus, partitionAsString, character(1L), USE.NAMES = FALSE)
-  names(mus) <- musAsStrings
-  ellLambda <- length(lambda)
-  if(ellLambda == 0L) {
-    kNumbers <- list(as.bigq(1L))
-    names(kNumbers) <- musAsStrings
-  } else {
-    kNumbers <- vector("list", nparts)
-    names(kNumbers) <- musAsStrings
+  kNumbers <- vector("list", nparts)
+  names(kNumbers) <- musAsStrings
+  kNumbers[[1L]] <- as.bigq(1L)
+  if(nparts >= 2L) {
+    names(mus) <- musAsStrings
+    ellLambda <- length(lambda)
     lambdap <- conjugate(lambda)
     nlambda <- sum(seq_len(ellLambda - 1L) * tail(lambda, -1L))
     nlambdap <- sum(seq_len(lambda[1L] - 1L) * tail(lambdap, -1L))
     elambda <- alpha*nlambdap - nlambda
-    kNumbers[[1L]] <- as.bigq(1L)
     for(muAsString in tail(musAsStrings, -1L)) {
       mu <- mus[[muAsString]]
       mup <- conjugate(mu)
@@ -60,23 +57,16 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
       kNumbers[[muAsString]] <- x / ee
     }
   }
-  lastKnumber <- kNumbers[[nparts]]
-  facto <- as.bigq(factorialZ(sum(lambda)))
-  f <- facto / lastKnumber
-  coeff <- JackPcoefficient(lambda, alpha) * f
-  # kNumbers <- lapply(kNumbers, function(kNumber) {
-  #   coeff * kNumber
-  # })
   if(output == "list") {
     kNumbers <- mapply(
       function(kNumber, mu) {
-        list("mu" = mu, "value" = coeff * kNumber)
+        list("mu" = mu, "value" = kNumber)
       },
       kNumbers, mus,
       USE.NAMES = TRUE, SIMPLIFY = FALSE
     )
   } else {
-    kNumbers <- as.character(coeff * c_bigq(kNumbers))
+    kNumbers <- as.character(c_bigq(kNumbers))
     names(kNumbers) <- musAsStrings
   }
   kNumbers
