@@ -11,7 +11,7 @@
 #'   term \code{coeff * SchurPol(n, lambda)}, where \code{n} is the number of
 #'   variables in the symmetric polynomial.
 #' @export
-#' @importFrom syt KostkaNumber
+#' @importFrom syt KostkaNumbersWithGivenLambda
 #' @importFrom partitions parts
 #' @importFrom gmp as.bigq
 #' @importFrom qspray getConstantTerm MSPcombination qzero orderedQspray
@@ -23,19 +23,26 @@ SchurCombination <- function(qspray, check = TRUE) {
     sum(term[["lambda"]])
   }, integer(1L)))
   invKostkaMatrices <- lapply(weights, function(n) {
-    lambdas <- parts(n)
-    nparts <- ncol(lambdas)
+    # lambdas <- parts(n)
+    # nparts <- ncol(lambdas)
+    lambdas <- listOfPartitions(n)
+    nparts <- length(lambdas)
+    lambdasAsStrings <-
+      vapply(lambdas, partitionAsString, character(1L))
     KostkaMatrix <- matrix(0L, nrow = nparts, ncol = nparts)
+    colnames(KostkaMatrix) <- lambdasAsStrings
     for(i in seq_len(nparts)) {
-      for(j in i:nparts) {
-        KostkaMatrix[i, j] <- KostkaNumber(lambdas[, i], lambdas[, j])
-      }
+      kNumbers <- KostkaNumbersWithGivenLambda(lambdas[[i]], output = "vector")
+      KostkaMatrix[i, names(kNumbers)] <- kNumbers
+      # for(j in i:nparts) {
+      #   KostkaMatrix[i, j] <- KostkaNumber(lambdas[, i], lambdas[, j])
+      # }
     }
     invKostkaMatrix <- backsolve(KostkaMatrix, diag(nparts))
     storage.mode(invKostkaMatrix) <- "integer"
-    lambdas <- lapply(Columns(lambdas), removeTrailingZeros)
-    lambdasAsStrings <-
-      vapply(lambdas, partitionAsString, character(1L))
+    # lambdas <- lapply(Columns(lambdas), removeTrailingZeros)
+    # lambdasAsStrings <-
+    #   vapply(lambdas, partitionAsString, character(1L))
     rownames(invKostkaMatrix) <- lambdasAsStrings
     list("matrix" = invKostkaMatrix, "lambdas" = lambdas)
   })
