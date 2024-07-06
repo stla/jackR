@@ -43,6 +43,5 @@ KostkaJackNumbersWithGivenLambda(c(3, 2), alpha = "2")
 }
 \seealso{
 \code{\link{KostkaJackNumbers}},
-  \code{\link{symbolicKostkaJackNumbers}},
-  \code{\link{skewKostkaJackNumbers}}.
+  \code{\link{symbolicKostkaJackNumbersWithGivenLambda}}.
 }

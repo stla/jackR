@@ -22,3 +22,7 @@ Kostka-Jack numbers with a symbolic Jack parameter for
 \examples{
 symbolicKostkaJackNumbers(3)
 }
+\seealso{
+\code{\link{KostkaJackNumbers}},
+  \code{\link{symbolicKostkaJackNumbersWithGivenLambda}}.
+}
