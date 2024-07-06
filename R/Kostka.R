@@ -145,11 +145,13 @@ KostkaJackNumbers <- function(n, alpha = "1") {
     stop("Invalid `alpha`.")
   }
   lambdas <- listOfPartitions(n)
-  stringParts <- paste0(
-    "(",
-    vapply(lambdas, toString, character(1L), USE.NAMES = FALSE),
-    ")"
-  )
+  lambdasAsStrings <-
+    vapply(lambdas, partitionAsString, character(1L), USE.NAMES = FALSE)
+  # stringParts <- paste0(
+  #   "(",
+  #   vapply(lambdas, toString, character(1L), USE.NAMES = FALSE),
+  #   ")"
+  # )
   Knumbers <- do.call(
     rbind,
     lapply(seq_along(lambdas), function(i) {
@@ -159,7 +161,7 @@ KostkaJackNumbers <- function(n, alpha = "1") {
       )
     })
   )
-  colnames(Knumbers) <- rownames(Knumbers) <- stringParts
+  colnames(Knumbers) <- rownames(Knumbers) <- lambdasAsStrings
   Knumbers
   # if(n == 0L) {
   #   Knumbers <- as.matrix("1")

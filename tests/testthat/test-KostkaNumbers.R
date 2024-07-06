@@ -8,11 +8,11 @@ test_that("Kostka numbers are the coefficients of Jack P-polynomials", {
   Knumbers <- KostkaJackNumbers(n, alpha = alpha)
   lambda <- c(3L, 1L)
   jp <- JackPol(n, lambda, alpha, which = "P")
-  lambda <- paste0("(", toString(lambda), ")")
+  lambda <- partitionAsString(lambda)  #paste0("(", toString(lambda), ")")
   qspray <- qzero()
   for(mu in colnames(Knumbers)) {
     coeff <- Knumbers[lambda, mu]
-    mu <- fromString(gsub("(\\(|\\))", "", mu))
+    mu <- fromString(gsub("(\\[|\\])", "", mu)) #fromString(gsub("(\\(|\\))", "", mu))
     qspray <- qspray + coeff * MSFpoly(n, mu)
   }
   expect_true(qspray == jp)

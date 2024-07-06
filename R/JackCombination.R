@@ -1,51 +1,74 @@
 .invKostkaMatrix <- function(weight, alpha, which) {
-  if(alpha == 1L) {
-    Pcoeffs <- SchurCoefficientsQ(weight)
-    dimNames <- gsub(", 0", "", colnames(Pcoeffs), fixed = TRUE)
-    kappas <- lapply(dimNames, fromString)
-    dimNames <- paste0("[", dimNames, "]")
-    KostkaMatrix <- as.bigq(Pcoeffs)
-    if(which != "P") {
-      JackPcoeffs <- c_bigq(lapply(kappas, function(lambda) {
-        JackPcoefficient(lambda, 1L)
+  # if(alpha == 1L) {
+  #   Pcoeffs <- SchurCoefficientsQ(weight)
+  #   dimNames <- gsub(", 0", "", colnames(Pcoeffs), fixed = TRUE)
+  #   kappas <- lapply(dimNames, fromString)
+  #   dimNames <- paste0("[", dimNames, "]")
+  #   KostkaMatrix <- as.bigq(Pcoeffs)
+  #   if(which != "P") {
+  #     JackPcoeffs <- c_bigq(lapply(kappas, function(lambda) {
+  #       JackPcoefficient(lambda, 1L)
+  #     }))
+  #     if(which == "Q") {
+  #       JackQcoeffs <- c_bigq(lapply(kappas, function(lambda) {
+  #         JackQcoefficient(lambda, 1L)
+  #       }))
+  #       factors <- JackQcoeffs / JackPcoeffs
+  #     } else if(which == "C") {
+  #       JackCcoeffs <- c_bigq(lapply(kappas, function(lambda) {
+  #         JackCcoefficient(lambda, 1L)
+  #       }))
+  #       factors <- JackCcoeffs / JackPcoeffs
+  #     } else {
+  #       factors <- 1L / JackPcoeffs
+  #     }
+  #     KostkaMatrix <- KostkaMatrix * factors
+  #   }
+  # } else {
+  #   Jcoeffs <- JackCoefficientsQ(weight, alpha)
+  #   dimNames <- gsub(", 0", "", colnames(Jcoeffs), fixed = TRUE)
+  #   kappas <- lapply(dimNames, fromString)
+  #   dimNames <- paste0("[", dimNames, "]")
+  #   KostkaMatrix <- as.bigq(Jcoeffs)
+  #   if(which != "J") {
+  #     if(which == "Q") {
+  #       factors <- c_bigq(lapply(kappas, function(lambda) {
+  #         JackQcoefficient(lambda, alpha)
+  #       }))
+  #     } else if(which == "C") {
+  #       factors <- c_bigq(lapply(kappas, function(lambda) {
+  #         JackCcoefficient(lambda, alpha)
+  #       }))
+  #     } else {
+  #       factors <- c_bigq(lapply(kappas, function(lambda) {
+  #         JackPcoefficient(lambda, alpha)
+  #       }))
+  #     }
+  #     KostkaMatrix <- KostkaMatrix * factors
+  #   }
+  # }
+  Pcoeffs <- KostkaJackNumbers(weight, alpha)
+  dimNames <- colnames(Pcoeffs)
+  kappas <- lapply(dimNames, fromPartitionAsString)
+  KostkaMatrix <- as.bigq(Pcoeffs)
+  if(which != "P") {
+    JackPcoeffs <- c_bigq(lapply(kappas, function(lambda) {
+      JackPcoefficient(lambda, alpha)
+    }))
+    if(which == "Q") {
+      JackQcoeffs <- c_bigq(lapply(kappas, function(lambda) {
+        JackQcoefficient(lambda, alpha)
       }))
-      if(which == "Q") {
-        JackQcoeffs <- c_bigq(lapply(kappas, function(lambda) {
-          JackQcoefficient(lambda, 1L)
-        }))
-        factors <- JackQcoeffs / JackPcoeffs
-      } else if(which == "C") {
-        JackCcoeffs <- c_bigq(lapply(kappas, function(lambda) {
-          JackCcoefficient(lambda, 1L)
-        }))
-        factors <- JackCcoeffs / JackPcoeffs
-      } else {
-        factors <- 1L / JackPcoeffs
-      }
-      KostkaMatrix <- KostkaMatrix * factors
+      factors <- JackQcoeffs / JackPcoeffs
+    } else if(which == "C") {
+      JackCcoeffs <- c_bigq(lapply(kappas, function(lambda) {
+        JackCcoefficient(lambda, alpha)
+      }))
+      factors <- JackCcoeffs / JackPcoeffs
+    } else {
+      factors <- 1L / JackPcoeffs
     }
-  } else {
-    Jcoeffs <- JackCoefficientsQ(weight, alpha)
-    dimNames <- gsub(", 0", "", colnames(Jcoeffs), fixed = TRUE)
-    kappas <- lapply(dimNames, fromString)
-    dimNames <- paste0("[", dimNames, "]")
-    KostkaMatrix <- as.bigq(Jcoeffs)
-    if(which != "J") {
-      if(which == "Q") {
-        factors <- c_bigq(lapply(kappas, function(lambda) {
-          JackQcoefficient(lambda, alpha)
-        }))
-      } else if(which == "C") {
-        factors <- c_bigq(lapply(kappas, function(lambda) {
-          JackCcoefficient(lambda, alpha)
-        }))
-      } else {
-        factors <- c_bigq(lapply(kappas, function(lambda) {
-          JackPcoefficient(lambda, alpha)
-        }))
-      }
-      KostkaMatrix <- KostkaMatrix * factors
-    }
+    KostkaMatrix <- KostkaMatrix * factors
   }
   invKostkaMatrix <- Qinverse(KostkaMatrix)
   rownames(invKostkaMatrix) <- dimNames
