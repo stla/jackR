@@ -190,20 +190,35 @@ KostkaJackNumbers <- function(n, alpha = "1") {
 #' @importFrom qspray qone qlone
 #' @importFrom partitions conjugate
 #' @importFrom utils tail
-#' @importFrom methods new
-#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
+#' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
 #' @noRd
-.symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
+.symbolicKostkaJackNumbersWithGivenLambda <- function(lambda, n, which) {
   mus <- rev(listOfDominatedPartitions(lambda))
+  if(!is.null(n)) {
+    mus <- Filter(
+      function(mu) {
+        length(mu) <= n
+      },
+      mus
+    )
+  }
   nparts <- length(mus)
   musAsStrings <-
     vapply(mus, partitionAsString, character(1L), USE.NAMES = FALSE)
   kNumbers <- vector("list", nparts)
   names(kNumbers) <- musAsStrings
-  kN1 <- new(
-    "ratioOfQsprays",
-    numerator = qone(), denominator = qone()
-  )
+  if(which == "P") {
+    kN1 <- as.ratioOfQsprays(1L)
+  } else {
+    invPcoeff <- as.ratioOfQsprays(symbolicJackPcoefficientInverse(lambda))
+    if(which == "J") {
+      kN1 <- invPcoeff
+    } else if(which == "C") {
+      kN1 <- invPcoeff * symbolicJackCcoefficient(lambda)
+    } else {
+      kN1 <- invPcoeff / symbolicJackQcoefficientInverse(lambda)
+    }
+  }
   showRatioOfQspraysOption(kN1, "showRatioOfQsprays") <-
     showRatioOfQspraysXYZ("alpha")
   kNumbers[[1L]] <- kN1
@@ -276,7 +291,7 @@ KostkaJackNumbers <- function(n, alpha = "1") {
 symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
   stopifnot(isPartition(lambda))
   lambda <- removeTrailingZeros(as.integer(lambda))
-  .symbolicKostkaJackNumbersWithGivenLambda(lambda)
+  .symbolicKostkaJackNumbersWithGivenLambda(lambda, NULL, "P")
 }
 
 #' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
@@ -284,94 +299,102 @@ symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
 #' @importFrom utils tail
 #' @noRd
 .symbolicKostkaNumbers <- function(n, weight, which){
-  stopifnot(n > 0L, isPositiveInteger(n))
-  stopifnot(isPositiveInteger(weight), weight > 0L)
-  zeroRatioOfQsprays <- as.ratioOfQsprays(0L)
-  unitRatioOfQsprays <- as.ratioOfQsprays(1L)
-  if(weight == 1L) {
-    return(list("[1]" = list("[1]" = unitRatioOfQsprays)))
-  }
-  allParts <- restrictedparts(weight, n)
-  nParts <- ncol(allParts)
-  lambdas <- apply(allParts, 2L, function(part) {
-    part[part != 0L]
-  }, simplify = FALSE)
-  stringParts <- vapply(lambdas, partitionAsString, character(1L))
-  row <- rep(list(zeroRatioOfQsprays), nParts)
-  names(row) <- stringParts
-  coefs <- lapply(seq_len(nParts), function(i) {
-    part <- list(unitRatioOfQsprays)
-    names(part) <- stringParts[i]
-    parts <- tail(stringParts, nParts - i)
-    c(part, row[parts])
+  lambdas <- apply(
+    restrictedparts(weight, n), 2L, removeTrailingZeros, simplify = FALSE
+  )
+  names(lambdas) <-
+    vapply(lambdas, partitionAsString, character(1L), USE.NAMES = FALSE)
+  lapply(lambdas, function(lambda) {
+    .symbolicKostkaJackNumbersWithGivenLambda(lambda, n, which)
   })
-  names(coefs) <- stringParts
-  for(m in seq_len(nParts-1L)){
-    lambda <- lambdas[[m]]
-    eSymbolic_lambda <- .eSymbolic(lambda)
-    for(k in (m+1L):nParts){
-      mu <- lambdas[[k]]
-      l <- length(mu)
-      eSymbolic_mu <- .eSymbolic(mu)
-      x <- zeroRatioOfQsprays
-      for(i in 1L:(l-1L)){ # l is always >1
-        for(j in (i+1L):l){
-          for(t in seq_len(mu[j])){
-            mucopy <- mu
-            mucopy[i] <- mucopy[i] + t
-            mucopy[j] <- mucopy[j] - t
-            muOrd <- sort(mucopy[mucopy != 0L], decreasing = TRUE)
-            if(isDominated(muOrd, lambda)){
-              x <- x + (mucopy[i] - mucopy[j]) /
-                (eSymbolic_lambda - eSymbolic_mu) *
-                coefs[[m]][[partitionAsString(muOrd)]]
-            }
-          }
-        }
-      }
-      showRatioOfQspraysOption(x, "showRatioOfQsprays") <-
-        showRatioOfQspraysXYZ("alpha")
-      coefs[[m]][[partitionAsString(mu)]] <- x
-    }
-  }
-  if(which != "P") {
-    names(lambdas) <- names(coefs)
-    invPcoeffs <- lapply(lambdas, symbolicJackPcoefficientInverse)
-    Names <- names(coefs)
-    names(Names) <- Names
-    if(which == "J") {
-      coefs <- lapply(Names, function(lambda) {
-        mapply(
-          `*`,
-          coefs[[lambda]], list(invPcoeffs[[lambda]]),
-          SIMPLIFY = FALSE, USE.NAMES = TRUE
-        )
-      })
-    } else if(which == "C") {
-      Ccoefs <- lapply(lambdas, symbolicJackCcoefficient)
-      factors <-
-        mapply(`*`, Ccoefs, invPcoeffs, SIMPLIFY = FALSE, USE.NAMES = TRUE)
-      coefs <- lapply(Names, function(lambda) {
-        mapply(
-          `*`,
-          coefs[[lambda]], list(factors[[lambda]]),
-          SIMPLIFY = FALSE, USE.NAMES = TRUE
-        )
-      })
-    } else {
-      invQcoeffs <- lapply(lambdas, symbolicJackQcoefficientInverse)
-      factors <-
-        mapply(`/`, invPcoeffs, invQcoeffs, SIMPLIFY = FALSE, USE.NAMES = TRUE)
-      coefs <- lapply(Names, function(lambda) {
-        mapply(
-          `*`,
-          coefs[[lambda]], list(factors[[lambda]]),
-          SIMPLIFY = FALSE, USE.NAMES = TRUE
-        )
-      })
-    }
-  }
-  coefs
+  # stopifnot(n > 0L, isPositiveInteger(n))
+  # stopifnot(isPositiveInteger(weight), weight > 0L)
+  # zeroRatioOfQsprays <- as.ratioOfQsprays(0L)
+  # unitRatioOfQsprays <- as.ratioOfQsprays(1L)
+  # if(weight == 1L) {
+  #   return(list("[1]" = list("[1]" = unitRatioOfQsprays)))
+  # }
+  # allParts <- restrictedparts(weight, n)
+  # nParts <- ncol(allParts)
+  # lambdas <- apply(allParts, 2L, function(part) {
+  #   part[part != 0L]
+  # }, simplify = FALSE)
+  # stringParts <- vapply(lambdas, partitionAsString, character(1L))
+  # row <- rep(list(zeroRatioOfQsprays), nParts)
+  # names(row) <- stringParts
+  # coefs <- lapply(seq_len(nParts), function(i) {
+  #   part <- list(unitRatioOfQsprays)
+  #   names(part) <- stringParts[i]
+  #   parts <- tail(stringParts, nParts - i)
+  #   c(part, row[parts])
+  # })
+  # names(coefs) <- stringParts
+  # for(m in seq_len(nParts-1L)){
+  #   lambda <- lambdas[[m]]
+  #   eSymbolic_lambda <- .eSymbolic(lambda)
+  #   for(k in (m+1L):nParts){
+  #     mu <- lambdas[[k]]
+  #     l <- length(mu)
+  #     eSymbolic_mu <- .eSymbolic(mu)
+  #     x <- zeroRatioOfQsprays
+  #     for(i in 1L:(l-1L)){ # l is always >1
+  #       for(j in (i+1L):l){
+  #         for(t in seq_len(mu[j])){
+  #           mucopy <- mu
+  #           mucopy[i] <- mucopy[i] + t
+  #           mucopy[j] <- mucopy[j] - t
+  #           muOrd <- sort(mucopy[mucopy != 0L], decreasing = TRUE)
+  #           if(isDominated(muOrd, lambda)){
+  #             x <- x + (mucopy[i] - mucopy[j]) /
+  #               (eSymbolic_lambda - eSymbolic_mu) *
+  #               coefs[[m]][[partitionAsString(muOrd)]]
+  #           }
+  #         }
+  #       }
+  #     }
+  #     showRatioOfQspraysOption(x, "showRatioOfQsprays") <-
+  #       showRatioOfQspraysXYZ("alpha")
+  #     coefs[[m]][[partitionAsString(mu)]] <- x
+  #   }
+  # }
+  # if(which != "P") {
+  #   names(lambdas) <- names(coefs)
+  #   invPcoeffs <- lapply(lambdas, symbolicJackPcoefficientInverse)
+  #   Names <- names(coefs)
+  #   names(Names) <- Names
+  #   if(which == "J") {
+  #     coefs <- lapply(Names, function(lambda) {
+  #       mapply(
+  #         `*`,
+  #         coefs[[lambda]], list(invPcoeffs[[lambda]]),
+  #         SIMPLIFY = FALSE, USE.NAMES = TRUE
+  #       )
+  #     })
+  #   } else if(which == "C") {
+  #     Ccoefs <- lapply(lambdas, symbolicJackCcoefficient)
+  #     factors <-
+  #       mapply(`*`, Ccoefs, invPcoeffs, SIMPLIFY = FALSE, USE.NAMES = TRUE)
+  #     coefs <- lapply(Names, function(lambda) {
+  #       mapply(
+  #         `*`,
+  #         coefs[[lambda]], list(factors[[lambda]]),
+  #         SIMPLIFY = FALSE, USE.NAMES = TRUE
+  #       )
+  #     })
+  #   } else {
+  #     invQcoeffs <- lapply(lambdas, symbolicJackQcoefficientInverse)
+  #     factors <-
+  #       mapply(`/`, invPcoeffs, invQcoeffs, SIMPLIFY = FALSE, USE.NAMES = TRUE)
+  #     coefs <- lapply(Names, function(lambda) {
+  #       mapply(
+  #         `*`,
+  #         coefs[[lambda]], list(factors[[lambda]]),
+  #         SIMPLIFY = FALSE, USE.NAMES = TRUE
+  #       )
+  #     })
+  #   }
+  # }
+  # coefs
 }
 
 #' @title Kostka-Jack numbers with symbolic Jack parameter
@@ -396,7 +419,9 @@ symbolicKostkaJackNumbers <- function(n) {
   lambdas <- listOfPartitions(n)
   names(lambdas) <-
     vapply(lambdas, partitionAsString, character(1L), USE.NAMES = FALSE)
-  lapply(lambdas, .symbolicKostkaJackNumbersWithGivenLambda)
+  lapply(lambdas, function(lambda) {
+    .symbolicKostkaJackNumbersWithGivenLambda(lambda, NULL, "P")
+  })
   # if(n == 0L) {
   #   list("[]" = list("[]" = as.ratioOfQsprays(1L)))
   # } else {
