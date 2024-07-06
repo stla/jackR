@@ -12,8 +12,8 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
     vapply(mus, partitionAsString, character(1L), USE.NAMES = FALSE)
   names(mus) <- musAsStrings
   ellLambda <- length(lambda)
-  if(ellLambda == 0L || ellLambda == 1L) {
-    kNumbers <- replicate(nparts, as.bigq(1L))
+  if(ellLambda == 0L) {
+    kNumbers <- list(as.bigq(1L))
     names(kNumbers) <- musAsStrings
   } else {
     kNumbers <- vector("list", nparts)
