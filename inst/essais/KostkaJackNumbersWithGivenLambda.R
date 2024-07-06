@@ -58,7 +58,7 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
     }
   }
   if(output == "list") {
-    kNumbers <- mapply(
+    mapply(
       function(kNumber, mu) {
         list("mu" = mu, "value" = kNumber)
       },
@@ -66,10 +66,8 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
       USE.NAMES = TRUE, SIMPLIFY = FALSE
     )
   } else {
-    kNumbers <- as.character(c_bigq(kNumbers))
-    names(kNumbers) <- musAsStrings
+    vapply(kNumbers, as.character, character(1L), USE.NAMES = TRUE)
   }
-  kNumbers
 }
 
 KostkaJackNumbersWithGivenLambda(c(3,2), "2")

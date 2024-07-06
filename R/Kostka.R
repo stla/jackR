@@ -1,3 +1,117 @@
+#' @importFrom partitions conjugate
+#' @importFrom gmp as.bigq
+#' @importFrom utils tail
+#' @noRd
+.KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output) {
+  mus <- rev(listOfDominatedPartitions(lambda))
+  nparts <- length(mus)
+  musAsStrings <-
+    vapply(mus, partitionAsString, character(1L), USE.NAMES = FALSE)
+  kNumbers <- vector("list", nparts)
+  names(kNumbers) <- musAsStrings
+  kNumbers[[1L]] <- as.bigq(1L)
+  if(nparts >= 2L) {
+    names(mus) <- musAsStrings
+    ellLambda <- length(lambda)
+    lambdap <- conjugate(lambda)
+    nlambda <- sum(seq_len(ellLambda - 1L) * tail(lambda, -1L))
+    nlambdap <- sum(seq_len(lambda[1L] - 1L) * tail(lambdap, -1L))
+    elambda <- alpha*nlambdap - nlambda
+    for(muAsString in tail(musAsStrings, -1L)) {
+      mu <- mus[[muAsString]]
+      mup <- conjugate(mu)
+      ellMu <- mup[1L]
+      i_ <- seq_len(ellMu - 1L)
+      nmu <- sum(i_ * tail(mu, -1L))
+      nmup <- sum(seq_len(mu[1L] - 1L) * tail(mup, -1L))
+      emu <- alpha*nmup - nmu
+      ee <- elambda - emu
+      x <- 0L
+      for(i in i_) {
+        mu_i <- mu[i]
+        for(j in (i+1L):ellMu) {
+          mu_j <- mu[j]
+          dmuij <- mu_i - mu_j
+          kappa <- mu
+          for(t in seq_len(mu_j - 1L)) {
+            kappa[i] <- mu_i + t
+            kappa[j] <- mu_j - t
+            kappaOrd <- sort(kappa, decreasing = TRUE)
+            kappaOrdAsString <- partitionAsString(kappaOrd)
+            if(kappaOrdAsString %in% musAsStrings){
+              x <- x + kNumbers[[kappaOrdAsString]] * (dmuij + 2L*t)
+            }
+          }
+          mu_i_plus_mu_j <- mu_i + mu_j
+          kappa[i] <- mu_i_plus_mu_j
+          kappaOrd <- sort(kappa[-j], decreasing = TRUE)
+          kappaOrdAsString <- partitionAsString(kappaOrd)
+          if(kappaOrdAsString %in% musAsStrings){
+            x <- x + kNumbers[[kappaOrdAsString]] * mu_i_plus_mu_j
+          }
+        }
+      }
+      kNumbers[[muAsString]] <- x / ee
+    }
+  }
+  if(output == "list") {
+    mapply(
+      function(kNumber, mu) {
+        list("mu" = mu, "value" = kNumber)
+      },
+      kNumbers, mus,
+      USE.NAMES = TRUE, SIMPLIFY = FALSE
+    )
+  } else {
+    vapply(kNumbers, as.character, character(1L), USE.NAMES = TRUE)
+  }
+}
+
+#' @title Kostka-Jack numbers with a given partition \eqn{\lambda}
+#'
+#' @description Kostka numbers with Jack parameter, or Kostka-Jack numbers
+#'   \eqn{K_{\lambda,\mu}(\alpha)} for a given Jack parameter \eqn{\alpha}
+#'   and a given integer partition \eqn{\lambda}.
+#'
+#' @param lambda integer partition
+#' @param alpha the Jack parameter, a \code{bigq} number or anything coercible
+#'   to a \code{bigq} number
+#' @param output the format of the output, either \code{"vector"} or
+#'   \code{"list"}
+#'
+#' @return If \code{output="vector"}, this function returns a named vector.
+#'   This vector is made of the non-zero (i.e. positive) Kostka-Jack numbers
+#'   \eqn{K_{\lambda,\mu}(\alpha)} given as character strings and its names
+#'   encode the partitions \eqn{\mu}.
+#'   If \code{ouput="list"}, this function returns a list of lists.
+#'   Each of these lists has two
+#'   elements. The first one is named \code{mu} and is an integer
+#'   partition, and the second one is named \code{value} and is a \code{bigq}
+#'   rational number, the Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)}.
+#' @export
+#' @seealso \code{\link{KostkaJackNumbers}},
+#'   \code{\link{symbolicKostkaJackNumbers}},
+#'   \code{\link{skewKostkaJackNumbers}}.
+#'
+#' @details The Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)} is the
+#'   coefficient of the monomial symmetric polynomial \eqn{m_\mu} in the
+#'   expression of the \eqn{P}-Jack polynomial \eqn{P_\lambda(\alpha)} as a
+#'   linear combination of monomial symmetric polynomials. For \eqn{\alpha=1}
+#'   it is the ordinary Kostka number.
+#'
+#' @examples
+#' KostkaJackNumbersWithGivenLambda(c(3, 2), alpha = "2")
+KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
+  stopifnot(isPartition(lambda))
+  alpha <- as.bigq(alpha)
+  if(is.na(alpha)) {
+    stop("Invalid alpha.")
+  }
+  output <- match.arg(output, c("vector", "list"))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  .KostkaJackNumbersWithGivenLambda(lambda, alpha, output)
+}
+
 #' @title Kostka-Jack numbers with a given Jack parameter
 #'
 #' @description Kostka numbers with Jack parameter, or Kostka-Jack numbers,
