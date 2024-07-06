@@ -90,8 +90,7 @@
 #'   rational number, the Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)}.
 #' @export
 #' @seealso \code{\link{KostkaJackNumbers}},
-#'   \code{\link{symbolicKostkaJackNumbers}},
-#'   \code{\link{skewKostkaJackNumbers}}.
+#'   \code{\link{symbolicKostkaJackNumbersWithGivenLambda}}.
 #'
 #' @details The Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)} is the
 #'   coefficient of the monomial symmetric polynomial \eqn{m_\mu} in the
@@ -184,6 +183,98 @@ KostkaJackNumbers <- function(n, alpha = "1") {
   # }
   # colnames(Knumbers) <- rownames(Knumbers) <- stringParts
   # Knumbers
+}
+
+#' @importFrom qspray qone qlone
+#' @importFrom partitions conjugate
+#' @importFrom utils tail
+#' @importFrom methods new
+#' @importFrom ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
+#' @noRd
+.symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
+  mus <- rev(listOfDominatedPartitions(lambda))
+  nparts <- length(mus)
+  musAsStrings <-
+    vapply(mus, partitionAsString, character(1L), USE.NAMES = FALSE)
+  kNumbers <- vector("list", nparts)
+  names(kNumbers) <- musAsStrings
+  kN1 <- new(
+    "ratioOfQsprays",
+    numerator = qone(), denominator = qone()
+  )
+  showRatioOfQspraysOption(kN1, "showRatioOfQsprays") <-
+    showRatioOfQspraysXYZ("alpha")
+  kNumbers[[1L]] <- kN1
+  if(nparts >= 2L) {
+    alpha <- qlone(1L)
+    names(mus) <- musAsStrings
+    ellLambda <- length(lambda)
+    lambdap <- conjugate(lambda)
+    nlambda <- sum(seq_len(ellLambda - 1L) * tail(lambda, -1L))
+    nlambdap <- sum(seq_len(lambda[1L] - 1L) * tail(lambdap, -1L))
+    elambda <- alpha*nlambdap - nlambda
+    for(muAsString in tail(musAsStrings, -1L)) {
+      mu <- mus[[muAsString]]
+      mup <- conjugate(mu)
+      ellMu <- mup[1L]
+      i_ <- seq_len(ellMu - 1L)
+      nmu <- sum(i_ * tail(mu, -1L))
+      nmup <- sum(seq_len(mu[1L] - 1L) * tail(mup, -1L))
+      emu <- alpha*nmup - nmu
+      ee <- elambda - emu
+      x <- 0L
+      for(i in i_) {
+        mu_i <- mu[i]
+        for(j in (i+1L):ellMu) {
+          mu_j <- mu[j]
+          dmuij <- mu_i - mu_j
+          kappa <- mu
+          for(t in seq_len(mu_j - 1L)) {
+            kappa[i] <- mu_i + t
+            kappa[j] <- mu_j - t
+            kappaOrd <- sort(kappa, decreasing = TRUE)
+            kappaOrdAsString <- partitionAsString(kappaOrd)
+            if(kappaOrdAsString %in% musAsStrings){
+              x <- x + kNumbers[[kappaOrdAsString]] * (dmuij + 2L*t)
+            }
+          }
+          mu_i_plus_mu_j <- mu_i + mu_j
+          kappa[i] <- mu_i_plus_mu_j
+          kappaOrd <- sort(kappa[-j], decreasing = TRUE)
+          kappaOrdAsString <- partitionAsString(kappaOrd)
+          if(kappaOrdAsString %in% musAsStrings){
+            x <- x + kNumbers[[kappaOrdAsString]] * mu_i_plus_mu_j
+          }
+        }
+      }
+      kNumbers[[muAsString]] <- x / ee
+    }
+  }
+  kNumbers
+}
+
+#' @title Kostka-Jack numbers with symbolic Jack parameter for a
+#'   given \eqn{\lambda}
+#'
+#' @description Kostka-Jack numbers \eqn{K_{\lambda,\mu}(\alpha)} with a
+#'   symbolic Jack parameter \eqn{\alpha} for a given
+#'   integer partition \eqn{\lambda}.
+#'
+#' @param lambda integer partition
+#'
+#' @return A named list of \code{ratioOfQsprays} objects. The elements of this
+#'   list are the Kostka-Jack numbers \eqn{K_{\lambda,\mu}(\alpha)} and
+#'   its names correspond to the partitions \eqn{\mu}.
+#' @export
+#' @seealso \code{\link{KostkaJackNumbersWithGivenLambda}},
+#'   \code{\link{symbolicKostkaJackNumbers}}.
+#'
+#' @examples
+#' symbolicKostkaJackNumbersWithGivenLambda(c(3, 1))
+symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
+  stopifnot(isPartition(lambda))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  .symbolicKostkaJackNumbersWithGivenLambda(lambda)
 }
 
 #' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
@@ -293,15 +384,22 @@ KostkaJackNumbers <- function(n, alpha = "1") {
 #'   names of the outer list correspond to the partitions \eqn{\lambda}, and
 #'   the names of the inner lists correspond to the partitions \eqn{\mu}.
 #' @export
+#' @seealso \code{\link{KostkaJackNumbers}},
+#'   \code{\link{symbolicKostkaJackNumbersWithGivenLambda}}.
 #'
 #' @examples
 #' symbolicKostkaJackNumbers(3)
 symbolicKostkaJackNumbers <- function(n) {
-  if(n == 0L) {
-    list("[]" = list("[]" = as.ratioOfQsprays(1L)))
-  } else {
-    .symbolicKostkaNumbers(n, n, which = "P")
-  }
+  stopifnot(isPositiveInteger(n))
+  lambdas <- listOfPartitions(n)
+  names(lambdas) <-
+    vapply(lambdas, partitionAsString, character(1L), USE.NAMES = FALSE)
+  lapply(lambdas, .symbolicKostkaJackNumbersWithGivenLambda)
+  # if(n == 0L) {
+  #   list("[]" = list("[]" = as.ratioOfQsprays(1L)))
+  # } else {
+  #   .symbolicKostkaNumbers(n, n, which = "P")
+  # }
 }
 
 #' @title Skew Kostka-Jack numbers with given Jack parameter
