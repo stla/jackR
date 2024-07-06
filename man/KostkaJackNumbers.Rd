@@ -4,14 +4,13 @@
 \alias{KostkaJackNumbers}
 \title{Kostka-Jack numbers with a given Jack parameter}
 \usage{
-KostkaJackNumbers(n, alpha = NULL)
+KostkaJackNumbers(n, alpha = "1")
 }
 \arguments{
 \item{n}{positive integer, the weight of the partitions}
 
 \item{alpha}{the Jack parameter, a \code{bigq} number or an object coercible
-to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
-\code{alpha=1}}
+to a \code{bigq} number}
 }
 \value{
 The matrix of the Kostka-Jack numbers \eqn{K_{\lambda,\mu}(\alpha)}
@@ -34,6 +33,7 @@ The Kostka-Jack number \eqn{K_{\lambda,\mu}(\alpha)} is the
 KostkaJackNumbers(4)
 }
 \seealso{
-\code{\link{symbolicKostkaJackNumbers}},
+\code{\link{KostkaJackNumbersWithGivenLambda}},
+  \code{\link{symbolicKostkaJackNumbers}},
   \code{\link{skewKostkaJackNumbers}}.
 }
