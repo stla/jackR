@@ -105,7 +105,7 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
   stopifnot(isPartition(lambda))
   alpha <- as.bigq(alpha)
   if(is.na(alpha)) {
-    stop("Invalid alpha.")
+    stop("Invalid `alpha`.")
   }
   output <- match.arg(output, c("vector", "list"))
   lambda <- removeTrailingZeros(as.integer(lambda))
@@ -119,15 +119,15 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
 #'
 #' @param n positive integer, the weight of the partitions
 #' @param alpha the Jack parameter, a \code{bigq} number or an object coercible
-#'   to a \code{bigq} number; setting \code{alpha=NULL} is equivalent to set
-#'   \code{alpha=1}
+#'   to a \code{bigq} number
 #'
 #' @return The matrix of the Kostka-Jack numbers \eqn{K_{\lambda,\mu}(\alpha)}
 #'   given as character strings representing integers or fractions.
 #'   The row names of this matrix encode the partitions \eqn{\lambda} and
 #'   the column names encode the partitions \eqn{\mu}
 #' @export
-#' @seealso \code{\link{symbolicKostkaJackNumbers}},
+#' @seealso \code{\link{KostkaJackNumbersWithGivenLambda}},
+#'   \code{\link{symbolicKostkaJackNumbers}},
 #'   \code{\link{skewKostkaJackNumbers}}.
 #' @importFrom gmp as.bigq c_bigq
 #'
@@ -139,30 +139,51 @@ KostkaJackNumbersWithGivenLambda <- function(lambda, alpha, output = "vector") {
 #'
 #' @examples
 #' KostkaJackNumbers(4)
-KostkaJackNumbers <- function(n, alpha = NULL) {
+KostkaJackNumbers <- function(n, alpha = "1") {
   stopifnot(isPositiveInteger(n))
-  if(n == 0L) {
-    Knumbers <- as.matrix("1")
-    colnames(Knumbers) <- rownames(Knumbers) <- "()"
-    return(Knumbers)
+  alpha <- as.bigq(alpha)
+  if(is.na(alpha)) {
+    stop("Invalid `alpha`.")
   }
-  if(is.null(alpha)) {
-    Knumbers <- SchurCoefficientsQ(n)
-    stringParts <- paste0("(", gsub("(, 0| )", "", colnames(Knumbers)), ")")
-  } else {
-    alpha <- as.bigq(alpha)
-    if(is.na(alpha)) {
-      stop("Invalid `alpha`.")
-    }
-    Jcoeffs <- JackCoefficientsQ(n, alpha)
-    JackPcoeffs <- c_bigq(lapply(rownames(Jcoeffs), function(lambda) {
-      JackPcoefficient(fromString(lambda), alpha)
-    }))
-    Knumbers <- as.character(as.bigq(Jcoeffs)*JackPcoeffs)
-    stringParts <- paste0("(", gsub("(, 0| )", "", colnames(Jcoeffs)), ")")
-  }
+  lambdas <- listOfPartitions(n)
+  stringParts <- paste0(
+    "(",
+    vapply(lambdas, toString, character(1L), USE.NAMES = FALSE),
+    ")"
+  )
+  Knumbers <- do.call(
+    rbind,
+    lapply(seq_along(lambdas), function(i) {
+      c(
+        rep("0", i-1L),
+        .KostkaJackNumbersWithGivenLambda(lambdas[[i]], alpha, "vector")
+      )
+    })
+  )
   colnames(Knumbers) <- rownames(Knumbers) <- stringParts
   Knumbers
+  # if(n == 0L) {
+  #   Knumbers <- as.matrix("1")
+  #   colnames(Knumbers) <- rownames(Knumbers) <- "()"
+  #   return(Knumbers)
+  # }
+  # if(is.null(alpha)) {
+  #   Knumbers <- SchurCoefficientsQ(n)
+  #   stringParts <- paste0("(", gsub("(, 0| )", "", colnames(Knumbers)), ")")
+  # } else {
+  #   alpha <- as.bigq(alpha)
+  #   if(is.na(alpha)) {
+  #     stop("Invalid `alpha`.")
+  #   }
+  #   Jcoeffs <- JackCoefficientsQ(n, alpha)
+  #   JackPcoeffs <- c_bigq(lapply(rownames(Jcoeffs), function(lambda) {
+  #     JackPcoefficient(fromString(lambda), alpha)
+  #   }))
+  #   Knumbers <- as.character(as.bigq(Jcoeffs)*JackPcoeffs)
+  #   stringParts <- paste0("(", gsub("(, 0| )", "", colnames(Jcoeffs)), ")")
+  # }
+  # colnames(Knumbers) <- rownames(Knumbers) <- stringParts
+  # Knumbers
 }
 
 #' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-

@@ -252,6 +252,14 @@ symbolicJackCcoefficient <- function(lambda) {
 }
 
 #####
+listOfPartitions <- function(n) {
+  if(n == 0L) {
+    list(integer(0L))
+  } else {
+    apply(parts(n), 2L, removeTrailingZeros, simplify = FALSE)
+  }
+}
+
 isDominated <- function(mu, lambda){
   n <- sum(lambda)
   # assumption: n == sum(mu)
