@@ -181,6 +181,9 @@ showSymbolicQsprayOption(J, "showMonomial") <- showMonomialXYZ(c("x", "y"))
 J
 ```
 
+The skew Jack polynomials with a symbolic Jack parameter are available too, as
+of version 6.1.0.
+
 
 ## Compact expression of Jack polynomials
 

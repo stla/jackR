@@ -198,6 +198,9 @@ J
 ## { [ 2*alpha^2 + 4*alpha + 2 ] } * x^3.y  +  { [ 4*alpha + 4 ] } * x^2.y^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x.y^3
 ```
 
+The skew Jack polynomials with a symbolic Jack parameter are available
+too, as of version 6.1.0.
+
 ## Compact expression of Jack polynomials
 
 The expression of a Jack polynomial in the canonical basis can be long.
