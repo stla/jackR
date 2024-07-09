@@ -59,3 +59,17 @@ test_that("Jack combination of skew Jack with Hall inner product", {
   }))
   expect_true(all(coeffs == fs))
 })
+
+test_that("Skew Jack with alpha=0 is same as skew Macdonald with q=1", {
+  # I don't know why. In particular, skew Macdonald with q=1 does not depend on t
+  n <- 4
+  lambda <- c(4, 2)
+  mu <- c(1, 1)
+  skJackPoly <-
+    changeParameters(SkewJackSymPol(n, lambda, mu, "P"), list(qzero()))
+  skMacPoly <- changeParameters(
+    SkewMacdonaldPol(n, lambda, mu, which = "P"),
+    list(qone(), qlone(2))
+  )
+  expect_true(skJackPoly == skMacPoly)
+})
