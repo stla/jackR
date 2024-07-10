@@ -279,14 +279,31 @@ symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
 #' @importFrom utils tail
 #' @noRd
 .symbolicKostkaNumbers <- function(n, weight, which){
-  lambdas <- apply(
-    restrictedparts(weight, n), 2L, removeTrailingZeros, simplify = FALSE
+  # lambdas <- apply(
+  #   restrictedparts(weight, n), 2L,
+  #   removeTrailingZeros, simplify = FALSE
+  # )
+  # restrictedparts does not correctly order
+  lambdas <- Filter(
+    function(lambda) {
+      length(lambda) <= n
+    },
+    listOfPartitions(weight)
   )
-  names(lambdas) <-
+  lambdasAsStrings <-
     vapply(lambdas, partitionAsString, character(1L), USE.NAMES = FALSE)
-  lapply(lambdas, function(lambda) {
-    .symbolicKostkaJackNumbersWithGivenLambda(lambda, n, which)
+  names(lambdas) <- lambdasAsStrings
+  nParts <- length(lambdas)
+  zeros <- rep(list(as.ratioOfQsprays(0L)), nParts)
+  names(zeros) <- lambdasAsStrings
+  kNumbers <- lapply(seq_len(nParts), function(i) {
+    kNumbersLambda <-
+      .symbolicKostkaJackNumbersWithGivenLambda(lambdas[[i]], n, which)
+    zeros[names(kNumbersLambda)] <- kNumbersLambda
+    tail(zeros, nParts - i + 1L)
   })
+  names(kNumbers) <- lambdasAsStrings
+  kNumbers
   # stopifnot(n > 0L, isPositiveInteger(n))
   # stopifnot(isPositiveInteger(weight), weight > 0L)
   # zeroRatioOfQsprays <- as.ratioOfQsprays(0L)
