@@ -2,6 +2,20 @@ test_that("Kostka numbers for alpha=1", {
   expect_identical(KostkaJackNumbers(4), KostkaJackNumbers(4, alpha = 1))
 })
 
+test_that("Kostka-Jack numbers for alpha=0", {
+  library(gmp)
+  n <- 6
+  cparts <- vapply(listOfPartitions(n), function(p) {
+    partitionAsString(partitions::conjugate(p))
+  }, character(1L))
+  kn1 <- KostkaJackNumbers(n, "2")
+  kn2 <- KostkaJackNumbers(n, "1/2")
+  kn2 <- kn2[cparts, cparts]
+  obtained <- t(as.bigq(t(kn1)) %*% as.bigq(kn2))
+  expected <- KostkaJackNumbers(n, "0")
+  expect_true(all(as.character(obtained) == expected))
+})
+
 test_that("Kostka numbers are the coefficients of Jack P-polynomials", {
   n <- 4L
   alpha <- "3/2"

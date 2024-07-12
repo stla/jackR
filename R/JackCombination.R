@@ -155,11 +155,8 @@ JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
     powers, coeffs,
     SIMPLIFY = FALSE, USE.NAMES = FALSE
   )
-  names(combo) <- paste0(
-    "[",
-    vapply(powers, toString, character(1L)),
-    "]"
-  )
+  names(combo) <-
+    vapply(powers, partitionAsString, character(1L), USE.NAMES = FALSE)
   if(constantTerm != 0L) {
     combo <-
       c(combo, list("[]" = list("coeff" = constantTerm, "lambda" = integer(0L))))
