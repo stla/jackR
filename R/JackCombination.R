@@ -97,8 +97,11 @@
 #' @importFrom methods new
 #' @importFrom gmp as.bigq c_bigq
 #' @importFrom qspray MSPcombination qzero orderedQspray isConstant isQzero getConstantTerm
+#' @importFrom symbolicQspray Qzero isConstant isQzero getConstantTerm
+#' @importFrom ratioOfQsprays as.ratioOfQsprays
 #' @importFrom RationalMatrix Qinverse
 JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
+  stopifnot(inherits(qspray, "qspray") || inherits(qspray, "symbolicQspray"))
   if(isConstant(qspray)) {
     if(isQzero(qspray)) {
       out <- list()
@@ -115,27 +118,42 @@ JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
     stop("Invalid `alpha`.")
   }
   which <- match.arg(which, c("J", "P", "Q", "C"))
+  isSymbolic <- inherits(qspray, "symbolicQspray")
   fullMsCombo <- MSPcombination(qspray - constantTerm, check = check)
   lambdas <- lapply(fullMsCombo, `[[`, "lambda")
   weights <- unique(vapply(lambdas, sum, integer(1L)))
-  # invKostkaMatrices <- lapply(weights, function(weight) {
-  #   .invKostkaMatrix(weight, alpha, which)
-  # })
-  finalQspray <- qzero()
+  if(isSymbolic) {
+    finalQspray <- Qzero()
+  } else {
+    finalQspray <- qzero()
+  }
   for(weight in weights) {
     invKostkaMatrix <- .invKostkaMatrix(weight, alpha, which)
     kappas <- invKostkaMatrix[["kappas"]]
     invKostkaMatrix <- invKostkaMatrix[["matrix"]]
     msCombo <- Filter(function(t) {sum(t[["lambda"]]) == weight}, fullMsCombo)
-    coeffs <- c_bigq(lapply(msCombo, `[[`, "coeff"))
-    sprays <- lapply(kappas, function(kappa) {
-      new("qspray", powers = list(kappa), coeffs = "1")
-    })
+    if(isSymbolic) {
+      coeffs <- lapply(msCombo, `[[`, "coeff")
+      sprays <- lapply(kappas, function(kappa) {
+        new(
+          "symbolicQspray",
+          powers = list(kappa),
+          coeffs = list(as.ratioOfQsprays(1L))
+        )
+      })
+      zeroSpray <- Qzero()
+    } else {
+      coeffs <- c_bigq(lapply(msCombo, `[[`, "coeff"))
+      sprays <- lapply(kappas, function(kappa) {
+        new("qspray", powers = list(kappa), coeffs = "1")
+      })
+      zeroSpray <- qzero()
+    }
     lambdas <- names(msCombo)
     range <- seq_along(kappas)
     for(i in seq_along(lambdas)) {
       invKostkaNumbers <- invKostkaMatrix[lambdas[i], ]
-      spray <- qzero()
+      spray <- zeroSpray
       for(j in range) {
         coeff <- invKostkaNumbers[j]
         if(coeff != "0") {
@@ -147,7 +165,10 @@ JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
   }
   finalQspray <- orderedQspray(finalQspray)
   powers <- finalQspray@powers
-  coeffs <- as.bigq(finalQspray@coeffs)
+  coeffs <- finalQspray@coeffs
+  if(!isSymbolic) {
+    coeffs <- as.bigq(coeffs)
+  }
   combo <- mapply(
     function(lambda, coeff) {
       list("coeff" = coeff, "lambda" = lambda)
