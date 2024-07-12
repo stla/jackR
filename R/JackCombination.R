@@ -160,7 +160,7 @@ JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
           spray <- spray + coeff * sprays[[j]]
         }
       }
-      finalQspray <- finalQspray + coeffs[i]*spray
+      finalQspray <- finalQspray + coeffs[[i]]*spray
     }
   }
   finalQspray <- orderedQspray(finalQspray)
