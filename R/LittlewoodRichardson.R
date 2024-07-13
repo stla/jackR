@@ -14,18 +14,22 @@ insertWith <- function(f, mp, key, value) {
 #' @param mu,nu integer partitions, given as vectors of decreasing integers
 #' @param output the type of the output, \code{"dataframe"} or \code{"list"}
 #'
-#' @return This computes the expression of the two Schur polynomials
-#'   associated to \code{mu} and \code{nu} as a linear combination of Schur
-#'   polynomials. If \code{output="dataframe"}, the output is a dataframe with
-#'   two columns: the column \code{coeff} gives the coefficients of this
-#'   linear combination, and the column \code{lambda} gives the partitions
-#'   defining the Schur polynomials of this linear combination as character
-#'   strings, e.g. the partition \code{c(4, 3, 1)} is given by \code{"4, 3, 1"}.
-#'   If \code{output="list"}, the output is a list with two fields: the field
-#'   \code{coeff} is the vector made of the coefficients of the linear
-#'   combination, and the field \code{lambda} is the list of partitions
-#'   defining the Schur polynomials of the linear combination given as
-#'   integer vectors.
+#' @return This computes the expression of the product of the two Schur
+#'   polynomials associated to \code{mu} and \code{nu} as a linear combination
+#'   of Schur polynomials. If \code{output="dataframe"}, the output is a
+#'   dataframe with two columns: the column \code{coeff} gives the coefficients
+#'   of this linear combination, these are positive integers, and the column
+#'   \code{lambda} gives the partitions defining the Schur polynomials of this
+#'   linear combination as character strings, e.g. the partition
+#'   \code{c(4, 3, 1)} is encoded by the character string \code{"[4, 3, 1]"}.
+#'   If \code{output="list"}, the output is a list
+#'   of lists with two elements. Each of these lists with two elements
+#'   corresponds to a term of the linear combination: the first element,
+#'   named \code{coeff}, is the coefficient, namely the Littlewood-Richardson
+#'   coefficient \eqn{c^{\lambda}_{\mu,\nu}}, where \eqn{\lambda} is the
+#'   integer partition given in the second element of the list, named
+#'   \code{lambda}, which defines the Schur polynomial of the
+#'   linear combination.
 #' @export
 #'
 #' @examples
@@ -33,13 +37,11 @@ insertWith <- function(f, mp, key, value) {
 #' mu <- c(2, 1)
 #' nu <- c(3, 2, 1)
 #' LR <- LRmult(mu, nu, output = "list")
-#' LRcoeffs <- LR$coeff
-#' LRparts <- LR$lambda
-#' LRterms <- lapply(1:length(LRcoeffs), function(i) {
-#'   LRcoeffs[i] * SchurPol(3, LRparts[[i]])
+#' LRterms <- lapply(LR, function(lr) {
+#'   lr[["coeff"]] * SchurPol(3, lr[["lambda"]])
 #' })
 #' smu_times_snu <- Reduce(`+`, LRterms)
-#' smu_times_snu == SchurPol(3, mu) * SchurPol(3, nu)
+#' smu_times_snu == SchurPol(3, mu) * SchurPol(3, nu) # should be TRUE
 LRmult <- function(mu, nu, output = "dataframe") {
   stopifnot(isPartition(mu), isPartition(nu))
   output <- match.arg(output, c("dataframe", "list"))
@@ -50,8 +52,15 @@ LRmult <- function(mu, nu, output = "dataframe") {
   if(output == "dataframe") {
     data.frame("coeff" = v, "lambda" = names(v))
   } else {
-    partitions <- lapply(names(v), fromPartitionAsString)
-    list("coeff" = unname(v), "lambda" = partitions)
+    lambdasAsStrings <- names(v)
+    out <- lapply(lambdasAsStrings, function(lambdaAsString) {
+      list(
+        "coeff"  = v[[lambdaAsString]],
+        "lambda" = fromPartitionAsString(lambdaAsString)
+      )
+    })
+    names(out) <- lambdasAsStrings
+    out
   }
 }
 
@@ -171,16 +180,21 @@ diffSeq <- function(x) {
 #'
 #' @return This computes the expression of the skew Schur polynomial
 #'   associated to the skew partition defined by \code{lambda} and \code{mu}
-#'   as a linear combination of Schur polynomials. If \code{output="dataframe"},
+#'   as a linear combination of Schur polynomials. Every coefficient of this
+#'   linear combination is a positive integer, a so-called
+#'   Littlewood-Richardson coefficient.
+#'   If \code{output="dataframe"},
 #'   the output is a dataframe with two columns: the column \code{coeff} gives
 #'   the coefficients of this linear combination, and the column \code{nu}
 #'   gives the partitions defining the Schur polynomials of this linear
 #'   combination as character strings, e.g. the partition \code{c(4, 3, 1)} is
-#'   given by \code{"4, 3, 1"}. If \code{output="list"}, the output is a list
+#'   given by \code{"[4, 3, 1]"}. If \code{output="list"}, the output is a list
 #'   of lists with two elements. Each of these lists with two elements
-#'   corresponds to a term of the linear combination: the first element is the
-#'   coefficient, it is named \code{coeff}, and the second element, named
-#'   \code{nu}, is the integer partition of the Schur polynomial of the linear
+#'   corresponds to a term of the linear combination: the first element, named
+#'   \code{coeff}, is the coefficient, namely the Littlewood-Richardson
+#'   coefficient \eqn{c^{\lambda}_{\mu,\nu}}, where \eqn{\nu} is the integer
+#'   partition given in the second element of the list, named
+#'   \code{nu}, which defines the Schur polynomial of the linear
 #'   combination.
 #' @export
 #'

@@ -2,10 +2,8 @@ test_that("Littlewood-Richardson multiplication", {
   mu <- c(2, 1)
   nu <- c(3, 2, 1)
   LR <- LRmult(mu, nu, output = "list")
-  LRcoeffs <- LR$coeff
-  LRparts <- LR$lambda
-  LRterms <- lapply(1:length(LRcoeffs), function(i) {
-    LRcoeffs[i] * SchurPol(3, LRparts[[i]])
+  LRterms <- lapply(LR, function(lr) {
+    lr[["coeff"]] * SchurPol(3, lr[["lambda"]])
   })
   smu_times_snu <- Reduce(`+`, LRterms)
   expect_true(smu_times_snu == SchurPol(3, mu) * SchurPol(3, nu))
@@ -18,8 +16,13 @@ test_that("LR-rule and Standard Young Tableaux counting", {
   nu <- c(4, 3, 2, 1)
   LR <- LRmult(mu, nu, output = "list")
   h <- function(p) as.integer(syt::count_sytx(p))
-  counts <- vapply(LR$lambda, h, integer(1L))
-  rhs <- sum(LR$coeff * counts)
+  counts <- vapply(LR, function(lr) {
+    h(lr[["lambda"]])
+  }, integer(1L))
+  coeffs <- vapply(LR, function(lr) {
+    lr[["coeff"]]
+  }, integer(1L))
+  rhs <- sum(coeffs * counts)
   lhs <- h(mu) * h(nu) * choose(sum(mu) + sum(nu), sum(mu))
   expect_true(lhs == rhs)
 })
