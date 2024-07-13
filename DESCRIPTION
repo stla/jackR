@@ -2,17 +2,18 @@ Type: Package
 Package: jack
 Title: Jack, Zonal, Schur, and Other Symmetric Polynomials
 Version: 6.0.0.9000
-Date: 2024-06-27
+Date: 2024-07-13
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Schur polynomials appear in combinatorics and zonal
     polynomials appear in random matrix theory. They are particular cases
     of Jack polynomials. This package allows to compute these polynomials
     and other symmetric multivariate polynomials: flagged Schur
-    polynomials, factorial Schur polynomials, Kostka-Foulkes polynomials,
-    t-Schur polynomials, Hall-Littlewood polynomials, Kostka-Macdonald
-    polynomials, Macdonald polynomials, and modified Macdonald
-    polynomials. Mainly based on Demmel & Koev's paper (2006)
+    polynomials, factorial Schur polynomials, t-Schur polynomials,
+    Hall-Littlewood polynomials, Macdonald polynomials, and modified
+    Macdonald polynomials. In addition, it can compute the Kostka-Foulkes
+    polynomials, the Kostka-Macdonald polynomials, and the Hall
+    polynomials.  Mainly based on Demmel & Koev's paper (2006)
     <doi:10.1090/S0025-5718-05-01780-1> and Macdonald's book (1995)
     <doi:10.1093/oso/9780198534891.003.0001>.
 License: GPL-3
