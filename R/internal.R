@@ -320,7 +320,7 @@ betweenPartitions <- function(mu, lambda){
 
 #####
 .n <- function(lambda){
-  sum((seq_len(length(lambda))-1L)*lambda)
+  sum(seq_len(length(lambda)-1L) * tail(lambda, -1L))
 }
 
 .e <- function(lambda, alpha){

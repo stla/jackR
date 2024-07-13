@@ -13,7 +13,8 @@ HallPolynomials(mu, nu)
 A list of lists. Each of these lists has two elements: an integer
   partition \eqn{\lambda} in the field \code{lambda}, and a univariate
   \code{qspray} polynomial in the field \code{polynomial}, the Hall
-  polynomial \eqn{g^{\lambda}_{\mu,\nu}(t)}.
+  polynomial \eqn{g^{\lambda}_{\mu,\nu}(t)}. Every coefficient of a
+  Hall polynomial is an integer.
 }
 \description{
 Hall polynomials \eqn{g^{\lambda}_{\mu,\nu}(t)} for given
