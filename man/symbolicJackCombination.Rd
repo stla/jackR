@@ -24,5 +24,5 @@ A list defining the combination. Each element of this list is a
 }
 \description{
 Expression of a symmetric polynomial as a linear combination
-  of Jack polynomials with symbolic parameter.
+  of Jack polynomials with a symbolic Jack parameter.
 }

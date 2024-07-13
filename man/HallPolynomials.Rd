@@ -19,6 +19,9 @@ A list of lists. Each of these lists has two elements: an integer
 Hall polynomials \eqn{g^{\lambda}_{\mu,\nu}(t)} for given
   integer partitions \eqn{\mu} and \eqn{\nu}.
 }
+\note{
+This function is slow.
+}
 \examples{
 HallPolynomials(c(2, 1), c(1, 1))
 }

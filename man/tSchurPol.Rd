@@ -22,3 +22,8 @@ A \code{symbolicQspray} multivariate polynomial, the
 Returns the t-Schur polynomial associated to
   the given partition.
 }
+\note{
+The name "t-Schur polynomial" is taken from
+  \href{https://www.sciencedirect.com/science/article/pii/S0097316518300724}{Wheeler and Zinn-Justin's paper}
+  \emph{Hall polynomials, inverse Kostka polynomials and puzzles}.
+}

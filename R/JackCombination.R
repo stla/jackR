@@ -138,11 +138,12 @@ JackCombination <- function(qspray, alpha, which = "J", check = TRUE) {
     msCombo <- Filter(function(t) {sum(t[["lambda"]]) == weight}, fullMsCombo)
     if(isSymbolic) {
       coeffs <- lapply(msCombo, `[[`, "coeff")
+      unitRatioOfQsprays <- as.ratioOfQsprays(1L)
       sprays <- lapply(kappas, function(kappa) {
         new(
           "symbolicQspray",
           powers = list(kappa),
-          coeffs = list(as.ratioOfQsprays(1L))
+          coeffs = list(unitRatioOfQsprays)
         )
       })
       zeroSpray <- Qzero()

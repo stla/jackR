@@ -155,6 +155,9 @@ zlambda <- function(lambda) {
 #' @export
 #' @importFrom symbolicQspray showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
+#' @note The name "t-Schur polynomial" is taken from
+#'   \href{https://www.sciencedirect.com/science/article/pii/S0097316518300724}{Wheeler and Zinn-Justin's paper}
+#'   \emph{Hall polynomials, inverse Kostka polynomials and puzzles}.
 tSchurPol <- function(n, lambda) {
   stopifnot(isPositiveInteger(n))
   stopifnot(isPartition(lambda))

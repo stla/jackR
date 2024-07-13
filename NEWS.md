@@ -80,6 +80,8 @@ polynomials.
 - New function `modifiedMacdonaldPol`, to get a modified Macdonald 
 polynomial.
 
+- New function `HallPolynomials`, to get the Hall polynomials.
+
 
 # Version 6.0.0 (2024-05-03)
 

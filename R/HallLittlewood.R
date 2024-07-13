@@ -145,14 +145,13 @@ invUnitTriMatrix <- function(L) {
   }
 }
 
-#' @importFrom partitions parts
 #' @importFrom symbolicQspray Qzero showSymbolicQsprayOption<-
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
 #' @importFrom methods as
 #' @noRd
 HallLittlewoodP <- function(n, lambda) {
   weight <- sum(lambda)
-  lambdas <- lapply(Columns(parts(weight)), removeTrailingZeros)
+  lambdas <- listOfPartitions(weight)
   lambdaStrings <- vapply(lambdas, partitionAsString, character(1L))
   names(lambdas) <- lambdaStrings
   i <- match(partitionAsString(lambda), lambdaStrings)

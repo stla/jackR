@@ -44,7 +44,7 @@ msPolynomialsInJackSymbolicBasis <- function(which, n, weight) {
 
 #' @title Symmetric polynomial in terms of symbolic Jack polynomials
 #' @description Expression of a symmetric polynomial as a linear combination
-#'   of Jack polynomials with symbolic parameter.
+#'   of Jack polynomials with a symbolic Jack parameter.
 #'
 #' @param qspray a \code{qspray} object or a \code{symbolicQspray} object
 #'   defining a symmetric polynomial
@@ -60,9 +60,10 @@ msPolynomialsInJackSymbolicBasis <- function(which, n, weight) {
 #' @export
 #' @importFrom methods new
 #' @importFrom qspray MSPcombination orderedQspray isConstant isQzero getConstantTerm numberOfVariables
-#' @importFrom symbolicQspray Qzero
+#' @importFrom symbolicQspray Qzero isConstant isQzero getConstantTerm numberOfVariables
 #' @importFrom ratioOfQsprays as.ratioOfQsprays
 symbolicJackCombination <- function(qspray, which = "J", check = TRUE) {
+  stopifnot(inherits(qspray, "qspray") || inherits(qspray, "symbolicQspray"))
   if(isConstant(qspray)) {
     if(isQzero(qspray)) {
       out <- list()
@@ -76,7 +77,6 @@ symbolicJackCombination <- function(qspray, which = "J", check = TRUE) {
     }
     return(out)
   }
-  symbolic <- inherits(qspray, "symbolicQspray")
   constantTerm <- getConstantTerm(qspray)
   which <- match.arg(which, c("J", "P", "Q", "C"))
   fullMsCombo <- MSPcombination(qspray - constantTerm, check = check)

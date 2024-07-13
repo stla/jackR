@@ -38,10 +38,6 @@ msPolynomialInHLPbasis <- function(lambda) {
     r <- msCombo[muAsString]
     lapply(lambdas, function(kappa) {
       r * KostaFoulkesPolynomial(mu, kappa)
-      # list(
-      #   "partition" = kappa,
-      #   "qspray" = r * KostaFoulkesPolynomial(mu, kappa)
-      # )
     })
   })
   out <- Reduce(
@@ -143,6 +139,9 @@ HLPcombination <- function(Qspray) {
 #'   polynomial \eqn{g^{\lambda}_{\mu,\nu}(t)}.
 #' @export
 #' @importFrom qspray qlone showQsprayOption<- showQsprayXYZ
+#'
+#' @note This function is slow.
+#'
 #' @examples
 #' HallPolynomials(c(2, 1), c(1, 1))
 HallPolynomials <- function(mu, nu) {
