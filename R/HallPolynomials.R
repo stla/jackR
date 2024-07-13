@@ -1,4 +1,5 @@
 #' @importFrom syt KostkaNumbersWithGivenLambda
+#' @importFrom utils tail
 #' @noRd
 msPolynomialsInSchurBasis <- function(weight) {
   lambdas <- listOfPartitions(weight)
@@ -22,6 +23,8 @@ msPolynomialsInSchurBasis <- function(weight) {
   out
 }
 
+#' @importFrom qspray isQzero
+#' @noRd
 msPolynomialInHLPbasis <- function(lambda) {
   weight <- sum(lambda)
   msCombos <- msPolynomialsInSchurBasis(weight)
@@ -54,25 +57,11 @@ msPolynomialInHLPbasis <- function(lambda) {
   Filter(Negate(isQzero), out)
 }
 
-# _msPolynomialInHLPbasis ::
-#   Int -> Partition -> Map Partition (Spray Rational)
-# _msPolynomialInHLPbasis n lambda =
-#   DM.filter (not . isZeroSpray) (DM.unionsWith (^+^) hlpCombos)
-#   where
-#     weight = sum lambda
-#     msCombos = msPolynomialsInSchurBasis n weight
-#     lambdas = DM.keys msCombos
-#     hlpCombo mu =
-#       DM.filter (not . isZeroSpray) $
-#         DM.fromDistinctAscList
-#           (map (\kappa -> (kappa, _kostkaFoulkesPolynomial mu kappa)) lambdas)
-#     msAssocs = DM.assocs (msCombos DM.! lambda)
-#     hlpCombos =
-#       map
-#         (\(mu, r) ->
-#           DM.map (\spray -> r *^ spray) (hlpCombo mu))
-#         msAssocs
-
+#' @importFrom methods new
+#' @importFrom qspray MSPcombination orderedQspray isQzero showQsprayOption<- showQsprayXYZ
+#' @importFrom symbolicQspray Qzero
+#' @importFrom ratioOfQsprays as.ratioOfQsprays
+#' @noRd
 HLPcombination <- function(Qspray) {
   fullMsCombo <- MSPcombination(Qspray, check = FALSE)
   lambdas <- lapply(fullMsCombo, `[[`, "lambda")
@@ -82,7 +71,6 @@ HLPcombination <- function(Qspray) {
     hlpCombo <- msPolynomialInHLPbasis(lambda)
     kappas <- lapply(names(hlpCombo), fromPartitionAsString)
     msCombo <- fullMsCombo[[partitionAsString(lambda)]]
-#    coeffs <- lapply(msCombo, `[[`, "coeff")
     sprays <- lapply(kappas, function(kappa) {
       new(
         "symbolicQspray",
@@ -99,25 +87,15 @@ HLPcombination <- function(Qspray) {
       }
     }
     finalQspray <- finalQspray + msCombo[["coeff"]]*spray
-
-    # lambdas <- names(msCombo)
-    # for(i in seq_along(lambdas)) {
-    #   spray <- qzero()
-    #   for(kappa in names(hlpCombo)) {
-    #     coeff <- hlpCombo[[kappa]]
-    #     if(!isQzero(coeff)) {
-    #       spray <- spray + coeff * sprays[[kappa]]
-    #     }
-    #   }
-    #   finalQspray <- finalQspray + coeffs[[i]]@numerator*spray
-    # }
   }
   finalQspray <- orderedQspray(finalQspray)
   powers <- finalQspray@powers
   coeffs <- finalQspray@coeffs
   combo <- mapply(
     function(lambda, coeff) {
-      list("coeff" = coeff, "lambda" = lambda)
+      qspray <- coeff@numerator
+      showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
+      list("coeff" = qspray, "lambda" = lambda)
     },
     powers, coeffs,
     SIMPLIFY = FALSE, USE.NAMES = FALSE
@@ -125,4 +103,45 @@ HLPcombination <- function(Qspray) {
   names(combo) <-
     vapply(powers, partitionAsString, character(1L), USE.NAMES = FALSE)
   combo
+}
+
+.substitute_invt <- function(qspray) {
+  constantTerm <- getConstantTerm(qspray)
+  if(isConstant(qspray)) {
+    return(as.ratioOfQsprays(constantTerm))
+  }
+  qspray <- qspray - constantTerm
+  powers <- qspray@powers
+  coeffs <- qspray@coeffs
+  t <- qlone(1L)
+  rOQs <- mapply(
+    function(coeff, power) {
+      new(
+        "ratioOfQsprays",
+        numerator = as.qspray(coeff),
+        denominator = t^power
+      )
+    },
+    coeffs, powers,
+    SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )
+  Reduce(`+`, rOQs) + constantTerm
+}
+
+HallPolynomials <- function(mu, nu) {
+  stopifnot(isPartition(mu), isPartition(nu))
+  n <- sum(mu) + sum(nu)
+  Qspray <- HallLittlewoodPol(n, mu, "P") * HallLittlewoodPol(n, nu, "P")
+  hlpCombo <- HLPcombination(Qspray)
+  t <- qlone(1L)
+  .n_mu_nu <- .n(mu) + .n(nu)
+  lapply(hlpCombo, function(coeff_lambda) {
+    lambda <- coeff_lambda[["lambda"]]
+    qspray <- coeff_lambda[["coeff"]]
+    rOQ <- t^(.n(lambda) - .n_mu_nu) * .substitute_invt(qspray)
+    list(
+      "lambda" = lambda,
+      "polynomial" = rOQ@numerator
+    )
+  })
 }
