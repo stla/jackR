@@ -2,6 +2,7 @@
 
 export(ESF)
 export(HallLittlewoodPol)
+export(HallPolynomials)
 export(Jack)
 export(JackCombination)
 export(JackPol)

@@ -58,7 +58,7 @@ msPolynomialInHLPbasis <- function(lambda) {
 }
 
 #' @importFrom methods new
-#' @importFrom qspray MSPcombination orderedQspray isQzero showQsprayOption<- showQsprayXYZ
+#' @importFrom qspray MSPcombination orderedQspray isQzero
 #' @importFrom symbolicQspray Qzero
 #' @importFrom ratioOfQsprays as.ratioOfQsprays
 #' @noRd
@@ -94,7 +94,6 @@ HLPcombination <- function(Qspray) {
   combo <- mapply(
     function(lambda, coeff) {
       qspray <- coeff@numerator
-      showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
       list("coeff" = qspray, "lambda" = lambda)
     },
     powers, coeffs,
@@ -105,6 +104,10 @@ HLPcombination <- function(Qspray) {
   combo
 }
 
+#' @importFrom methods new
+#' @importFrom qspray getConstantTerm isConstant qlone as.qspray
+#' @importFrom ratioOfQsprays as.ratioOfQsprays
+#' @noRd
 .substitute_invt <- function(qspray) {
   constantTerm <- getConstantTerm(qspray)
   if(isConstant(qspray)) {
@@ -128,6 +131,20 @@ HLPcombination <- function(Qspray) {
   Reduce(`+`, rOQs) + constantTerm
 }
 
+#' @title Hall polynomials
+#' @description Hall polynomials \eqn{g^{\lambda}_{\mu,\nu}(t)} for given
+#'   integer partitions \eqn{\mu} and \eqn{\nu}.
+#'
+#' @param mu,nu integer partitions
+#'
+#' @return A list of lists. Each of these lists has two elements: an integer
+#'   partition \eqn{\lambda} in the field \code{lambda}, and a univariate
+#'   \code{qspray} polynomial in the field \code{polynomial}, the Hall
+#'   polynomial \eqn{g^{\lambda}_{\mu,\nu}(t)}.
+#' @export
+#' @importFrom qspray qlone showQsprayOption<- showQsprayXYZ
+#' @examples
+#' HallPolynomials(c(2, 1), c(1, 1))
 HallPolynomials <- function(mu, nu) {
   stopifnot(isPartition(mu), isPartition(nu))
   n <- sum(mu) + sum(nu)
@@ -137,8 +154,9 @@ HallPolynomials <- function(mu, nu) {
   .n_mu_nu <- .n(mu) + .n(nu)
   lapply(hlpCombo, function(coeff_lambda) {
     lambda <- coeff_lambda[["lambda"]]
-    qspray <- coeff_lambda[["coeff"]]
-    rOQ <- t^(.n(lambda) - .n_mu_nu) * .substitute_invt(qspray)
+    rOQ <- t^(.n(lambda) - .n_mu_nu) * .substitute_invt(coeff_lambda[["coeff"]])
+    qspray <- rOQ@numerator
+    showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
     list(
       "lambda" = lambda,
       "polynomial" = rOQ@numerator
