@@ -84,12 +84,12 @@ symbolicJackCombination <- function(qspray, which = "J", check = TRUE) {
   weights <- unique(vapply(lambdas, sum, integer(1L)))
   n <- numberOfVariables(qspray)
   finalQspray <- Qzero()
+  unitRatioOfQsprays <- as.ratioOfQsprays(1L)
   for(weight in weights) {
     invKostkaMatrix <- msPolynomialsInJackSymbolicBasis(which, n, weight)
     kappas <- lapply(names(invKostkaMatrix), fromPartitionAsString)
     msCombo <- Filter(function(t) {sum(t[["lambda"]]) == weight}, fullMsCombo)
     coeffs <- lapply(msCombo, `[[`, "coeff")
-    unitRatioOfQsprays <- as.ratioOfQsprays(1L)
     sprays <- lapply(kappas, function(kappa) {
       new(
         "symbolicQspray",

@@ -51,7 +51,7 @@ msPolynomialInHLPbasis <- function(lambda) {
     hlpCombos
   )
   names(out) <- lambdasAsStrings
-  out
+  Filter(Negate(isQzero), out)
 }
 
 # _msPolynomialInHLPbasis ::
@@ -72,3 +72,57 @@ msPolynomialInHLPbasis <- function(lambda) {
 #         (\(mu, r) ->
 #           DM.map (\spray -> r *^ spray) (hlpCombo mu))
 #         msAssocs
+
+HLPcombination <- function(Qspray) {
+  fullMsCombo <- MSPcombination(Qspray, check = FALSE)
+  lambdas <- lapply(fullMsCombo, `[[`, "lambda")
+  finalQspray <- Qzero()
+  unitRatioOfQsprays <- as.ratioOfQsprays(1L)
+  for(lambda in lambdas) {
+    hlpCombo <- msPolynomialInHLPbasis(lambda)
+    kappas <- lapply(names(hlpCombo), fromPartitionAsString)
+    msCombo <- fullMsCombo[[partitionAsString(lambda)]]
+#    coeffs <- lapply(msCombo, `[[`, "coeff")
+    sprays <- lapply(kappas, function(kappa) {
+      new(
+        "symbolicQspray",
+        powers = list(kappa),
+        coeffs = list(unitRatioOfQsprays)
+      )
+    })
+    names(sprays) <- names(hlpCombo)
+    spray <- Qzero()
+    for(kappa in names(hlpCombo)) {
+      coeff <- hlpCombo[[kappa]]
+      if(!isQzero(coeff)) {
+        spray <- spray + coeff * sprays[[kappa]]
+      }
+    }
+    finalQspray <- finalQspray + msCombo[["coeff"]]*spray
+
+    # lambdas <- names(msCombo)
+    # for(i in seq_along(lambdas)) {
+    #   spray <- qzero()
+    #   for(kappa in names(hlpCombo)) {
+    #     coeff <- hlpCombo[[kappa]]
+    #     if(!isQzero(coeff)) {
+    #       spray <- spray + coeff * sprays[[kappa]]
+    #     }
+    #   }
+    #   finalQspray <- finalQspray + coeffs[[i]]@numerator*spray
+    # }
+  }
+  finalQspray <- orderedQspray(finalQspray)
+  powers <- finalQspray@powers
+  coeffs <- finalQspray@coeffs
+  combo <- mapply(
+    function(lambda, coeff) {
+      list("coeff" = coeff, "lambda" = lambda)
+    },
+    powers, coeffs,
+    SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )
+  names(combo) <-
+    vapply(powers, partitionAsString, character(1L), USE.NAMES = FALSE)
+  combo
+}
