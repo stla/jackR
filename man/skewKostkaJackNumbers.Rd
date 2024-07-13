@@ -41,6 +41,15 @@ The skew Kostka-Jack number \eqn{K_{\lambda/\mu,\nu}(\alpha)} is
   symmetric polynomials. For \eqn{\alpha=1} it is the ordinary skew Kostka
   number.
 }
+\note{
+The skew Kostka-Jack numbers \eqn{K_{\lambda/\mu,\nu}(\alpha)} are
+  well defined when the Jack parameter \eqn{\alpha} is zero, however this
+  function does not work with \code{alpha=0}. A possible way to get the
+  skew Kostka-Jack numbers \eqn{K_{\lambda/\mu,\nu}(0)} is to use the
+  function \code{\link{symbolicSkewKostkaJackNumbers}} to get the skew
+  Kostka-Jack numbers with a symbolic Jack parameter \eqn{\alpha}, and then
+  to substitute \eqn{\alpha} with \eqn{0}.
+}
 \examples{
 skewKostkaJackNumbers(c(4,2,2), c(2,2))
 }
