@@ -109,12 +109,17 @@ zlambda <- function(lambda) {
   prod(factorial(mjs) * parts^mjs)
 }
 
+#' @importFrom symbolicQspray Qone
+#' @importFrom qspray qone qlone qzero PSFpoly
+#' @importFrom ratioOfQsprays as.ratioOfQsprays
+#' @importFrom gmp as.bigq
+#' @noRd
 .tSkewSchurPolynomial <- function(n, lambda, mu) {
   w <- sum(lambda) - sum(mu)
   if(w == 0L) {
     return(Qone())
   }
-  rhos <- apply(parts(w), 2L, removeTrailingZeros, simplify = FALSE)
+  rhos <- listOfPartitions(w)
   unitSpray <- qone()
   t <- qlone(1L)
   mapOfSprays <- lapply(seq_len(w), function(r) {

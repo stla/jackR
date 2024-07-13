@@ -9,7 +9,7 @@ SchurCombination(qspray, check = TRUE)
 \arguments{
 \item{qspray}{a \code{qspray} object defining a symmetric polynomial}
 
-\item{check}{Boolean, whether to check the symmetry}
+\item{check}{Boolean, whether to check the symmetry of \code{qspray}}
 }
 \value{
 A list defining the combination. Each element of this list is a
@@ -21,4 +21,7 @@ A list defining the combination. Each element of this list is a
 \description{
 Expression of a symmetric polynomial as a linear combination
   of some Schur polynomials.
+}
+\seealso{
+\code{\link{JackCombination}}.
 }

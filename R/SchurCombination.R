@@ -3,7 +3,7 @@
 #'   of some Schur polynomials.
 #'
 #' @param qspray a \code{qspray} object defining a symmetric polynomial
-#' @param check Boolean, whether to check the symmetry
+#' @param check Boolean, whether to check the symmetry of \code{qspray}
 #'
 #' @return A list defining the combination. Each element of this list is a
 #'   list with two elements: \code{coeff}, a \code{bigq} number, and
@@ -11,20 +11,19 @@
 #'   term \code{coeff * SchurPol(n, lambda)}, where \code{n} is the number of
 #'   variables in the symmetric polynomial.
 #' @export
+#' @seealso \code{\link{JackCombination}}.
 #' @importFrom syt KostkaNumbersWithGivenLambda
-#' @importFrom partitions parts
 #' @importFrom gmp as.bigq
 #' @importFrom qspray getConstantTerm MSPcombination qzero orderedQspray
 #' @importFrom methods new
 SchurCombination <- function(qspray, check = TRUE) {
+  stopifnot(inherits(qspray, "qspray"))
   constantTerm <- getConstantTerm(qspray)
   combo <- MSPcombination(qspray - constantTerm, check = check)
   weights <- unique(vapply(combo, function(term) {
     sum(term[["lambda"]])
   }, integer(1L)))
   invKostkaMatrices <- lapply(weights, function(n) {
-    # lambdas <- parts(n)
-    # nparts <- ncol(lambdas)
     lambdas <- listOfPartitions(n)
     nparts <- length(lambdas)
     lambdasAsStrings <-
@@ -34,15 +33,9 @@ SchurCombination <- function(qspray, check = TRUE) {
     for(i in seq_len(nparts)) {
       kNumbers <- KostkaNumbersWithGivenLambda(lambdas[[i]], output = "vector")
       KostkaMatrix[i, names(kNumbers)] <- kNumbers
-      # for(j in i:nparts) {
-      #   KostkaMatrix[i, j] <- KostkaNumber(lambdas[, i], lambdas[, j])
-      # }
     }
     invKostkaMatrix <- backsolve(KostkaMatrix, diag(nparts))
     storage.mode(invKostkaMatrix) <- "integer"
-    # lambdas <- lapply(Columns(lambdas), removeTrailingZeros)
-    # lambdasAsStrings <-
-    #   vapply(lambdas, partitionAsString, character(1L))
     rownames(invKostkaMatrix) <- lambdasAsStrings
     list("matrix" = invKostkaMatrix, "lambdas" = lambdas)
   })

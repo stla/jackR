@@ -46,7 +46,7 @@ SchurPol <- function(n, lambda) {
 #' Schur(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 Schur <- function(x, lambda) {
   stopifnot(isPartition(lambda))
-  lambda <- as.integer(lambda[lambda != 0])
+  lambda <- as.integer(removeTrailingZeros(lambda))
   if(is.numeric(x)) {
     if(anyNA(x)) {
       stop("Found missing values in `x`.")
@@ -137,7 +137,7 @@ JackPol <- function(n, lambda, alpha, which = "J") {
 #' Jack(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")
 Jack <- function(x, lambda, alpha) {
   stopifnot(isPartition(lambda))
-  lambda <- as.integer(lambda[lambda != 0])
+  lambda <- as.integer(removeTrailingZeros(lambda))
   if(is.numeric(x)) {
     x <- as.double(x)
     gmp <- FALSE
@@ -207,7 +207,7 @@ ZonalPol <- function(n, lambda){
 #' @examples
 #' Zonal(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 Zonal <- function(x, lambda){
-  lambda <- as.integer(lambda[lambda != 0])
+  lambda <- as.integer(removeTrailingZeros(lambda))
   C <- JackCcoefficient(lambda, 2L)
   if(is.numeric(x)) {
     jack <- Jack(x, lambda, alpha = 2L)
@@ -258,7 +258,7 @@ ZonalQPol <- function(n, lambda){
 #' @examples
 #' ZonalQ(c("1", "3/2", "-2/3"), lambda = c(3, 1))
 ZonalQ <- function(x, lambda){
-  lambda <- as.integer(lambda[lambda != 0])
+  lambda <- as.integer(removeTrailingZeros(lambda))
   C <- JackCcoefficient(lambda, "1/2")
   if(is.numeric(x)) {
     jack <- Jack(x, lambda, alpha = 0.5)

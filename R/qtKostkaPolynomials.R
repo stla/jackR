@@ -108,7 +108,6 @@ qtKostkaPolynomials <- function(mu) {
 #'   partition \eqn{\nu} and the polynomial.
 #' @export
 #' @importFrom qspray qone showQsprayOption<- showQsprayXYZ
-#' @importFrom partitions parts
 qtSkewKostkaPolynomials <- function(lambda, mu) {
   stopifnot(isPartition(lambda))
   stopifnot(isPartition(mu))
@@ -131,7 +130,7 @@ qtSkewKostkaPolynomials <- function(lambda, mu) {
     return(out)
   }
   lrCoeffs <- LRskew(lambda, mu, output = "list")
-  nus <- apply(parts(w), 2L, removeTrailingZeros, simplify = FALSE)
+  nus <- listOfPartitions(w)
   out <- lapply(nus, function(nu) {
     qtKostkaPolys <- qtKostkaPolynomials(nu)
     pis <- intersect(names(lrCoeffs), names(qtKostkaPolys))
