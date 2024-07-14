@@ -403,6 +403,48 @@ changeParameters(macPoly, list(0, qlone(1))) == hlPoly
 ```
 
 
+## Kostka numbers and Kostka polynomials
+
+The ordinary Kostka numbers are usually denoted by $K_{\lambda,\mu}$ where 
+$\lambda$ and $\mu$ denote two integer partitions. The Kostka number 
+$K_{\lambda,\mu}$ is then associated to the two integer partitions 
+$\lambda$ and $\mu$, and it is the coefficient of the monomial symmetric 
+polynomial $m_{\mu}$ in the expression of the Schur polynomial $s_{\lambda}$ 
+as a linear combination of monomial symmetric polynomials. It is always a
+non-negative integer. It is possible to compute these Kostka numbers with 
+the **jack** package. They are also available in the 
+[**syt** package][syt]. There is more in the **jack** package. Since the 
+Schur polynomials are the Jack $P$-polynomials with Jack parameter $\alpha=1$,
+one can more generally define the *Kostka-Jack number* 
+$K_{\lambda,\mu}(\alpha)$ as the coefficient of the monomial symmetric 
+polynomial $m_{\mu}$ in the expression of the Jack $P$-polynomial 
+$P_{\lambda}(\alpha)$ with Jack parameter $\alpha$ 
+as a linear combination of monomial symmetric polynomials. The **jack** 
+package allows to compute these numbers. Note that I call them 
+"Kostka-Jack numbers" here as well as in the documentation of the package 
+but I don't know whether this wording is standard (probably not).
+
+The Kostka numbers are also generalized by the *Kostka-Foulkes polynomials*, 
+or *$t$-Kostka polynomials*, which are provided in the **jack** package. 
+These are univariate polynomials whose variable 
+is denoted by $t$, and their value at $t=1$ are the Kostka numbers. These 
+polynomials are used in the computation of the Hall-Littlewood polynomials.
+
+Finally, the Kostka numbers are also generalized by the 
+*Kostka-Macdonald polynomials*, or *$qt$-Kostka polynomials*, also 
+provided in the **jack** package. Actually these 
+polynomials even generalize the Kostka-Foulkes polynomials. They have two 
+variables, denoted by $q$ and $t$, and one obtains the Kostka-Foulkes 
+polynomials by replacing $q$ with $0$.
+Currently the Kostka-Macdonald polynomials are not used in the **jack**
+package.
+
+The skew generalizations are also available in the **jack** package: skew 
+Kostka-Jack numbers, skew Kostka-Foulkes polynomials, and skew 
+Kostka-Macdonald polynomials.
+
+
+
 ## References
 
 * I.G. Macdonald. *Symmetric Functions and Hall Polynomials*. Oxford Mathematical Monographs. The Clarendon Press Oxford University Press, New York, second edition, 1995.
@@ -423,3 +465,5 @@ changeParameters(macPoly, list(0, qlone(1))) == hlPoly
 [KnopSahi]: https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula "Knop & Sahi formula"
 
 [LaplaceBeltrami]: https://math.mit.edu/~rstan/pubs/pubfiles/73.pdf "Laplace-Beltrami operator"
+
+[syt]: https://github.com/stla/syt "the 'syt' package on Github"
