@@ -275,7 +275,6 @@ symbolicKostkaJackNumbersWithGivenLambda <- function(lambda) {
 }
 
 #' @importFrom ratioOfQsprays as.ratioOfQsprays showRatioOfQspraysXYZ showRatioOfQspraysOption<-
-#' @importFrom partitions restrictedparts
 #' @importFrom utils tail
 #' @noRd
 .symbolicKostkaNumbers <- function(n, weight, which){
