@@ -1,10 +1,5 @@
-## Test environments
+## Impact of the 'qspray', 'ratioOfQsprays' and 'symbolicQspray' updates
 
-* Windows 10, R-4.3.2
-* Github actions
-* win-builder devel
-
-
-## R CMD check results
-
-Status: OK
+The 'qspray' package has been updated (v3.1.0) as well as the 'ratioOfQsprays' 
+package (v1.1.0) and the 'symbolicQspray' package (v1.1.0). These updates 
+have some impact on the present 'jack' package.
