@@ -2,8 +2,9 @@ Type: Package
 Package: jack
 Title: Jack, Zonal, Schur, and Other Symmetric Polynomials
 Version: 6.1.0
-Date: 2024-07-27
-Author: Stéphane Laurent
+Date: 2024-07-29
+Authors@R: 
+    person("Stéphane", "Laurent", , "laurent_step@outlook.fr", role = c("aut", "cre"))
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Schur polynomials appear in combinatorics and zonal
     polynomials appear in random matrix theory. They are particular cases

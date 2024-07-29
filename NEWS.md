@@ -1,4 +1,4 @@
-# Version 6.1.0 (2024-07-27)
+# Version 6.1.0 (2024-07-29)
 
 - Some minor modifications have been necessary due to the updates of some 
 package dependencies. No change for the user.
