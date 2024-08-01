@@ -3,6 +3,7 @@
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^README\.Rmd$
+^README\.html$
 ^\.github$
 ^CRAN-SUBMISSION$
 ^inst/trash$

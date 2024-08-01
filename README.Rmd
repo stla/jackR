@@ -489,7 +489,7 @@ Unfortunately, the ***gmp*** matrices do not accept row names and column names.
 But as you can see, our equality is indeed fulfilled:
 
 ```{r, message=FALSE}
-t(as.bigq(t(KJN_three) %*% as.bigq(KJN_oneThird))
+t(as.bigq(t(KJN_three) %*% as.bigq(KJN_oneThird)))
 KostkaJackNumbers(n, alpha = "0")
 ```
 

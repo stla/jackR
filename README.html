@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAZwABAAAAAACFQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEU0lHAAAGaAAAAAgAAAAIAAAAAUdTVUIAAAZcAAAACgAAAAoAAQAAT1MvMgAAAyQAAABJAAAAYFYEU3RjbWFwAAADcAAAAEUAAACAAJThvmN2dCAAAATkAAAABAAAAAQAAAAAZnBnbQAAA7gAAACyAAABCUM+8IhnYXNwAAAGTAAAABAAAAAQABoAI2dseWYAAAFsAAABPAAAAZwcEq9taGVhZAAAAsgAAAA0AAAANgh4a91oaGVhAAADCAAAABoAAAAkCA8DRGhtdHgAAAL8AAAADAAAAAwGAACfbG9jYQAAAsAAAAAIAAAACABiATBtYXhwAAACqAAAABgAAAAgAA8ASm5hbWUAAAToAAABQgAAAlXu73sOcG9zdAAABiwAAAAeAAAAME3QpOBwcmVwAAAEbAAAAHYAAAB/aFGpk3jaTY6xa8JAGMW/O62BDi0tJLYQincXEypYIiGJjSgHniQ6umTsUEyLm5BV6NDBP8Tpts6F0v+k/0an2i+itHDw3v2+9+DBKTzsJNnWJNTgHEy4BgG3EMI9DCEDOGEXzDADU5hBKMIgNPZqoD3SilVaXZCER3/I7AtxEJLtzzuZfI+VVkprxTlXShWKb3TBecG11rwoNlmmn1P2WYcJczl32etSpKnziC7lQyWe1smVPy/Lt7Kc+0vWY/gAgIIEqAN9we0pwKXreiMasxvabDQMM4riO+qxM2ogwDGOZTXxwxDiycQIcoYFBLj5K3EIaSctAq2kTYiw+ymhce7vwM9jSqO8JyVd5RH9gyTt2+J/yUmYlIR0s04n6+7Vm1ozezUeLEaUjhaDSuXHwVRgvLJn1tQ7xiuVv/ocTRF42mNgZGBgYGbwZOBiAAFGJBIMAAizAFoAAABiAGIAznjaY2BkYGAA4in8zwXi+W2+MjCzMIDApSwvXzC97Z4Ig8N/BxYGZgcgl52BCSQKAA3jCV8CAABfAAAAAAQAAEB42mNgZGBg4f3vACQZQABIMjKgAmYAKEgBXgAAeNpjYGY6wTiBgZWBg2kmUxoDA4MPhGZMYzBi1AHygVLYQUCaawqDA4PChxhmh/8ODDEsvAwHgMKMIDnGL0x7gJQCAwMAJd4MFwAAAHjaY2BgYGaA4DAGRgYQkAHyGMF8NgYrIM3JIAGVYYDT+AEjAwuDFpBmA9KMDEwMCh9i/v8H8sH0/4dQc1iAmAkALaUKLgAAAHjaTY9LDsIgEIbtgqHUPpDi3gPoBVyRTmTddOmqTXThEXqrob2gQ1FjwpDvfwCBdmdXC5AVKFu3e5MfNFJ29KTQT48Ob9/lqYwOGZxeUelN2U2R6+cArgtCJpauW7UQBqnFkUsjAY/kOU1cP+DAgvxwn1chZDwUbd6CFimGXwzwF6tPbFIcjEl+vvmM/byA48e6tWrKArm4ZJlCbdsrxksL1AwWn/yBSJKpYbq8AXaaTb8AAHja28jAwOC00ZrBeQNDQOWO//sdBBgYGRiYWYAEELEwMTE4uzo5Zzo5b2BxdnFOcALxNjA6b2ByTswC8jYwg0VlNuoCTWAMqNzMzsoK1rEhNqByEyerg5PMJlYuVueETKcd/89uBpnpvIEVomeHLoMsAAe1Id4AAAAAAAB42oWQT07CQBTGv0JBhagk7HQzKxca2sJCE1hDt4QF+9JOS0nbaaYDCQfwCJ7Au3AHj+LO13FMmm6cl7785vven0kBjHCBhfpYuNa5Ph1c0e2Xu3jEvWG7UdPDLZ4N92nOm+EBXuAbHmIMSRMs+4aUEd4Nd3CHD8NdvOLTsA2GL8M9PODbcL+hD7C1xoaHeLJSEao0FEW14ckxC+TU8TxvsY6X0eLPmRhry2WVioLpkrbp84LLQPGI7c6sOiUzpWIWS5GzlSgUzzLBSikOPFTOXqly7rqx0Z1Q5BAIoZBSFihQYQOOBEdkCOgXTOHA07HAGjGWiIjaPZNW13/+lm6S9FT7rLHFJ6fQbkATOG1j2OFMucKJJsxIVfQORl+9Jyda6Sl1dUYhSCm1dyClfoeDve4qMYdLEbfqHf3O/AdDumsjAAB42mNgYoAAZQYjBmyAGYQZmdhL8zLdDEydARfoAqIAAAABAAMABwAKABMAB///AA8AAQAAAAAAAAAAAAAAAAABAAAAAA==) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="the-jack-package-jack-and-other-symmetric-polynomials">The
+‘jack’ package: Jack and other symmetric polynomials</h1>
+<p><em><strong>Jack, zonal, Schur, and other symmetric
+polynomials.</strong></em></p>
+<!-- badges: start -->
+
+<p><a href="https://github.com/stla/jackR/actions/workflows/R-CMD-check.yaml"><img src="data:image/svg+xml; charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTIiIGhlaWdodD0iMjAiPgogIDx0aXRsZT5SLUNNRC1jaGVjayAtIHBhc3Npbmc8L3RpdGxlPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJ3b3JrZmxvdy1maWxsIiB4MT0iNTAlIiB5MT0iMCUiIHgyPSI1MCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iIzQ0NEQ1NiIgb2Zmc2V0PSIwJSI+PC9zdG9wPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjMjQyOTJFIiBvZmZzZXQ9IjEwMCUiPjwvc3RvcD4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InN0YXRlLWZpbGwiIHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjMzREMDU4IiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMyOEE3NDUiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxnIGZvbnQtZmFtaWx5PSImIzM5O0RlamFWdSBTYW5zJiMzOTssVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgIDxwYXRoIGlkPSJ3b3JrZmxvdy1iZyIgZD0iTTAsMyBDMCwxLjM0MzEgMS4zNTUyLDAgMy4wMjcwMjcwMywwIEwxMDIsMCBMMTAyLDIwIEwzLjAyNzAyNzAzLDIwIEMxLjM1NTIsMjAgMCwxOC42NTY5IDAsMTcgTDAsMyBaIiBmaWxsPSJ1cmwoI3dvcmtmbG93LWZpbGwpIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgPHRleHQgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyI+CiAgICAgICAgPHRzcGFuIHg9IjIyLjE5ODE5ODIiIHk9IjE1IiBhcmlhLWhpZGRlbj0idHJ1ZSI+Ui1DTUQtY2hlY2s8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICAgIDx0ZXh0IGZpbGw9IiNGRkZGRkYiPgogICAgICAgIDx0c3BhbiB4PSIyMi4xOTgxOTgyIiB5PSIxNCI+Ui1DTUQtY2hlY2s8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMDIpIiBmb250LWZhbWlseT0iJiMzOTtEZWphVnUgU2FucyYjMzk7LFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICA8cGF0aCBkPSJNMCAwaDQ2LjkzOUM0OC42MjkgMCA1MCAxLjM0MyA1MCAzdjE0YzAgMS42NTctMS4zNyAzLTMuMDYxIDNIMFYweiIgaWQ9InN0YXRlLWJnIiBmaWxsPSJ1cmwoI3N0YXRlLWZpbGwpIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgPHRleHQgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgYXJpYS1oaWRkZW49InRydWUiPgogICAgICAgIDx0c3BhbiB4PSI0IiB5PSIxNSI+cGFzc2luZzwvdHNwYW4+CiAgICAgIDwvdGV4dD4KICAgICAgPHRleHQgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgPHRzcGFuIHg9IjQiIHk9IjE0Ij5wYXNzaW5nPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgPC9nPgogICAgPHBhdGggZmlsbD0iIzk1OURBNSIgZD0iTTExIDNjLTMuODY4IDAtNyAzLjEzMi03IDdhNi45OTYgNi45OTYgMCAwIDAgNC43ODYgNi42NDFjLjM1LjA2Mi40ODItLjE0OC40ODItLjMzMiAwLS4xNjYtLjAxLS43MTgtLjAxLTEuMzA0LTEuNzU4LjMyNC0yLjIxMy0uNDI5LTIuMzUzLS44MjItLjA3OS0uMjAyLS40Mi0uODIzLS43MTctLjk5LS4yNDUtLjEzLS41OTUtLjQ1NC0uMDEtLjQ2My41NTItLjAwOS45NDYuNTA4IDEuMDc3LjcxOC42MyAxLjA1OCAxLjYzNi43NiAyLjAzOS41NzcuMDYxLS40NTUuMjQ1LS43NjEuNDQ2LS45MzYtMS41NTctLjE3NS0zLjE4NS0uNzc5LTMuMTg1LTMuNDU2IDAtLjc2Mi4yNzEtMS4zOTIuNzE4LTEuODgyLS4wNy0uMTc1LS4zMTUtLjg5Mi4wNy0xLjg1NSAwIDAgLjU4Ni0uMTgzIDEuOTI1LjcxOGE2LjUgNi41IDAgMCAxIDEuNzUtLjIzNiA2LjUgNi41IDAgMCAxIDEuNzUuMjM2YzEuMzM4LS45MSAxLjkyNS0uNzE4IDEuOTI1LS43MTguMzg1Ljk2My4xNCAxLjY4LjA3IDEuODU1LjQ0Ni40OS43MTcgMS4xMTIuNzE3IDEuODgyIDAgMi42ODYtMS42MzYgMy4yOC0zLjE5NCAzLjQ1Ni4yNTQuMjE5LjQ3My42MzkuNDczIDEuMjk1IDAgLjkzNi0uMDA5IDEuNjg5LS4wMDkgMS45MjUgMCAuMTg0LjEzMS40MDIuNDgxLjMzMkE3LjAxMSA3LjAxMSAwIDAgMCAxOCAxMGMwLTMuODY3LTMuMTMzLTctNy03eiI+PC9wYXRoPgogIDwvZz4KPC9zdmc+Cgo=" alt="R-CMD-check" /></a> <a href="https://github.com/stla/jackR/actions/workflows/R-CMD-check-valgrind.yaml"><img src="data:image/svg+xml; charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMzAiIGhlaWdodD0iMjAiPgogIDx0aXRsZT5SLUNNRC1jaGVjay13aXRoLXZhbGdyaW5kIC0gcGFzc2luZzwvdGl0bGU+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9IndvcmtmbG93LWZpbGwiIHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjNDQ0RDU2IiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMyNDI5MkUiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic3RhdGUtZmlsbCIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiMzNEQwNTgiIG9mZnNldD0iMCUiPjwvc3RvcD4KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iIzI4QTc0NSIgb2Zmc2V0PSIxMDAlIj48L3N0b3A+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgPGcgZm9udC1mYW1pbHk9IiYjMzk7RGVqYVZ1IFNhbnMmIzM5OyxWZXJkYW5hLEdlbmV2YSxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExIj4KICAgICAgPHBhdGggaWQ9IndvcmtmbG93LWJnIiBkPSJNMCwzIEMwLDEuMzQzMSAxLjM1NTIsMCAzLjAyNzAyNzAzLDAgTDE4MCwwIEwxODAsMjAgTDMuMDI3MDI3MDMsMjAgQzEuMzU1MiwyMCAwLDE4LjY1NjkgMCwxNyBMMCwzIFoiIGZpbGw9InVybCgjd29ya2Zsb3ctZmlsbCkiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICA8dGV4dCBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj4KICAgICAgICA8dHNwYW4geD0iMjIuMTk4MTk4MiIgeT0iMTUiIGFyaWEtaGlkZGVuPSJ0cnVlIj5SLUNNRC1jaGVjay13aXRoLXZhbGdyaW5kPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgICA8dGV4dCBmaWxsPSIjRkZGRkZGIj4KICAgICAgICA8dHNwYW4geD0iMjIuMTk4MTk4MiIgeT0iMTQiPlItQ01ELWNoZWNrLXdpdGgtdmFsZ3JpbmQ8L3RzcGFuPgogICAgICA8L3RleHQ+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxODApIiBmb250LWZhbWlseT0iJiMzOTtEZWphVnUgU2FucyYjMzk7LFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICA8cGF0aCBkPSJNMCAwaDQ2LjkzOUM0OC42MjkgMCA1MCAxLjM0MyA1MCAzdjE0YzAgMS42NTctMS4zNyAzLTMuMDYxIDNIMFYweiIgaWQ9InN0YXRlLWJnIiBmaWxsPSJ1cmwoI3N0YXRlLWZpbGwpIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgPHRleHQgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgYXJpYS1oaWRkZW49InRydWUiPgogICAgICAgIDx0c3BhbiB4PSI0IiB5PSIxNSI+cGFzc2luZzwvdHNwYW4+CiAgICAgIDwvdGV4dD4KICAgICAgPHRleHQgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgPHRzcGFuIHg9IjQiIHk9IjE0Ij5wYXNzaW5nPC90c3Bhbj4KICAgICAgPC90ZXh0PgogICAgPC9nPgogICAgPHBhdGggZmlsbD0iIzk1OURBNSIgZD0iTTExIDNjLTMuODY4IDAtNyAzLjEzMi03IDdhNi45OTYgNi45OTYgMCAwIDAgNC43ODYgNi42NDFjLjM1LjA2Mi40ODItLjE0OC40ODItLjMzMiAwLS4xNjYtLjAxLS43MTgtLjAxLTEuMzA0LTEuNzU4LjMyNC0yLjIxMy0uNDI5LTIuMzUzLS44MjItLjA3OS0uMjAyLS40Mi0uODIzLS43MTctLjk5LS4yNDUtLjEzLS41OTUtLjQ1NC0uMDEtLjQ2My41NTItLjAwOS45NDYuNTA4IDEuMDc3LjcxOC42MyAxLjA1OCAxLjYzNi43NiAyLjAzOS41NzcuMDYxLS40NTUuMjQ1LS43NjEuNDQ2LS45MzYtMS41NTctLjE3NS0zLjE4NS0uNzc5LTMuMTg1LTMuNDU2IDAtLjc2Mi4yNzEtMS4zOTIuNzE4LTEuODgyLS4wNy0uMTc1LS4zMTUtLjg5Mi4wNy0xLjg1NSAwIDAgLjU4Ni0uMTgzIDEuOTI1LjcxOGE2LjUgNi41IDAgMCAxIDEuNzUtLjIzNiA2LjUgNi41IDAgMCAxIDEuNzUuMjM2YzEuMzM4LS45MSAxLjkyNS0uNzE4IDEuOTI1LS43MTguMzg1Ljk2My4xNCAxLjY4LjA3IDEuODU1LjQ0Ni40OS43MTcgMS4xMTIuNzE3IDEuODgyIDAgMi42ODYtMS42MzYgMy4yOC0zLjE5NCAzLjQ1Ni4yNTQuMjE5LjQ3My42MzkuNDczIDEuMjk1IDAgLjkzNi0uMDA5IDEuNjg5LS4wMDkgMS45MjUgMCAuMTg0LjEzMS40MDIuNDgxLjMzMkE3LjAxMSA3LjAxMSAwIDAgMCAxOCAxMGMwLTMuODY3LTMuMTMzLTctNy03eiI+PC9wYXRoPgogIDwvZz4KPC9zdmc+Cgo=" alt="R-CMD-check-valgrind" /></a></p>
+<!-- badges: end -->
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jack)</span></code></pre></div>
+<p><em>Schur polynomials</em> have applications in combinatorics and
+<em>zonal polynomials</em> have applications in multivariate statistics.
+They are particular cases of <a href="https://en.wikipedia.org/wiki/Jack_function" title="Jack polynomials on Wikipedia"><em>Jack polynomials</em></a>,
+which are some multivariate symmetric polynomials. The original purpose
+of this package was the evaluation and the computation in symbolic form
+of these polynomials. Now it contains much more stuff dealing with
+multivariate symmetric polynomials.</p>
+<h2 id="breaking-change-in-version-600">Breaking change in version
+6.0.0</h2>
+<p>In version 6.0.0, each function whose name ended with the suffix
+<code>CPP</code> (<code>JackCPP</code>, <code>JackPolCPP</code>, etc.)
+has been renamed by removing this suffix, and the functions
+<code>Jack</code>, <code>JackPol</code>, etc. have been renamed by
+adding the suffix <code>R</code> to their name: <code>JackR</code>,
+<code>JackPolR</code>, etc. The reason of these changes is that a name
+like <code>Jack</code> is more appealing than <code>JackCPP</code> and
+it is more sensible to assign the more appealing names to the functions
+implemented with <strong>Rcpp</strong> since they are highly more
+efficient. The interest of the functions <code>JackR</code>,
+<code>JackPolR</code>, etc. is meager.</p>
+<h2 id="getting-the-polynomials">Getting the polynomials</h2>
+<p>The functions <code>JackPol</code>, <code>ZonalPol</code>,
+<code>ZonalQPol</code> and <code>SchurPol</code> respectively return the
+Jack polynomial, the zonal polynomial, the quaternionic zonal
+polynomial, and the Schur polynomial.</p>
+<p>Each of these polynomials is given by a positive integer, the number
+of variables (the <code>n</code> argument), and an integer partition
+(the <code>lambda</code> argument); the Jack polynomial has a parameter
+in addition, the <code>alpha</code> argument, a number called the
+<em>Jack parameter</em>.</p>
+<p>Actually there are four possible Jack polynomials for a given Jack
+parameter and a given integer partition: the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANBAMAAACN24kIAAAAMFBMVEX///8AAAC6urp2dnYiIiIQEBDu7u5UVFRERESIiIjc3NzMzMyYmJiqqqpmZmYyMjKfynAzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQIHWNgYGAyCU5gAAL2BhDJwDoBTC3cAKYOgkmGCggVDKbYhMAUrwCY4vsApFQXgLVNZziSAOTl3DQDkgCe7wqmnPO/IwAAAABJRU5ErkJggg==" title="J" alt="J" />-polynomial, the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAMFBMVEX///8AAAB2dnYiIiJmZmZERETMzMxUVFSqqqrc3NyYmJju7u4QEBC6urqIiIgyMjLIDMfUAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAU0lEQVQIHWNgYFAWUQlNYGBgYC1g4JAE0owLGLilgHRiAgObBJBeyMDAchpIlzIw3EkA0kdXvdMGUpyyQAIIuAQgNPsHCM2sAKEnNoBppsAKEA0Ao7YMKyVoT5oAAAAASUVORK5CYII=" title="P" alt="P" />-polynomial, the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAARBAMAAAAf5oCsAAAAMFBMVEX///8AAADu7u6IiIiYmJhmZmZERETc3NwQEBB2dna6urqqqqrMzMwiIiJUVFQyMjIvlxBiAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAc0lEQVQIHWNgYGAydg5iAAI3BYYKBQYGzgQIXgFkcwswMLQApXhkGDiBTAZuIQZeoDQDqwADowGQ5n3AoLgBSC8sYOBwANJXgVIPlG1YHwBNvePA8hIoxMD5xL6AHcRg4GPQBtO8CgEQ+j7IDAYG5j4GBgBa5hE5rZTMeQAAAABJRU5ErkJggg==" title="Q" alt="Q" />-polynomial and the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAKlBMVEX///8AAADu7u6IiIhUVFR2dnbc3NyYmJgiIiK6uroyMjJERESqqqpmZmZARrPIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAW0lEQVQIHS3IsQ1AQBhA4ecuv5AohEUkDHKJBS6xAI2odTqd9hq9ESxhH/+F6st7gOn6ZgCWHdlAVshLmLy+gKkVHFJFIbs+E/c7qoX+2DPYAOkNnHAo2Kf18AJPcQukbc8zGwAAAABJRU5ErkJggg==" title="C" alt="C" />-polynomial. You can specify which one you want with
+the <code>which</code> argument, which is set to <code>&quot;J&quot;</code> by
+default. These four polynomials differ only by a constant factor.</p>
+<p>To get a Jack polynomial with <code>JackPol</code>, you have to
+supply the Jack parameter as a <code>bigq</code> rational number or
+anything coercible to a <code>bigq</code> number by an application of
+the <code>as.bigq</code> function of the <strong>gmp</strong> package,
+such as a character string representing a fraction,
+e.g. <code>&quot;2/5&quot;</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>jpol <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">2</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">alpha =</span> <span class="st">&quot;2/5&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>jpol</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 98/25*x^3.y + 28/5*x^2.y^2 + 98/25*x.y^3</span></span></code></pre></div>
+<p>This is a <code>qspray</code> object, from the <a href="https://github.com/stla/qspray" title="the &#39;qspray&#39; package on Github"><strong>qspray</strong>
+package</a>. Here is how you can evaluate this polynomial:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evalQspray</span>(jpol, <span class="fu">c</span>(<span class="st">&quot;2&quot;</span>, <span class="st">&quot;3/2&quot;</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) :</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1239/10</span></span></code></pre></div>
+<p>It is also possible to convert a <code>qspray</code> polynomial to a
+function whose evaluation is performed by the <strong>Ryacas</strong>
+package:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>jyacas <span class="ot">&lt;-</span> <span class="fu">as.function</span>(jpol)</span></code></pre></div>
+<p>You can provide the values of the variables of this function as
+numbers or character strings:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jyacas</span>(<span class="dv">2</span>, <span class="st">&quot;3/2&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;1239/10&quot;</span></span></code></pre></div>
+<p>You can even pass a variable name to this function:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jyacas</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;x&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;(336*x^4)/25&quot;</span></span></code></pre></div>
+<p>If you want to substitute a complex number to a variable, use a
+character string which represents this number, with <code>I</code>
+denoting the imaginary unit:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jyacas</span>(<span class="st">&quot;2 + 2*I&quot;</span>, <span class="st">&quot;2/3 + I/4&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] &quot;Complex((-158921)/2160,101689/2160)&quot;</span></span></code></pre></div>
+<p>It is also possible to evaluate a <code>qspray</code> polynomial for
+some complex values of the variables with <code>evalQspray</code>. You
+have to separate the real parts and the imaginary parts:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evalQspray</span>(jpol, <span class="at">values_re =</span> <span class="fu">c</span>(<span class="st">&quot;2&quot;</span>, <span class="st">&quot;2/3&quot;</span>), <span class="at">values_im =</span> <span class="fu">c</span>(<span class="st">&quot;2&quot;</span>, <span class="st">&quot;1/4&quot;</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) object of length 2:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] -158921/2160 101689/2160</span></span></code></pre></div>
+<h2 id="direct-evaluation-of-the-polynomials">Direct evaluation of the
+polynomials</h2>
+<p>If you just have to evaluate a Jack polynomial, you don’t need to
+resort to a <code>qspray</code> polynomial: you can use the functions
+<code>Jack</code>, <code>Zonal</code>, <code>ZonalQ</code> or
+<code>Schur</code>, which directly evaluate the polynomial; this is much
+more efficient than computing the <code>qspray</code> polynomial and
+then applying <code>evalQspray</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Jack</span>(<span class="fu">c</span>(<span class="st">&quot;2&quot;</span>, <span class="st">&quot;3/2&quot;</span>), <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">alpha =</span> <span class="st">&quot;2/5&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) :</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 1239/10</span></span></code></pre></div>
+<p>However, if you have to evaluate a Jack polynomial for several
+values, it could be better to resort to the <code>qspray</code>
+polynomial.</p>
+<h2 id="skew-jack-polynomials">Skew Jack polynomials</h2>
+<p>As of version 6.0.0, the package is able to compute the skew Schur
+polynomials with the function <code>SkewSchurPol</code>, and the general
+skew Jack polynomial is available as of version 6.1.0 (function
+<code>SkewJackPol</code>).</p>
+<h2 id="symbolic-jack-parameter">Symbolic Jack parameter</h2>
+<p>As of version 6.0.0, it is possible to get a Jack polynomial with a
+symbolic Jack parameter in its coefficients, thanks to the <a href="https://github.com/stla/symbolicQspray" title="the &#39;symbolicQspray&#39; package on Github"><strong>symbolicQspray</strong>
+package</a>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>( J <span class="ot">&lt;-</span> <span class="fu">JackSymPol</span>(<span class="dv">2</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>)) )</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## { [ 2*a^2 + 4*a + 2 ] } * X^3.Y  +  { [ 4*a + 4 ] } * X^2.Y^2  +  { [ 2*a^2 + 4*a + 2 ] } * X.Y^3</span></span></code></pre></div>
+<p>This is a <code>symbolicQspray</code> object, from the
+<strong>symbolicQspray</strong> package.</p>
+<p>A <code>symbolicQspray</code> object corresponds to a multivariate
+polynomial whose coefficients are fractions of polynomials with rational
+coefficients. The variables of these fractions of polynomials can be
+seen as some parameters. The Jack polynomials fit into this category:
+from their definition, their coefficients are fractions of polynomials
+in the Jack parameter. However you can see in the above output that for
+this example, the coefficients are <em>polynomials</em> in the Jack
+parameter (<code>a</code>): there’s no fraction. Actually this fact is
+always true for the Jack <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANBAMAAACN24kIAAAAMFBMVEX///8AAAC6urp2dnYiIiIQEBDu7u5UVFRERESIiIjc3NzMzMyYmJiqqqpmZmYyMjKfynAzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAQElEQVQIHWNgYGAyCU5gAAL2BhDJwDoBTC3cAKYOgkmGCggVDKbYhMAUrwCY4vsApFQXgLVNZziSAOTl3DQDkgCe7wqmnPO/IwAAAABJRU5ErkJggg==" title="J" alt="J" />-polynomials. This is an established fact and it is
+not obvious (it is a consequence of the <a href="https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula" title="Knop &amp; Sahi formula">Knop &amp; Sahi formula</a>).</p>
+<p>You can substitute a value to the Jack parameter with the help of the
+<code>substituteParameters</code> function:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>( J5 <span class="ot">&lt;-</span> <span class="fu">substituteParameters</span>(J, <span class="dv">5</span>) )</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 72*X^3.Y + 24*X^2.Y^2 + 72*X.Y^3</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>J5 <span class="sc">==</span> <span class="fu">JackPol</span>(<span class="dv">2</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">alpha =</span> <span class="st">&quot;5&quot;</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<p>Note that you can change the letters used to denote the variables. By
+default, the Jack parameter is denoted by <code>a</code> and the
+variables are denoted by <code>X</code>, <code>Y</code>, <code>Z</code>
+if there are no more than three variables, otherwise they are denoted by
+<code>X1</code>, <code>X2</code>, … Here is how to change these
+symbols:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showSymbolicQsprayOption</span>(J, <span class="st">&quot;a&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;alpha&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">showSymbolicQsprayOption</span>(J, <span class="st">&quot;X&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;x&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>J</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">## { [ 2*alpha^2 + 4*alpha + 2 ] } * x1^3.x2  +  { [ 4*alpha + 4 ] } * x1^2.x2^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x1.x2^3</span></span></code></pre></div>
+<p>If you want to have the variables denoted by <code>x</code> and
+<code>y</code>, do:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">showSymbolicQsprayOption</span>(J, <span class="st">&quot;showMonomial&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">showMonomialXYZ</span>(<span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>J</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="do">## { [ 2*alpha^2 + 4*alpha + 2 ] } * x^3.y  +  { [ 4*alpha + 4 ] } * x^2.y^2  +  { [ 2*alpha^2 + 4*alpha + 2 ] } * x.y^3</span></span></code></pre></div>
+<p>The skew Jack polynomials with a symbolic Jack parameter are
+available too, as of version 6.1.0.</p>
+<h2 id="compact-expression-of-jack-polynomials">Compact expression of
+Jack polynomials</h2>
+<p>The expression of a Jack polynomial in the canonical basis can be
+long. Since these polynomials are symmetric, one can get a considerably
+shorter expression by writing the polynomial as a linear combination of
+the monomial symmetric polynomials. This is what the function
+<code>compactSymmetricQspray</code> does:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>( J <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">3</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="at">alpha =</span> <span class="st">&quot;2&quot;</span>) )</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 3888*x^4.y^3.z + 2592*x^4.y^2.z^2 + 3888*x^4.y.z^3 + 3888*x^3.y^4.z + 4752*x^3.y^3.z^2 + 4752*x^3.y^2.z^3 + 3888*x^3.y.z^4 + 2592*x^2.y^4.z^2 + 4752*x^2.y^3.z^3 + 2592*x^2.y^2.z^4 + 3888*x.y^4.z^3 + 3888*x.y^3.z^4</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">compactSymmetricQspray</span>(J) <span class="sc">|&gt;</span> <span class="fu">cat</span>()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 3888*M[4, 3, 1] + 2592*M[4, 2, 2] + 4752*M[3, 3, 2]</span></span></code></pre></div>
+<p>The function <code>compactSymmetricQspray</code> is also applicable
+to a <code>symbolicQspray</code> object, like a Jack polynomial with
+symbolic Jack parameter.</p>
+<p>It is easy to figure out what is a monomial symmetric polynomial:
+<code>M[i, j, k]</code> is the sum of all monomials
+<code>x^p.y^q.z^r</code> where <code>(p, q, r)</code> is a permutation
+of <code>(i, j, k)</code>.</p>
+<p>The “compact expression” of a Jack polynomial with <code>n</code>
+variables does not depend on <code>n</code> if
+<code>n &gt;= sum(lambda)</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="st">&quot;3&quot;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>J4 <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">4</span>, lambda, alpha)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>J9 <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">9</span>, lambda, alpha)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">compactSymmetricQspray</span>(J4) <span class="sc">|&gt;</span> <span class="fu">cat</span>()</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">compactSymmetricQspray</span>(J9) <span class="sc">|&gt;</span> <span class="fu">cat</span>()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 32*M[3, 1] + 16*M[2, 2] + 28*M[2, 1, 1] + 24*M[1, 1, 1, 1]</span></span></code></pre></div>
+<p>In fact I’m not sure the Jack polynomial makes sense when
+<code>n &lt; sum(lambda)</code>.</p>
+<h2 id="hall-inner-product">Hall inner product</h2>
+<p>The <strong>qspray</strong> package provides a function to compute
+the Hall inner product of two symmetric polynomials, namely
+<code>HallInnerProduct</code>. This is the generalized Hall inner
+product, the one with a parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" />. It is known that the Jack polynomials
+with parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" /> are orthogonal for the Hall inner product
+with parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" />. Let’s give a try:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="st">&quot;3&quot;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>J1 <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">4</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), alpha, <span class="at">which =</span> <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>J2 <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">4</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), alpha, <span class="at">which =</span> <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">HallInnerProduct</span>(J1, J2, alpha)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) :</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">HallInnerProduct</span>(J1, J1, alpha)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) :</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 270</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">HallInnerProduct</span>(J2, J2, alpha)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) :</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4032/5</span></span></code></pre></div>
+<p>If you set <code>alpha=NULL</code> in <code>HallInnerProduct</code>,
+you get the Hall inner product with symbolic parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" />:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HallInnerProduct</span>(J1, J1, <span class="at">alpha =</span> <span class="cn">NULL</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## 3/8*alpha^4 + 4*alpha^3 + 63/8*alpha^2 + 81/4*alpha</span></span></code></pre></div>
+<p>This is a <code>qspray</code> object. The Hall inner product is
+always polynomial in <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" />.</p>
+<p>It is also possible to get the Hall inner product of two
+<code>symbolicQspray</code> polynomials. Take for example a Jack
+polynomial with symbolic parameter:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">JackSymPol</span>(<span class="dv">4</span>, <span class="at">lambda =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">which =</span> <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">showSymbolicQsprayOption</span>(J, <span class="st">&quot;a&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;t&quot;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">HallInnerProduct</span>(J, J, <span class="at">alpha =</span> <span class="dv">2</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [ 20*t^4 - 24*t^3 + 92*t^2 - 48*t + 104 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ]</span></span></code></pre></div>
+<p>We use <code>t</code> to display the Jack parameter and not
+<code>alpha</code> so that there is no confusion between the Jack
+parameter and the parameter of the Hall product.</p>
+<p>Now, what happens if we compute the symbolic Hall inner product of
+this Jack polynomial with itself, that is, if we run
+<code>HallInnerProduct(J, J, alpha = NULL)</code>? Let’s see:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>( Hip <span class="ot">&lt;-</span> <span class="fu">HallInnerProduct</span>(J, J, <span class="at">alpha =</span> <span class="cn">NULL</span>) )</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="do">## { [ 6 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^4  +  { [ 9*t^2 - 6*t + 1 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^3  +  { [ 3*t^4 - 6*t^3 + 5*t^2 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha^2  +  { [ 4*t^4 ] %//% [ t^4 + 4*t^3 + 6*t^2 + 4*t + 1 ] } * alpha</span></span></code></pre></div>
+<p>We get the Hall inner product of the Jack polynomial with itself,
+with two symbolic parameters: the Jack parameter displayed as
+<code>t</code> and the parameter of the Hall product displayed as
+<code>alpha</code>. This is a <code>symbolicQspray</code> object.</p>
+<p>Now one could be interested in the symbolic Hall inner product of the
+Jack polynomial with itself for the case when the Jack parameter and the
+parameter of the Hall product coincide, that is, to set
+<code>alpha=t</code> in the <code>symbolicQspray</code> polynomial that
+we named <code>Hip</code>. One can get it as follows:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">changeVariables</span>(Hip, <span class="fu">list</span>(<span class="fu">qlone</span>(<span class="dv">1</span>)))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [ 3*t^4 + t^3 ] %//% [ t^2 + 2*t + 1 ]</span></span></code></pre></div>
+<p>This is rather a trick. The <code>changeVariables</code> function
+allows to replace the variables of a <code>symbolicQspray</code>
+polynomial with the new variables given as a list in its second
+argument. The <code>Hip</code> polynomial has only one variable,
+<code>alpha</code>, and it has one parameter, <code>t</code>. This
+parameter <code>t</code> is the polynomial variable of the
+<code>ratioOfQsprays</code> coefficients of <code>Hip</code>.
+Technically this is a <code>qspray</code> object: this is
+<code>qlone(1)</code>. So we provided <code>list(qlone(1))</code> as the
+list of new variables. This corresponds to set <code>alpha=t</code>. The
+usage of the <code>changeVariables</code> is a bit deflected, because
+<code>qlone(1)</code> is not a new variable for <code>Hip</code>, this
+is a constant.</p>
+<h2 id="laplace-beltrami-operator">Laplace-Beltrami operator</h2>
+<p>Just to illustrate the possibilities of the packages involved in the
+<strong>jack</strong> package (<strong>qspray</strong>,
+<strong>ratioOfQsprays</strong>, <strong>symbolicQspray</strong>), let
+us check that the Jack polynomials are eigenpolynomials for the <a href="https://math.mit.edu/~rstan/pubs/pubfiles/73.pdf" title="Laplace-Beltrami operator">Laplace-Beltrami operator</a> on the
+space of homogeneous symmetric polynomials.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>LaplaceBeltrami <span class="ot">&lt;-</span> <span class="cf">function</span>(qspray, alpha) {</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">numberOfVariables</span>(qspray)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  derivatives1 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_len</span>(n), <span class="cf">function</span>(i) {</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">derivQspray</span>(qspray, i)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  derivatives2 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_len</span>(n), <span class="cf">function</span>(i) {</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">derivQspray</span>(derivatives1[[i]], i)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq_len</span>(n), qlone) <span class="co"># x_1, x_2, ..., x_n</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first term</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  out1 <span class="ot">&lt;-</span> 0L</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    out1 <span class="ot">&lt;-</span> out1 <span class="sc">+</span> alpha <span class="sc">*</span> x[[i]]<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> derivatives2[[i]]</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second term</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  out2 <span class="ot">&lt;-</span> 0L</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(i <span class="sc">!=</span> j) {</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        out2 <span class="ot">&lt;-</span> out2 <span class="sc">+</span> x[[i]]<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> derivatives1[[i]] <span class="sc">/</span> (x[[i]] <span class="sc">-</span> x[[j]])</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># at this step, `out2` is a `ratioOfQsprays` object, because of the divisions</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># by `x[[i]] - x[[j]]`; but actually its denominator is 1 because of some</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simplifications and then we extract its numerator to get a `qspray` object</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  out2 <span class="ot">&lt;-</span> <span class="fu">getNumerator</span>(out2)</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  out1<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> out2</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="st">&quot;3&quot;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">JackPol</span>(<span class="dv">4</span>, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>), alpha)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">collinearQsprays</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">qspray1 =</span> <span class="fu">LaplaceBeltrami</span>(J, alpha), </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">qspray2 =</span> J</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<h2 id="other-symmetric-polynomials">Other symmetric polynomials</h2>
+<p>Many other symmetric multivariate polynomials have been introduced in
+version 6.1.0. Let’s see a couple of them.</p>
+<h3 id="skew-jack-polynomials-1">Skew Jack polynomials</h3>
+<p>The skew Jack polynomials are now available. They generalize the skew
+Schur polynomials. In order to specify the skew integer partition <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAATBAMAAAB1gKBPAAAAMFBMVEX///8AAACqqqoyMjLc3NxUVFRERES6urru7u4QEBCYmJhmZmbMzMyIiIgiIiJ2dna4zBRrAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAvUlEQVQYGT2OLxKCQByFn4iiw79CIBItGtQDcAMZgxq5gTI2EwY70THRrGYtazNyBMcTOKMH8O0i+2Z+730fZQH+sRswpopmjWOh6Ks9yyWmslT6JcepamHbqayYVccJuV3eEl3BwYm34wXY5xxjwloBVoERCcN7DCSAn+BGtRKvghEB7Qgv+hbuEx1CK+6FD1hHmAEO9Ez4RQlPAGuc6Z/54LrhyqS8sYQ65oUbNAa4Qj2vP8i/Nd5aYWr8ATAgHYyiebKYAAAAAElFTkSuQmCC" title="\lambda/\mu" alt="\lambda/\mu" />, one has to provide the outer
+partition <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAOBAMAAADkjZCYAAAAMFBMVEX///8AAACqqqoyMjLc3NxUVFRERES6urru7u4QEBCYmJhmZmbMzMyIiIgiIiJ2dna4zBRrAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAARklEQVQIHWNgYDJhAIEwMFnYAKI4F4BI7gQQySMBIhlmgQgmYxCpe9CBgYE9gO8CA0MxA+8DBvYZDCwiDHwHGBjyQdIMDABLcQk845HragAAAABJRU5ErkJggg==" title="\lambda" alt="\lambda" /> and the inner partition <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAMBAMAAABGh1qtAAAALVBMVEX///8AAABUVFS6urpERETMzMzc3Nzu7u4QEBCqqqoiIiJ2dnZmZmYyMjKYmJhx8it5AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASUlEQVQIHWNgYDJgcGVgYGBMYBcHUhYMnAuA1CYGngNA6iYD1wQgJcZQWFrAwCzKsIOPgYH70syaxwwMvCAJkDYwZQEmGWaDKQD/4Qu5JjaJEAAAAABJRU5ErkJggg==" title="\mu" alt="\mu" />. The skew Schur polynomial associated to some
+skew partition is the skew Jack <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAMFBMVEX///8AAAB2dnYiIiJmZmZERETMzMxUVFSqqqrc3NyYmJju7u4QEBC6urqIiIgyMjLIDMfUAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAU0lEQVQIHWNgYFAWUQlNYGBgYC1g4JAE0owLGLilgHRiAgObBJBeyMDAchpIlzIw3EkA0kdXvdMGUpyyQAIIuAQgNPsHCM2sAKEnNoBppsAKEA0Ao7YMKyVoT5oAAAAASUVORK5CYII=" title="P" alt="P" />-polynomial with Jack parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAMBAMAAAAJ2ll9AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbUlEQVQYGWNgwASvDmCKMTAkH8QqzMCIR5jJJAzNKLDqcIZOBgcGBtb/IFAAUgESZlnAwK0DpJEASJjTgYHLGEkMyAQJJzYw8F7DFD7IwMALMhHNbO4EhrcFDSjKGR8wMLAVPWr7jCLc/nH5AQCXNSShD5VDnwAAAABJRU5ErkJggg==" title="\alpha=1" alt="\alpha=1" /> associated to the same skew
+partition:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>skewSchurPoly <span class="ot">&lt;-</span> <span class="fu">SkewSchurPol</span>(n, lambda, mu)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>skewJackPoly <span class="ot">&lt;-</span> <span class="fu">SkewJackPol</span>(n, lambda, mu, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">which =</span> <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>skewSchurPoly <span class="sc">==</span> skewJackPoly</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<h3 id="t-schur-polynomials"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />-Schur polynomials</h3>
+<p>The <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />-Schur polynomials depend on a single parameter
+usually denoted by <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" /> and their coefficients are polynomials in this
+parameter. They yield the Schur polynomials when substituting <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" /> with <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAAC6urqIiIiYmJh2dnbMzMwyMjLc3NxERESqqqpmZmYQEBDu7u5UVFQoey46AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASElEQVQIHWNgUHZVYGBgK2CoYGDgXMBgzcDAmMCgw8CQ2MCQeIFBEUiCEZDRmMCw8AIDowLDGqBKBwY7BgamCSBdDIuXKjAAANvZDhYJzIWwAAAAAElFTkSuQmCC" title="0" alt="0" />:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>tSchurPoly <span class="ot">&lt;-</span> <span class="fu">tSchurPol</span>(n, lambda)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">substituteParameters</span>(tSchurPoly, <span class="at">values =</span> <span class="dv">0</span>) <span class="sc">==</span> <span class="fu">SchurPol</span>(n, lambda)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<h3 id="hall-littlewood-polynomials">Hall-Littlewood polynomials</h3>
+<p>Similarly to the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />-Schur polynomials, the Hall-Littlewood polynomials
+depend on a single parameter usually denoted by <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" /> and their coefficients are polynomials in this
+parameter. The Hall-Littlewood <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAMFBMVEX///8AAAB2dnYiIiJmZmZERETMzMxUVFSqqqrc3NyYmJju7u4QEBC6urqIiIgyMjLIDMfUAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAU0lEQVQIHWNgYFAWUQlNYGBgYC1g4JAE0owLGLilgHRiAgObBJBeyMDAchpIlzIw3EkA0kdXvdMGUpyyQAIIuAQgNPsHCM2sAKEnNoBppsAKEA0Ao7YMKyVoT5oAAAAASUVORK5CYII=" title="P" alt="P" />-polynomials yield the Schur polynomials when
+substituting <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" /> with <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAAC6urqIiIiYmJh2dnbMzMwyMjLc3NxERESqqqpmZmYQEBDu7u5UVFQoey46AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASElEQVQIHWNgUHZVYGBgK2CoYGDgXMBgzcDAmMCgw8CQ2MCQeIFBEUiCEZDRmMCw8AIDowLDGqBKBwY7BgamCSBdDIuXKjAAANvZDhYJzIWwAAAAAElFTkSuQmCC" title="0" alt="0" />:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>hlPoly <span class="ot">&lt;-</span> <span class="fu">HallLittlewoodPol</span>(n, lambda, <span class="at">which =</span> <span class="st">&quot;P&quot;</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">substituteParameters</span>(hlPoly, <span class="at">values =</span> <span class="dv">0</span>) <span class="sc">==</span> <span class="fu">SchurPol</span>(n, lambda)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<h3 id="macdonald-polynomials">Macdonald polynomials</h3>
+<p>The Macdonald polynomials depend on two parameters usually denoted by
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6urqSCTofAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVQIHWNgYFJ2ZWBgSGdoY2BgSmBIYmDgLGCQYmBwdOASYGBYyMC0gYHhJIPnBQYG9vDCB0CVDI4ggsEaTLaCSF/pAgYAbBMKBzxIIloAAAAASUVORK5CYII=" title="q" alt="q" /> and <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />. Their coefficients are not polynomials in <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6urqSCTofAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVQIHWNgYFJ2ZWBgSGdoY2BgSmBIYmDgLGCQYmBwdOASYGBYyMC0gYHhJIPnBQYG9vDCB0CVDI4ggsEaTLaCSF/pAgYAbBMKBzxIIloAAAAASUVORK5CYII=" title="q" alt="q" /> and <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" /> in general, they are ratios of polynomials in <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6urqSCTofAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVQIHWNgYFJ2ZWBgSGdoY2BgSmBIYmDgLGCQYmBwdOASYGBYyMC0gYHhJIPnBQYG9vDCB0CVDI4ggsEaTLaCSF/pAgYAbBMKBzxIIloAAAAASUVORK5CYII=" title="q" alt="q" /> and <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />. These polynomials yield the Hall-Littlewood
+polynomials when substituting <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6urqSCTofAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVQIHWNgYFJ2ZWBgSGdoY2BgSmBIYmDgLGCQYmBwdOASYGBYyMC0gYHhJIPnBQYG9vDCB0CVDI4ggsEaTLaCSF/pAgYAbBMKBzxIIloAAAAASUVORK5CYII=" title="q" alt="q" /> with <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAAC6urqIiIiYmJh2dnbMzMwyMjLc3NxERESqqqpmZmYQEBDu7u5UVFQoey46AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASElEQVQIHWNgUHZVYGBgK2CoYGDgXMBgzcDAmMCgw8CQ2MCQeIFBEUiCEZDRmMCw8AIDowLDGqBKBwY7BgamCSBdDIuXKjAAANvZDhYJzIWwAAAAAElFTkSuQmCC" title="0" alt="0" />:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>macPoly <span class="ot">&lt;-</span> <span class="fu">MacdonaldPol</span>(n, lambda)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>hlPoly <span class="ot">&lt;-</span> <span class="fu">HallLittlewoodPol</span>(n, lambda)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">changeParameters</span>(macPoly, <span class="fu">list</span>(<span class="dv">0</span>, <span class="fu">qlone</span>(<span class="dv">1</span>))) <span class="sc">==</span> hlPoly</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code></pre></div>
+<h2 id="kostka-numbers-and-kostka-polynomials">Kostka numbers and Kostka
+polynomials</h2>
+<p>The ordinary Kostka numbers are usually denoted by <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAASBAMAAAAj0XpiAAAAMFBMVEX///8AAAB2dnYiIiJmZmaqqqqIiIhERETMzMyYmJju7u5UVFQQEBC6urrc3NwyMjILZM5kAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAvElEQVQYGWNgYFAWCWAINGNABuwFDAxhyAIMDIwJDKwNqEKNDQyzUEUYEhlWookwbOc4gS507O4RoBDnBoQ4n8gDRRDPAiHEKcDwcAKQm4IQ4v7AwP4ByF0DEmJneAYkeRQYWCVAvAAgsZghDUg+vMDAADI/pABIRDNUMDAwFe5lYBJ0YOBMOAUU0mQ4ACShYAqDG8MDhr8c/4CaIICvgOExQxmDSOg2mAiEZuXdgCrAwLCWaQK6UAAXSAQA6fIkFO3mELAAAAAASUVORK5CYII=" title="K_{\lambda,\mu}" alt="K_{\lambda,\mu}" /> where <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAOBAMAAADkjZCYAAAAMFBMVEX///8AAACqqqoyMjLc3NxUVFRERES6urru7u4QEBCYmJhmZmbMzMyIiIgiIiJ2dna4zBRrAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAARklEQVQIHWNgYDJhAIEwMFnYAKI4F4BI7gQQySMBIhlmgQgmYxCpe9CBgYE9gO8CA0MxA+8DBvYZDCwiDHwHGBjyQdIMDABLcQk845HragAAAABJRU5ErkJggg==" title="\lambda" alt="\lambda" /> and <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAMBAMAAABGh1qtAAAALVBMVEX///8AAABUVFS6urpERETMzMzc3Nzu7u4QEBCqqqoiIiJ2dnZmZmYyMjKYmJhx8it5AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASUlEQVQIHWNgYDJgcGVgYGBMYBcHUhYMnAuA1CYGngNA6iYD1wQgJcZQWFrAwCzKsIOPgYH70syaxwwMvCAJkDYwZQEmGWaDKQD/4Qu5JjaJEAAAAABJRU5ErkJggg==" title="\mu" alt="\mu" /> denote two integer partitions. The Kostka
+number <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAASBAMAAAAj0XpiAAAAMFBMVEX///8AAAB2dnYiIiJmZmaqqqqIiIhERETMzMyYmJju7u5UVFQQEBC6urrc3NwyMjILZM5kAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAvElEQVQYGWNgYFAWCWAINGNABuwFDAxhyAIMDIwJDKwNqEKNDQyzUEUYEhlWookwbOc4gS507O4RoBDnBoQ4n8gDRRDPAiHEKcDwcAKQm4IQ4v7AwP4ByF0DEmJneAYkeRQYWCVAvAAgsZghDUg+vMDAADI/pABIRDNUMDAwFe5lYBJ0YOBMOAUU0mQ4ACShYAqDG8MDhr8c/4CaIICvgOExQxmDSOg2mAiEZuXdgCrAwLCWaQK6UAAXSAQA6fIkFO3mELAAAAAASUVORK5CYII=" title="K_{\lambda,\mu}" alt="K_{\lambda,\mu}" /> is then associated to
+the two integer partitions <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAOBAMAAADkjZCYAAAAMFBMVEX///8AAACqqqoyMjLc3NxUVFRERES6urru7u4QEBCYmJhmZmbMzMyIiIgiIiJ2dna4zBRrAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAARklEQVQIHWNgYDJhAIEwMFnYAKI4F4BI7gQQySMBIhlmgQgmYxCpe9CBgYE9gO8CA0MxA+8DBvYZDCwiDHwHGBjyQdIMDABLcQk845HragAAAABJRU5ErkJggg==" title="\lambda" alt="\lambda" /> and <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAMBAMAAABGh1qtAAAALVBMVEX///8AAABUVFS6urpERETMzMzc3Nzu7u4QEBCqqqoiIiJ2dnZmZmYyMjKYmJhx8it5AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASUlEQVQIHWNgYDJgcGVgYGBMYBcHUhYMnAuA1CYGngNA6iYD1wQgJcZQWFrAwCzKsIOPgYH70syaxwwMvCAJkDYwZQEmGWaDKQD/4Qu5JjaJEAAAAABJRU5ErkJggg==" title="\mu" alt="\mu" />, and it is the coefficient of the monomial
+symmetric polynomial <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAANBAMAAABBQrPjAAAAMFBMVEX///8AAACYmJiIiIju7u5UVFTMzMyqqqrc3Ny6uroQEBAyMjJEREQiIiJmZmZ2dnavV7gIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAd0lEQVQIHWNgMnJSTSkPYwCDziwF9u0MNRBOgS4D0wUGUwiH4T0DqwHDYShnJQNXAosEA8MBDgMGDgGGRgamDRNYLjAbAGkGHQY+AwX2AJ4EBmYFhu8MnN8Z+BW4oPqAFPeE7E44j/F5qQGcMxXOAjI+IXMcgBwAZFsV4xH/5WUAAAAASUVORK5CYII=" title="m_{\mu}" alt="m_{\mu}" /> in the expression of the Schur
+polynomial <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAKBAMAAABPkMOvAAAAMFBMVEX///8AAACYmJjc3Nyqqqp2dnYyMjLMzMzu7u4iIiIQEBBUVFS6urqIiIhmZmZEREQENKcmAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAVElEQVQIHWNgYFJSZgADJ4YgBm0QK6yggYGzAMiwlHJg4H0AEjIVYOBYwMDA5sAAJL8wMHAz8FxgYHnPwMBzxImBQZerAaiGgYHpAd8FMMOegXkCAAsTDUKQzGXhAAAAAElFTkSuQmCC" title="s_{\lambda}" alt="s_{\lambda}" /> as a linear combination of
+monomial symmetric polynomials. It is always a non-negative integer. It
+is possible to compute these Kostka numbers with the
+<strong>jack</strong> package. They are also available in the <a href="https://github.com/stla/syt" title="the &#39;syt&#39; package on Github"><strong>syt</strong>
+package</a>. There is more in the <strong>jack</strong> package. Since
+the Schur polynomials are the Jack <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAMFBMVEX///8AAAB2dnYiIiJmZmZERETMzMxUVFSqqqrc3NyYmJju7u4QEBC6urqIiIgyMjLIDMfUAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAU0lEQVQIHWNgYFAWUQlNYGBgYC1g4JAE0owLGLilgHRiAgObBJBeyMDAchpIlzIw3EkA0kdXvdMGUpyyQAIIuAQgNPsHCM2sAKEnNoBppsAKEA0Ao7YMKyVoT5oAAAAASUVORK5CYII=" title="P" alt="P" />-polynomials with Jack parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAMBAMAAADrBkIEAAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbUlEQVQYGWNgwAR8azDFGBjYbGSwCTMw4BFmMglD1wNSHc7QyeAApOP/A8F3sAqgMMsCBm6dA2AenAAKczowcBnDBSAMoHBiAwPvNUzhgwwMvAUgYVSzuRMY3hY0oCqXA/qp6FHbZxRhjnqpGgB4CxpC5fOSgAAAAABJRU5ErkJggg==" title="\alpha=1" alt="\alpha=1" />, one can more generally define the
+<em>Kostka-Jack number</em> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAAATBAMAAADc9GjbAAAAMFBMVEX///8AAAB2dnYiIiJmZmaqqqqIiIhERETMzMyYmJju7u5UVFQQEBC6urrc3NwyMjILZM5kAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABSUlEQVQoFWVPPUvDUBQ9TYzpR5oqZHCMSAf/gDiKg6NEUBFcIkjBQYiLiIOkv8AMDur0oC5CK53qJDiIiFMXcRAhQdHR/AHFe/PyYsELOefcc+59eQ/4X1VfepJmHA8rcyNTtVxfZGwGwPpIit28MSIWJR9GmDsZparJRDvEuTKY5RKrJsMWLpmKMmMlX1hclx9Un7FFaOwsE7LC/esdYaXPmkunbxFdRCiRsp14mt15Bq4vmk2hb4SwBMkJJPyCbY64junUCI0WnSOAWgqTX9DlyMQHOkAiYB7Jf1sujClOPIIOWnyhNrWujJMhwHdbDQg2cYCGgB7j2RX4BLS9G2iTC6j4jxTP4hbjHuzm09VA4IycvE6whBjf5Z+h3VfeoRKwA7xhH87aAFDu35wcM+rZ4nu+NCaK7Uz0tIi57kn7VFKBXlXKuKBf3PtFIG+jmHgAAAAASUVORK5CYII=" title="K_{\lambda,\mu}(\alpha)" alt="K_{\lambda,\mu}(\alpha)" /> as the
+coefficient of the monomial symmetric polynomial <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAANBAMAAABBQrPjAAAAMFBMVEX///8AAACYmJiIiIju7u5UVFTMzMyqqqrc3Ny6uroQEBAyMjJEREQiIiJmZmZ2dnavV7gIAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAd0lEQVQIHWNgMnJSTSkPYwCDziwF9u0MNRBOgS4D0wUGUwiH4T0DqwHDYShnJQNXAosEA8MBDgMGDgGGRgamDRNYLjAbAGkGHQY+AwX2AJ4EBmYFhu8MnN8Z+BW4oPqAFPeE7E44j/F5qQGcMxXOAjI+IXMcgBwAZFsV4xH/5WUAAAAASUVORK5CYII=" title="m_{\mu}" alt="m_{\mu}" /> in the expression of the Jack <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAANBAMAAABr8kJMAAAAMFBMVEX///8AAAB2dnYiIiJmZmZERETMzMxUVFSqqqrc3NyYmJju7u4QEBC6urqIiIgyMjLIDMfUAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAU0lEQVQIHWNgYFAWUQlNYGBgYC1g4JAE0owLGLilgHRiAgObBJBeyMDAchpIlzIw3EkA0kdXvdMGUpyyQAIIuAQgNPsHCM2sAKEnNoBppsAKEA0Ao7YMKyVoT5oAAAAASUVORK5CYII=" title="P" alt="P" />-polynomial <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAATBAMAAAAZhvJKAAAAMFBMVEX///8AAAB2dnYiIiJmZmZERETMzMxUVFSqqqrc3NyYmJju7u4QEBC6urqIiIgyMjLIDMfUAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABGElEQVQYGUWPsUrEQBRFj5uNZpLdxMJCBWFBC8HG3iYIFmKjhaDYzH6B2whWksrCKoJiaawECwlYCRZprKwFC4utBZd8gu9NNnhh7j33TTLJwL+iccOxi9WFtUOrNOcqRKmCPyJYUvhVU12pzRREywq1mipRG1pmFyWDQpuqk4k9QPdD0s/FnPojiTP4tpI9WcHPrjiVrPenyQaP4Alv80YB82BWpOJZ7iGs8S4tyJmhbEGccirnFCQTaVtyiVrHUcULXJf4x9IqeX0gCUf6yaH8j9ZKnsgkCXZISrycz0GJ2adzcK7j514ZZ5j1r9eLkrDQkShMu2Ojl3DyyyncYjY5mRbuWnB507a9Flz2s6aGtsnW8wYM/AGVZzIZ/BstTQAAAABJRU5ErkJggg==" title="P_{\lambda}(\alpha)" alt="P_{\lambda}(\alpha)" /> with Jack
+parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAIBAMAAADdFhi7AAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAP0lEQVQIHWNgYDIJYwCCcIZOBgcGlgUM3DoHGDgdGLiMGRgSGxh4rzEwHGRg4C1gYOBOYHhb0MDAVvSo7XMDAP+vDGtHMefkAAAAAElFTkSuQmCC" title="\alpha" alt="\alpha" /> as a linear combination of monomial
+symmetric polynomials. The <strong>jack</strong> package allows to
+compute these numbers. Note that I call them “Kostka-Jack numbers” here
+as well as in the documentation of the package but I don’t know whether
+this wording is standard (probably not).</p>
+<p>The Kostka numbers are also generalized by the <em>Kostka-Foulkes
+polynomials</em>, or <em><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />-Kostka polynomials</em>, which are provided in the
+<strong>jack</strong> package. These are univariate polynomials whose
+variable is denoted by <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />, and their value at <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACcAAAAMBAMAAAAT5rnzAAAAMFBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiJmZmZtk+iGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAZUlEQVQIHWNgYFJgQAGVAUAuswOK2JZAkCAjiEACYH4YkgCICRKsmNmFKgpWaQUS4z8DAg0gJlhQGsRCAiBB9gQkARATJMhxAIsg5wJdoCiamXwBDqhKGQsYGHh9N6AIahycEQAARwMWqCY6AxYAAAAASUVORK5CYII=" title="t=1" alt="t=1" /> are the Kostka numbers. These polynomials are
+used in the computation of the Hall-Littlewood polynomials.</p>
+<p>Finally, the Kostka numbers are also generalized by the
+<em>Kostka-Macdonald polynomials</em>, or <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQBAMAAADUulMJAAAAMFBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6uroiIiL9Vc5aAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAaUlEQVQIHWNgAAGeA2CKgU0BQjMugNArgRSTsuvb3ZcZGNIZ2hiSgdwEhiQGEQYGzgIGKb4JDAyODlwCvA0MDAsZmDZwGxxnOMngeYF/gQIDe3jhA3Z1B6ABjkAMAtYQiqEVQvtKFwAZAJLREp8hw5QUAAAAAElFTkSuQmCC" title="qt" alt="qt" />-<em>Kostka polynomials</em>, also provided in the
+<strong>jack</strong> package. Actually these polynomials even
+generalize the Kostka-Foulkes polynomials. They have two variables,
+denoted by <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6urqSCTofAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVQIHWNgYFJ2ZWBgSGdoY2BgSmBIYmDgLGCQYmBwdOASYGBYyMC0gYHhJIPnBQYG9vDCB0CVDI4ggsEaTLaCSF/pAgYAbBMKBzxIIloAAAAASUVORK5CYII=" title="q" alt="q" /> and <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAALVBMVEX///8AAADu7u5ERESIiIjMzMwQEBC6urp2dnYyMjKYmJjc3NxUVFSqqqoiIiLfy3BVAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQIHWNgYFJgYGB2YGBgDGBgCGNgqJjZxcBgxcDAIM3AwJ7AwMBxgIGBc4EuA1+AAwOv7wYAf8IGqooNWnAAAAAASUVORK5CYII=" title="t" alt="t" />, and one obtains the Kostka-Foulkes polynomials by
+replacing <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAACIiIiYmJjc3NxmZmZERESqqqpUVFQQEBDMzMwyMjLu7u52dna6urqSCTofAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAR0lEQVQIHWNgYFJ2ZWBgSGdoY2BgSmBIYmDgLGCQYmBwdOASYGBYyMC0gYHhJIPnBQYG9vDCB0CVDI4ggsEaTLaCSF/pAgYAbBMKBzxIIloAAAAASUVORK5CYII=" title="q" alt="q" /> with <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAAC6urqIiIiYmJh2dnbMzMwyMjLc3NxERESqqqpmZmYQEBDu7u5UVFQoey46AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASElEQVQIHWNgUHZVYGBgK2CoYGDgXMBgzcDAmMCgw8CQ2MCQeIFBEUiCEZDRmMCw8AIDowLDGqBKBwY7BgamCSBdDIuXKjAAANvZDhYJzIWwAAAAAElFTkSuQmCC" title="0" alt="0" />. Currently the Kostka-Macdonald polynomials are not
+used in the <strong>jack</strong> package.</p>
+<p>The skew generalizations are also available in the
+<strong>jack</strong> package: skew Kostka-Jack numbers, skew
+Kostka-Foulkes polynomials, and skew Kostka-Macdonald polynomials.</p>
+<h2 id="the-kostka-0-numbers-and-a-conjecture">The Kostka-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAAC6urqIiIiYmJh2dnbMzMwyMjLc3NxERESqqqpmZmYQEBDu7u5UVFQoey46AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASElEQVQIHWNgUHZVYGBgK2CoYGDgXMBgzcDAmMCgw8CQ2MCQeIFBEUiCEZDRmMCw8AIDowLDGqBKBwY7BgamCSBdDIuXKjAAANvZDhYJzIWwAAAAAElFTkSuQmCC" title="0" alt="0" /> numbers and a conjecture</h2>
+<p>While playing with the <strong>jack</strong> package, I discovered a
+conjecture. The Kostka-Jack numbers make sense when the Jack parameter
+is <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAMBAMAAABCcoqQAAAALVBMVEX///8AAAC6urqIiIiYmJh2dnbMzMwyMjLc3NxERESqqqpmZmYQEBDu7u5UVFQoey46AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAASElEQVQIHWNgUHZVYGBgK2CoYGDgXMBgzcDAmMCgw8CQ2MCQeIFBEUiCEZDRmMCw8AIDowLDGqBKBwY7BgamCSBdDIuXKjAAANvZDhYJzIWwAAAAAElFTkSuQmCC" title="0" alt="0" />. Then, denoting by <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAPBAMAAAAmOuNHAAAAMFBMVEX///8AAACqqqoyMjIQEBBUVFTMzMyIiIjc3Nzu7u5ERESYmJh2dnZmZmYiIiK6uro71TCaAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAT0lEQVQIHWNgAINnEIpJAELzXoDQLA0QOgtCMZyH0hMYGJhMGBjCQNxSBg5JEL2agQesS4KhDyjNwObAYA8SZg/gVQDRXDtugCgGlkNgCgBVtQtr/iILOQAAAABJRU5ErkJggg==" title="\nu&#39;" alt="\nu&#39;" /> the dual partition of an integer
+partition <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAIBAMAAAAy1HOFAAAAMFBMVEX///8AAACqqqoyMjIQEBBUVFTMzMyIiIjc3Nzu7u5ERESYmJh2dnZmZmYiIiK6uro71TCaAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAN0lEQVQIHWNgMmFgCGNgKGXgkGRgWM3Ac4GBQYKhbwIDmwODPQMDewCvAgMD144bDAwMLIeABAClMQdJts5XwwAAAABJRU5ErkJggg==" title="\nu" alt="\nu" />, the conjecture is that the following equality
+holds true for any Jack parameter <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAANBAMAAAAgWpGhAAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAtUlEQVQYGWNgwAB8JnUYYkCBUwxcCXBxjgYY8xIDcwCMzcARegDKlmHgm8DAwGQSBuZz1D8A0zxiDDwSDAzhDJ0MDmABXzDFBxQWY2BZwMCtcwAszPC+AkgDxYAynA4MXMYQUQYGRaA8mwwDkwRDYgMD7zWo8HuwLXIMTBMYDjIw8BZAhH0NwPQVBuYPDNwJDG8LGoB8DlsFsCjDW5B32IoetX0GCnPEH4CIMjAZIXmeDSiFAAA9Mh+B1r+rdQAAAABJRU5ErkJggg==" title="\alpha&gt;0" alt="\alpha&gt;0" />:</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQQAAAAnBAMAAAAbaSsVAAAAMFBMVEX///8AAAAQEBC6urqYmJhERETc3NxUVFTu7u5mZmaqqqoiIiJ2dnYyMjKIiIjMzMxuDfZFAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEVUlEQVRYCe1XXWgcVRT+kp2ZnUw2uxn/aqzYjYhUEN1URexDmUDVBiquD4oPtU6UEqQqAZH6YMuQihACElHrDyITf9D4k0YoIj7oVupLzMOKUHwQWYmgFZGNz4p+d+beO3dGpaXC5sGch3u+853vnHvm7p0JwegFVwob9X2/gY2x8YvTfZ3b/eZ/n8B96zx62H4gq2YvOY/yQon3QYE4l9Ad1Tsvnov+LJpHzpL/x/TYVkVXIoVM73bSqGqSJn7GDDhCx4z/BcumUlrx501d5cNX4G2VOZEoy6wrZH/LkpuWgsRxhFkzFvjLkRgLn+ZY2VRJv7osl70b8DoGs6bwmwIUs0C1kQqqq6urHXAEL0gJvdpNYElHCWDTXXsbWjrjh2b+CuC4GbdVMCRAMQsktNKIEaArJNvXgdfVigS0UWvjtJZ6vllT2wYrSmTpkj1TJQaKWWqSw9EFB4lWdJSC9S725Ck2tWOcyaTPXm4IqsNuYISwQxWVpnnqhSxz96i88KXPbwNuNhni7/FUgWHTvi52ZNJB87tYbv6WO7R+Vns/HBM96rybhWzKYmkiJFImSkx7vHa9GRJTsR5iPRIgMcffLhFd/9qOeRVZfO5BBq9iBgEwbGZdJVoGBlpu3VIx0Cfgi4doTybkdTdcQy+aqSI2HeMIPItEwGV8i0LA5LEKt5L2GcT9stoYPN4FOGiWFT+6MKcN3AF88mcairU/yjCRMxKeFASbqSI25f6cQkvLxms5Duci3YEX5g+2DDD0K7mPOazO/iJFvNm4CviuI2O6wSjDRNYwJgN6NlNFbDrZxUKUSYdaVEg7DNzHyadvCUjMAHNUR7DFpasDWfYbEjYehbsM51J+L0LG0tQPLMNyGzbnFM1UEZv2NfA6n07VHFKA/lpgoQvrVCQ4O05uDkGLUd3IutMk5sDDqaM2DOxjqCzpm92F/ha8bczZsS6iwg7wYzZCVcwozbmQ/DzK38aCWGxiiKcV4qZWBKeJLJt8a97G/cmTfYTSPnXTWHVAlGY22QDEfVxs6iI2LTXFp+kAnCeE8r1IrKl9saWBkyN8D9gcVmc7qjGclZ1PH4lgBchlgVPiYH4GHn7jnamfZAO63Rkkqtz1GMTfIdFMmChiUyy9z9F2o3Y1uWQRScPm8FwQYgKv8VYo2o4UElkgxNe10w1MKVb7ezUygWiminRTKX2A0xTtd+xq7OfJHwR0w2wvkQX2Y+TdI/xRo0Kx7p/j02aqSDZV0hNKWlEg9V7qHlLsSwpI75WSA3LmC/xAVCDMUBbJplKaXPZENWFqgaNpWIpTb3XzaRytBAmzs8DfWYhzoSySTaX0BSWZ5ctgWiyDMPWODLWL5UtQTEi91uWAKkpF6SrfSPfBW/16Tty7YIz/QEhr9W7X3E5nXtYW5RKbweYJbJ7A//sEpkrPb/QB7N2z0RPg8MqGj7BsF/8S93okd3ngxl7vWdiv1iqtFagehn8BrFH4OrUiBkAAAAAASUVORK5CYII=" title="\sum_{\kappa} K_{\kappa,\lambda}(\alpha) K_{\kappa&#39;,\mu}(\alpha^{-1}) = K_{\lambda&#39;,\mu}(0)." alt="\sum_{\kappa} K_{\kappa,\lambda}(\alpha) K_{\kappa&#39;,\mu}(\alpha^{-1}) = K_{\lambda&#39;,\mu}(0)." /></p>
+<p>For <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAMBAMAAADrBkIEAAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAbUlEQVQYGWNgwAR8azDFGBjYbGSwCTMw4BFmMglD1wNSHc7QyeAApOP/A8F3sAqgMMsCBm6dA2AenAAKczowcBnDBSAMoHBiAwPvNUzhgwwMvAUgYVSzuRMY3hY0oCqXA/qp6FHbZxRhjnqpGgB4CxpC5fOSgAAAAABJRU5ErkJggg==" title="\alpha=1" alt="\alpha=1" />, this equality can be derived from
+some results provided in Macdonald’s book.</p>
+<p>Let’s check it for <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAMBAMAAADrBkIEAAAAMFBMVEX///8AAACqqqqIiIiYmJhmZmbc3Nx2dnbu7u4QEBAyMjIiIiLMzMxERES6urpUVFShAzoAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAiUlEQVQYGWNgwAAszp8xxIACJQyMBljEaxk4P2ARZmBodGBgYDIJQ5ezAgqEM3QyAGVZ/4NAAUiFawADA8sCBm6dAyAeAvg2MHA6MHAZI0TALN4FDIkNDLzXUIT/MLBKMBxkYOAFmQg3m02IgV+AgTuB4W1BA7LyCoZOAwa2okdtn1GEmYs/MQAALUQhk/RaD0kAAAAASUVORK5CYII=" title="\alpha=3" alt="\alpha=3" />. The function
+<code>KostkaJackNumbers</code> returns a matrix whose row names and
+column names encode the partitions of the given weight. These character
+strings are built with some internal functions of the
+<em><strong>jack</strong></em> package. We will not use these functions,
+we will use the base function <code>toString</code> instead, to help us
+to check the conjecture.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jack)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gmp)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># weight of the partitions</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>( KJN_three    <span class="ot">&lt;-</span> <span class="fu">KostkaJackNumbers</span>(n, <span class="at">alpha =</span> <span class="st">&quot;3&quot;</span>) )</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [5] [4, 1] [3, 2] [3, 1, 1] [2, 2, 1] [2, 1, 1, 1]</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [5]             &quot;1&quot; &quot;5/13&quot; &quot;4/13&quot; &quot;2/13&quot;    &quot;12/91&quot;   &quot;6/91&quot;      </span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [4, 1]          &quot;0&quot; &quot;1&quot;    &quot;3/7&quot;  &quot;62/77&quot;   &quot;6/11&quot;    &quot;81/154&quot;    </span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 2]          &quot;0&quot; &quot;0&quot;    &quot;1&quot;    &quot;1/2&quot;     &quot;7/8&quot;     &quot;3/4&quot;       </span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 1, 1]       &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;1&quot;       &quot;1/2&quot;     &quot;4/3&quot;       </span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 2, 1]       &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;1&quot;       &quot;6/5&quot;       </span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 1, 1, 1]    &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;0&quot;       &quot;1&quot;         </span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [1, 1, 1, 1, 1] &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;0&quot;       &quot;0&quot;         </span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [1, 1, 1, 1, 1]</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [5]             &quot;3/91&quot;         </span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [4, 1]          &quot;30/77&quot;        </span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 2]          &quot;3/4&quot;          </span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 1, 1]       &quot;5/3&quot;          </span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 2, 1]       &quot;2&quot;            </span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 1, 1, 1]    &quot;20/7&quot;         </span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [1, 1, 1, 1, 1] &quot;1&quot;</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>( KJN_oneThird <span class="ot">&lt;-</span> <span class="fu">KostkaJackNumbers</span>(n, <span class="at">alpha =</span> <span class="st">&quot;1/3&quot;</span>) )</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [5] [4, 1] [3, 2] [3, 1, 1] [2, 2, 1] [2, 1, 1, 1]</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [5]             &quot;1&quot; &quot;15/7&quot; &quot;20/7&quot; &quot;30/7&quot;    &quot;36/7&quot;    &quot;54/7&quot;      </span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="do">## [4, 1]          &quot;0&quot; &quot;1&quot;    &quot;9/5&quot;  &quot;58/15&quot;   &quot;26/5&quot;    &quot;99/10&quot;     </span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 2]          &quot;0&quot; &quot;0&quot;    &quot;1&quot;    &quot;3/2&quot;     &quot;27/8&quot;    &quot;27/4&quot;      </span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 1, 1]       &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;1&quot;       &quot;3/2&quot;     &quot;54/11&quot;     </span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 2, 1]       &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;1&quot;       &quot;18/7&quot;      </span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 1, 1, 1]    &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;0&quot;       &quot;1&quot;         </span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="do">## [1, 1, 1, 1, 1] &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;0&quot;       &quot;0&quot;         </span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [1, 1, 1, 1, 1]</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="do">## [5]             &quot;81/7&quot;         </span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="do">## [4, 1]          &quot;18&quot;           </span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 2]          &quot;405/28&quot;       </span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 1, 1]       &quot;135/11&quot;       </span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 2, 1]       &quot;54/7&quot;         </span></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 1, 1, 1]    &quot;60/13&quot;        </span></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a><span class="do">## [1, 1, 1, 1, 1] &quot;1&quot;</span></span></code></pre></div>
+<p>We won’t need to change the names of <code>KJN_three</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>partitions_n     <span class="ot">&lt;-</span> partitions<span class="sc">::</span><span class="fu">parts</span>(n)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>dualPartitions_n <span class="ot">&lt;-</span> partitions<span class="sc">::</span><span class="fu">conjugate</span>(partitions_n)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>partitions_n_asStrings     <span class="ot">&lt;-</span> <span class="fu">apply</span>(partitions_n, 2L, toString)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>dualPartitions_n_asStrings <span class="ot">&lt;-</span> <span class="fu">apply</span>(dualPartitions_n, 2L, toString)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(KJN_oneThird) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(KJN_oneThird) <span class="ot">&lt;-</span> partitions_n_asStrings</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>KJN_oneThird <span class="ot">&lt;-</span> KJN_oneThird[dualPartitions_n_asStrings, dualPartitions_n_asStrings]</span></code></pre></div>
+<p>Unfortunately, the <em><strong>gmp</strong></em> matrices do not
+accept row names and column names. But as you can see, our equality is
+indeed fulfilled:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">as.bigq</span>(<span class="fu">t</span>(KJN_three) <span class="sc">%*%</span> <span class="fu">as.bigq</span>(KJN_oneThird)))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Big Rational (&#39;bigq&#39;) 7 x 7 matrix:</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="do">##      [,1] [,2] [,3] [,4] [,5] [,6] [,7]</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1,] 1    5    10   20   30   60   120 </span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [2,] 0    1    3    7    12   27   60  </span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [3,] 0    0    1    2    5    12   30  </span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [4,] 0    0    0    1    2    7    20  </span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [5,] 0    0    0    0    1    3    10  </span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [6,] 0    0    0    0    0    1    5   </span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="do">## [7,] 0    0    0    0    0    0    1</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="fu">KostkaJackNumbers</span>(n, <span class="at">alpha =</span> <span class="st">&quot;0&quot;</span>)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [5] [4, 1] [3, 2] [3, 1, 1] [2, 2, 1] [2, 1, 1, 1]</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="do">## [5]             &quot;1&quot; &quot;5&quot;    &quot;10&quot;   &quot;20&quot;      &quot;30&quot;      &quot;60&quot;        </span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="do">## [4, 1]          &quot;0&quot; &quot;1&quot;    &quot;3&quot;    &quot;7&quot;       &quot;12&quot;      &quot;27&quot;        </span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 2]          &quot;0&quot; &quot;0&quot;    &quot;1&quot;    &quot;2&quot;       &quot;5&quot;       &quot;12&quot;        </span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 1, 1]       &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;1&quot;       &quot;2&quot;       &quot;7&quot;         </span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 2, 1]       &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;1&quot;       &quot;3&quot;         </span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 1, 1, 1]    &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;0&quot;       &quot;1&quot;         </span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="do">## [1, 1, 1, 1, 1] &quot;0&quot; &quot;0&quot;    &quot;0&quot;    &quot;0&quot;       &quot;0&quot;       &quot;0&quot;         </span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [1, 1, 1, 1, 1]</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="do">## [5]             &quot;120&quot;          </span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="do">## [4, 1]          &quot;60&quot;           </span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 2]          &quot;30&quot;           </span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="do">## [3, 1, 1]       &quot;20&quot;           </span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 2, 1]       &quot;10&quot;           </span></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="do">## [2, 1, 1, 1]    &quot;5&quot;            </span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="do">## [1, 1, 1, 1, 1] &quot;1&quot;</span></span></code></pre></div>
+<h2 id="references">References</h2>
+<ul>
+<li><p>I.G. Macdonald. <em>Symmetric Functions and Hall
+Polynomials</em>. Oxford Mathematical Monographs. The Clarendon Press
+Oxford University Press, New York, second edition, 1995.</p></li>
+<li><p>J. Demmel and P. Koev. <em>Accurate and efficient evaluation of
+Schur and Jack functions</em>. Mathematics of computations, vol. 75,
+n. 253, 223-229, 2005.</p></li>
+<li><p>The symmetric functions catalog. <a href="https://www.symmetricfunctions.com/index.htm">https://www.symmetricfunctions.com/index.htm</a>.</p></li>
+</ul>
+<!-- -------------------- links -------------------- -->
+
+</body>
+</html>
