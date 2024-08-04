@@ -12,15 +12,31 @@
 #'   represents the Green X-polynomial \eqn{X_\rho^\lambda}. This is a 
 #'   univariate \code{qspray} polynomial whose variable is denoted by \code{t}.
 #'   The names of the list encode the partitions \eqn{\lambda}. 
+#' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
+#' @export 
+#' @examples 
+#' GreenXpolynomials(c(2, 1)) 
 GreenXpolynomials <- function(rho) {
   stopifnot(isPartition(rho))
   rho <- as.integer(removeTrailingZeros(rho))
   if(length(rho) == 0L) {
     out <- list(
       list("lambda" = integer(0L)),
-      list("polynomial" = qzero())
+      list("polynomial" = qone())
     )
     names(out) <- "[]"
     return(out)
   }
+  n <- sum(rho)
+  psPoly <- PSFpoly(n, rho)
+  hlpCombo <- HLPcombination(psPoly)
+  out <- lapply(hlpCombo, function(lst) {
+    lambda <- lst[["lambda"]]
+    qspray <- lst[["coeff"]]
+    showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
+    list(
+      "lambda"     = lambda,
+      "polynomial" = qspray
+    )
+  })
 }
