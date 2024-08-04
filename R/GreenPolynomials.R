@@ -30,7 +30,7 @@ GreenXpolynomials <- function(rho) {
   n <- sum(rho)
   psPoly <- PSFpoly(n, rho)
   hlpCombo <- HLPcombination(psPoly)
-  out <- lapply(hlpCombo, function(lst) {
+  lapply(hlpCombo, function(lst) {
     lambda <- lst[["lambda"]]
     qspray <- lst[["coeff"]]
     showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
