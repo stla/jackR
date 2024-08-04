@@ -161,7 +161,7 @@ HallPolynomials <- function(mu, nu) {
     showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
     list(
       "lambda" = lambda,
-      "polynomial" = rOQ@numerator
+      "polynomial" = qspray # rOQ@numerator
     )
   })
 }
