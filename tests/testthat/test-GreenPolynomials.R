@@ -29,3 +29,13 @@ test_that("Some Green X-polynomials (comparison with Sage)", {
   }, logical(1L))
   expect_true(all(checks))
 })
+
+
+test_that("A Green Q-polynomial (rho = lambda = [2,2])", {
+  # comparison with https://elad.zelingher.com/mathapps/gln/GreenPolynomials.html
+  GreenQpolys <- GreenQpolynomials(c(2, 2))
+  q <- qlone(1)
+  obtained <- GreenQpolys[["[2, 2]"]]
+  expected <- 2*q^2 - q + 1
+  expect_true(obtained == expected)
+})
