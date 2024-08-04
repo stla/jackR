@@ -24,7 +24,7 @@ test_that("Some Green X-polynomials (comparison with Sage)", {
   checks <- vapply(partitions, function(part) {
     lst <- GreenXpolys[[part]]
     obtained <- lst[["polynomial"]]
-    expected <- polynomials[["polynomial"]]
+    expected <- polynomials[[part]]
     obtained == expected
   }, logical(1L))
   expect_true(all(checks))
