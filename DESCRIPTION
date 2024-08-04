@@ -1,8 +1,8 @@
 Type: Package
 Package: jack
 Title: Jack, Zonal, Schur, and Other Symmetric Polynomials
-Version: 6.1.0
-Date: 2024-07-29
+Version: 6.1.0.9000
+Date: 2024-XX-XX
 Authors@R: 
     person("Stéphane", "Laurent", , "laurent_step@outlook.fr", role = c("aut", "cre"))
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>

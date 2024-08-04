@@ -1,7 +1,13 @@
+# Version 6.1.0.9000 (2024-XX-XX)
+
+- New functions `GreenXpolynomials` and `GreenQpolynomials`, to compute 
+the Green polynomials.
+
+
 # Version 6.1.0 (2024-07-29)
 
 - Some minor modifications have been necessary due to the updates of some 
-package dependencies. No change for the user.
+package dependencies. No change for the user regarding this point.
 
 - The `KostkaNumbers` function has been renamed to `KostkaJackNumbers` and
 it has a new argument `alpha`, to compute the Kostka-Jack numbers (Kostka 
