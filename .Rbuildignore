@@ -9,3 +9,4 @@
 ^inst/trash$
 ^inst/julia$
 ^inst/essais$
+^jackR\.code-workspace$

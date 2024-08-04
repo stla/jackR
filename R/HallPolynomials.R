@@ -23,6 +23,7 @@ msPolynomialsInSchurBasis <- function(weight) {
   out
 }
 
+## the `ms[lambda]` polynomial in the Hall-Littlewood P-polynomials basis
 #' @importFrom qspray isQzero
 #' @noRd
 msPolynomialInHLPbasis <- function(lambda) {
@@ -53,6 +54,7 @@ msPolynomialInHLPbasis <- function(lambda) {
   Filter(Negate(isQzero), out)
 }
 
+## the `Qspray` polynomial in the Hall-Littlewood P-polynomials basis
 #' @importFrom methods new
 #' @importFrom qspray MSPcombination orderedQspray isQzero
 #' @importFrom symbolicQspray Qzero
