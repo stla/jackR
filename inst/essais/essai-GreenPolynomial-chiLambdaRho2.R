@@ -1,24 +1,19 @@
 library(jack)
 
-#lambda <- c(3, 1)
 mu <- c(2, 1, 1)
 rho <- c(2, 2)
 
-#jack:::chi_lambda_mu_rho(lambda, integer(0), rho)
 chi_lambda_rho <- function(lambda, rho) {
   jack:::chi_lambda_mu_rho(lambda, integer(0), rho)
 }
 
 
 listOfDominatingPartitions <- function(mu) {
-  kappas <- jack:::listOfDominatedPartitions(mu)
+  kappas <- jack:::listOfDominatedPartitions(partitions::conjugate(mu))
   lapply(kappas, partitions::conjugate)
 }
 
-
-Knumbers <- syt::KostkaNumbers(4)
-lambdasAsStrings <- rownames(Knumbers)
-lambdas <- lapply(lambdasAsStrings, jack:::fromPartitionAsString)
+lambdas <- listOfDominatingPartitions(mu)
 
 KFpolys <- lapply(lambdas, function(lambda) { 
   KostkaFoulkesPolynomial(lambda, mu)
@@ -36,7 +31,12 @@ toAdd <- mapply(
   USE.NAMES = FALSE, SIMPLIFY = FALSE
 )
 
-Reduce(`+`, toAdd)
+obtained <- Reduce(`+`, toAdd)
 
-GreenXpolynomials(rho = rho)
+muAsString <- jack:::partitionAsString(mu)
+expected <- GreenXpolynomials(rho = rho)[[muAsString]][["polynomial"]]
+
+obtained == expected
+
+
 
