@@ -38,7 +38,7 @@ msPolynomialInHLPbasis <- function(lambda) {
     mu <- fromPartitionAsString(muAsString)
     r <- msCombo[muAsString]
     lapply(lambdas, function(kappa) {
-      r * KostaFoulkesPolynomial(mu, kappa)
+      r * KostkaFoulkesPolynomial(mu, kappa)
     })
   })
   out <- Reduce(

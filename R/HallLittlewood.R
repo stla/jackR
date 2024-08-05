@@ -86,7 +86,7 @@ ssytWord <- function(ssyt) {
 #' @export
 #' @importFrom qspray qlone qzero showQsprayOption<- showQsprayXYZ qsprayMaker
 #' @importFrom syt ssytx_withGivenShapeAndWeight
-KostaFoulkesPolynomial <- function(lambda, mu) {
+KostkaFoulkesPolynomial <- function(lambda, mu) {
   stopifnot(isPartition(lambda), isPartition(mu))
   lambda <- removeTrailingZeros(as.integer(lambda))
   mu <- removeTrailingZeros(as.integer(mu))
@@ -161,7 +161,7 @@ HallLittlewoodP <- function(n, lambda) {
     names(kappas) <- vapply(kappas, partitionAsString, character(1L))
     kappa <- kappas[[1L]]
     lapply(kappas, function(mu) {
-      KostaFoulkesPolynomial(kappa, mu)
+      KostkaFoulkesPolynomial(kappa, mu)
     })
   })
   names(kfs) <- lambdaStrings[i:length(lambdaStrings)]
