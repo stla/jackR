@@ -31,6 +31,38 @@ test_that("Some Green X-polynomials (comparison with Sage)", {
 })
 
 
+test_that("Green X-polynomial expansion", {
+  
+  mu  <- c(2, 1, 1, 1)
+  rho <- c(2, 2, 1)
+
+  lambdas <- listOfDominatingPartitions(mu)
+
+  KFpolys <- lapply(lambdas, function(lambda) { 
+    KostkaFoulkesPolynomial(lambda, mu)
+  })
+
+  chis <- lapply(lambdas, function(lambda) {
+    chi_lambda_rho(lambda, rho)
+  })
+
+  toAdd <- mapply(
+    function(chi, KFpoly) {
+      chi * KFpoly
+    },
+    chis, KFpolys,
+    USE.NAMES = FALSE, SIMPLIFY = FALSE
+  )
+
+  obtained <- Reduce(`+`, toAdd)
+
+  muAsString <- partitionAsString(mu)
+  expected <- GreenXpolynomials(rho = rho)[[muAsString]][["polynomial"]]
+
+  expect_true(obtained == expected)
+})
+
+
 test_that("A Green Q-polynomial (rho = lambda = [2,2])", {
   # comparison with https://elad.zelingher.com/mathapps/gln/GreenPolynomials.html
   GreenQpolys <- GreenQpolynomials(c(2, 2))

@@ -1,12 +1,11 @@
 library(jack)
 
-mu <- c(2, 1, 1)
-rho <- c(2, 2)
+mu <- c(2, 1, 1, 1)
+rho <- c(2, 2, 1)
 
 chi_lambda_rho <- function(lambda, rho) {
   jack:::chi_lambda_mu_rho(lambda, integer(0), rho)
 }
-
 
 listOfDominatingPartitions <- function(mu) {
   kappas <- jack:::listOfDominatedPartitions(partitions::conjugate(mu))
