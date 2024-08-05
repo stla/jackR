@@ -15,6 +15,7 @@
 #'   The names of the list encode the partitions \eqn{\lambda}. 
 #' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
 #' @export 
+#' @seealso \code{\link{GreenQpolynomials}}.
 #' @examples 
 #' GreenXpolynomials(c(2, 1)) 
 GreenXpolynomials <- function(rho) {
@@ -59,6 +60,7 @@ GreenXpolynomials <- function(rho) {
 #'   The names of the list encode the partitions \eqn{\lambda}. 
 #' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
 #' @export 
+#' @seealso \code{\link{GreenXpolynomials}}.
 #' @examples 
 #' GreenQpolynomials(c(2, 1)) 
 GreenQpolynomials <- function(rho) {

@@ -27,3 +27,6 @@ Computes the Green Q-polynomials for a given integer partition.
 \examples{
 GreenQpolynomials(c(2, 1)) 
 }
+\seealso{
+\code{\link{GreenXpolynomials}}.
+}
