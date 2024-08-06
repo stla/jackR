@@ -24,6 +24,10 @@ The Green X-polynomials, usually denoted by \eqn{X_\rho^\lambda},
 \description{
 Computes the Green X-polynomials for a given integer partition.
 }
+\note{
+The Green X-polynomials are a variant of the "true" Green polynomials, 
+  that we called the Green Q-polynomials (\code{\link{GreenQpolynomials}}).
+}
 \examples{
 GreenXpolynomials(c(2, 1)) 
 }

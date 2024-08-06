@@ -15,6 +15,8 @@
 #'   The names of the list encode the partitions \eqn{\lambda}. 
 #' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
 #' @export 
+#' @note The Green X-polynomials are a variant of the "true" Green polynomials, 
+#'   that we called the Green Q-polynomials (\code{\link{GreenQpolynomials}}).
 #' @seealso \code{\link{GreenQpolynomials}}.
 #' @examples 
 #' GreenXpolynomials(c(2, 1)) 
@@ -60,6 +62,9 @@ GreenXpolynomials <- function(rho) {
 #'   The names of the list encode the partitions \eqn{\lambda}. 
 #' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
 #' @export 
+#' @note The Green Q-polynomials are the "true" Green polynomials. 
+#'   The Green X-polynomials (\code{\link{GreenXpolynomials}}) are a 
+#'   variant of the Green Q-polynomials.
 #' @seealso \code{\link{GreenXpolynomials}}.
 #' @examples 
 #' GreenQpolynomials(c(2, 1)) 
