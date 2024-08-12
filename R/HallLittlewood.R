@@ -178,14 +178,14 @@ HallLittlewoodP <- function(n, lambda) {
   hlp
 }
 
-phi_r <- function(r) {
+.phi_r <- function(r) {
   t <- qlone(1L)
   Reduce(`*`, lapply(seq_len(r), function(i) (1L-t^i)))
 }
 
 b <- function(lambda) {
   m <- vapply(unique(lambda), function(i) sum(lambda == i), integer(1L))
-  Reduce(`*`, lapply(m, phi_r))
+  Reduce(`*`, lapply(m, .phi_r))
 }
 
 #' @title Hall-Littlewood polynomial
