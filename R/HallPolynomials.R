@@ -5,7 +5,7 @@ msPolynomialsInSchurBasis <- function(weight) {
   lambdas <- listOfPartitions(weight)
   nparts <- length(lambdas)
   lambdasAsStrings <-
-    vapply(lambdas, partitionAsString, character(1L))
+    vapply(lambdas, partitionAsString, character(1L), USE.NAMES = FALSE)
   KostkaMatrix <- matrix(0L, nrow = nparts, ncol = nparts)
   colnames(KostkaMatrix) <- lambdasAsStrings
   for(i in seq_len(nparts)) {
@@ -55,13 +55,15 @@ msPolynomialInHLPbasis <- function(lambda) {
 }
 
 ## the `Qspray` polynomial in the Hall-Littlewood P-polynomials basis
+##   the `takeNumerators` argument is used for the Hall polynomials and 
+##   for the Green polynomials
 #' @importFrom methods new
 #' @importFrom qspray MSPcombination orderedQspray isQzero
 #' @importFrom symbolicQspray Qzero
 #' @importFrom ratioOfQsprays as.ratioOfQsprays
 #' @noRd
-HLPcombination <- function(Qspray) {
-  fullMsCombo <- MSPcombination(Qspray, check = FALSE)
+.HLcombinationP <- function(Qspray, check, takeNumerators) {
+  fullMsCombo <- MSPcombination(Qspray, check = check)
   lambdas <- lapply(fullMsCombo, `[[`, "lambda")
   finalQspray <- Qzero()
   unitRatioOfQsprays <- as.ratioOfQsprays(1L)
@@ -84,19 +86,29 @@ HLPcombination <- function(Qspray) {
         spray <- spray + coeff * sprays[[kappa]]
       }
     }
-    finalQspray <- finalQspray + msCombo[["coeff"]]*spray
+    finalQspray <- finalQspray + msCombo[["coeff"]] * spray
   }
   finalQspray <- orderedQspray(finalQspray)
   powers <- finalQspray@powers
   coeffs <- finalQspray@coeffs
-  combo <- mapply(
-    function(lambda, coeff) {
-      qspray <- coeff@numerator
-      list("coeff" = qspray, "lambda" = lambda)
-    },
-    powers, coeffs,
-    SIMPLIFY = FALSE, USE.NAMES = FALSE
-  )
+  if(takeNumerators) {
+    combo <- mapply(
+      function(lambda, coeff) {
+        qspray <- coeff@numerator
+        list("coeff" = qspray, "lambda" = lambda)
+      },
+      powers, coeffs,
+      SIMPLIFY = FALSE, USE.NAMES = FALSE
+    )
+  } else {
+    combo <- mapply(
+      function(lambda, coeff) {
+        list("coeff" = coeff, "lambda" = lambda)
+      },
+      powers, coeffs,
+      SIMPLIFY = FALSE, USE.NAMES = FALSE
+    )
+  }
   names(combo) <-
     vapply(powers, partitionAsString, character(1L), USE.NAMES = FALSE)
   combo
@@ -151,7 +163,7 @@ HallPolynomials <- function(mu, nu) {
   stopifnot(isPartition(mu), isPartition(nu))
   n <- sum(mu) + sum(nu)
   Qspray <- HallLittlewoodPol(n, mu, "P") * HallLittlewoodPol(n, nu, "P")
-  hlpCombo <- HLPcombination(Qspray)
+  hlpCombo <- .HLcombinationP(Qspray, check = FALSE, takeNumerators = TRUE)
   t <- qlone(1L)
   .n_mu_nu <- .n(mu) + .n(nu)
   lapply(hlpCombo, function(coeff_lambda) {
@@ -161,7 +173,7 @@ HallPolynomials <- function(mu, nu) {
     showQsprayOption(qspray, "showQspray") <- showQsprayXYZ("t")
     list(
       "lambda" = lambda,
-      "polynomial" = qspray # rOQ@numerator
+      "polynomial" = qspray 
     )
   })
 }

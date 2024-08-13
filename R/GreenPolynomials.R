@@ -33,7 +33,7 @@ GreenXpolynomials <- function(rho) {
   }
   n <- sum(rho)
   psPoly <- PSFpoly(n, rho)
-  hlpCombo <- HLPcombination(psPoly)
+  hlpCombo <- .HLcombinationP(psPoly, check = FALSE, takeNumerators = TRUE)
   lapply(hlpCombo, function(lst) {
     lambda <- lst[["lambda"]]
     qspray <- lst[["coeff"]]
@@ -81,7 +81,7 @@ GreenQpolynomials <- function(rho) {
   }
   n <- sum(rho)
   psPoly <- PSFpoly(n, rho)
-  hlpCombo <- HLPcombination(psPoly)
+  hlpCombo <- .HLcombinationP(psPoly, check = FALSE, takeNumerators = TRUE)
   q <- qlone(1L)
   lapply(hlpCombo, function(lst) {
     lambda <- lst[["lambda"]]
