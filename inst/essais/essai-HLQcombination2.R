@@ -89,9 +89,36 @@ test1 <- function(lambda, alpha, which) {
   n <- sum(lambda)
   p <- JackPol(n, lambda, alpha, which)
   combo <- HLcombinationQ(p)
-  toAdd <- lapply(combo, function(mu, coeff) {
+  toAdd <- lapply(combo, function(lst) {
+    mu <- lst$lambda
+    coeff <- lst$coeff
     HallLittlewoodPol(n, mu, "Q") * coeff
   })
   obtained <- Reduce(`+`, toAdd)
+  pp <- as(p, "symbolicQspray")
+  obtained == pp
+} 
+
+test1(c(2, 2, 1), "3", "C")
+
+lambda = c(2, 1)
+alpha = "3"
+which = "C"
+
+
+test2 <- function(lambda, which) {
+  n <- sum(lambda)
+  p <- JackSymPol(n, lambda, which)
+  combo <- HLcombinationQ(p)
+  toAdd <- lapply(combo, function(lst) {
+    mu <- lst$lambda
+    coeff <- lst$coeff
+    HallLittlewoodPol(n, mu, "Q") * coeff
+  })
+  obtained <- Reduce(`+`, toAdd)
+  #pp <- as(p, "symbolicQspray")
   obtained == p
 } 
+
+test2(c(2, 2), "C")
+
