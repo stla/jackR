@@ -11,9 +11,10 @@ msPolynomialInHLQbasis <- function(lambda) {
   musAsStrings <- names(msCombo)
   hlpCombos <- lapply(musAsStrings, function(muAsString) {
     mu <- fromPartitionAsString(muAsString)
-    r <- msCombo[muAsString] / b(mu)
+    r <- msCombo[muAsString] 
     lapply(lambdas, function(kappa) {
-      r * KostkaFoulkesPolynomial(mu, kappa)
+      rOQ <- r * KostkaFoulkesPolynomial(mu, kappa) / b(kappa)
+      rOQ
     })
   })
   out <- Reduce(
@@ -25,8 +26,9 @@ msPolynomialInHLQbasis <- function(lambda) {
     },
     hlpCombos
   )
-  out <- lapply(out, function(rOQ) rOQ@numerator)
+  #out <- lapply(out, function(rOQ) rOQ@numerator)
   names(out) <- lambdasAsStrings
+  return(out)
   Filter(Negate(isQzero), out)
 }
 
@@ -53,10 +55,10 @@ HLQcombination <- function(Qspray) {
       )
     })
     names(sprays) <- names(hlpCombo)
-    spray <- Qzero()
+    spray <- as.ratioOfQsprays(0L) #Qzero()
     for(kappa in names(hlpCombo)) {
       coeff <- hlpCombo[[kappa]]
-      if(!isQzero(coeff)) {
+      if(TRUE){#!isQzero(coeff)) {
         spray <- spray + coeff * sprays[[kappa]]
       }
     }
@@ -67,7 +69,7 @@ HLQcombination <- function(Qspray) {
   coeffs <- finalQspray@coeffs
   combo <- mapply(
     function(lambda, coeff) {
-      qspray <- coeff@numerator
+      qspray <- coeff#@numerator
       list("coeff" = qspray, "lambda" = lambda)
     },
     powers, coeffs,
@@ -81,7 +83,9 @@ HLQcombination <- function(Qspray) {
 
 
 p <- JackPol(3, c(2, 1), alpha = "2")
+p <- JackSymPol(3, c(2, 1))
 co <- HLQcombination(p)
 
-x <- qlone(1)
-HallLittlewoodPol(3, c(2,1), "Q") * 4 + HallLittlewoodPol(3, c(1,1,1), "Q") * (4*x^2 + 4*x + 2)
+HallLittlewoodPol(3, c(2,1), "Q") * co[["[2, 1]"]]$coeff + HallLittlewoodPol(3, c(1,1,1), "Q") * co[["[1, 1, 1]"]]$coeff
+
+HallLittlewoodPol(3, c(3), "Q") * co[["[3]"]]$coeff + HallLittlewoodPol(3, c(2,1), "Q") * co[["[2, 1]"]]$coeff + HallLittlewoodPol(3, c(1,1,1), "Q") * co[["[1, 1, 1]"]]$coeff
