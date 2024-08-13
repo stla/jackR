@@ -3,6 +3,7 @@
 export(ESF)
 export(GreenQpolynomials)
 export(GreenXpolynomials)
+export(HLcombinationP)
 export(HallLittlewoodPol)
 export(HallPolynomials)
 export(Jack)

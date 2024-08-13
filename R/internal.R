@@ -81,6 +81,10 @@ isPositiveInteger <- function(n){
 #   isPositiveInteger(n) && n != 0
 # }
 
+isBoolean <- function(x) {
+  is.vector(x) && is.logical(x) && length(x) == 1L && !is.na(x)
+}
+
 isPartition <- function(lambda){
   length(lambda) == 0L ||
     all(floor(lambda) == lambda) && all(diff(lambda) <= 0)

@@ -54,7 +54,7 @@ msPolynomialInHLPbasis <- function(lambda) {
   Filter(Negate(isQzero), out)
 }
 
-## the `Qspray` polynomial in the Hall-Littlewood P-polynomials basis
+## the `Qspray` polynomial in the Hall-Littlewood P-polynomials basis;
 ##   the `takeNumerators` argument is used for the Hall polynomials and 
 ##   for the Green polynomials
 #' @importFrom methods new
