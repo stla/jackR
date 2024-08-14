@@ -3,6 +3,12 @@
 - New functions `GreenXpolynomials` and `GreenQpolynomials`, to compute 
 the Green polynomials.
 
+- New function `HLcombinationP`, to get a symmetric polynomial as a linear 
+combination of some Hall-Littlewood `P`-polynomials.
+
+- New function `HLcombinationQ`, to get a symmetric polynomial as a linear 
+combination of some Hall-Littlewood `Q`-polynomials.
+
 
 # Version 6.1.0 (2024-07-29)
 
@@ -54,7 +60,7 @@ Jack parameter.
 
 - New function `tSkewSchurPol`, to get a skew t-Schur polynomial.
 
-- New function `KostaFoulkesPolynomial`, to get a Kostka-Foulkes polynomial. 
+- New function `KostkaFoulkesPolynomial`, to get a Kostka-Foulkes polynomial. 
 A Kostka-Foulkes polynomial is a univariate polynomial associated to a pair of
 integer partitions and its value at 1 is the Kostka number associated to these 
 partitions.
@@ -76,8 +82,7 @@ When the value of this parameter is 0, then this is the skew Schur polynomial.
 - New function `qtKostkaPolynomials`, to get qt-Kostka polynomials, 
 aka Kostka-Macdonald polynomials.
 
-- New function `qtSkewKostkaPolynomials`, to get skew qt-Kostka 
-polynomials.
+- New function `qtSkewKostkaPolynomials`, to get skew qt-Kostka polynomials.
 
 - New function `MacdonaldPol`, to get a Macdonald polynomial.
 
