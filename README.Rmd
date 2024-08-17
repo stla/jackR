@@ -1,6 +1,8 @@
 ---
 title: "The 'jack' package: Jack and other symmetric polynomials"
-output: github_document
+output: 
+  github_document:
+    math_method: NULL
 editor_options: 
   chunk_output_type: console
 ---

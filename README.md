@@ -46,17 +46,11 @@ argument); the Jack polynomial has a parameter in addition, the `alpha`
 argument, a number called the *Jack parameter*.
 
 Actually there are four possible Jack polynomials for a given Jack
-parameter and a given integer partition: the
-![J](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;J "J")-polynomial,
-the
-![P](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;P "P")-polynomial,
-the
-![Q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Q "Q")-polynomial
-and the
-![C](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;C "C")-polynomial.
-You can specify which one you want with the `which` argument, which is
-set to `"J"` by default. These four polynomials differ only by a
-constant factor.
+parameter and a given integer partition: the *J*-polynomial, the
+*P*-polynomial, the *Q*-polynomial and the *C*-polynomial. You can
+specify which one you want with the `which` argument, which is set to
+`"J"` by default. These four polynomials differ only by a constant
+factor.
 
 To get a Jack polynomial with `JackPol`, you have to supply the Jack
 parameter as a `bigq` rational number or anything coercible to a `bigq`
@@ -166,9 +160,8 @@ definition, their coefficients are fractions of polynomials in the Jack
 parameter. However you can see in the above output that for this
 example, the coefficients are *polynomials* in the Jack parameter (`a`):
 there’s no fraction. Actually this fact is always true for the Jack
-![J](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;J "J")-polynomials.
-This is an established fact and it is not obvious (it is a consequence
-of the [Knop & Sahi
+*J*-polynomials. This is an established fact and it is not obvious (it
+is a consequence of the [Knop & Sahi
 formula](https://en.wikipedia.org/wiki/Jack_function#Combinatorial_formula "Knop & Sahi formula")).
 
 You can substitute a value to the Jack parameter with the help of the
@@ -249,13 +242,9 @@ In fact I’m not sure the Jack polynomial makes sense when
 
 The **qspray** package provides a function to compute the Hall inner
 product of two symmetric polynomials, namely `HallInnerProduct`. This is
-the generalized Hall inner product, the one with a parameter
-![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha").
-It is known that the Jack polynomials with parameter
-![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha")
-are orthogonal for the Hall inner product with parameter
-![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha").
-Let’s give a try:
+the generalized Hall inner product, the one with a parameter *α*. It is
+known that the Jack polynomials with parameter *α* are orthogonal for
+the Hall inner product with parameter *α*. Let’s give a try:
 
 ``` r
 alpha <- "3"
@@ -273,8 +262,7 @@ HallInnerProduct(J2, J2, alpha)
 ```
 
 If you set `alpha=NULL` in `HallInnerProduct`, you get the Hall inner
-product with symbolic parameter
-![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha"):
+product with symbolic parameter *α*:
 
 ``` r
 HallInnerProduct(J1, J1, alpha = NULL)
@@ -282,8 +270,7 @@ HallInnerProduct(J1, J1, alpha = NULL)
 ```
 
 This is a `qspray` object. The Hall inner product is always polynomial
-in
-![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha").
+in *α*.
 
 It is also possible to get the Hall inner product of two
 `symbolicQspray` polynomials. Take for example a Jack polynomial with
@@ -395,16 +382,9 @@ version 6.1.0. Let’s see a couple of them.
 
 The skew Jack polynomials are now available. They generalize the skew
 Schur polynomials. In order to specify the skew integer partition
-![\lambda/\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda%2F%5Cmu "\lambda/\mu"),
-one has to provide the outer partition
-![\lambda](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda "\lambda")
-and the inner partition
-![\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu").
-The skew Schur polynomial associated to some skew partition is the skew
-Jack
-![P](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;P "P")-polynomial
-with Jack parameter
-![\alpha=1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha%3D1 "\alpha=1")
+*λ*/*μ*, one has to provide the outer partition *λ* and the inner
+partition *μ*. The skew Schur polynomial associated to some skew
+partition is the skew Jack *P*-polynomial with Jack parameter *α* = 1
 associated to the same skew partition:
 
 ``` r
@@ -417,17 +397,11 @@ skewSchurPoly == skewJackPoly
 ## [1] TRUE
 ```
 
-### ![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")-Schur polynomials
+### *t*-Schur polynomials
 
-The
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")-Schur
-polynomials depend on a single parameter usually denoted by
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-and their coefficients are polynomials in this parameter. They yield the
-Schur polynomials when substituting
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-with
-![0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;0 "0"):
+The *t*-Schur polynomials depend on a single parameter usually denoted
+by *t* and their coefficients are polynomials in this parameter. They
+yield the Schur polynomials when substituting *t* with 0:
 
 ``` r
 n <- 3
@@ -439,18 +413,11 @@ substituteParameters(tSchurPoly, values = 0) == SchurPol(n, lambda)
 
 ### Hall-Littlewood polynomials
 
-Similarly to the
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")-Schur
-polynomials, the Hall-Littlewood polynomials depend on a single
-parameter usually denoted by
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-and their coefficients are polynomials in this parameter. The
-Hall-Littlewood
-![P](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;P "P")-polynomials
-yield the Schur polynomials when substituting
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-with
-![0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;0 "0"):
+Similarly to the *t*-Schur polynomials, the Hall-Littlewood polynomials
+depend on a single parameter usually denoted by *t* and their
+coefficients are polynomials in this parameter. The Hall-Littlewood
+*P*-polynomials yield the Schur polynomials when substituting *t* with
+0:
 
 ``` r
 n <- 3
@@ -463,22 +430,10 @@ substituteParameters(hlPoly, values = 0) == SchurPol(n, lambda)
 ### Macdonald polynomials
 
 The Macdonald polynomials depend on two parameters usually denoted by
-![q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;q "q")
-and
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t").
-Their coefficients are not polynomials in
-![q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;q "q")
-and
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
-in general, they are ratios of polynomials in
-![q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;q "q")
-and
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t").
-These polynomials yield the Hall-Littlewood polynomials when
-substituting
-![q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;q "q")
-with
-![0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;0 "0"):
+*q* and *t*. Their coefficients are not polynomials in *q* and *t* in
+general, they are ratios of polynomials in *q* and *t*. These
+polynomials yield the Hall-Littlewood polynomials when substituting *q*
+with 0:
 
 ``` r
 n <- 3
@@ -492,103 +447,63 @@ changeParameters(macPoly, list(0, qlone(1))) == hlPoly
 ## Kostka numbers and Kostka polynomials
 
 The ordinary Kostka numbers are usually denoted by
-![K\_{\lambda,\mu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K_%7B%5Clambda%2C%5Cmu%7D "K_{\lambda,\mu}")
-where
-![\lambda](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda "\lambda")
-and
-![\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu")
-denote two integer partitions. The Kostka number
-![K\_{\lambda,\mu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K_%7B%5Clambda%2C%5Cmu%7D "K_{\lambda,\mu}")
-is then associated to the two integer partitions
-![\lambda](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda "\lambda")
-and
-![\mu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu "\mu"),
-and it is the coefficient of the monomial symmetric polynomial
-![m\_{\mu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m_%7B%5Cmu%7D "m_{\mu}")
-in the expression of the Schur polynomial
-![s\_{\lambda}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;s_%7B%5Clambda%7D "s_{\lambda}")
-as a linear combination of monomial symmetric polynomials. It is always
-a non-negative integer. It is possible to compute these Kostka numbers
-with the **jack** package. They are also available in the [**syt**
+*K*<sub>*λ*, *μ*</sub> where *λ* and *μ* denote two integer partitions.
+The Kostka number *K*<sub>*λ*, *μ*</sub> is then associated to the two
+integer partitions *λ* and *μ*, and it is the coefficient of the
+monomial symmetric polynomial *m*<sub>*μ*</sub> in the expression of the
+Schur polynomial *s*<sub>*λ*</sub> as a linear combination of monomial
+symmetric polynomials. It is always a non-negative integer. It is
+possible to compute these Kostka numbers with the **jack** package. They
+are also available in the [**syt**
 package](https://github.com/stla/syt "the 'syt' package on Github").
 There is more in the **jack** package. Since the Schur polynomials are
-the Jack
-![P](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;P "P")-polynomials
-with Jack parameter
-![\alpha=1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha%3D1 "\alpha=1"),
-one can more generally define the *Kostka-Jack number*
-![K\_{\lambda,\mu}(\alpha)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K_%7B%5Clambda%2C%5Cmu%7D%28%5Calpha%29 "K_{\lambda,\mu}(\alpha)")
-as the coefficient of the monomial symmetric polynomial
-![m\_{\mu}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;m_%7B%5Cmu%7D "m_{\mu}")
-in the expression of the Jack
-![P](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;P "P")-polynomial
-![P\_{\lambda}(\alpha)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;P_%7B%5Clambda%7D%28%5Calpha%29 "P_{\lambda}(\alpha)")
-with Jack parameter
-![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha")
-as a linear combination of monomial symmetric polynomials. The **jack**
-package allows to compute these numbers. Note that I call them
-*“Kostka-Jack numbers”* here as well as in the documentation of the
-package but I don’t know whether this wording is standard (probably
-not).
+the Jack *P*-polynomials with Jack parameter *α* = 1, one can more
+generally define the *Kostka-Jack number* *K*<sub>*λ*, *μ*</sub>(*α*) as
+the coefficient of the monomial symmetric polynomial *m*<sub>*μ*</sub>
+in the expression of the Jack *P*-polynomial *P*<sub>*λ*</sub>(*α*) with
+Jack parameter *α* as a linear combination of monomial symmetric
+polynomials. The **jack** package allows to compute these numbers. Note
+that I call them *“Kostka-Jack numbers”* here as well as in the
+documentation of the package but I don’t know whether this wording is
+standard (probably not).
 
 The Kostka numbers are also generalized by the *Kostka-Foulkes
-polynomials*, or
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")-*Kostka
-polynomials*, which are provided in the **jack** package. These are
-univariate polynomials whose variable is denoted by
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t"),
-and their value at
-![t=1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t%3D1 "t=1")
-are the Kostka numbers. These polynomials are used in the computation of
-the Hall-Littlewood polynomials.
+polynomials*, or *t*-*Kostka polynomials*, which are provided in the
+**jack** package. These are univariate polynomials whose variable is
+denoted by *t*, and their value at *t* = 1 are the Kostka numbers. These
+polynomials are used in the computation of the Hall-Littlewood
+polynomials.
 
 Finally, the Kostka numbers are also generalized by the
-*Kostka-Macdonald polynomials*, or
-![qt](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;qt "qt")-*Kostka
-polynomials*, also provided in the **jack** package. Actually these
-polynomials even generalize the Kostka-Foulkes polynomials. They have
-two variables, denoted by
-![q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;q "q")
-and
-![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t"),
-and one obtains the Kostka-Foulkes polynomials by replacing
-![q](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;q "q")
-with
-![0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;0 "0").
-Currently the Kostka-Macdonald polynomials are not used in the **jack**
-package.
+*Kostka-Macdonald polynomials*, or *q**t*-*Kostka polynomials*, also
+provided in the **jack** package. Actually these polynomials even
+generalize the Kostka-Foulkes polynomials. They have two variables,
+denoted by *q* and *t*, and one obtains the Kostka-Foulkes polynomials
+by replacing *q* with 0. Currently the Kostka-Macdonald polynomials are
+not used in the **jack** package.
 
 The skew generalizations are also available in the **jack** package:
 skew Kostka-Jack numbers, skew Kostka-Foulkes polynomials, and skew
 Kostka-Macdonald polynomials.
 
-## The Kostka-![0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;0 "0") numbers and a conjecture
+## The Kostka-0 numbers and a conjecture
 
 While playing with the **jack** package, I discovered a conjecture. The
-Kostka-Jack numbers make sense when the Jack parameter is
-![0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;0 "0").
-Then, denoting by
-![\nu'](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cnu%27 "\nu'")
-the dual partition of an integer partition
-![\nu](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cnu "\nu"),
-the conjecture is that the following equality holds true for any Jack
-parameter
-![\alpha\>0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha%3E0 "\alpha>0"):
+Kostka-Jack numbers make sense when the Jack parameter is 0. Then,
+denoting by *ν*′ the dual partition of an integer partition *ν*, the
+conjecture is that the following equality holds true for any Jack
+parameter *α* \> 0:
+∑<sub>*κ*</sub>*K*<sub>*κ*, *λ*</sub>(*α*)*K*<sub>*κ*′, *μ*</sub>(*α*<sup>−1</sup>) = *K*<sub>*λ*′, *μ*</sub>(0).
 
-![\sum\_{\kappa} K\_{\kappa,\lambda}(\alpha) K\_{\kappa',\mu}(\alpha^{-1}) = K\_{\lambda',\mu}(0).](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Csum_%7B%5Ckappa%7D%20K_%7B%5Ckappa%2C%5Clambda%7D%28%5Calpha%29%20K_%7B%5Ckappa%27%2C%5Cmu%7D%28%5Calpha%5E%7B-1%7D%29%20%3D%20K_%7B%5Clambda%27%2C%5Cmu%7D%280%29. "\sum_{\kappa} K_{\kappa,\lambda}(\alpha) K_{\kappa',\mu}(\alpha^{-1}) = K_{\lambda',\mu}(0).")
+For *α* = 1, this equality can be derived from some results provided in
+Macdonald’s book.
 
-For
-![\alpha=1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha%3D1 "\alpha=1"),
-this equality can be derived from some results provided in Macdonald’s
-book.
-
-Let’s check it for
-![\alpha=3](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha%3D3 "\alpha=3").
-The function `KostkaJackNumbers` returns a matrix whose row names and
-column names encode the partitions of the given weight. These character
-strings are built with some internal functions of the ***jack***
-package. We will not use these functions, we will use the base function
-`toString` instead, to help us to check the conjecture.
+Let’s check it for *α* = 3. The function `KostkaJackNumbers` returns a
+matrix whose row names and column names encode the partitions of the
+given weight. These character strings are built with some internal
+functions of the ***jack*** package. We will not use these functions, we
+will use the base function `toString` instead, to help us to check the
+conjecture.
 
 ``` r
 library(jack)
@@ -686,11 +601,7 @@ multivariate symmetric polynomial as a linear combination of some
 multivariate symmetric polynomials of a given family. Let’s consider for
 example the `SchurCombination` function. Now, we take a multivariate
 symmetric polynomial, for instance the zonal polynomial of the integer
-partition
-![\lambda=(2,2)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda%3D%282%2C2%29 "\lambda=(2,2)")
-with
-![n=4](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n%3D4 "n=4")
-variables:
+partition *λ* = (2,2) with *n* = 4 variables:
 
 ``` r
 Zpoly <- ZonalPol(n = 4, lambda = c(2, 2))
