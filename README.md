@@ -266,10 +266,10 @@ HallInnerProduct(J1, J2, alpha)
 ## [1] 0
 HallInnerProduct(J1, J1, alpha)
 ## Big Rational ('bigq') :
-## [1] 270
+## [1] 135/8
 HallInnerProduct(J2, J2, alpha)
 ## Big Rational ('bigq') :
-## [1] 4032/5
+## [1] 63/5
 ```
 
 If you set `alpha=NULL` in `HallInnerProduct`, you get the Hall inner
@@ -278,7 +278,7 @@ product with symbolic parameter
 
 ``` r
 HallInnerProduct(J1, J1, alpha = NULL)
-## 3/8*alpha^4 + 4*alpha^3 + 63/8*alpha^2 + 81/4*alpha
+## 3/128*alpha^4 + 1/4*alpha^3 + 63/128*alpha^2 + 81/64*alpha
 ```
 
 This is a `qspray` object. The Hall inner product is always polynomial
@@ -527,13 +527,13 @@ with Jack parameter
 ![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha")
 as a linear combination of monomial symmetric polynomials. The **jack**
 package allows to compute these numbers. Note that I call them
-“Kostka-Jack numbers” here as well as in the documentation of the
+*“Kostka-Jack numbers”* here as well as in the documentation of the
 package but I don’t know whether this wording is standard (probably
 not).
 
 The Kostka numbers are also generalized by the *Kostka-Foulkes
 polynomials*, or
-*![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")-Kostka
+![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")-*Kostka
 polynomials*, which are provided in the **jack** package. These are
 univariate polynomials whose variable is denoted by
 ![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t"),
@@ -593,6 +593,7 @@ package. We will not use these functions, we will use the base function
 ``` r
 library(jack)
 library(gmp)
+## Warning: le package 'gmp' a été compilé avec la version R 4.2.3
 
 n <- 5 # weight of the partitions
 
@@ -676,6 +677,62 @@ KostkaJackNumbers(n, alpha = "0")
 ## [2, 2, 1]       "10"           
 ## [2, 1, 1, 1]    "5"            
 ## [1, 1, 1, 1, 1] "1"
+```
+
+## Transitions between symmetric polynomials
+
+The **jack** package provides some functions allowing to write a
+multivariate symmetric polynomial as a linear combination of some
+multivariate symmetric polynomials of a given family. Let’s consider for
+example the `SchurCombination` function. Now, we take a multivariate
+symmetric polynomial, for instance the zonal polynomial of the integer
+partition
+![\lambda=(2,2)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda%3D%282%2C2%29 "\lambda=(2,2)")
+with
+![n=4](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n%3D4 "n=4")
+variables:
+
+``` r
+Zpoly <- ZonalPol(n = 4, lambda = c(2, 2))
+```
+
+Then we get this polynomial as a linear combination of Schur polynomials
+by applying the `SchurCombination` function:
+
+``` r
+( schurCombo <- SchurCombination(Zpoly) )
+## $`[2, 2]`
+## $`[2, 2]`$lambda
+## [1] 2 2
+## 
+## $`[2, 2]`$coeff
+## Big Rational ('bigq') :
+## [1] 16/5
+## 
+## 
+## $`[2, 1, 1]`
+## $`[2, 1, 1]`$lambda
+## [1] 2 1 1
+## 
+## $`[2, 1, 1]`$coeff
+## Big Rational ('bigq') :
+## [1] -16/15
+```
+
+This is a list. Each element of this list is itself a list, with two
+elements. These two elements represent a term of the linear combination:
+`lambda` is the integer partition of the Schur polynomial of the
+combination, and `coeff` is the coefficient of this Schur polynomial.
+Let’s check:
+
+``` r
+result <- qzero()
+for(lst2 in schurCombo) {
+  term <- lst2[["coeff"]] * SchurPol(n = 4, lambda = lst2[["lambda"]])
+  result <- result + term
+}
+result == Zpoly
+## [1] TRUE
 ```
 
 ## References
