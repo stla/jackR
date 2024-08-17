@@ -421,11 +421,11 @@ polynomial $m_{\mu}$ in the expression of the Jack $P$-polynomial
 $P_{\lambda}(\alpha)$ with Jack parameter $\alpha$ 
 as a linear combination of monomial symmetric polynomials. The **jack** 
 package allows to compute these numbers. Note that I call them 
-"Kostka-Jack numbers" here as well as in the documentation of the package 
+*"Kostka-Jack numbers"* here as well as in the documentation of the package 
 but I don't know whether this wording is standard (probably not).
 
 The Kostka numbers are also generalized by the *Kostka-Foulkes polynomials*, 
-or *$t$-Kostka polynomials*, which are provided in the **jack** package. 
+or $t$-*Kostka polynomials*, which are provided in the **jack** package. 
 These are univariate polynomials whose variable 
 is denoted by $t$, and their value at $t=1$ are the Kostka numbers. These 
 polynomials are used in the computation of the Hall-Littlewood polynomials.
@@ -492,6 +492,42 @@ But as you can see, our equality is indeed fulfilled:
 t(as.bigq(t(KJN_three) %*% as.bigq(KJN_oneThird)))
 KostkaJackNumbers(n, alpha = "0")
 ```
+
+
+
+## Transitions between symmetric polynomials
+
+The **jack** package provides some functions allowing to write a multivariate 
+symmetric polynomial as a linear combination of some multivariate symmetric 
+polynomials of a given family. Let's consider for example the `SchurCombination` 
+function. Now, we take a multivariate symmetric polynomial, for instance the 
+zonal polynomial of the integer partition $\lambda=(2,2)$ with $n=4$ variables:
+
+```{r, message=FALSE}
+Zpoly <- ZonalPol(n = 4, lambda = c(2, 2))
+```
+
+Then we get this polynomial as a linear combination of Schur polynomials by 
+applying the `SchurCombination` function:
+
+```{r, message=FALSE}
+( schurCombo <- SchurCombination(Zpoly) )
+```
+
+This is a list. Each element of this list is itself a list, with two elements. 
+These two elements represent a term of the linear combination: `lambda` is the 
+integer partition of the Schur polynomial of the combination, and `coeff` is 
+the coefficient of this Schur polynomial. Let's check:
+
+```{r, message=FALSE}
+result <- qzero()
+for(lst2 in schurCombo) {
+  term <- lst2[["coeff"]] * SchurPol(n = 4, lambda = lst2[["lambda"]])
+  result <- result + term
+}
+result == Zpoly
+```
+
 
 
 
