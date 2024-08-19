@@ -13,7 +13,7 @@
 #'   univariate \code{qspray} polynomial whose variable is denoted by 
 #'   \code{t}, and all its coefficients are some integers.
 #'   The names of the list encode the partitions \eqn{\lambda}. 
-#' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
+#' @importFrom qspray qone showQsprayOption<- showQsprayXYZ
 #' @export 
 #' @note The Green X-polynomials are a variant of the "true" Green polynomials, 
 #'   that we called the Green Q-polynomials (\code{\link{GreenQpolynomials}}).
@@ -32,7 +32,7 @@ GreenXpolynomials <- function(rho) {
     return(out)
   }
   n <- sum(rho)
-  psPoly <- PSFpoly(n, rho)
+  psPoly <- psPolynomial(n, rho)
   hlpCombo <- .HLcombinationP(psPoly, check = FALSE, takeNumerators = TRUE)
   lapply(hlpCombo, function(lst) {
     lambda <- lst[["lambda"]]
@@ -60,7 +60,7 @@ GreenXpolynomials <- function(rho) {
 #'   univariate \code{qspray} polynomial whose variable is denoted by 
 #'   \code{q}.
 #'   The names of the list encode the partitions \eqn{\lambda}. 
-#' @importFrom qspray qone PSFpoly showQsprayOption<- showQsprayXYZ
+#' @importFrom qspray qone showQsprayOption<- showQsprayXYZ
 #' @export 
 #' @note The Green Q-polynomials are the "true" Green polynomials. 
 #'   The Green X-polynomials (\code{\link{GreenXpolynomials}}) are a 
@@ -80,7 +80,7 @@ GreenQpolynomials <- function(rho) {
     return(out)
   }
   n <- sum(rho)
-  psPoly <- PSFpoly(n, rho)
+  psPoly <- psPolynomial(n, rho)
   hlpCombo <- .HLcombinationP(psPoly, check = FALSE, takeNumerators = TRUE)
   q <- qlone(1L)
   lapply(hlpCombo, function(lst) {

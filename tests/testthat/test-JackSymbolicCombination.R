@@ -1,6 +1,6 @@
 test_that("symbolicJackCombination", {
   n <- 4L
-  qspray <- 3*ESFpoly(n, c(3, 1)) - 5*PSFpoly(n, c(2, 2))
+  qspray <- 3*ESFpoly(n, c(3, 1)) - 5*psPolynomial(n, c(2, 2))
   which <- "P"
   combo <- symbolicJackCombination(qspray, which)
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)
@@ -39,7 +39,7 @@ test_that("symbolicJackCombination for a combination of Jack polynomials", {
 
 test_that("symbolicJackCombination for a non-homogeneous polynomial", {
   n <- 4L
-  qspray <- ESFpoly(n, c(3, 1)) + PSFpoly(n, c(2, 1))
+  qspray <- ESFpoly(n, c(3, 1)) + psPolynomial(n, c(2, 1))
   which <- "J"
   combo <- symbolicJackCombination(qspray, which)
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)
@@ -49,7 +49,7 @@ test_that("symbolicJackCombination for a non-homogeneous polynomial", {
 
 test_that("symbolicJackCombination for a 'degenerate' symmetric polynomial", {
   n <- 3L
-  qspray <- ESFpoly(n, c(3, 1)) + PSFpoly(n, c(2, 2))
+  qspray <- ESFpoly(n, c(3, 1)) + psPolynomial(n, c(2, 2))
   which <- "C"
   combo <- symbolicJackCombination(qspray, which)
   Qspray <- JackSymbolicCombinationToQspray(combo, n, which)

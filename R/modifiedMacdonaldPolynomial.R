@@ -112,7 +112,7 @@ MacdonaldPolynomialJinPSbasis <- function(mu) {
 #' @importFrom symbolicQspray showSymbolicQsprayOption<- Qone
 #' @importFrom ratioOfQsprays showRatioOfQspraysXYZ
 #' @importFrom methods as
-#' @importFrom qspray qlone qone PSFpoly
+#' @importFrom qspray qlone qone
 #' @importFrom utils tail
 modifiedMacdonaldPol <- function(n, mu) {
   stopifnot(isPositiveInteger(n))
@@ -138,7 +138,7 @@ modifiedMacdonaldPol <- function(n, mu) {
         })
       )
       rOS <- .toROS(t^(nmu + sum(lambda)) * spray) / den_lambda
-      rOS@numerator * as(PSFpoly(n, lambda), "symbolicQspray")
+      rOS@numerator * as(psPolynomial(n, lambda), "symbolicQspray")
     })
   )
   showSymbolicQsprayOption(out, "showRatioOfQsprays") <-

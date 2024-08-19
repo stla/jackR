@@ -110,7 +110,7 @@ zlambda <- function(lambda) {
 }
 
 #' @importFrom symbolicQspray Qone
-#' @importFrom qspray qone qlone qzero PSFpoly
+#' @importFrom qspray qone qlone qzero
 #' @importFrom ratioOfQsprays as.ratioOfQsprays
 #' @importFrom gmp as.bigq
 #' @noRd
@@ -130,7 +130,7 @@ zlambda <- function(lambda) {
     if(c == 0L) {
       qzero()
     } else {
-      psPoly <- PSFpoly(n, rho)
+      psPoly <- psPolynomial(n, rho)
       coeffs <- lapply(psPoly@coeffs, function(coeff) {
         as.ratioOfQsprays(coeff * Reduce(`*`, mapOfSprays[rho]))
       })

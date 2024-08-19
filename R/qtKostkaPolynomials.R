@@ -14,7 +14,7 @@
 #'   generated list is a list of lists with two elements: the integer
 #'   partition \eqn{\lambda} and the polynomial.
 #' @export
-#' @importFrom qspray MSPcombination PSFpoly qlone qone showQsprayOption<- showQsprayXYZ
+#' @importFrom qspray MSPcombination qlone qone showQsprayOption<- showQsprayXYZ
 #' @importFrom RationalMatrix Qinverse
 #' @importFrom partitions parts
 #' @importFrom gmp c_bigq
@@ -39,7 +39,7 @@ qtKostkaPolynomials <- function(mu) {
     vapply(lambdas, partitionAsString, character(1L))
   rownames(iknMatrix) <- lambdasAsStrings
   coeffs <- function(lambda) {
-    combo <- MSPcombination(PSFpoly(length(lambda), lambda), check = FALSE)
+    combo <- MSPcombination(psPolynomial(length(lambda), lambda), check = FALSE)
     out <- lapply(seq_along(lambdas), function(i) {
       list(
         "lambda" = lambdas[[i]],
