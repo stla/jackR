@@ -77,6 +77,10 @@ isPositiveInteger <- function(n){
   is.vector(n) && is.numeric(n) && length(n) == 1L && !is.na(n) && floor(n) == n
 }
 
+isNonnegativeInteger <- function(x) {
+  is.numeric(x) && length(x) == 1L && !is.na(x) && floor(x) == x && x != 0
+}
+
 # isStrictlyPositiveInteger <- function(n){
 #   isPositiveInteger(n) && n != 0
 # }
