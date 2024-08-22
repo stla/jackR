@@ -47,7 +47,7 @@ psPolynomial <- function(n, lambda) {
 #'
 #' @return A \code{qspray} object.
 #' @export
-#' @importFrom qspray qone qzero qsprayMaker
+#' @importFrom qspray qone qzero 
 #' @importFrom methods new
 #' @importFrom DescTools Permn
 #'
@@ -69,12 +69,40 @@ esPolynomial <- function(n, lambda) {
       lambda_k <- lambda[k]
       kappa[seq_len(lambda_k)] <- rep(1L, lambda_k)
       perms <- Permn(kappa)
-      powers <- Rows(perms)
-      ek <- qsprayMaker(
-        powers = powers, coeffs = rep("1", length(powers))
+      powers <- apply(perms, 1L, function(perm) {
+        removeTrailingZeros(perm)
+      }, simplify = FALSE)
+      ek <- new(
+        "qspray", powers = powers, coeffs = rep("1", length(powers))
       )
+      # powers <- Rows(perms)
+      # ek <- qsprayMaker(
+      #   powers = powers, coeffs = rep("1", length(powers))
+      # )
       out <- out * ek
     }
     out    
   } 
+}
+
+#' @importFrom DescTools Permn
+#' @importFrom qspray qzero qone
+#' @noRd
+msPolynomialUnsafe <- function(n, lambda) {
+  ellLambda <- length(lambda)
+  if(ellLambda == 0L) {
+    return(qone())
+  }
+  if(ellLambda > n) {
+    return(qzero())
+  }
+  kappa <- integer(n)
+  kappa[seq_len(ellLambda)] <- lambda
+  perms <- Permn(kappa)
+  powers <- apply(perms, 1L, function(perm) {
+    removeTrailingZeros(perm)
+  }, simplify = FALSE)
+  new(
+    "qspray", powers = powers, coeffs = rep("1", length(powers))
+  )
 }
