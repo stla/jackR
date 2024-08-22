@@ -82,7 +82,7 @@ test_that(
     lambda <- c(3,2)
     pol <- SchurPolR(4, lambda, algorithm = "naive")
     x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
-    polEval <- qspray::evalQspray(pol, x)
+    polEval <- evalQspray(pol, x)
     expect_identical(polEval, SchurR(as.bigq(x), lambda))
   }
 )
@@ -93,7 +93,7 @@ test_that(
     P1 <- SchurPolR(n, c(3, 2)) + 2 * SchurPolR(n, c(2, 2, 1)) +
       SchurPolR(n, c(3, 1, 1)) + 2 * SchurPolR(n, c(2, 1, 1, 1)) +
       SchurPolR(n, c(1, 1, 1, 1, 1))
-    P2 <- qspray::esPolynomial(n, c(2, 2, 1))
+    P2 <- esPolynomial(n, c(2, 2, 1))
     expect_true(P1 == P2)
   }
 )
@@ -103,7 +103,7 @@ test_that(
     lambda <- c(3, 2)
     pol <- SchurPol(4, lambda)
     x <- as.bigq(c(6L,-7L,8L,9L), c(1L,2L,3L,4L))
-    polEval <- qspray::evalQspray(pol, x)
+    polEval <- evalQspray(pol, x)
     expect_identical(polEval, SchurR(as.bigq(x), lambda))
   }
 )
@@ -132,7 +132,7 @@ test_that("Schur polynomial and semistandard Young tableaux", {
       length(which(ssyt == k))
     }, integer(1L))
   }
-  qlones <- lapply(1:4, qspray::qlone)
+  qlones <- lapply(1:4, qlone)
   monomial <- function(ssyt) {
     powers <- wt(ssyt)
     Reduce(`*`, lapply(1:4, function(k) qlones[[k]]^powers[k]))
