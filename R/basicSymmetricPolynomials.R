@@ -87,6 +87,7 @@ esPolynomial <- function(n, lambda) {
 
 #' @importFrom DescTools Permn
 #' @importFrom qspray qzero qone
+#' @importFrom methods new
 #' @noRd
 msPolynomialUnsafe <- function(n, lambda) {
   ellLambda <- length(lambda)
@@ -105,4 +106,41 @@ msPolynomialUnsafe <- function(n, lambda) {
   new(
     "qspray", powers = powers, coeffs = rep("1", length(powers))
   )
+}
+
+cshPolynomial_k <- function(n, k) {
+  lambdas <- listOfPartitions(k)
+  sprays <- lapply(lambdas, function(lambda) {
+    msPolynomialUnsafe(n, lambda)
+  })
+  Reduce(`+`, sprays)
+}
+
+#' @title Complete symmetric homogeneous polynomial
+#' @description Returns a complete symmetric homogeneous polynomial.
+#'
+#' @param n integer, the number of variables
+#' @param lambda an integer partition, given as a vector of decreasing
+#'   nonnegative integers
+#'
+#' @return A \code{qspray} object.
+#' @export
+#' @importFrom qspray qone qzero 
+#'
+#' @examples
+#' library(jack)
+#' cshPolynomial(3, c(3, 1))
+cshPolynomial <- function(n, lambda) {
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
+  if(n == 0L) {
+    return(qzero())
+  }
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  if(length(lambda) == 0L) {
+    return(qone())
+  }
+  sprays <- lapply(lambda, function(k) {
+    cshPolynomial_k(n, k)
+  })
+  Reduce(`*`, sprays)
 }
