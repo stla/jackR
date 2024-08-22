@@ -55,7 +55,13 @@ removeTrailingZeros <- function(x) {
 
 Columns <- function(M) {
   lapply(seq_len(ncol(M)), function(j) {
-    M[, j]
+    M[, j, drop = FALSE]
+  })
+}
+
+Rows <- function(M) {
+  lapply(seq_len(nrow(M)), function(i) {
+    M[i, , drop = FALSE]
   })
 }
 

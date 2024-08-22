@@ -37,3 +37,45 @@ psPolynomial <- function(n, lambda) {
     out    
   } 
 }
+
+#' @title Elementary symmetric polynomial
+#' @description Returns an elementary symmetric polynomial.
+#'
+#' @param n integer, the number of variables
+#' @param lambda an integer partition, given as a vector of decreasing
+#'   nonnegative integers
+#'
+#' @return A \code{qspray} object.
+#' @export
+#' @importFrom utils head
+#' @importFrom qspray qone qzero
+#' @importFrom methods new
+#' @importFrom DescTools Permn
+#'
+#' @examples
+#' library(jack)
+#' esPolynomial(3, c(3, 1))
+esPolynomial <- function(n, lambda) {
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  if(length(lambda) == 0L) {
+    qone()
+  } else if(lambda[1L] > n){
+    qzero()
+  } else {
+    out <- qone()
+    kappa0 <- integer(n)
+    for(k in seq_along(lambda)) {
+      kappa <- kappa0
+      lambda_k <- lambda[k]
+      head(kappa, lambda_k) <- rep(1L, lambda_k)
+      perms <- Permn(kappa)
+      powers <- Rows(perms)
+      ek <- new(
+        "qspray", powers = powers, coeffs = rep("1", length(powers))
+      )
+      out <- out * ek
+    }
+    out    
+  } 
+}

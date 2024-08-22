@@ -78,7 +78,7 @@ Schur <- function(x, lambda) {
 #'
 #' @export
 #' @importFrom gmp as.bigq factorialZ
-#' @importFrom qspray qspray_from_list ESFpoly qone qzero
+#' @importFrom qspray qspray_from_list qone qzero
 #'
 #' @examples
 #' JackPol(3, lambda = c(3, 1), alpha = "2/5")
@@ -100,7 +100,7 @@ JackPol <- function(n, lambda, alpha, which = "J") {
   if(alpha == "0") {
     lambdaPrime <- dualPartition(lambda)
     f <- prod(factorialZ(lambdaPrime))
-    JackPolynomial <- f * ESFpoly(n, lambdaPrime)
+    JackPolynomial <- f * esPolynomial(n, lambdaPrime)
   } else {
     JackPolynomial <-
       qspray_from_list(JackPolRcpp(as.integer(n), lambda, alpha))

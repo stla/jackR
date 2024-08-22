@@ -8,7 +8,7 @@ test_that("SchurCombination", {
   )
   expect_true(qspray == expected)
   #
-  combo <- SchurCombination(psPolynomial(4, c(3, 1)) + ESFpoly(4, c(2, 1)))
+  combo <- SchurCombination(psPolynomial(4, c(3, 1)) + esPolynomial(4, c(2, 1)))
   qspray <- comboToQspray(combo)
   expected <- new(
     "qspray",
