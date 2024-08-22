@@ -47,8 +47,7 @@ psPolynomial <- function(n, lambda) {
 #'
 #' @return A \code{qspray} object.
 #' @export
-#' @importFrom utils head
-#' @importFrom qspray qone qzero
+#' @importFrom qspray qone qzero qsprayMaker
 #' @importFrom methods new
 #' @importFrom DescTools Permn
 #'
@@ -68,11 +67,11 @@ esPolynomial <- function(n, lambda) {
     for(k in seq_along(lambda)) {
       kappa <- kappa0
       lambda_k <- lambda[k]
-      head(kappa, lambda_k) <- rep(1L, lambda_k)
+      kappa[seq_len(lambda_k)] <- rep(1L, lambda_k)
       perms <- Permn(kappa)
       powers <- Rows(perms)
-      ek <- new(
-        "qspray", powers = powers, coeffs = rep("1", length(powers))
+      ek <- qsprayMaker(
+        powers = powers, coeffs = rep("1", length(powers))
       )
       out <- out * ek
     }
