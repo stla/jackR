@@ -71,7 +71,7 @@ MSF <- function(x, lambda){
     out <- 0L
     for(exponents in powers){
       m <- length(exponents)
-      out <- out + head(x, m)^exponents
+      out <- out + prod(head(x, m)^exponents)
     }
   }
   out
