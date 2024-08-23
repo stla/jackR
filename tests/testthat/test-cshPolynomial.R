@@ -1,7 +1,7 @@
 test_that("CSH polynomials and Hall inner product", {
     lambda1 <- c(3, 1, 1, 1)
-    lambda2 <- c(3, 2)
-    n <- 4
+    lambda2 <- c(3, 3)
+    n <- 6
     P <- 7 * msPolynomial(n, lambda1) - 9 * msPolynomial(n, lambda2)
     cshPol1 <- cshPolynomial(n, lambda1)
     cshPol2 <- cshPolynomial(n, lambda2)
