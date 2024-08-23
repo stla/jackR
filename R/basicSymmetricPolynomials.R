@@ -85,29 +85,6 @@ esPolynomial <- function(n, lambda) {
   } 
 }
 
-#' @importFrom DescTools Permn
-#' @importFrom qspray qzero qone
-#' @importFrom methods new
-#' @noRd
-msPolynomialUnsafe <- function(n, lambda) {
-  ellLambda <- length(lambda)
-  if(ellLambda == 0L) {
-    return(qone())
-  }
-  if(ellLambda > n) {
-    return(qzero())
-  }
-  kappa <- integer(n)
-  kappa[seq_len(ellLambda)] <- lambda
-  perms <- Permn(kappa)
-  powers <- apply(perms, 1L, function(perm) {
-    removeTrailingZeros(perm)
-  }, simplify = FALSE)
-  new(
-    "qspray", powers = powers, coeffs = rep("1", length(powers))
-  )
-}
-
 cshPolynomial_k <- function(n, k) {
   lambdas <- listOfPartitions(k)
   sprays <- lapply(lambdas, function(lambda) {

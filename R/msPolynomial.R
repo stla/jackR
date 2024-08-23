@@ -77,3 +77,44 @@ MSF <- function(x, lambda){
   out
 }
 
+#' @importFrom qspray qzero qone
+#' @importFrom methods new
+#' @noRd
+msPolynomialUnsafe <- function(n, lambda) {
+  ellLambda <- length(lambda)
+  if(ellLambda == 0L) {
+    return(qone())
+  }
+  if(ellLambda > n) {
+    return(qzero())
+  }
+  powers <- msPowers(n, lambda)
+  # kappa <- integer(n)
+  # kappa[seq_len(ellLambda)] <- lambda
+  # perms <- Permn(kappa)
+  # powers <- apply(perms, 1L, function(perm) {
+  #   removeTrailingZeros(perm)
+  # }, simplify = FALSE)
+  new(
+    "qspray", powers = powers, coeffs = rep("1", length(powers))
+  )
+}
+
+#' @title Monomial symmetric polynomial
+#' @description Returns a monomial symmetric polynomial.
+#'
+#' @param n integer, the number of variables
+#' @param lambda an integer partition, given as a vector of decreasing
+#'   nonnegative integers
+#'
+#' @return A \code{qspray} object.
+#' @export
+#'
+#' @examples
+#' library(jack)
+#' msPolynomial(3, c(3, 1))
+msPolynomial <- function(n, lambda) {
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  msPolynomialUnsafe(n, lambda)
+}
