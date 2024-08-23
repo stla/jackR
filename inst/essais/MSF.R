@@ -1,5 +1,6 @@
 #' @importFrom qspray MSFpoly
 #' @importFrom spray spray
+#' @noRd 
 MSFspray <- function(m, lambda) {
   qspray <- MSFpoly(m, lambda)
   powers <- lapply(qspray@powers, function(exponents) {
@@ -20,10 +21,10 @@ MSFspray <- function(m, lambda) {
 #'
 #' @param x a numeric vector or a \code{\link[gmp]{bigq}} vector
 #' @param lambda an integer partition, given as a vector of decreasing
-#' integers
+#'   integers
 #'
 #' @return A number if \code{x} is numeric, a \code{bigq} rational number
-#' if \code{x} is a \code{bigq} vector.
+#'   if \code{x} is a \code{bigq} vector.
 #' @importFrom gmp as.bigq is.bigq
 #' @importFrom DescTools Permn
 #' @export

@@ -1,0 +1,79 @@
+#' @importFrom qspray MSFpoly
+#' @importFrom DescTools Permn
+#' @noRd 
+msPowersMatrix <- function(n, lambda) {
+  kappa <- integer(n)
+  kappa[seq_along(lambda)] <- lambda
+  Permn(kappa)
+} 
+
+msPowers <- function(n, lambda) {
+  M <- msPowersMatrix(n, lambda)
+  lapply(seq_len(nrow(M)), function(i) {
+    removeTrailingZeros(M[i, ])
+  })
+} 
+
+#' @importFrom spray spray one zero
+#' @noRd 
+MSFspray <- function(n, lambda) {
+  stopifnot(isPositiveInteger(n), isPartition(lambda))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  ellLambda <- length(lambda)
+  if(ellLambda == 0L) {
+    return(one)
+  }
+  if(ellLambda > n) {
+    return(zero)
+  }
+  Mpowers <- msPowersMatrix(n, lambda)
+  spray(Mpowers, rep(1, nrow(Mpowers)))
+}
+
+#' Evaluation of monomial symmetric functions
+#'
+#' Evaluates a monomial symmetric function.
+#'
+#' @param x a numeric vector or a \code{\link[gmp]{bigq}} vector
+#' @param lambda an integer partition, given as a vector of decreasing
+#'   integers
+#'
+#' @return A number if \code{x} is numeric, a \code{bigq} rational number
+#'   if \code{x} is a \code{bigq} vector.
+#' 
+#' @importFrom gmp as.bigq is.bigq
+#' @importFrom utils head
+#' @noRd
+MSF <- function(x, lambda){
+  stopifnot(isPartition(lambda))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  gmp <- is.bigq(x)
+  n <- length(x)
+  ellLambda <- length(lambda)
+  if(ellLambda == 0L) {
+    return(if(gmp) as.bigq(1L) else 1L)
+  }
+  if(ellLambda > n) {
+    return(if(gmp) as.bigq(0L) else 0L)
+  }
+  powers <- msPowers(n, lambda)
+  if(gmp) {
+    out <- as.bigq(0L)
+    for(exponents in powers){
+      m <- length(exponents)
+      factors <- as.bigq(integer(m))
+      for(j in seq_len(m)){
+        factors[j] <- x[j]^exponents[j]
+      }
+      out <- out + prod(factors)
+    }
+  } else {
+    out <- 0L
+    for(exponents in powers){
+      m <- length(exponents)
+      out <- out + head(x, m)^exponents
+    }
+  }
+  out
+}
+
