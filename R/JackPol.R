@@ -1,6 +1,7 @@
 JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
   stopifnot(isPositiveInteger(n), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  lambda <- removeTrailingZeros(as.integer(lambda))
   gmp <- is.bigq(alpha)
   if(length(lambda) == 0L) {
     if(basis == "canonical") {
@@ -9,7 +10,6 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
       return("M_()")
     }
   }
-  lambda <- lambda[lambda > 0L]
   if(length(lambda) > n)
     return(if(gmp) as.qspray(0L) else as_mvp_spray(zero(n)))
   lambda00 <- integer(sum(lambda))
@@ -28,7 +28,7 @@ JackPolNaive <- function(n, lambda, alpha, basis = "canonical"){
         mu <- mus[, i]
         l <- sum(mu > 0L)
         if(l <= n) {
-          toAdd <- MSFpoly(n, mu)
+          toAdd <- msPolynomial(n, mu)
           if(coefs[toString(mu)] != "1")
             toAdd <- toAdd * coefs[toString(mu)]
           out <- out + toAdd

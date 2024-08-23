@@ -1,6 +1,7 @@
 ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
   stopifnot(isPositiveInteger(m), isPartition(lambda))
   basis <- match.arg(basis, c("canonical", "MSF"))
+  lambda <- removeTrailingZeros(as.integer(lambda))
   if(length(lambda) == 0L){
     if(basis == "canonical"){
       return(if(exact) as.qspray(1) else as_mvp_spray(one(m)))
@@ -8,7 +9,6 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
       return("M_()")
     }
   }
-  lambda <- lambda[lambda > 0L]
   if(length(lambda) > m) return(if(exact) as.qspray(0) else as_mvp_spray(zero(m)))
   lambda00 <- numeric(sum(lambda))
   lambda00[seq_along(lambda)] <- lambda
@@ -26,7 +26,7 @@ ZonalPolNaive <- function(m, lambda, basis = "canonical", exact = TRUE){
         mu <- mus[,i]
         l <- sum(mu > 0L)
         if(l <= m){
-          toAdd <- MSFpoly(m, mu)
+          toAdd <- msPolynomial(m, mu)
           if(coefs[toString(mu)] != "1")
             toAdd <- toAdd * coefs[toString(mu)]
           out <- out + toAdd

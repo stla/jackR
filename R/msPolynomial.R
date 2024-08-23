@@ -1,4 +1,3 @@
-#' @importFrom qspray MSFpoly
 #' @importFrom DescTools Permn
 #' @noRd 
 msPowersMatrix <- function(n, lambda) {

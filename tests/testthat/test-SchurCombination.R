@@ -1,5 +1,5 @@
 test_that("SchurCombination", {
-  combo <- SchurCombination(MSFpoly(4L, c(4L)))
+  combo <- SchurCombination(msPolynomial(4L, c(4L)))
   qspray <- comboToQspray(combo)
   expected <- new(
     "qspray",

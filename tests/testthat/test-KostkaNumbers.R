@@ -26,7 +26,7 @@ test_that("Kostka numbers are the coefficients of Jack P-polynomials", {
   for(mu in colnames(Knumbers)) {
     coeff <- Knumbers[lambda, mu]
     mu <- fromString(gsub("(\\[|\\])", "", mu)) #fromString(gsub("(\\(|\\))", "", mu))
-    qspray <- qspray + coeff * MSFpoly(n, mu)
+    qspray <- qspray + coeff * msPolynomial(n, mu)
   }
   expect_true(qspray == jp)
 })
@@ -43,7 +43,7 @@ test_that("Symbolic Kostka numbers are the coefficients of symbolic Jack P-polyn
   for(mu in names(Knumbers)) {
     coeff <- Knumbers[[mu]]
     mu <- fromPartitionAsString(mu)
-    Qspray <- Qspray + coeff * as(MSFpoly(n, mu), "symbolicQspray")
+    Qspray <- Qspray + coeff * as(msPolynomial(n, mu), "symbolicQspray")
   }
   expect_true(Qspray == jp)
 })

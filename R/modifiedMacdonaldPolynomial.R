@@ -34,7 +34,7 @@ MacdonaldPolynomialJinMSPbasis <- function(lambda) {
   })
 }
 
-#' @importFrom qspray PSPcombination MSFpoly
+#' @importFrom qspray PSPcombination 
 #' @importFrom symbolicQspray isQzero
 #' @noRd
 MacdonaldPolynomialJinPSbasis <- function(mu) {
@@ -42,7 +42,7 @@ MacdonaldPolynomialJinPSbasis <- function(mu) {
   mapOfMaps <- lapply(macdonaldCombo, function(t1) {
     lambda <- t1[["mu"]]
     spray <- t1[["coeff"]]
-    lapply(PSPcombination(MSFpoly(sum(lambda), lambda)), function(t2) {
+    lapply(PSPcombination(msPolynomialUnsafe(sum(lambda), lambda)), function(t2) {
       list(
         "lambda" = t2[["lambda"]],
         "lambdaAsString" = partitionAsString(t2[["lambda"]]),
