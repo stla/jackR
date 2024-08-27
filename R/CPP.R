@@ -145,22 +145,19 @@ Jack <- function(x, lambda, alpha) {
     if(is.na(alpha)) {
       stop("Invalid `alpha`.")
     }
+    alpha <- as.character(alpha)
     x <- as.bigq(x)
-  } else {
-    
-  }
-
-  if(is.numeric(x)) {
-    x <- as.double(x)
+    x <- as.character(x)
+  } else if(isNumber(alpha)) {
     gmp <- FALSE
+    x <- as.double(x)
   } else {
-    x <- as.bigq(x)
-    gmp <- TRUE
+    stop("Invalid `alpha`.")
   }
   if(anyNA(x)) {
     stop("Found missing values in `x`.")
   }
-  if(alpha == 0) {
+  if(alpha == 0L) {
     lambdaPrime <- dualPartition(lambda)
     if(gmp){
       f <- prod(factorialZ(lambdaPrime))
@@ -169,23 +166,18 @@ Jack <- function(x, lambda, alpha) {
     }
     return(f * ESF(x, lambdaPrime))
   }
-  if(is.numeric(x) && is.numeric(alpha)) {
-    JackEvalRcpp_double(x, lambda, alpha)
-  } else {
-    alpha <- as.bigq(alpha)
-    if(is.na(alpha)) {
-      stop("Invalid `alpha`.")
-    }
-    alpha <- as.character(alpha)
-    res <- JackEvalRcpp_gmpq(as.character(x), lambda, alpha)
+  if(gmp) {
+    res <- JackEvalRcpp_gmpq(x, lambda, alpha)
     as.bigq(res)
+  } else {
+    JackEvalRcpp_double(x, lambda, alpha)
   }
 }
 
 #' Zonal polynomial - C++ implementation
 #'
 #' @description Returns a zonal polynomial. The zonal polynomials are the
-#'   Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
+#'   Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=2}.
 #'
 #' @param n number of variables, a positive integer
 #' @param lambda an integer partition, given as a vector of decreasing
@@ -204,7 +196,7 @@ ZonalPol <- function(n, lambda){
 #' Evaluation of zonal polynomial - C++ implementation
 #'
 #' @description Evaluates a zonal polynomial. The zonal polynomials are the
-#'   Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
+#'   Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=2}.
 #'
 #' @param x values of the variables, a vector of \code{bigq} numbers, or a
 #'   vector that can be coerced as such (e.g. \code{c("2", "5/3")})
