@@ -74,22 +74,59 @@ fromPartitionAsString <- function(string) {
   as.integer(strsplit(string, ",", fixed = TRUE)[[1L]])
 }
 
-isInteger <- function(n){
-  is.vector(n) && is.numeric(n) &&
-    length(n) == 1L && !is.na(n) && as.integer(n) == n
+isNumber <- function(x) {
+  is.vector(x) && is.numeric(x) &&
+    length(x) == 1L && !is.na(x)
 }
 
-isPositiveInteger <- function(n){
-  is.vector(n) && is.numeric(n) && length(n) == 1L && !is.na(n) && floor(n) == n
+isInteger <- function(n) {
+  isNumber(n) && as.integer(n) == n
 }
 
-isNonnegativeInteger <- function(x) {
-  is.numeric(x) && length(x) == 1L && !is.na(x) && floor(x) == x && x != 0
+isPositiveInteger <- function(n) {
+  isInteger(n) && floor(n) == n
+}
+
+isNonnegativeInteger <- function(n) {
+  isPositiveInteger(n) && n != 0
 }
 
 # isStrictlyPositiveInteger <- function(n){
 #   isPositiveInteger(n) && n != 0
 # }
+
+isFraction <- function(x) {
+  if(!is.vector(x) || length(x) != 1L || is.na(x)) {
+    return(FALSE)
+  }
+  if(is.integer(x)) {
+    return(TRUE)
+  }
+  if(!is.character(x)) {
+    return(FALSE)
+  }
+  x <- trimws(x)
+  if(grepl("^\\-*\\d+$", x)) {
+    return(TRUE)
+  }
+  nd <- trimws(strsplit(x, "/")[[1L]])
+  if(length(nd) != 2L) {
+    FALSE
+  } else {
+    n <- nd[1L]
+    if(!grepl("^\\-*\\d+$", n)) {
+      FALSE
+    } else {
+      d <- nd[2L]
+      if(!grepl("^\\d+$", d) || grepl("^0+$", d)) {
+        FALSE
+      } else {
+        TRUE
+      }
+    }
+  }
+}
+
 
 isBoolean <- function(x) {
   is.vector(x) && is.logical(x) && length(x) == 1L && !is.na(x)

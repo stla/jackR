@@ -131,13 +131,25 @@ JackPol <- function(n, lambda, alpha, which = "J") {
 #' @return A \code{bigq} number.
 #'
 #' @export
-#' @importFrom gmp as.bigq
+#' @importFrom gmp as.bigq factorialZ
 #'
 #' @examples
 #' Jack(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")
 Jack <- function(x, lambda, alpha) {
   stopifnot(isPartition(lambda))
-  lambda <- as.integer(removeTrailingZeros(lambda))
+  lambda <- removeTrailingZeros(as.integer(lambda))
+  gmp <- NA
+  if(isFraction(alpha)) {
+    gmp <- TRUE
+    alpha <- as.bigq(alpha)
+    if(is.na(alpha)) {
+      stop("Invalid `alpha`.")
+    }
+    x <- as.bigq(x)
+  } else {
+    
+  }
+
   if(is.numeric(x)) {
     x <- as.double(x)
     gmp <- FALSE
