@@ -7,20 +7,28 @@
 Jack(x, lambda, alpha)
 }
 \arguments{
-\item{x}{values of the variables, a vector of \code{bigq} numbers, or a
+\item{x}{values of the variables, either a vector of ordinary numbers, 
+or a vector of \code{bigq} numbers, or a
 vector that can be coerced as such (e.g. \code{c("2", "5/3")})}
 
 \item{lambda}{an integer partition, given as a vector of decreasing
 integers}
 
-\item{alpha}{rational number, given as a string such as
-\code{"2/3"} or as a \code{bigq} number}
+\item{alpha}{an ordinary number, or a rational number given as a string 
+such as \code{"2/3"} or as a \code{bigq} number}
 }
 \value{
-A \code{bigq} number.
+An ordinary number or a \code{bigq} number; see \strong{details}.
 }
 \description{
 Evaluates a Jack polynomial.
+}
+\details{
+The type of the value of this function is determined by the
+  type of \code{alpha}. If \code{alpha} is a \code{bigq} number or 
+  a rational number given as a string such as \code{"2/3"} or a R 
+  integer such as \code{2L}, then the value will be a \code{bigq} number.
+  Otherwise the value will be an ordinary R number.
 }
 \examples{
 Jack(c("1", "3/2", "-2/3"), lambda = c(3, 1), alpha = "1/4")

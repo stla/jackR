@@ -17,7 +17,7 @@ A \code{qspray} multivariate polynomial.
 }
 \description{
 Returns a zonal polynomial. The zonal polynomials are the
-  Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=Z}.
+  Jack \eqn{C}-polynomials with Jack parameter \eqn{\alpha=2}.
 }
 \examples{
 ( zonal <- ZonalPol(3, lambda = c(3, 1)) )
