@@ -123,6 +123,22 @@ hookLengths_gmp <- function(lambda, alpha){
   rbind(lowerHL, upperHL)
 }
 
+lowerHookLengths <- function(lambda, alpha) {
+  # assuming alpha is `bigq` and lambda is "clean"
+  i_ <- rep(seq_along(lambda), times = lambda)
+  j_ <- do.call(c, lapply(lambda, seq_len))
+  lambdaPrime <- conjugate(lambda)
+  lambdaPrime[j_] - i_ + alpha*(lambda[i_] - j_) + 1L
+}
+
+upperHookLengths <- function(lambda, alpha) {
+  # assuming alpha is `bigq` and lambda is "clean"
+  i_ <- rep(seq_along(lambda), times = lambda)
+  j_ <- do.call(c, lapply(lambda, seq_len))
+  lambdaPrime <- conjugate(lambda)
+  lambdaPrime[j_] - i_ + alpha*(lambda[i_] - j_ + 1L)
+}
+
 #' @importFrom gmp factorialZ
 #' @noRd
 JackCcoefficient <- function(lambda, alpha) {
