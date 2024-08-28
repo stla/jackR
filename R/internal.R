@@ -95,6 +95,8 @@ isNonnegativeInteger <- function(n) {
 #   isPositiveInteger(n) && n != 0
 # }
 
+#' @importFrom gmp is.bigq
+#' @noRd
 isFraction <- function(x) {
   if(!is.vector(x) || length(x) != 1L || is.na(x)) {
     return(FALSE)
@@ -102,10 +104,10 @@ isFraction <- function(x) {
   if(is.integer(x)) {
     return(TRUE)
   }
-  if(!is.character(x)) {
+  if(!is.bigq(x) && !is.character(x)) {
     return(FALSE)
   }
-  x <- trimws(x)
+  x <- trimws(as.character(x))
   if(grepl("^\\-*\\d+$", x)) {
     return(TRUE)
   }
@@ -126,7 +128,6 @@ isFraction <- function(x) {
     }
   }
 }
-
 
 isBoolean <- function(x) {
   is.vector(x) && is.logical(x) && length(x) == 1L && !is.na(x)
