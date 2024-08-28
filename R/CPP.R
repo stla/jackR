@@ -108,8 +108,8 @@ JackPol <- function(n, lambda, alpha, which = "J") {
   if(which != "J") {
     K <- switch(
       which,
-      "P" = 1L / prod(hookLengths_gmp(lambda, alpha)[1L, ]),
-      "Q" = 1L / prod(hookLengths_gmp(lambda, alpha)[2L, ]),
+      "P" = 1L / prod(lowerHookLengths(lambda, alpha)),
+      "Q" = 1L / prod(upperHookLengths(lambda, alpha)),
       "C" = JackCcoefficient(lambda, alpha)
     )
     JackPolynomial <- K * JackPolynomial

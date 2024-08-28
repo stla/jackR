@@ -189,6 +189,7 @@ JackCcoefficient <- function(lambda, alpha) {
   }
 }
 
+# this function is not used
 JackPcoefficient <- function(lambda, alpha) {
   if(length(lambda) == 0L){
     as.bigq(1L)
@@ -197,6 +198,7 @@ JackPcoefficient <- function(lambda, alpha) {
   }
 }
 
+# this function is not used
 JackQcoefficient <- function(lambda, alpha) {
   if(length(lambda) == 0L){
     as.bigq(1L)
