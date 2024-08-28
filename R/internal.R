@@ -98,7 +98,7 @@ isNonnegativeInteger <- function(n) {
 #' @importFrom gmp is.bigq
 #' @noRd
 isFraction <- function(x) {
-  if(!is.vector(x) || length(x) != 1L || is.na(x)) {
+  if((!is.vector(x) && !is.bigq(x)) || length(x) != 1L || is.na(x)) {
     return(FALSE)
   }
   if(is.integer(x)) {
