@@ -159,6 +159,7 @@ Jack <- function(x, lambda, alpha) {
   } else if(isNumber(alpha)) {
     gmp <- FALSE
     x <- as.double(x)
+    alpha <- as.double(alpha)
   } else {
     stop("Invalid `alpha`.")
   }
@@ -175,7 +176,7 @@ Jack <- function(x, lambda, alpha) {
     return(f * ESF(x, lambdaPrime))
   }
   if(gmp) {
-    res <- JackEvalRcpp_gmpq(x, lambda, alpha_q)
+    res <- JackEvalRcpp_gmpq(x, lambda, alpha)
     as.bigq(res)
   } else {
     JackEvalRcpp_double(x, lambda, alpha)
