@@ -1,4 +1,4 @@
-# Version 6.1.0.9000 (2024-XX-XX)
+# Version 6.1.0.9001 (2024-XX-XX)
 
 - New functions `GreenXpolynomials` and `GreenQpolynomials`, to compute 
 the Green polynomials.
@@ -8,6 +8,11 @@ combination of some Hall-Littlewood `P`-polynomials.
 
 - New function `HLcombinationQ`, to get a symmetric polynomial as a linear 
 combination of some Hall-Littlewood `Q`-polynomials.
+
+- New functions to compute some standard basic symmetric polynomials: 
+`esPolynomial` for the elementary symmetric polynomials,
+`psPolynomial` for the power sum symmetric polynomials,
+`cshPolynomial` for the complete symmetric homogeneous polynomials. 
 
 
 # Version 6.1.0 (2024-07-29)
