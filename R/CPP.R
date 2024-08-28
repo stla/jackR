@@ -96,14 +96,14 @@ JackPol <- function(n, lambda, alpha, which = "J") {
     return(qzero())
   }
   which <- match.arg(which, c("J", "P", "Q", "C"))
-  alpha <- as.character(alpha)
-  if(alpha == "0") {
+  alpha_c <- as.character(alpha)
+  if(alpha_c == "0") {
     lambdaPrime <- dualPartition(lambda)
     f <- prod(factorialZ(lambdaPrime))
     JackPolynomial <- f * esPolynomial(n, lambdaPrime)
   } else {
     JackPolynomial <-
-      qspray_from_list(JackPolRcpp(as.integer(n), lambda, alpha))
+      qspray_from_list(JackPolRcpp(as.integer(n), lambda, alpha_c))
   }
   if(which != "J") {
     K <- switch(
@@ -152,7 +152,8 @@ Jack <- function(x, lambda, alpha) {
     if(is.na(alpha)) {
       stop("Invalid `alpha`.")
     }
-    alpha <- as.character(alpha)
+    alpha_q <- alpha 
+    alpha <- as.character(alpha_q)
     x <- as.bigq(x)
     x <- as.character(x)
   } else if(isNumber(alpha)) {
@@ -174,7 +175,7 @@ Jack <- function(x, lambda, alpha) {
     return(f * ESF(x, lambdaPrime))
   }
   if(gmp) {
-    res <- JackEvalRcpp_gmpq(x, lambda, alpha)
+    res <- JackEvalRcpp_gmpq(x, lambda, alpha_q)
     as.bigq(res)
   } else {
     JackEvalRcpp_double(x, lambda, alpha)
